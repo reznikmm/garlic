@@ -54,9 +54,15 @@ CFLAGS:=$(DIST.compiler.default_switches.C)
 # for Default_Switches ("c++") use ...
 DIST.compiler.default_switches.CXX:=
 CXXFLAGS:=$(DIST.compiler.default_switches.CXX)
-# for Default_Switches ("C") use ...
+# for Default_Switches ("c") use ...
 DIST.compiler.default_switches.C:=-Wall
 CFLAGS:=$(DIST.compiler.default_switches.C)
+# for Default_Switches ("C") use ...
+DIST.compiler.default_switches.C:=-O2 -Wall -ansi -DPREFIX=\\\\"/opt/ada\\\\"
+CFLAGS:=$(DIST.compiler.default_switches.C)
+# for Default_Switches ("C++") use ...
+DIST.compiler.default_switches.CXX:=
+CXXFLAGS:=$(DIST.compiler.default_switches.CXX)
 # end Compiler;
 
 

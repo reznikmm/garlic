@@ -156,7 +156,7 @@ GNAT_Specs :=			\
 		./err_vars.ads	\
 		./sinput-c.ads	\
 		./erroutc.ads
-		
+
 
 GNAT_Body :=			\
 		./tempdir.adb	\
@@ -168,13 +168,20 @@ GNAT_Body :=			\
 		./sinput-c.adb	\
 		./erroutc.adb	\
 		./gnatvsn.adb
-		
-		
+
+
 GNAT_C :=				\
 		./version.c		\
 		./version.h		\
 		./prefix.c		\
-		./prefix.h
+		./prefix.h		\
+		./config.h		\
+		./system.h		\
+		./coretypes.h		\
+		./tm.h			\
+		./auto-host.h		\
+		./hwint.h		\
+		./filenames.h
 
 gnat :					\
 		$(GNAT_Specs)	\
@@ -200,6 +207,19 @@ clean:
 
 ./%.h :					\
 		${GNATSRC}/../%.h
+	$(CP) $(<) $(@)
+
+./%.c :					\
+		${GNATSRC}/../%.c
+	$(CP) $(<) $(@)
+
+
+./%.h :					\
+		${GNATSRC}/../../include/%.h
+	$(CP) $(<) $(@)
+
+./%.h :					\
+		${GNATSRC}/../../../i686-pc-linux-gnu/gcc/%.h
 	$(CP) $(<) $(@)
 
 else

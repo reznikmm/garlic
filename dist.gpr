@@ -6,33 +6,38 @@ project Dist is
    for Exec_Dir use "Dist/";
    for Main use ("xe_build.adb");
 
-   package Pretty_Printer is
-      for Default_Switches ("ada") use ("");
-   end Pretty_Printer;
-
-   package Binder is
-      for Default_Switches ("ada") use ("-static");
-   end Binder;
-
-   package Ide is
-      for Vcs_Kind use "CVS";
-   end Ide;
-
-   package Linker is
-      for Default_Switches ("ada") use ("-g");
-   end Linker;
+   package Builder is
+      for Default_Switches ("ada") use ("-g", "-gnatQ");
+      for Executable ("xe_build.adb") use "gnatdist";
+      for Default_Switches ("Ada") use ("", "-gnatQ");
+   end Builder;
 
    package Compiler is
       for Default_Switches ("ada") use ("-g");
       for Default_Switches ("c") use ("");
       for Default_Switches ("c++") use ("");
-      for Default_Switches ("C") use ("-Wall");
+      for Default_Switches ("c") use ("-Wall");
+      for Default_Switches ("C") use ("-O2", "-Wall", "-ansi", "-DPREFIX=\\\\""/opt/ada\\\\""");
+      for Default_Switches ("Ada") use ("-O2");
+      for Default_Switches ("C++") use ("");
    end Compiler;
 
-   package Builder is
-      for Default_Switches ("ada") use ("-g", "-gnatQ");
-      for Executable ("xe_build.adb") use "gnatdist";
-   end Builder;
+   package Linker is
+      for Default_Switches ("ada") use ("-g");
+      for Default_Switches ("Ada") use ("/opt/ada/lib/libiberty.a");
+   end Linker;
+
+   package Ide is
+      for Vcs_Kind use "CVS";
+   end Ide;
+
+   package Binder is
+      for Default_Switches ("ada") use ("-static");
+   end Binder;
+
+   package Pretty_Printer is
+      for Default_Switches ("ada") use ("");
+   end Pretty_Printer;
 
 end Dist;
 
