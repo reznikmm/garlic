@@ -55,6 +55,9 @@ package body System.Garlic.Soft_Links is
 
    generic
       Name : String;
+
+      pragma Warnings (off, Name);
+
    package Proc is
       procedure Register (P : in Parameterless_Procedure);
       procedure Call;
@@ -500,7 +503,7 @@ package body System.Garlic.Soft_Links is
    -----------------
 
    function Stamp_Image (M : String) return String is
-      S : Float := Get_Stamp;
+      S : constant Float := Get_Stamp;
       N : Integer;
       A : String (1 .. 10) := (others => ' ');
       R : String (1 .. 10) := (others => ' ');

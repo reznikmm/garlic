@@ -101,6 +101,8 @@ package body System.Garlic.Exceptions is
    -- Raise_Communication_Error --
    -------------------------------
 
+   pragma Warnings (off, Raise_Communication_Error);
+
    procedure Raise_Communication_Error (Msg : in String := "") is
    begin
       if Msg'Length = 0 then

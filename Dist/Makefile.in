@@ -139,6 +139,9 @@ AUTOMAKE_OPTIONS = no-dependencies foreign
 GNATSRC = @GNAT_SOURCE@
 GARLIC = $(libdir)/garlic
 
+ADA_INCLUDE_PATH := .
+ADA_OBJECTS_PATH := .
+
 bin_PROGRAMS = gnatdist
 gnatdist_DEPENDENCIES = xe_defs.o xe_sysdep.adb sdefault.o version.o
 gnatdist_SOURCES = 
@@ -331,6 +334,9 @@ uninstall-am: uninstall-binPROGRAMS uninstall-info-am
 	mostlyclean-generic pdf pdf-am ps ps-am uninstall uninstall-am \
 	uninstall-binPROGRAMS uninstall-info-am
 
+
+export ADA_INCLUDE_PATH
+export ADA_OBJECTS_PATH
 
 force: 
 

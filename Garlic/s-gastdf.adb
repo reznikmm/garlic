@@ -244,7 +244,7 @@ package body System.Garlic.Storages.Dfs is
          when Read | Write =>
             declare
                Fname : constant String := Var_Data.Dir.all & Var_Data.Name.all;
-               Fmode : SIO.File_Mode   := To_File_Mode (Request);
+               Fmode : constant SIO.File_Mode   := To_File_Mode (Request);
 
             begin
                if not SIO.Is_Open (Var_Data.File) then

@@ -55,6 +55,9 @@ package body System.Garlic.Network_Utilities is
      return unsigned_short
    is
    begin
+      pragma Warnings (off, Default_Bit_Order);
+      pragma Warnings (off, High_Order_First);
+
       if Default_Bit_Order = High_Order_First then
 
          --  No conversion needed. On these platforms, htons() defaults

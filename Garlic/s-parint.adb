@@ -415,7 +415,7 @@ package body System.Partition_Interface is
       Version : in String := "")
    is
       N : String       := Name;
-      V : Version_Type := Version_Type (Version);
+      V : constant Version_Type := Version_Type (Version);
 
    begin
       To_Lower (N);
@@ -436,8 +436,8 @@ package body System.Partition_Interface is
       Version   : in String := "")
      is
       N : String       := Name;
-      V : Version_Type := Version_Type (Version);
-      P : Partition_ID := Partition_ID (Partition);
+      V : constant Version_Type := Version_Type (Version);
+      P : constant Partition_ID := Partition_ID (Partition);
 
    begin
       To_Lower (N);
@@ -477,9 +477,10 @@ package body System.Partition_Interface is
       Receiver : in RPC.RPC_Receiver;
       Version  : in String := "")
    is
-      N : String       := Name;
-      V : Version_Type := Version_Type (Version);
-      R : Unsigned_64  := Unsigned_64 (System.Address'(Convert (Receiver)));
+      N :  String       := Name;
+      V :  constant Version_Type := Version_Type (Version);
+      R :  constant Unsigned_64
+        := Unsigned_64 (System.Address'(Convert (Receiver)));
 
    begin
       pragma Debug (D ("Register receiving stub"));

@@ -48,6 +48,8 @@ package System.Garlic.Table is
       type Component_Type is private;
       Null_Component : Component_Type;
 
+      pragma Warnings (off, Null_Index);
+
    package Complex is
 
       --  These procedures are atomic and cannot be aborted
@@ -109,6 +111,8 @@ package System.Garlic.Table is
       type Component_Type is private;
       Null_Component : Component_Type;
 
+      pragma Warnings (off, Null_Index);
+
    package Medium is
 
       --  These procedures are atomic and cannot be aborted
@@ -155,6 +159,8 @@ package System.Garlic.Table is
 
       type Component_Type is private;
       Null_Component : Component_Type;
+
+      pragma Warnings (off, Null_Index);
 
    package Simple is
 

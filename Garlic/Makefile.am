@@ -5,7 +5,7 @@ ADA_FOR_TARGET = @ADA_FOR_TARGET@
 CONSTANTS_SH = $(srcdir)/constants.sh
 CP           = cp
 GARLIC       = $(prefix)/lib/garlic
-GNATFLAGS    =  @GNATFLAGS@
+GNATFLAGS    = -gnatg @GNATFLAGS@
 INCFLAGS     = -I. -I$(srcdir)
 
 GNATMAKE     = gnatmake
@@ -135,16 +135,16 @@ DISTCLEANFILES = Makefile.fil
 SUFFIXES = .adb .ads .ali .o .xrb
 
 .adb.o:
-	$(ADA_FOR_TARGET) -c $(CFLAGS) $(INCFLAGS) $(GNATFLAGS) $<
+	$(ADA_FOR_TARGET) -c $(CFLAGS) $(INCFLAGS) $(GNATFLAGS) -gnatg $<
 
 .ads.o:
-	$(ADA_FOR_TARGET) -c $(CFLAGS) $(INCFLAGS) $(GNATFLAGS) $<
+	$(ADA_FOR_TARGET) -c $(CFLAGS) $(INCFLAGS) $(GNATFLAGS) -gnatg $<
 
 .adb.ali:
-	$(ADA_FOR_TARGET) -c $(CFLAGS) $(INCFLAGS) $(GNATFLAGS) $<
+	$(ADA_FOR_TARGET) -c $(CFLAGS) $(INCFLAGS) $(GNATFLAGS) -gnatg $<
 
 .ads.ali:
-	$(ADA_FOR_TARGET) -c $(CFLAGS) $(INCFLAGS) $(GNATFLAGS) $<
+	$(ADA_FOR_TARGET) -c $(CFLAGS) $(INCFLAGS) $(GNATFLAGS) -gnatg $<
 
 b_gaprco$(EXEEXT): $(srcdir)/b_gaprco.adb
 	@${GNATMAKE} b_gaprco -o b_gaprco$(EXEEXT)

@@ -9,6 +9,12 @@ RSH_CMD = @RSH_CMD@
 RSH_OPT = @RSH_OPT@
 srcdir = @srcdir@
 
+export ADA_INCLUDE_PATH
+export ADA_OBJECTS_PATH
+
+ADA_INCLUDE_PATH:=.
+ADA_OBJECTS_PATH:=.
+
 bin_PROGRAMS = gnatdist
 gnatdist_DEPENDENCIES = xe_defs.o xe_sysdep.adb sdefault.o version.o
 gnatdist_SOURCES =

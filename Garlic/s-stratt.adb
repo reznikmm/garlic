@@ -1084,7 +1084,7 @@ package body System.Stream_Attributes is
    function Scaling
      (X : Short_Float; A : Integer)
       return Short_Float is
-      E : Integer := Short_Float'Exponent (X);
+      E : constant Integer := Short_Float'Exponent (X);
    begin
       return Short_Float'Compose (X, A + E);
    end Scaling;
@@ -1096,7 +1096,7 @@ package body System.Stream_Attributes is
    function Scaling
      (X : Float; A : Integer)
       return Float is
-      E : Integer := Float'Exponent (X);
+      E : constant Integer := Float'Exponent (X);
    begin
       return Float'Compose (X, A + E);
    end Scaling;
@@ -1108,7 +1108,7 @@ package body System.Stream_Attributes is
    function Scaling
      (X : Long_Float; A : Integer)
       return Long_Float is
-      E : Integer := Long_Float'Exponent (X);
+      E : constant Integer := Long_Float'Exponent (X);
    begin
       return Long_Float'Compose (X, A + E);
    end Scaling;
@@ -1120,7 +1120,7 @@ package body System.Stream_Attributes is
    function Scaling
      (X : Long_Long_Float; A : Integer)
       return Long_Long_Float is
-      E : Integer := Long_Long_Float'Exponent (X);
+      E : constant Integer := Long_Long_Float'Exponent (X);
    begin
       return Long_Long_Float'Compose (X, A + E);
    end Scaling;
@@ -1563,7 +1563,7 @@ package body System.Stream_Attributes is
 
             --  Signed infinites.
             else
-               if E_Last + E_Bias < Integer (E) then
+               if E_Last + E_Bias < E then
                   E := E_Last;
                   F := 0.0;
 
@@ -1918,7 +1918,7 @@ package body System.Stream_Attributes is
 
    procedure W_SSU (Stream : access RST; Item : in Short_Short_Unsigned) is
       S : XDR_S_SSU;
-      U : XDR_SSU := XDR_SSU (Item);
+      U : constant XDR_SSU := XDR_SSU (Item);
 
    begin
       --  for N in reverse S'Range loop
