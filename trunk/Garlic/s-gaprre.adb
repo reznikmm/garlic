@@ -119,6 +119,7 @@ package body System.Garlic.Protocols.Replay is
    begin
       pragma Debug (D ("Replay engine started"));
 
+      PID         := Partition_ID'First;
       Trace_Start := Clock;
 
       while not End_Of_File (Trace_File) loop

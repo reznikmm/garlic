@@ -332,7 +332,7 @@ package body System.RPC is
       case Header.Kind is
          when RPC_Query | APC_Query =>
             declare
-               Params_Copy  : Streams.Params_Stream_Access :=
+               Params_Copy  : constant Streams.Params_Stream_Access :=
                  new Streams.Params_Stream_Type (Query.Initial_Size);
                Session      : Session_Type := Session_Type'First;
                Asynchronous : constant Boolean := Header.Kind = APC_Query;

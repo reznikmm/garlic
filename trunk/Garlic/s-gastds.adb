@@ -365,7 +365,7 @@ package body System.Garlic.Storages.Dsm is
 
    procedure Initialize
    is
-      Root : DSM_Data_Access := new DSM_Data_Type;
+      Root : constant DSM_Data_Access := new DSM_Data_Type;
 
    begin
       pragma Debug (D ("register request handler"));
@@ -517,7 +517,7 @@ package body System.Garlic.Storages.Dsm is
          end loop;
          if Len /= 0 then
             declare
-               Union : Copy_Set_Type := Into.all & Set (1 .. Len);
+               Union : constant Copy_Set_Type := Into.all & Set (1 .. Len);
             begin
                Free (Into);
                Into := new Copy_Set_Type'(Union);
@@ -575,7 +575,7 @@ package body System.Garlic.Storages.Dsm is
      (S : access Ada.Streams.Root_Stream_Type'Class;
       X : out Copy_Set_Access)
    is
-      Len : Natural := Natural'Input (S);
+      Len : constant Natural := Natural'Input (S);
       Set : Copy_Set_Access;
 
    begin

@@ -52,7 +52,7 @@ with System.Garlic.Table;
 with System.Garlic.Types;                 use System.Garlic.Types;
 with System.Garlic.Utils;                 use System.Garlic.Utils;
 
-with System.Storage_Elements;             use System.Storage_Elements;
+--  with System.Storage_Elements;             use System.Storage_Elements;
 
 package body System.Garlic.Protocols.Tcp is
 
@@ -187,7 +187,7 @@ package body System.Garlic.Protocols.Tcp is
 
    function Value (Image : String) return Sock_Addr_Type;
 
-   Data_Stream : aliased Stream_Element_Array
+   Data_Stream : aliased constant Stream_Element_Array
      := (1 .. Banner_Size => Banner_Kind'Pos (Data_Banner));
 
    Quit_Stream : aliased Stream_Element_Array
@@ -1269,7 +1269,8 @@ package body System.Garlic.Protocols.Tcp is
       end loop;
 
       declare
-         Addr : Inet_Addr_Type := Addresses (Get_Host_By_Name (Image), 1);
+         Addr :  constant Inet_Addr_Type
+              := Addresses (Get_Host_By_Name (Image), 1);
 
       begin
          return (Addr.Family, Addr, Any_Port);

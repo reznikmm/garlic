@@ -89,6 +89,8 @@ package body System.Garlic.Filters.Zip is
       source_bytes  : C.long;
       result        : C.int;
 
+      pragma Warnings (off, result);
+
       F : constant Stream_Element_Offset := Stream'First + Offset;
       L : constant Stream_Element_Offset := Stream'Last;
    begin
@@ -128,6 +130,8 @@ package body System.Garlic.Filters.Zip is
       Target_Buffer : Stream_Element_Access;
       result        : C.int;
       Result_Buffer : Stream_Element_Access;
+
+      pragma Warnings (off, result);
 
    begin
       Source_Buffer := To_Stream_Element_Access (Stream);

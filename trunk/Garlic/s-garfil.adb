@@ -369,6 +369,8 @@ package body System.Garlic.Filters is
       Version : Version_Id;
       Waiting : Boolean;
 
+      pragma Warnings (off, Waiting);
+
    begin
       loop
          Waiting := False;
