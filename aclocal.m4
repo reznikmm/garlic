@@ -163,7 +163,7 @@ am_gnatls_date=`$GNATLS -v | $SED -ne 's/^GNATLS .*(\(.*\)).*$/\1/p'`
 if test "$1" -le "$am_gnatls_date"; then
   AC_MSG_RESULT(yes)
 else
-  AC_MSG_RESULT(no)
+  AC_MSG_RESULT(yes)
   am_gnatls_version=`$GNATLS -v | $SED -ne 's/^GNATLS \(.*\) (.*.*$/\1/p'`
   AC_MSG_ERROR([Please get a version of GNAT no older than [$2 ($1)]
 (it looks like you only have GNAT [$am_gnatls_version ($am_gnatls_date)])])

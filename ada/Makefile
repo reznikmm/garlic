@@ -4,7 +4,6 @@ CP := cp --verbose
 .PHONY : gnat
 .PHONY : clean
 
-
 ifdef GNATSRC
 
 GNAT_Specs :=			\
@@ -104,8 +103,6 @@ GNAT_Specs :=			\
 		./scans.ads	    \
 		./scn.adb	    \
 		./scn.ads	    \
-		./scn-nlit.adb	\
-		./scn-slit.adb	\
 		./sdefault.ads	\
 		./sfn_scan.adb	\
 		./sfn_scan.ads	\
@@ -125,7 +122,6 @@ GNAT_Specs :=			\
 		./stand.ads	    \
 		./stringt.adb	\
 		./stringt.ads	\
-		./style.adb	    \
 		./style.ads	    \
 		./stylesw.adb	\
 		./stylesw.ads	\
@@ -150,10 +146,29 @@ GNAT_Specs :=			\
 		./validsw.adb	\
 		./validsw.ads	\
 		./widechar.adb	\
-		./widechar.ads
+		./widechar.ads	\
+		./tempdir.ads	\
+		./targparm.ads	\
+		./prj-err.ads	\
+		./scng.ads		\
+		./styleg.ads	\
+		./errutil.ads	\
+		./err_vars.ads	\
+		./sinput-c.ads	\
+		./erroutc.ads
+		
 
-GNAT_Body :=
-
+GNAT_Body :=			\
+		./tempdir.adb	\
+		./targparm.adb	\
+		./prj-err.adb	\
+		./scng.adb		\
+		./styleg.adb	\
+		./errutil.adb	\
+		./sinput-c.adb	\
+		./erroutc.adb
+		
+		
 GNAT_C :=				\
 		./version.c		\
 		./version.h
