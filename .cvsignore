@@ -1,0 +1,8 @@
+*.Err
+*.New
+*.Backup
+*.o
+*.d
+*.ali
+libasis.a
+libasis.so
