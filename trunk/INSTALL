@@ -1,78 +1,136 @@
-In order to install FLORIST, you should go through the following
-steps.
+------------------------------------------------------------------------------
+--                                                                          --
+--                   GNAT DISTRIBUTED SYSTEMS ANNEX DOCUMENTS               --
+--                                                                          --
+--                              I N S T A L L                               --
+--                                                                          --
+--                            $Revision$                              --
+--                                                                          --
+-- GLADE is  free software;  you  can  redistribute  it  and/or  modify  it --
+-- under terms of the  GNU General Public License  as published by the Free --
+-- Software  Foundation;  either version 2,  or  (at your option) any later --
+-- version. GLADE is distributed in the  hope that  it will  be useful, but --
+-- WITHOUT ANY WARRANTY;  without even the implied warranty of MERCHANTABI- --
+-- LITY or FITNESS  FOR A PARTICULAR PURPOSE.  See the  GNU General  Public --
+-- License  for more details.  You should  have received a copy of the  GNU --
+-- General  Public  License distributed with  GLADE; see  file COPYING.  If --
+-- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
+-- Boston, MA 02111-1307, USA.                                              --
+--                                                                          --
+--                GLADE is maintained by ACT Europe.                        --
+--                  (email:glade-report@gnat.com).                          --
+--                                                                          --
+------------------------------------------------------------------------------
 
-0. Make sure you have GNAT installed.
-   Note that to use Florist, you need to either use a GNAT run time based on
-   native threads (see README.TASKING in the GNAT distribution for more details)
-   or use the --disable-threads option at configure time below:
+NOTE: THIS FILE APPLIES ONLY TO GLADE 3.15p . IF YOU HAVE ANY
+      OTHER VERSION OF GLADE, PLEASE GET THE APPROPRIATE INSTALL FILE.
 
-1. Configure FLORIST by typing "./configure".
-   You probably should capture the output, in case something goes
-   wrong and the relevant error message scrolls off your screen,
-   e.g.
-        ./configure >& configure.log
+INSTALL for GLADE
+-----------------
 
-   If you are using a GNAT run time that is not using native OS threads
-   (e.g athread under IRIX o32 or DCE threads under HPUX 11.0), you need
-   to specify the --disable-threads option:
+You can find general information about GLADE in README and in
+Doc/user_guide.txt. Here are simple steps for building GLADE
+easily. More details about installation and configuration can be found
+in Doc/install_guide.txt.
 
-        ./configure --disable-threads >& configure.log
 
-   Note that disabling thread support will remove support for the following
-   packages that depend on threads:
+1. Check your environment
+   - verify that GNAT 3.15p  has been installed and is on your path
+   - verify that GLADE has been ported to your system (see README)
+   - GLADE is usually built with GNU make. It may or may not be built 
+     with other versions of make. If you have problems building GLADE
+     with your local make tool, switch to GNU make.
+   - verify that you will be able to run distributed applications
+      (on Unix, your .rhosts file must contain the machine from which
+       you will start the distributed application).
+   - if you are building GLADE for a Linux platform, make sure that you use
+     the native threads library, not the FSU one.
 
-     - POSIX.Asynchronous_IO
-     - POSIX.Condition_Variables
-     - POSIX.Message_Queues
-     - POSIX.Mutexes
-     - POSIX.Process_Primitives
-     - POSIX.Process_Signals
-     - POSIX.Timers
+2. Configure GLADE
+   GLADE uses standard the GNU configuration method. Run 
+           ./configure  [configuration parameters]
 
-   The configure script will try to find out information about the system
-   you are using.  This includes information about the GNAT version,
-   and whether each of the features of the POSIX C-language interfaces
-   is supported.  This step generates the files:
+   Configuration parameters can be used to define the
+   build/host/target machines, installation locations and other
+   customizations (see Doc/install_guide.txt for details). By default,
+   when no parameters are specified, the build machine is used as host
+   and target and installation is done in /usr/local. It is advised to
+   install GLADE first in a private directory for testing purposes.
+   This can be done by using the --prefix parameter, for instance:
 
-   Makefile              Florist make file
-   gnatprep.config       directives for gnatprep
-   pconfig.h             #includes and #defines needed to use POSIX
-   config.h              configuration for c-posix.c
+      ./configure --prefix=$HOME/glade
 
-   Note that if "configure" does not work for your system as-is,
-   you can tailor it by editing the file "pconfig.h.in".
-   Some examples of these can be found in the "configs" subdirectory.
+   See the section "Building GLADE under Windows NT" for NT specific
+   information.
 
-   Along the way, configure will tell you about the various
-   features it is checking, and whether it finds
-   them.  Don't worry if it fails to find some features.
-   That is normal, since no operating system we know has yet
-   fully caught up to the POSIX standards.  Assuming the configuration
-   process works correctly, the unsupported features will just
-   raise POSIX_Error if you try to use them.
+3. Build & install GLADE
+      this can be achieved simply by doing 
+         make install
+      in the main GLADE directory. Be careful, you usually need root
+      privileges to install software in /usr/local.
 
-   The POSIX.1g (sockets and XTI) interfaces are still very new, and
-   not supported widely; the configure stage will attempt to work around
-   missing features.  If it fails badly, you can still build the rest of
-   Florist.  (One should not be using the POSIX.5c interfaces anyway,
-   as explained above.)
+4. Test your installation by running the Examples
+   Go in the Example directory and run simply 'make'. Then, go in each
+   example directory and start the applications. Check also the README
+   in each example directory.
 
-   NOTE:  Do not delete the empty file "florist_sources".  The configure
-   script checks for this file, to make sure it is in the right source
-   directory.
+5.  Example of complete build (assuming csh syntax):
 
-2. Build and compile FLORIST by typing "make".  This will
-   *automatically* perform many operations, including the following:
+% cd                             <--- go into your HOME directory
+% gunzip glade-3.15p .tar.gz     <--- uncompress the distribution
+% tar xf glade-3.15p .tar        <--- explode the distribution
+% cd glade-3.15p                 <--- go into the distribution dir.
+% ./configure --prefix=`pwd`     <--- configure the Makefiles using the current
+                                      directory to install the binaries
+% make install                   <--- compile files and install them
+% set path=(`pwd`/bin $path)     <--- add this directory in your PATH
+% cd Examples                    <--- go in the Example directory
+% make                           <--- build all the examples
+% cd Eratho/absolute             <--- go in the first example directory
+% ./mainloop                     <--- run the distributed application
 
-  a. Compile and execute the program "c-posix.c", which
-     generates the source code for the Ada package specifications
-     Posix, Posix.C, Posix.Limits, and Posix.Options.
+Building GLADE under Windows NT
+-------------------------------
 
-  b. Compile several C-language programs "XXX-macros.c".
+1) To build GLADE under NT you must have some NT replacement for the
+   followings UNIX tools :
 
-  c. Use gnatprep to tailor some Ada source files to your system.
+	bash.exe
+	cat.exe
+	chmod.exe
+	cmp.exe
+	cp.exe
+	echo.exe
+	expr.exe
+	false
+	grep.exe
+	install.exe
+	ls.exe
+	mkdir.exe
+	mv.exe
+	rm.exe
+	sed.exe
+	sleep.exe
+	uname.exe
 
-  d. Compile the various POSIX Ada package specifications and
-     bodies.
+   All these tools can be found in the User's Tools Kit (usertools.exe) from
+   CYGNUS.
 
-3. If this all succeeds, you can now use Florist.
+   Some others tools are needed but they are provided with the GNAT for NT
+   distribution :
+
+	ar.exe
+	make.exe
+	ranlib.exe
+
+2) You must add cpp.exe (C preprocessor) in your path environment variable.
+
+   cpp.exe is under <gnat_dir>/lib/gcc-lib/pentium-mingw32msv/2.8.1
+
+3) If you want to build GLADE using a wavefront compiler you must copy the
+   mingw32 GNAT release directory into your wavefront compiler directory.
+
+   The mingw32 directory is <gnat_dir>/mingw32.
+
+   This is required because GLADE need to build the libz library which is
+   written in C.
