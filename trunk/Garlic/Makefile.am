@@ -5,7 +5,7 @@ ADA_FOR_TARGET = @ADA_FOR_TARGET@
 CONSTANTS_SH = $(srcdir)/constants.sh
 CP           = cp
 GARLIC       = $(prefix)/lib/garlic
-GNATFLAGS    = -gnatg @GNATFLAGS@
+GNATFLAGS    =  @GNATFLAGS@
 INCFLAGS     = -I. -I$(srcdir)
 
 GNATMAKE     = gnatmake

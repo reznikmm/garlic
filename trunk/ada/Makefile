@@ -166,12 +166,15 @@ GNAT_Body :=			\
 		./styleg.adb	\
 		./errutil.adb	\
 		./sinput-c.adb	\
-		./erroutc.adb
+		./erroutc.adb	\
+		./gnatvsn.adb
 		
 		
 GNAT_C :=				\
 		./version.c		\
-		./version.h
+		./version.h		\
+		./prefix.c		\
+		./prefix.h
 
 gnat :					\
 		$(GNAT_Specs)	\
