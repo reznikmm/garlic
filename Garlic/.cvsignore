@@ -5,5 +5,9 @@
 *.d
 *.ali
 s-gaplsp.ads
+s-garrem.adb
+s-gaprco.adb
+s-galiop.ads
+b_gaprco
 Makefile.fil
 Makefile
