@@ -1,0 +1,6 @@
+*.Err
+*.New
+*.Backup
+*.o
+*.d
+*.ali
