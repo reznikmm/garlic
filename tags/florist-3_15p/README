@@ -1,0 +1,107 @@
+FLORIST:
+
+This directory contains the components of FLORIST, an
+implementation of the IEEE Standards 1003.5: 1992, IEEE STD
+1003.5b: 1996, and parts of IEEE STD 1003.5c: 1998, also known as
+the POSIX Ada Bindings.
+
+All the code in this directory is copyrighted by the Florida
+State University (FSU), except for any files that contain
+statements indicating the copyright belongs to someone else.
+
+The FSU-copyrighted code is free software; you can redistribute it
+and/or modify it under terms of the GNU General Public License as
+published by the Free Software Foundation; either version 2, or
+(at your option) any later version.  FLORIST is distributed in the
+hope that it will be useful, but WITHOUT ANY WARRANTY; without
+even the implied warranty of MERCHANTABILITY or FITNESS FOR A
+PARTICULAR PURPOSE.  See the GNU General Public License for more
+details.  You should have received a copy of the GNU General
+Public License distributed with GNARL (see file COPYING).  If not,
+write to the Free Software Foundation, 59 Temple Place - Suite
+330, Boston, MA 02111-1307, USA.
+                                                                          
+As a special exception, if other files instantiate generics from
+this unit, or you link this unit with other files to produce an
+executable, this unit does not by itself cause the resulting
+executable to be covered by the GNU General Public License. This
+exception does not however invalidate any other reasons why the
+executable file might be covered by the GNU Public License.
+
+PREREQUISITES:
+
+You will need the GNAT 3.15 compiler to install and compile Florist.  
+
+----------------
+--  WARNINGS  --
+----------------
+
+This Ada binding implementation depends on your underlying OS
+having C header-files and libraries that conform to the POSIX
+standards.  It will try to use constants, types, and functions
+defined in POSIX.1, POSIX.1b, POSIX.1c, and the proposed POSIX.1g
+standard.  The degree to which the Ada binding works and conforms
+to the POSIX.5 and POSIX.5b standards will be limited by how well
+your OS conforms to the corresponding C API's.
+
+So far, we have not found any operating system that fully supports
+POSIX.1c and POSIX.1g though they are getting better.  Generally,
+you will get better results with newer OS releases, since their C
+API's are closer to the POSIX standards.  It is also a good idea
+to make sure that your installation includes the header files and
+libraries needed for the real-time and threads extensions.  (The
+default "end user" OS installation may try to save you disk space
+by not installing them.)
+
+Beware of the packages POSIX_Sockets, POSIX_Sockets.Internet,
+POSIX_Sockets.Local, POSIX_Sockets.ISO, POSIX_XTI,
+POSIX_XTI.Internet, POSIX_XTI.ISO, POSIX_XTI.MOSI,
+POSIX_Event_Management.  These are parts of a POSIX.5c prototype
+effort that stalled during the ballot/revision process.  We have
+since made some improvements, notably in the socket interfaces,
+but this is far from a finished work.  These package interfaces
+SHOULD NOT BE ASSUMED TO CONFORM to the approved POSIX.5c
+standard, nor are they fully implemented.
+
+Florist is currently supported on the following configurations. It
+may or may not work on non supported configurations:
+
+Sparc/Solaris 2.5.1, 2.6, 2.7, 8
+x86/Solaris 2.6
+Linux glibc2
+DEC Unix 4.0x
+HP/UX 10.20
+HP/UX 11.0
+IRIX 6.5
+AiX 4.1
+
+Beware of the Draft 2 POSIX.5c prototype packages (POSIX_Sockets*
+and POSIX_XTI*).  We are working with members of the POSIX.5c
+Working Group to jointly develop a prototype implementation of the
+proposed standard Ada bindings for POSIX.1g (sockets and XTI).
+However, the proposed POSIX.5c interfaces are still being changed by
+the IEEE balloting group.  Draft 4 is already being written, in
+reponse to the comments on Draft3.  Therefore, what you see here
+is already obsolete.  We do not recommend using any of the
+packages POSIX_Sockets, POSIX_Sockets.Internet, POSIX_Sockets.Local,
+POSIX_Sockets.ISO, POSIX_XTI, POSIX_XTI.Internet, POSIX_XTI.ISO,
+POSIX_XTI.MOSI, POSIX_Event_Management.
+
+NORMAL INSTALLATION:
+
+Follow the steps described in the INSTALL file.
+
+COMPILING YOUR PROGRAMS WITH FLORIST:
+
+To compile your own programs with Florist, you will need to include
+the gnatmake parameters that specify where to find the
+Florist sources and object library file. Usually the following command
+will be enough :
+
+$ gnatmake -Ifloristlib main -largs -lflorist
+
+If you don't want to keep around the whole Florist installation
+directory, you should be able to copy or move the subdirectory
+"floristlib" to some other location, and then include it in
+your GNAT source and object library search paths (see the GNAT documentation
+for more details).
