@@ -1,221 +1,320 @@
-dnl aclocal.m4 generated automatically by aclocal 1.4
+dnl auto-configuration macros for Florist
+dnl This version requires autoconf-2.10.
 
-dnl Copyright (C) 1994, 1995-8, 1999 Free Software Foundation, Inc.
-dnl This file is free software; the Free Software Foundation
-dnl gives unlimited permission to copy and/or distribute it,
-dnl with or without modifications, as long as this notice is preserved.
-
-dnl This program is distributed in the hope that it will be useful,
-dnl but WITHOUT ANY WARRANTY, to the extent permitted by law; without
-dnl even the implied warranty of MERCHANTABILITY or FITNESS FOR A
-dnl PARTICULAR PURPOSE.
-
-# Do all the work for Automake.  This macro actually does too much --
-# some checks are only needed if your package does certain things.
-# But this isn't really a big deal.
-
-# serial 1
-
-dnl Usage:
-dnl AM_INIT_AUTOMAKE(package,version, [no-define])
-
-AC_DEFUN(AM_INIT_AUTOMAKE,
-[AC_REQUIRE([AC_PROG_INSTALL])
-PACKAGE=[$1]
-AC_SUBST(PACKAGE)
-VERSION=[$2]
-AC_SUBST(VERSION)
-dnl test to see if srcdir already configured
-if test "`cd $srcdir && pwd`" != "`pwd`" && test -f $srcdir/config.status; then
-  AC_MSG_ERROR([source directory already configured; run "make distclean" there first])
+dnl AC_POSIX_HEADER(HEADER-FILE,
+dnl   [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+dnl side-effect: extend file "pconfig.h",
+dnl with includes for this header, if present.
+AC_DEFUN(AC_POSIX_HEADER,
+[dnl Do the transliteration at runtime so arg 1 can be a shell variable.
+ac_old_cflags=$CFLAGS
+# CFLAGS="$CFLAGS -Werror"
+ac_safe=`echo "$1" | tr './\055' '___'`
+AC_MSG_CHECKING([for $1])
+AC_CACHE_VAL(ac_cv_header_$ac_safe,
+[AC_TRY_CPP([#include <$1>], 
+AC_TRY_COMPILE([#include "pconfig.h"
+#include <$1>],,
+eval "ac_cv_header_$ac_safe=yes",
+eval "ac_cv_header_$ac_safe=no"),
+eval "ac_cv_header_$ac_safe=no")])dnl
+if eval "test \"`echo '$ac_cv_header_'$ac_safe`\" = yes"; then
+  AC_MSG_RESULT(yes)
+  echo "#include <$1>" >> pconfig.h
+  ifelse([$2], , :, [$2])
+else
+  AC_MSG_RESULT(no)
+ifelse([$3], , , [$3
+])dnl
 fi
-ifelse([$3],,
-AC_DEFINE_UNQUOTED(PACKAGE, "$PACKAGE", [Name of package])
-AC_DEFINE_UNQUOTED(VERSION, "$VERSION", [Version number of package]))
-AC_REQUIRE([AM_SANITY_CHECK])
-AC_REQUIRE([AC_ARG_PROGRAM])
-dnl FIXME This is truly gross.
-missing_dir=`cd $ac_aux_dir && pwd`
-AM_MISSING_PROG(ACLOCAL, aclocal, $missing_dir)
-AM_MISSING_PROG(AUTOCONF, autoconf, $missing_dir)
-AM_MISSING_PROG(AUTOMAKE, automake, $missing_dir)
-AM_MISSING_PROG(AUTOHEADER, autoheader, $missing_dir)
-AM_MISSING_PROG(MAKEINFO, makeinfo, $missing_dir)
-AC_REQUIRE([AC_PROG_MAKE_SET])])
+CFLAGS=$ac_old_cflags
+])dnl
 
-#
-# Check to make sure that the build environment is sane.
-#
+dnl AC_POSIX_HEADERS(NAMES...)
+dnl side-effect: create file "pconfig.h" containing includes
+dnl for all the headers that are present.
+AC_DEFUN(AC_POSIX_HEADERS,
+[rm -f pconfig.h
+cp pconfig.h.in pconfig.h
+chmod 644 pconfig.h
+if ( test ! -f pconfig.h ) then
+   AC_MSG_ERROR(missing pconfig.h);
+fi
+for ac_hdr in $1
+do
+  AC_POSIX_HEADER($ac_hdr,
+[changequote(, )dnl
+  ac_tr_hdr=HAVE_`echo $ac_hdr |
+   tr 'abcdefghijklmnopqrstuvwxyz./\055' 'ABCDEFGHIJKLMNOPQRSTUVWXYZ___'`
+changequote([, ])dnl
+  AC_DEFINE_UNQUOTED($ac_tr_hdr)])dnl
+done
+])dnl
 
-AC_DEFUN(AM_SANITY_CHECK,
-[AC_MSG_CHECKING([whether build environment is sane])
-# Just in case
-sleep 1
-echo timestamp > conftestfile
-# Do `set' in a subshell so we don't clobber the current shell's
-# arguments.  Must try -L first in case configure is actually a
-# symlink; some systems play weird games with the mod time of symlinks
-# (eg FreeBSD returns the mod time of the symlink's containing
-# directory).
-if (
-   set X `ls -Lt $srcdir/configure conftestfile 2> /dev/null`
-   if test "[$]*" = "X"; then
-      # -L didn't work.
-      set X `ls -t $srcdir/configure conftestfile`
+dnl AC_POSIX5C_HEADERS(NAMES...)
+dnl side-effect: create file "pconfig.h" containing includes
+dnl for all the headers that are present.
+AC_DEFUN(AC_POSIX5C_HEADERS,
+[for ac_hdr in $1
+do
+  AC_POSIX_HEADER($ac_hdr,
+[changequote(, )dnl
+  ac_tr_hdr=HAVE_`echo $ac_hdr |
+    tr 'abcdefghijklmnopqrstuvwxyz./\055' 'ABCDEFGHIJKLMNOPQRSTUVWXYZ___'`
+changequote([, ])dnl
+  AC_DEFINE_UNQUOTED($ac_tr_hdr)])dnl
+done
+AC_POSIX_HEADER(xti.h, AC_DEFINE_UNQUOTED(HAVE_XTI_H)
+[    echo "-- don't want TLI because we have xti.h
+TLI := False" >> gnatprep.config;],
+AC_POSIX_HEADER(tli.h, AC_DEFINE_UNQUOTED(HAVE_TLI_H)
+[    echo "-- using TLI because could not find xti.h
+TLI := True" >> gnatprep.config;],
+[    echo "-- could not find tli.h
+TLI := False" >> gnatprep.config;],
+))
+AC_TRY_COMPILE([#include "pconfig.h"],
+[  struct msghdr hdr;
+   hdr.msg_controllen = 0;],
+[echo "Socket interface Looks like BSD 4.4";
+
+ # Put BSD flag in gnatprep.config
+ if (grep BSD4_3 gnatprep.config >/dev/null 2>&1); then true;
+ else
+    echo "-- set BSD4_3 to False if using 4.4 style socket msghdr"
+        >> gnatprep.config
+    echo "BSD4_3 := False" >> gnatprep.config;
+ fi;
+ if (grep _BSD4_4_ pconfig.h >/dev/null 2>&1); then true;
+ else
+   echo "#define _BSD4_4_" >> pconfig.h;
+ fi;],
+[echo "Socket interface Looks like BSD 4.3";
+ if (grep BSD4_3 gnatprep.config >/dev/null 2>&1); then true;
+ else
+    echo "-- set BSD4_3 to False if using 4.4 style socket msghdr
+    BSD4_3 := True" >> gnatprep.config;
+ fi;
+ if (grep _BSD4_3_ pconfig.h >/dev/null 2>&1); then true;
+ else
+   echo "#define _BSD4_3_" >> pconfig.h;
+ fi;])
+[if (grep xti.h pconfig.h >/dev/null 2>&1); then
+ if (grep _XTI_ pconfig.h >/dev/null 2>&1); then true;
+ else
+   echo "#define _XTI_" >> pconfig.h;
+ fi ;
+else
+ if [ -f /usr/include/sys/tiuser.h ]; then
+   echo "Have only TLI, will use that in place of XTI";
+   if (grep _TLI_ pconfig.h >/dev/null 2>&1); then true; 
+   else
+     echo "#define _TLI_" >> pconfig.h;
+     echo "#include <sys/tiuser.h>" >> pconfig.h;
+   fi;
+ fi;
+fi]
+AC_CHECK_FUNC(getaddrinfo,
+[ADDRINFO_OBJECTS=""
+ AC_SUBST(ADDRINFO_OBJECTS)
+],
+[AC_MSG_WARN(No getaddrinfo. Will try to use shareware.)
+ ADDRINFO_OBJECTS="getaddrinfo.o inet_pton.o inet_ntop.o"
+ AC_SUBST(ADDRINFO_OBJECTS)
+ echo '#include "addrinfo.h"' >> pconfig.h;
+])
+])dnl
+
+dnl AC_POSIX_LIBS(LIBRARY..., FUNCTION
+dnl    [, ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+AC_DEFUN(AC_POSIX_LIBS,
+[for ac_lib in $1
+do
+   AC_POSIX_LIB($ac_lib,$2,ac_lib_success="yes",ac_lib_success="no")
+   if [[ "$ac_lib_success" = "yes" ]]
+   then break;
    fi
-   if test "[$]*" != "X $srcdir/configure conftestfile" \
-      && test "[$]*" != "X conftestfile $srcdir/configure"; then
+done])
 
-      # If neither matched, then we have a broken ls.  This can happen
-      # if, for instance, CONFIG_SHELL is bash and it inherits a
-      # broken ls alias from the environment.  This has actually
-      # happened.  Such a system could not be considered "sane".
-      AC_MSG_ERROR([ls -t appears to fail.  Make sure there is not a broken
-alias in your environment])
-   fi
-
-   test "[$]2" = conftestfile
-   )
-then
-   # Ok.
-   :
+dnl AC_POSIX_LIB(LIBRARY, FUNCTION [, ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+AC_DEFUN(AC_POSIX_LIB,
+[AC_MSG_CHECKING([for $2 in -l$1])
+dnl Use a cache variable name containing both the library and function name,
+dnl because the test really is for library $1 defining function $2, not
+dnl just for library $1.  Separate tests with the same $1 and different $2s
+dnl may have different results.
+ac_lib_var=`echo $1[_]$2 | tr ':.-/+' '____p'`
+ac_save_LIBS="$LIBS"
+LIBS="-l$1 $LIBS"
+AC_TRY_LINK([/* Override any gcc2 internal prototype to avoid an error.  */
+]ifelse(AC_LANG, CPLUSPLUS, [#ifdef __cplusplus
+extern "C"
+#endif
+])dnl
+[char $2();
+],
+  [$2()],
+  eval "ac_cv_lib_$ac_lib_var=yes",
+  eval "ac_cv_lib_$ac_lib_var=no")
+LIBS="$ac_save_LIBS"
+if eval "test \"`echo '$ac_cv_lib_'$ac_lib_var`\" = yes"; then
+  AC_MSG_RESULT(yes)
+if echo ${LIBS} | grep $1; then true;
 else
-   AC_MSG_ERROR([newly created file is older than distributed files!
-Check your system clock])
+  LIBS="-l$1 ${LIBS}"
 fi
-rm -f conftest*
-AC_MSG_RESULT(yes)])
-
-dnl AM_MISSING_PROG(NAME, PROGRAM, DIRECTORY)
-dnl The program must properly implement --version.
-AC_DEFUN(AM_MISSING_PROG,
-[AC_MSG_CHECKING(for working $2)
-# Run test in a subshell; some versions of sh will print an error if
-# an executable is not found, even if stderr is redirected.
-# Redirect stdin to placate older versions of autoconf.  Sigh.
-if ($2 --version) < /dev/null > /dev/null 2>&1; then
-   $1=$2
-   AC_MSG_RESULT(found)
+ifelse([$3], , , [$3
+])dnl
 else
-   $1="$3/missing $2"
-   AC_MSG_RESULT(missing)
+  AC_MSG_RESULT(no)
+ifelse([$4], , , [$4
+])dnl
 fi
-AC_SUBST($1)])
+])
 
-
-dnl Usage: AM_PROG_ADA
-dnl Look for an Ada compiler (ADA environment variable, then gcc, then $CC)
-
-AC_DEFUN(AM_PROG_ADA,
-[AC_BEFORE([$0], [AM_TRY_ADA])
-AC_REQUIRE([AC_PROG_CC])
-AC_CHECK_PROGS(ADA, adagcc gnatgcc gcc)
-if test -z "$ADA"; then
-  AC_MSG_RESULT([  Tentatively using $CC as an Ada compiler])
-  ADA="$CC"
-fi])
-
-dnl Usage: AM_TRY_ADA(filename, content, success, failure)
-dnl Compile an Ada program and report its success or failure
-
-AC_DEFUN(AM_TRY_ADA,
-[AC_REQUIRE([AM_PROG_ADA])
-mkdir conftest
-cat > conftest/[$1] <<EOF
-[$2]
-EOF
-ac_try="cd conftest && $ADA -c $1 > /dev/null 2>../conftest.out"
-if AC_TRY_EVAL(ac_try); then
-  ifelse([$3], , :, [rm -rf conftest*
-  $3])
-else
-  ifelse([$4], , :, [ rm -rf conftest*
-  $4])
-fi
-rm -f conftest*])
-
-dnl Usage: AM_PROG_WORKING_ADA
-dnl Try to compile a simple Ada program to test the compiler installation
-dnl (especially the standard libraries such as Ada.Text_IO)
-
-AC_DEFUN(AM_PROG_WORKING_ADA,
-[AC_REQUIRE([AM_PROG_ADA])
-AC_MSG_CHECKING([if the$crossflagmsg Ada compiler works])
-AM_TRY_ADA([check.adb],
-[with Ada.Text_IO;
-procedure Check is
-begin
-   null;
-end Check;
-], [AC_MSG_RESULT(yes)],
-[AC_MSG_RESULT(no)
-AC_MSG_ERROR([Ada compiler is not working])])])
-
-dnl Usage: AM_ADA_PREREQ(date, version)
-dnl Check that GNAT is at least as recent as date (YYMMDD)
-
-AC_DEFUN(AM_ADA_PREREQ,
-[AC_REQUIRE([AM_PROG_WORKING_ADA])
-AC_CHECK_PROG(GNATLS, gnatls, gnatls)
-AC_CHECK_PROG(SED, sed, sed)
-AC_MSG_CHECKING([if the Ada compiler is recent enough])
-am_gnatls_date=`$GNATLS -v | $SED -ne 's/^GNATLS .*(\(.*\)).*$/\1/p'`
-if test "$1" -le "$am_gnatls_date"; then
+dnl AC_POSIX_TYPE(TYPE-NAME)
+AC_DEFUN(AC_POSIX_TYPE,
+[AC_REQUIRE([AC_POSIX_HEADERS])dnl
+AC_MSG_CHECKING(for $1)
+AC_CACHE_VAL(ac_cv_type_$1,
+AC_EGREP_CPP($1[[[^0-9A-Za-z_]]],[#include "pconfig.h"],
+eval "ac_cv_type_$1=yes", eval "ac_cv_type_$1=no"))
+if eval "test \"`echo '$ac_cv_type_'$1`\" = yes"; then
+  AC_DEFINE_UNQUOTED(HAVE_$1)
   AC_MSG_RESULT(yes)
 else
   AC_MSG_RESULT(no)
-  am_gnatls_version=`$GNATLS -v | $SED -ne 's/^GNATLS \(.*\) (.*.*$/\1/p'`
-  AC_MSG_ERROR([Please get a version of GNAT no older than [$2 ($1)]
-(it looks like you only have GNAT [$am_gnatls_version ($am_gnatls_date)])])
-fi])
-
-dnl Usage: AM_CROSS_PROG_ADA
-dnl Look for an Ada compiler for the target (same as the host one if host and
-dnl target are equal)
-
-AC_DEFUN(AM_CROSS_PROG_ADA,
-[AC_REQUIRE([AM_PROG_WORKING_ADA])
- if test $host = $target; then
-   ADA_FOR_TARGET=$ADA
-   AC_SUBST(ADA_FOR_TARGET)
- else
-   AC_CHECK_PROGS(ADA_FOR_TARGET, [$target_alias-$ADA $target-$ADA])
- fi
+fi
 ])
 
-dnl Usage: AM_CROSS_PROG_WORKING_ADA
-dnl Try to use Ada compiler for the target if it is different from the host
-
-AC_DEFUN(AM_CROSS_PROG_WORKING_ADA,
-[AC_REQUIRE([AM_CROSS_PROG_ADA])
- if test $host != $target; then
-   OLDADA=$ADA
-   ADA=$ADA_FOR_TARGET
-   crossflagmsg=" cross"
-   AM_PROG_WORKING_ADA
-   crossflagmsg=""
-   ADA=$OLDADA
- fi
+dnl AC_POSIX_TYPES(TYPE-NAME...)
+AC_DEFUN(AC_POSIX_TYPES,
+[for ac_typ in $1
+do
+  AC_POSIX_TYPE($ac_typ)
+done
 ])
 
-AC_DEFUN([AC_GNAT_SOURCE],
-[
-  AC_MSG_CHECKING([for GNAT sources])
-  if test -f gnat/osint.ads; then
-    GNAT_SOURCE=../gnat
-    AC_MSG_RESULT(gnat)
-  elif test -f ada/osint.ads; then
-    GNAT_SOURCE=../ada
-    AC_MSG_RESULT(ada)
-  elif test -f $srcdir/gnat/osint.ads; then
-    GNAT_SOURCE=[\${top_srcdir}/gnat]
-    AC_MSG_RESULT($srcdir/gnat)
-  elif test -f $srcdir/ada/osint.ads; then
-    GNAT_SOURCE=[\${top_srcdir}/ada]
-    AC_MSG_RESULT($srcdir/ada)
-  else
-    AC_MSG_ERROR([no sources found])
-  fi
-  AC_SUBST(GNAT_SOURCE)
+dnl AC_POSIX_CONST(CONST)
+AC_DEFUN(AC_POSIX_CONST,
+[AC_REQUIRE([AC_POSIX_HEADERS])dnl
+AC_MSG_CHECKING(for $1)
+AC_CACHE_VAL(ac_cv_const_$1,
+[AC_EGREP_CPP($1, [#include "pconfig.h"], eval "ac_cv_const_$1=yes",
+AC_EGREP_CPP(yes, [#include "pconfig.h"
+#ifdef $1
+  yes
+#endif], eval "ac_cv_const_$1=yes",
+eval "ac_cv_const_$1=no"))])dnl
+if eval "test \"`echo '$ac_cv_const_'$1`\" = yes"; then
+  AC_DEFINE_UNQUOTED(HAVE_$1)
+  AC_MSG_RESULT(yes)
+else
+  AC_MSG_RESULT(no)
+fi
 ])
 
+dnl AC_POSIX_CONSTS(CONST-NAME...)
+AC_DEFUN(AC_POSIX_CONSTS,
+[for ac_const in $1
+do
+  AC_POSIX_CONST($ac_const)
+done
+])
+
+dnl AC_POSIX_STRUCT(NAME,
+dnl   [ACTION-IF-FOUND [, ACTION-IF-NOT-FOUND]])
+AC_DEFUN(AC_POSIX_STRUCT,
+[AC_REQUIRE([AC_POSIX_HEADERS])dnl
+AC_MSG_CHECKING(for struct $1)
+AC_CACHE_VAL(ac_cv_struct_$1,
+[AC_TRY_COMPILE([#include "pconfig.h"
+struct $1 x;],,eval "ac_cv_struct_$1=yes",
+ eval "ac_cv_struct_$1=no")])dnl
+if eval "test \"`echo '$ac_cv_struct_'$1`\" = yes"; then
+  AC_DEFINE_UNQUOTED(HAVE_struct_$1)
+  AC_MSG_RESULT(yes)
+  ifelse([$2], , :, [$2])
+else
+  AC_MSG_RESULT(no)
+  ifelse([$3], , , [$3])dnl
+fi
+])
+
+dnl AC_POSIX_STRUCTS(NAME...)
+AC_DEFUN(AC_POSIX_STRUCTS,
+[for ac_struct in $1
+do
+  AC_POSIX_STRUCT($ac_struct)
+done
+])
+
+dnl AC_POSIX_FUNCS(FUNCTION... )
+AC_DEFUN(AC_POSIX_FUNCS,
+[for ac_func in $1
+do
+AC_CHECK_FUNC($ac_func,
+[AC_DEFINE_UNQUOTED(HAVE_$ac_func,1)],
+[AC_DEFINE_UNQUOTED(HAVE_$ac_func,0)])dnl
+done
+])
+
+dnl AC_POSIX_VAR(NAME)
+AC_DEFUN(AC_POSIX_VAR,
+[AC_REQUIRE([AC_POSIX_HEADERS])dnl
+AC_MSG_CHECKING(for global variable or macro $1)
+AC_CACHE_VAL(ac_cv_comp_$1,
+[AC_EGREP_CPP($1, [#include "pconfig.h"], eval "ac_cv_comp_$1=yes",
+eval "ac_cv_comp_$1=no")])dnl
+if eval "test \"`echo '$ac_cv_comp_'$1`\" = yes"; then
+  AC_DEFINE_UNQUOTED(HAVE_$1)
+  AC_MSG_RESULT(yes)
+else
+  AC_MSG_RESULT(no)
+fi
+])
+
+dnl AC_POSIX_COMP(STRUCTNAME, COMPNAME)
+AC_DEFUN(AC_POSIX_COMP,
+[AC_REQUIRE([AC_POSIX_HEADERS])dnl
+AC_MSG_CHECKING(for struct $1 component $2)
+AC_CACHE_VAL(ac_cv_comp_$2,
+[AC_TRY_COMPILE([#include "pconfig.h"
+struct $1 x;],
+[x.$2 = x.$2;], eval "ac_cv_comp_$2=yes",
+eval "ac_cv_comp_$2=no")])dnl
+if eval "test \"`echo '$ac_cv_comp_'$2`\" = yes"; then
+  AC_DEFINE_UNQUOTED(HAVE_component_$2)
+  AC_MSG_RESULT(yes)
+else
+  AC_MSG_RESULT(no)
+fi
+])
+
+dnl AC_POSIX_COMP_OVERLAY(STRUCTNAME, COMPNAME1, COMPNAME2)
+dnl check for COMPNAME1 but only if it does not overlay in memory
+dnl layout with COMPNAME2; e.g. see overlaying of sigaction components
+dnl sa_handler and sa_sigaction
+AC_DEFUN(AC_POSIX_COMP_OVERLAY,
+[AC_REQUIRE([AC_POSIX_HEADERS])dnl
+AC_MSG_CHECKING(for struct $1 component $2 overlaying $3)
+AC_CACHE_VAL(ac_cv_comp_$2,
+AC_TRY_RUN([#include "pconfig.h"
+main()
+{
+  struct $1 x;
+  if (&x.$2 == &x.$3) {
+    fprintf(stderr,"$2 overlays $3...");
+    exit (1);
+  } else {
+    exit (0);
+  }
+}], eval "ac_cv_comp_$2=yes",
+eval "ac_cv_comp_$2=no", eval "ac_cv_comp_$2=nu"))dnl
+if eval "test \"`echo '$ac_cv_comp_'$2`\" = yes"; then
+  AC_DEFINE_UNQUOTED(HAVE_component_$2)
+  AC_MSG_RESULT(yes)
+else
+  AC_MSG_RESULT(no)
+fi
+])
