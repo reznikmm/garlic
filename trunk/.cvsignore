@@ -4,3 +4,9 @@
 *.o
 *.d
 *.ali
+Makefile
+make-check-stamp
+config.status
+config.log
+config.cache
+autom4te.cache
