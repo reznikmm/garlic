@@ -10,7 +10,7 @@ RSH_OPT = @RSH_OPT@
 srcdir = @srcdir@
 
 bin_PROGRAMS = gnatdist
-gnatdist_DEPENDENCIES = xe_defs.o xe_sysdep.adb sdefault.o
+gnatdist_DEPENDENCIES = xe_defs.o xe_sysdep.adb sdefault.o version.o
 gnatdist_SOURCES =
 gnatdist_LDADD =
 
@@ -22,7 +22,7 @@ force:
 gnatdist$(EXEEXT): $(gnatdist_DEPENDENCIES) force
 	$(GNATMAKE) -m $(GNATFLAGS) -I. -I$(srcdir) -I$(GNATSRC) \
 	   $(srcdir)/xe_build.adb -o gnatdist$(EXEEXT) \
-	   -bargs -static -largs $(LIBS)
+	   -bargs -static -largs -lgccprefix version.o $(LIBS)
 
 xe_sysdep.adb: xe_sysdep-std.adb xe_sysdep-nt.adb
 	@echo Selecting xe_sysdep.adb
@@ -98,3 +98,5 @@ sdefault.adb: $(srcdir)/config.sdefault
 
 sdefault.o: sdefault.adb $(GNATSRC)/sdefault.ads
 	$(ADA) -c -g -O2 -gnatp -I$(GNATSRC) sdefault.adb
+
+version.o: ../ada/version.c
