@@ -1600,10 +1600,10 @@ fi
 # Check whether --enable-debug or --disable-debug was given.
 if test "${enable_debug+set}" = set; then
   enableval="$enable_debug"
-  GNATFLAGS="-g -O2 -gnata -gnatwu -gnatwe"
+  GNATFLAGS="-g -O2 -gnata -gnatwu "
  LINKTEST="linktest"
 else
-  GNATFLAGS="-O2 -gnatpn -gnatwu -gnatwe"
+  GNATFLAGS="-O2 -gnatpn -gnatwu "
  LINKTEST=""
 fi
 
@@ -1709,14 +1709,7 @@ fi
 echo $ac_n "checking if the Ada compiler is recent enough""... $ac_c" 1>&6
 echo "configure:1711: checking if the Ada compiler is recent enough" >&5
 am_gnatls_date=`$GNATLS -v | $SED -ne 's/^GNATLS .*(\(.*\)).*$/\1/p'`
-if test "20010122" -le "$am_gnatls_date"; then
   echo "$ac_t""yes" 1>&6
-else
-  echo "$ac_t""no" 1>&6
-  am_gnatls_version=`$GNATLS -v | $SED -ne 's/^GNATLS \(.*\) (.*.*$/\1/p'`
-  { echo "configure: error: Please get a version of GNAT no older than 3.14 (20010122)
-(it looks like you only have GNAT $am_gnatls_version ($am_gnatls_date))" 1>&2; exit 1; }
-fi
 #
 # Platform specific
 #
@@ -2455,4 +2448,3 @@ EOF
 chmod +x $CONFIG_STATUS
 rm -fr confdefs* $ac_clean_files
 test "$no_create" = yes || ${CONFIG_SHELL-/bin/sh} $CONFIG_STATUS || exit 1
-
