@@ -4,3 +4,6 @@
 *.o
 *.d
 *.ali
+s-gaplsp.ads
+Makefile.fil
+Makefile

@@ -4,5 +4,9 @@
 *.o
 *.d
 *.ali
-libasis.a
-libasis.so
+Makefile
+xe_sysdep.adb
+xe_defs.adb
+sdefault.adb
+b~xe_build.ads
+b~xe_build.adb
