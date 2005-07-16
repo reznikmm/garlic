@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta43 ordered=1
+newline=²
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.8) Gecko/20050511 Firefox/1.0.4
+author=Pm
+host=24.1.26.255
+name=Site.SideBar
+rev=42
+targets=Site.SideBar,Main.HomePage,Main.WikiSandbox,PmWiki.PmWiki,PmWiki.Installation,PmWiki.TipsForEditing,PmWiki.DocumentationIndex,PmWiki.FAQ,PmWiki.PmWikiPhilosophy,PmWiki.ReleaseNotes,PmWiki.ChangeLog,PmWiki.ChangesFromPmWiki1
+text=!Site.SideBar [-([[Site.SideBar?action=edit | edit]])-]²* [[Main/Home Page]]²* [[Main/WikiSandbox]]²²![[PmWiki/PmWiki]]²* [[PmWiki/Installation | Download and Install]]²* [[PmWiki/Tips For Editing]]²* [[PmWiki/Documentation Index]]²* [[PmWiki/FAQ]]²* [[PmWiki/PmWikiPhilosophy]]²* [[PmWiki/Release Notes]]²* [[PmWiki/ChangeLog]]²* [[PmWiki/Changes from PmWiki 1]]²²![[(http://www.)pmwiki.org]]²* [[(Cookbook:)Cookbook]]²* [[(PITS:)PITS]] (bugs, development)²* [[(PmWiki:)PmWikiUsers]]²* [[(PmWiki:)Success Stories]]²²
+time=1121006929
