@@ -1,10 +1,10 @@
-version=pmwiki-2.0.devel13
+version=pmwiki-2.0.beta36 ordered=1
 newline=²
-time=1098284596
-text=(:redirect Main.WikiSandbox:)²
-author=Pm
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.8) Gecko/20050511 Firefox/1.0.4
+author=
+host=64.107.219.249
 name=PmWiki.WikiSandbox
-host=24.1.28.47
-agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; rv:1.7.3) Gecko/20041001 Firefox/0.10.1
-rev=2
+rev=4
 targets=
+text=(:redirect Main.WikiSandbox:)²[[http://www.vulcho.com/|weby's home]]'^Superscript^'²!! Heading²
+time=1116513879

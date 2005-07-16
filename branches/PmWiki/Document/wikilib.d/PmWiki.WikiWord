@@ -1,10 +1,10 @@
-version=pmwiki-2.0.devel8
+version=pmwiki-2.0.beta38 ordered=1
 newline=²
-version=
-text=A WikiWord is a set of two or more words run together where the first letter of each word is capitalized, sometimes known as "mixed case" or "camel case".  WikiWords are used as link and page titles in a [[WikiWikiWeb]].  In other words, you can just string any sequence of words together and capitalize the first letter of each word to make a valid WikiWord.²²Other descriptions of WikiWords are available from Wiki:WikiWord and Wikipedia:WikiWord.²²%trail%<<|PmWiki.DocumentationIndex|>>
-time=1096569451
+agent=Mozilla/5.0 (compatible; Konqueror/3.3; Linux) (KHTML, like Gecko)
+author=Christoph Lange
+host=136.199.8.128
 name=PmWiki.WikiWord
-host=24.1.26.221
-agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7) Gecko/20040803 Firefox/0.9.3
-rev=3
-author=Pm
+rev=7
+targets=PmWiki.WikiWikiWeb,PmWiki.WikiWord,PmWiki.WikiWords,PmWiki.PmWiki,PmWiki.DocumentationIndex
+text=A WikiWord is a set of two or more words run together where the first letter of each word is capitalized, sometimes known as "mixed case" or "camel case".  WikiWords are used as link and page titles in a [[WikiWikiWeb]].  In other words, you can just string any sequence of words together and capitalize the first letter of each word to make a valid WikiWord. WikiWords surrounded by [=[=...=]=] or preceded by a backquote (`) are not turned into links by PmWiki, for example `ThisOne.²²Other descriptions of WikiWords are available from Wiki:WikiWord and Wikipedia:WikiWord.²²%trail%<<|PmWiki.DocumentationIndex|>>²
+time=1118928341
