@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta38 ordered=1
+newline=²
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.6) Gecko/20050317 Firefox/1.0.2
+author=Pm
+host=24.1.26.255
+name=PmWiki.AvailableActions
+rev=18
+targets=PmWiki.PmWiki,PmWiki.CustomMarkup,PmWiki.RSS,PmWiki.DocumentationIndex,PmWiki.UrlApprovals
+text=:[@?action=browse@]: display the specified page (default action if no [@?action=@] is present)²²:[@?action=edit@]: edit the specified page²²:[@?action=diff@]: show a change history of the specified page²²:[@?action=attr@]: displays dialog for setting/changing password of the specified page²²:[@?action=postattr@]:²²:[@?action=upload@]: display a form to upload an attachment for the current group²²:[@?action=download&upname=file.ext@] : retrieve the page's attachment named ''file.ext''²²:[@?action=crypt@]: displays a form for generating hashed passwords out of clear text for usage in your config.php²²:[@?action=print@]: display the specified page using the skin specified by $ActionSkin['print']²²:[@?action=source@]: show page source²²!!! Actions enabled by $EnableDiag:²²the following actions are available only if you set [@$EnableDiag = 1@] in your configuration file. They can be used for debugging and should not be set in a production environment.²²:[@?action=ruleset@]: displays a list of all markups in 3 columns:²** column 1 = markup-name (1. parameter of markup() )²** column 2 = when will rule apply (2. parameter of markup() )²** column 3 = PmWiki's internal sort key (derived from #2)²->(see [[Custom Markup]]).  [@?action=ruleset@] shows the order in which markups rules are applied. To see the markup and its replacement as well, apply the [[Cookbook:MarkupRulesetDebugging]] recipe.²²:[@?action=phpinfo@]: displays the output of phpinfo() and exits. no page will be processed²²:[@?action=diag@]: displays a dump of all global vars and exits. no page will be processed²²²%trail%<<|[[PmWiki.Documentation Index]]|>>
+time=1119312936

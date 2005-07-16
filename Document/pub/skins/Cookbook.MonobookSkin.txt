@@ -1,0 +1,65 @@
+<<|[[Cookbook.Skins]]|>>
+
+!! About
+
+This skin is massively inspired from `MediaWiki default skin (also originaly named @@monobook@@).
+
+`MediaWiki is the software used for [[Wikipedia -> http://www.wikipedia.org]]) and the other Wikimedia Foundation websites.
+
+!! Installation
+
+To use the Monobook skin for your own Wiki, just download Attach:monobook.zip, extract it into @@/path/to/pmwiki/pub/skins/@@ and add the following code to your local configuration file:
+
+ [=
+ # Specifies the name of the template file
+ # to be used to generate pages.
+ $Skin = 'monobook';
+=]
+
+!! Features
+
+%align=right% Attach:monobook.jpg
+
+The skin current features are:
+* Full CSS driven (no tables),
+* Wiki actions as notebook tabs,
+* Zoom support (fixed size fonts used only for Wiki actions),
+* Smooth handling of [@(:noheader:)@], [@(:nofooter:)@] and [@(:notitle:)@] directives,
+* Extra directives [@(:noleft:)@] and [@(:notabs:)@] available to hide unwanted sections
+* %red%Developed and tested under `IE6 and Firefox.%%
+
+:Nota:The original layout is supposed to handle a 135x135 pixels logo. This explains why the PmWiki logo looks a bit alone in its corner.
+
+!! Contributor
+
+[[~Dfaure]]
+
+!! History
+
+:05/06/01: Initial release.
+:05/06/03: Handling of forgotten @@?action=print@@ and minor tweaks.
+:05/06/09: Applied suggested changes and relooked print action.
+:05/06/10: Added support of `RightBar sub pages compatible with [[~HansB]]'s [[GeminiSkin]] and [[FixFlowSkin]].
+:05/06/16: Corrected `RightBar placement and added handling of '''@@Site@@''' group and related directives.
+:05/06/17: Fixed forgotten ''[[(Site.)AllRecentChanges]]'' link.
+
+!! Comments and Bugs
+
+* This is a very nice skin - but there is a big problem with the opera 8.0 browser.It doesnt show the Tabs correctly. Also the background image isnt there and the fonts look ugly. Anyone got an idea how to fix it ? \\
+Markus Schneider
+** Looks fine here in 7.54... -[[Peter -> http://www.shortbus.org/]]
+** Its a problem with Opera 8.0 - I just made an downgrade and it works fine with 7.54. Well - thats nice for me but not for the visitors that come with the newest browser versions. Other browsers like Epiphany, Firefox, Konqueror are working fine ... Markus
+
+*Great skin.  Just an note though, out of the box it doesn't quite validate. Changing [[<<]]
+[=<html xmlns="http://www.w3.org/TR/xhtml1" xml:lang="en" lang="en">=][[<<]]
+to[[<<]]
+[=<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">=][[<<]]
+in the template file, and adding an "alt" attribute to the print image makes the page completely valid. Also, the link in the logo image doesn't work (at least in Fire Fox) unless you move[[<<]]
+[=<div id='pageleftcontent'>=][[<<]]
+above[[<<]]
+[=<div id='pagelogo'>=][[<<]]
+-JC June 7, 2005
+
+*New version works fine - finaly thats the clean look of mediawiki with the power of pmwiki, great ! -MS
+----
+Category: [[!Skins]]
