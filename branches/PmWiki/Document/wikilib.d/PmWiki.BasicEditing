@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta38 ordered=1
+newline=²
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.6) Gecko/20050317 Firefox/1.0.2
+author=Pm
+host=24.1.26.255
+name=PmWiki.BasicEditing
+rev=7
+targets=PmWiki.WikiWikiWeb,PmWiki.Passwords,PmWiki.TextFormattingRules,Main.WikiSandbox,PmWiki.DocumentationIndex,PmWiki.CreatingNewPages
+text=The pages on this site are [[WikiWikiWeb]] pages, which means that pages can be created and edited by multiple authors. To edit a page, click the '''Edit Page''' link that exists somewhere on the page (usually in the header or footer). Some pages may be [[password(s)]]-protected, depending on how others have configured the security on the system, but many WikiWikiWeb systems allow open editing of all pages.²²The rules for basic page editing are fairly simple--start each line without spaces and put a blank line between paragraphs. You can produce well-laid out pages by learning just '''five rules'''. ²# to make a list (like this one), start each line with # (for an ordered list) or * (for an unordered list)²# to make a heading, start a line with one or more ! marks; ! is a heading 1, !! is a heading 2, and so on²# to emphasise text, enclose it in 2 or 3 ''single quotes''; [@''text''@] for italics or [@'''text'''@] for bold²# to make a link to another page, enclose it in [@[[ ... ]]@]; for example [@[[basic editing]]@] would link to this page²# to make a link to another site, type its address, such as http://www.tepapa.govt.nz/TePapa²²There are other [[text formatting rules]] if you need more advanced effects. ²²If you want to experiment with editing a page, try the [[Main/WikiSandbox]]. You can [[Main/WikiSandbox?action=edit | edit the WikiSandbox]] without affecting anything important on this site.²²%trail%<<|[[PmWiki.Documentation Index]]|>>
+time=1119313055

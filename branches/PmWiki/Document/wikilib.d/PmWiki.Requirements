@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta14
+newline=²
+time=1104546200
+text=Prerequisites for running the PmWiki wiki engine:²# PHP 4.1 or later²# Some sort of webserver such as Apache, or even on smaller ones²²PmWiki is known to work under Unix, Linux, Windows (Apache and IIS), and Mac OS/X.
+targets=PmWiki.PmWiki
+author=Pm
+name=PmWiki.Requirements
+host=24.1.28.47
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+rev=10

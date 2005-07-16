@@ -1,0 +1,311 @@
+/* ********** General layout settings */
+body{
+	background:#eee;
+	font-family:arial, sans-serif;
+	font-size:16px;
+}
+#left{
+	float:left;
+	width:24%;
+	overflow:visible;
+	position:absolute;
+	left:1%;
+	top:4px;
+	z-index:10;
+}
+#right{
+	float:right;
+	width:73%;
+	overflow:visible;
+	position:absolute;
+	top:9px;
+	right:1%;
+}
+
+#search,#main,#sidebar,#foot{
+	margin:0 0 5px 0;
+	border:1px solid #aaa;
+	background:#eed;
+	padding:4px;
+}
+a{
+	text-decoration:none;
+	color:#00a;
+}
+h1{
+	font-size:200%; 
+}
+h2{
+	font-size:170%; 
+}
+h3{
+	font-size:140%; 
+}
+h4{
+	font-size:125%; 
+}
+h5{
+	font-size:110%; 
+}
+h6{
+	font-size:100%; 
+}
+pre{
+	margin:0 5px;
+	background:#eee;
+	border:1px dashed #ccc;
+}
+.markup pre{
+	border:none;
+	background:none;
+}
+
+#logo{
+	margin: 5px 0 5px 20px;
+}
+
+/* ********** Searchdialog layout */
+#search{
+	padding-top:0;
+	padding-bottom:0;
+	font-size:10px;
+}
+#search form{
+	margin:0 0 5px 0; 
+}
+#search .wikisearchbutton{
+	font-size:10px;
+	margin-bottom:1px;
+	padding:0 2px;
+}
+#search .wikisearchbox{
+	margin-right:1px;
+}
+
+/* ********** MenuBar formatting */
+#menubar{
+	margin:0 5px;
+}
+#menubar .vspace{
+	margin:0;
+}
+
+/* ********** Text Layout */
+#wikitext{
+	background:#fff;
+	border:1px solid #aaa;
+	padding:5px 5px 5px 7px;
+	font-size:14px;
+	clear:left;
+}
+#wikitext h1, #wikitext h2, #wikitext h3, #wikitext h4, #wikitext h5, #wikitext h6{
+	background-color:#eef;
+	font-weight:bold; 
+	padding-left:5px;
+	border-top:1px solid #889;
+	border-left:1px solid #889;
+	margin:0.8em 0 0.6em -2px;
+}
+#wikitext a:hover{
+	color:#bb0;
+}
+#wikitext ul{
+	list-style-image:url('blue.png');
+}
+#wikitext ul ul{
+	list-style-image:url('green.png');
+}
+#wikitext ul ul ul{
+	list-style-image:url('yellow.png');
+}
+#wikitext ul ul ul ul{
+	list-style-image:url('red.png');
+}
+#wikitext dt{
+	border-bottom:1px dashed #aaa;
+}
+
+/* ********** Main working area formatting */
+#main{
+	clear:left;
+	margin-top:0;
+}
+
+/* ********** SideBar formatting */
+#sidebar h1{
+	font-size:140%; 
+	border-bottom:3px solid #aaa;
+	border-left:2px solid #aaa;
+	background:#eef;
+	padding:0 4px;
+	margin:5px 0 0 0;
+}
+#sidebar ul{
+	list-style-type:none;
+	padding-left:2em;
+	padding-bottom:0;
+	margin-left:0; /* IE hack */
+}
+#sidebar li{
+	border-left:2px dotted #aaa;
+	padding-left:5px;
+}
+#sidebar a:hover{
+	color:#ccf;
+}
+#sidebar .vspace{
+	margin-top:0.5em;
+}
+#sidebar{
+	font-size:82%;
+}
+#sidebar{
+	padding:4px 9px 4px 9px;
+}
+
+/* ********** special Wiki settings when editing */
+#wikiedit textarea{
+	width:99%;
+}
+
+/* ********** special setting when viewing history */
+.diffbox{
+	border-bottom:none;
+}
+.diffadd{
+	background-image:url(new.png);
+}
+.diffdel{
+	background-image:url(old.png);
+}
+.difftime, .difftype{
+	padding-left:2px;
+}
+.difftype{
+	margin:1px 0;
+}
+.diffrestore{
+	margin-top:0;
+	background:#ddd;
+	border:1px solid #999;
+	border-top:none;
+}
+.diffrestore a{
+	font-weight:bold;
+	padding-left:2px;
+}
+#wikitext .diffrestore a:hover{
+	color:#ff9;
+}
+
+/* ********** Group/Title Display Layout */
+#page{
+	margin:2px 2px 0 0;
+	padding:0;
+	float:left;
+}
+#page div{
+	display:inline;
+}
+.pagegroup a{
+	font-size:11px;
+	margin-left:5px;
+	color:#bbb;
+	vertical-align:super;
+}
+.pagetitle a{
+	font-weight:bold;
+	color:#aa5;
+}
+
+/* ********** Tabs layout */
+#tabs{
+	margin:0 0 1px 0;
+	clear:left;
+	display:block;
+	padding-left:15px;
+}
+#tabs ul{
+	margin:0;
+	list-style-type:none;
+}
+#tabs a{
+	border:1px solid #aaa;
+	background:#ddd;
+	display:inline;
+	font-size:11px;
+	font-weight:bold;
+	padding:0 5px 1px 5px;
+	margin:0 1px;
+}
+#tabs a:hover{
+	color:#55e;
+}
+
+/* ********** Print Preview Display */
+#print{
+	position:relative;
+	top:-12px;
+	right:5px;
+	font-size:11px;
+	font-weight:bold;
+	padding:1px 0;
+	float:right;
+}
+#print a{
+	border:1px dotted #999;
+	background:#eee;
+	padding:0 5px;
+}
+#print a:hover{
+	color:#55d;
+	background:#ddd;
+	border:1px solid #aaa;
+}
+
+/* ********** Layout Last Modified */
+.lastmod{
+	display:inline;
+	font-size:9px;
+	font-style:italic;
+	color:#aaa;
+	margin:0 0 -3px 15px;
+}
+
+/* ********** Layout Footer */
+#foot{
+	clear:both;
+}
+#foot ol{
+	list-style-type:none;
+	padding:0;
+	margin:0;
+	font-size:11px;
+	font-weight:bold;
+}
+#foot li{
+	display:inline;
+	margin-left:10px;
+}
+#foot li.bar{
+	margin-left:0px;
+}
+#foot li.bar a{
+	border:1px dotted #999;
+	padding:0 3px;
+	background:#eee;
+}
+#foot li.bar a:hover{
+	background:#ddd;
+	color:#55d;
+	border:1px solid #aaa;
+}
+#foot a{
+	font-weight:bold;
+}
+#foot a:hover{
+	color:#55e;
+}
+#foot .vspace{
+	margin-top:0.3em;
+}

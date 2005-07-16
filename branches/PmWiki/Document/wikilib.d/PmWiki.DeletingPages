@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta39 ordered=1
+newline=�
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.7.8) Gecko/20050511 Firefox/1.0.4
+author=HansB
+host=84.68.83.106
+name=PmWiki.DeletingPages
+rev=7
+targets=PmWiki.EditVariables,PmWiki.Uploads,PmWiki.DocumentationIndex,PmWiki.WikiGroup
+text=To delete a page, edit the page, highlight all text in the edit textarea and replace it with the single word 께->delete 께After saving the changes the page is deleted, but as an added safety feature a backup file with a time stamp still exists on the server which could be restored to the former page by admin.께->'''Note''': The default word used for page deletion 께-->delete께->can be changed in config.php by setting variable [@$DeleteKeyPattern@]. See more at [[PmWiki.Edit Variables]]. If there is a danger of malicious page deletion it may be a good idea to change the delete word to something more obscure. Or use a password protected action=delete by installing [[Cookbook:DeleteAction]].께%trail%<<|[[PmWiki.Documentation Index]]|>>
+time=1119337138

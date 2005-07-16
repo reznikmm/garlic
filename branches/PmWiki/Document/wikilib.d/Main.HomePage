@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta26
+newline=²
+text=Here are some useful default pages installed along with the PmWiki software : ²* PmWiki documentation is available at [[PmWiki.DocumentationIndex]].²* What is the [[PmWiki/WikiWikiWeb]]?²* [[PmWiki/TipsForEditing]] and [[PmWiki/TextFormattingRules]] describe how to create pages in PmWiki.²* Practice editing pages in the [[WikiSandbox]].²²More information about [[PmWiki/PmWiki]] can be found at http://www.pmwiki.org/.
+time=1111460456
+host=64.26.155.237
+agent=Mozilla/5.0 (Macintosh; U; PPC Mac OS X; en-us) AppleWebKit/125.5.6 (KHTML, like Gecko) Safari/125.12
+rev=159
+author=
+name=Main.HomePage
+targets=PmWiki.PmWiki,PmWiki.DocumentationIndex,PmWiki.WikiWikiWeb,PmWiki.TipsForEditing,PmWiki.TextFormattingRules,Main.WikiSandbox
