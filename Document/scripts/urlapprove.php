@@ -31,7 +31,7 @@
 
 $LinkFunctions['http:'] = 'LinkHTTP';
 $LinkFunctions['https:'] = 'LinkHTTP';
-$ApprovedUrlPagesFmt = array('Main.ApprovedUrls');
+$ApprovedUrlPagesFmt = array('$SiteGroup.ApprovedUrls');
 $UnapprovedLinkFmt = 
   "\$LinkText<a class='apprlink' href='\$PageUrl?action=approvesites'>$[(approve sites)]</a>";
 $HTMLStylesFmt[] = '.apprlink { font-size:smaller; }';
@@ -107,10 +107,10 @@ function HandleApprove($pagename) {
 
 function BlockUnapprovedPosts($pagename, &$page, &$new) {
   global $EnableUrlApprovalRequired, $UnapprovedLinkCount, 
-    $UnapprovedLinkCountMax, $EditMessageFmt, $BlockMessageFmt;
+    $UnapprovedLinkCountMax, $MessagesFmt, $BlockMessageFmt;
   if (!IsEnabled($EnableUrlApprovalRequired, 1)) return;
   if ($UnapprovedLinkCount <= $UnapprovedLinkCountMax) return;
   unset($_POST['post']);
-  $EditMessageFmt .= $BlockMessageFmt;
+  $MessagesFmt[] = $BlockMessageFmt;
 }
     

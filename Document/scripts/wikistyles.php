@@ -37,9 +37,10 @@ if (IsEnabled($EnableStdWikiStyles,1)) {
   SDVA($WikiStyleApply,array(
     'item' => 'li|dt',
     'list' => 'ul|ol|dl',
+    'div' => 'div',
     'block' => 'p(?!\\sclass=)|div|ul|ol|dl|li|dt|pre|h[1-6]',
     'p' => 'p(?!\\sclass=)'));
-  foreach(array('item','list','block','p') as $c)
+  foreach(array('item', 'list', 'block', 'p', 'div') as $c)
     SDV($WikiStyle[$c],array('apply'=>$c));
   ## block justifications
   foreach(array('left','right','center') as $c)
@@ -54,7 +55,9 @@ SDVA($WikiStyleAttr,array(
   'vspace' => 'img',
   'hspace' => 'img',
   'align' => 'img',
+  'value' => 'li',
   'target' => 'a',
+  'accesskey' => 'a',
   'rel' => 'a'));
 
 SDVA($WikiStyleRepl,array('/\\bbgcolor([:=])/' => 'background-color$1'));
@@ -102,17 +105,19 @@ function ApplyStyles($x) {
     elseif ($p=='') continue;
     else { $alist=array(''=>$style); }
     foreach((array)$alist as $a=>$s) {
-      $classv=array(); $stylev=array();
+      $classv=array(); $stylev=array(); $id='';
       foreach((array)$s as $k=>$v) {
         if (@$WikiStyleAttr[$k]) 
           $p=preg_replace("/<({$WikiStyleAttr[$k]}(?![^>]*\\s$k=))([^>]*)>/s",
             "<$1 $k='$v' $2>",$p);
         elseif ($k=='class') $classv[]=$v;
+        elseif ($k=='id') $id = preg_replace('/\W/', '_', $v);
         elseif (preg_match($wikicsspat,$k)) $stylev[]="$k: $v;";
       }
       $spanattr=''; 
       if ($classv) $spanattr="class='".implode(' ',$classv)."' ";
       if ($stylev) $spanattr.="style='".implode(' ',$stylev)."' ";
+      if ($id) $spanattr.="id='$id' ";
       if ($spanattr) {
         if (!@$WikiStyleApply[$a]) {
           $p = preg_replace("!^(.*?)($|</?(form|div|table|tr|td|th|p|ul|ol|dl|li|dt|dd|h[1-6]|blockquote|pre|hr))!s", "<span $spanattr>$1</span>$2", $p, 1);
