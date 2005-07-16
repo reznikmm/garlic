@@ -1,0 +1,124 @@
+/* ********** Style for Setting: $DropDownSkinVersion = 1 */
+/* ********** MenuBar Drop Down Menu function and positioning*/
+#menubar ol ol,
+#menubar li:hover ol ol,
+#menubar li li:hover ol ol,
+#menubar li li li:hover ol ol,
+#menubar li li li li:hover ol ol{
+	display:none;
+}
+#menubar li:hover ol,
+#menubar li li:hover ol,
+#menubar li li li:hover ol,
+#menubar li li li li:hover ol{
+	display:block;
+}
+#menubar hr{ /*hide <hr> that is necessary for interrupting ol list*/
+	display:none;
+}
+#menubar li {
+	position: relative;
+}
+#menubar ol{
+	float:left;
+	width:6.95em;
+	list-style:none;
+	padding:0;
+}
+#menubar ol ol{
+	position:absolute;
+	z-index:500;
+	top:auto;
+	/* top:0; */
+}
+#menubar ol ol ol{
+	top:0;
+	left:7.0em;
+}
+
+/* ********** Styling */
+#menubar ol{
+	margin:0 5px 5px 0;
+	border:1px solid #aaa;
+}
+#menubar ol .createlink{
+	display:none;
+}
+#menubar ol .createlinktext{
+	color:#888;
+	border-bottom:none;
+}
+
+#menubar li:hover{
+	cursor:pointer;
+	z-index:100;
+}
+#menubar a, #menubar .menuitem, #menubar .menutitle{
+	display:block;
+	width:100%;
+	background:#ccb;
+	margin:0;
+	padding:1px 0;
+	font-size:95%;
+	text-indent:3px;
+	white-space:nowrap;
+}
+#menubar .menutitle a{
+	font-size:100%;
+	padding:0;
+	background:#eed;
+}
+#menubar .menutitle a:hover{
+	background:transparent;
+	color:#ff7;
+}
+#menubar .menuitem:hover{
+	background:#bba;
+}
+#menubar ol ol a, #menubar ol ol .menuitem{
+	background:#ccb;
+	font-size:80%;
+}
+#menubar a:hover{
+	color:#ff2;
+	background:#bba;
+}
+#menubar .menutitle{
+	font-weight:bold;
+	background:#eed;
+}
+#menubar .menutitle:hover{
+	background:#ccb;
+}
+#menubar span.separator{
+	display:block;
+	width:100%;
+	height:2px;
+	background:#999;
+	font-size:2px;
+	color:#999;
+}
+#menubar .wikisearch{
+	margin:0;
+	padding:0;
+	white-space:nowrap;
+}
+#menubar .wikisearchbutton{
+	padding:0 2px;
+	font-size:10px;
+	margin-bottom:1px;
+}
+#menubar input.wikisearchbox{
+	width:8.7em;
+	margin-right:1px;
+}
+#menubar p{
+	display:inline;
+	float:left;
+	margin:0 5px 5px 0;
+}
+
+/* Fix IE. Hide from IE Mac \*/
+* html #menubar ol li{float:left;height:1%;}
+* html #menubar ol li a{height:1%;}
+/* End */

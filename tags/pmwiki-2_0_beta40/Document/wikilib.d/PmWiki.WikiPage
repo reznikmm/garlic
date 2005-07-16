@@ -1,0 +1,10 @@
+version=pmwiki-2.0.devel27
+newline=²
+text=A WikiPage is simply the basic building block of a WikiWikiWeb that contains text and images. See [[WikiStructure]]s and WikiWikiWeb for more information.²²%trail% <<|PmWiki.DocumentationIndex|>>²²²²
+time=1101495862
+post= Save
+host=24.1.28.47
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+rev=12
+author=
+name=PmWiki.WikiPage

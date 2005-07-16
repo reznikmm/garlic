@@ -1,0 +1,8 @@
+version=pmwiki-2.0.devel1
+newline=²
+text=A WikiAdministrator is a person (or persons) who installs, configures, and administers a PmWiki system for WikiUsers.  PmWiki has been designed to make the [[installation]] and [[initial setup tasks]] as easy as possible for people who do not have a lot of knowledge about HTML, PHP, or even web server software.  At the same time, PmWiki is designed to be flexible enough so that someone with just a little bit of knowledge about HTML and PHP can customize PmWiki to their specific needs.²²See [[PmWiki.DocumentationIndex]] for pages about administering PmWiki, and [[PmWiki.Audiences]] for more details of PmWiki's target audiences.²²%trail%<<|PmWiki.DocumentationIndex|>>²
+time=1093570870
+name=PmWiki.WikiAdministrator
+host=24.1.26.221
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.7) Gecko/20040707 Firefox/0.8
+rev=1

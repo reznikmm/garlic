@@ -1,0 +1,121 @@
+/* ********** Style for Setting: $DropDownSkinVersion = 3 */
+/* ********** SideBar Drop Down Menu function and positioning*/
+#sidebar ol ol,
+#sidebar li:hover ol ol,
+#sidebar li li:hover ol ol,
+#sidebar li li li:hover ol ol,
+#sidebar li li li li:hover ol ol{
+	display:none;
+}
+#sidebar li:hover ol,
+#sidebar li li:hover ol,
+#sidebar li li li:hover ol,
+#sidebar li li li li:hover ol{
+	display:block;
+}
+#sidebar hr{ /*hide <hr> that is necessary for interrupting ol list*/
+	display:none;
+}
+#sidebar li {
+	position: relative;
+}
+#sidebar ol{
+	width:9.0em;
+	list-style:none;
+	padding:0;
+}
+#sidebar ol ol{
+	position:absolute;
+	z-index:500;
+	top:auto;
+	/* top:0; */
+}
+#sidebar ol ol{
+	top:0;
+	left:9.0em;
+}
+
+/* ********** Styling */
+#sidebar ol{
+	margin:0 0 2px 0;
+	border:1px solid #aaa;
+}
+#sidebar ol li{
+	padding-left:0;
+	border:none;
+}
+#sidebar li:hover{
+	cursor:pointer;
+	z-index:100;
+}
+#sidebar ol a, #sidebar .menuitem, #sidebar .menutitle{
+	display:block;
+	width:100%;
+	background:#ddc;
+	margin:0;
+	padding:1px 0;
+	white-space:nowrap;
+	text-indent:3px;
+}
+#sidebar ol .createlink{
+	display:none;
+}
+#sidebar ol .createlinktext{
+	color:#888;
+	border-bottom:none;
+}
+#sidebar .menutitle a{
+	font-size:100%;
+	padding:0;
+	background:#ddc;
+}
+#sidebar .menutitle a:hover{
+	background:transparent;
+	color:#ff7;
+}
+#sidebar .menuitem:hover{
+	background:#bba;
+}
+#sidebar ol ol a, #sidebar ol ol .menuitem{
+	background:#ccb;
+	font-size:85%;
+}
+#sidebar ol ol a:hover{
+	color:#ff2;
+	background:#bba;
+}
+#sidebar .menutitle{
+	font-weight:bold;
+	background:#ddc;
+}
+#sidebar .menutitle:hover, #sidebar ol a:hover{
+	background:#ccb;
+}
+#sidebar span.separator{
+	display:block;
+	width:100%;
+	height:2px;
+	background:#999;
+	font-size:2px;
+	color:#999;
+} 
+#sidebar .wikisearch{
+	margin:0;
+	padding:0;
+	white-space:nowrap;
+}
+#sidebar .wikisearchbutton{
+	padding:0 2px;
+	font-size:10px;
+	margin-bottom:1px;
+}
+#sidebar input.wikisearchbox{
+	width:8.7em;
+	margin-right:1px;
+}
+
+
+/* Fix IE. Hide from IE Mac \*/
+* html #sidebar ol li{float:left;height:1%;}
+* html #sidebar ol li a{height:1%;}
+/* End */
