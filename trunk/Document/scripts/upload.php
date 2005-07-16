@@ -72,7 +72,7 @@ SDV($PageUploadFmt,array("
       <td><input type='text' name='upname' value='\$UploadName' /><input 
         type='submit' value=' $[Upload] ' /><br />
         </td></tr></table></form></div>",
-  'wiki:$[PmWiki.UploadQuickReference]'));
+  'wiki:$[Site.UploadQuickReference]'));
 XLSDV('en',array(
   'ULsuccess' => 'successfully uploaded',
   'ULbadname' => 'invalid attachment name',
@@ -194,7 +194,7 @@ function UploadVerifyBasic($pagename,$uploadfile,$filepath) {
     $UploadDirQuota,$UploadDir;
   if (!$EnableUploadOverwrite && file_exists($filepath)) 
     return 'upresult=exists';
-  preg_match('/\\.([^.]+)$/',$filepath,$match); $ext=@$match[1];
+  preg_match('/\\.([^.\\/]+)$/',$filepath,$match); $ext=@$match[1];
   $maxsize = $UploadExtSize[$ext];
   if ($maxsize<=0) return "upresult=badtype&upext=$ext";
   if ($uploadfile['size']>$maxsize) 
@@ -265,10 +265,26 @@ function FmtUploadList($pagename,$opt) {
       $overwrite = FmtPageName("<a class='createlink'
         href='\$PageUrl?action=upload&amp;upname=$file'>&nbsp;&Delta;</a>", 
         $pagename);
-    $out[] = "<li> <a href='$name'>$file</a>$overwrite ... 
-      {$stat['size']} bytes ... " . strftime($TimeFmt, $stat['mtime']) 
-      . "</li>";
+    $out[] = "<li> <a href='$name'>$file</a>$overwrite ... ".
+      number_format($stat['size']) . " bytes ... " . 
+      strftime($TimeFmt, $stat['mtime']) . "</li>";
   }
   return implode("\n",$out);
 }
+
+# this adds (:if [!]attachments:) to the markup
+$Conditions['attachments'] = "AttachExist(\$pagename)";
+function AttachExist($pagename) {
+  global $UploadDir, $UploadPrefixFmt;
+  $uploaddir = FmtPageName("$UploadDir$UploadPrefixFmt", $pagename);
+  $count = 0;
+  $dirp = @opendir($uploaddir);
+  if ($dirp) {
+    while (($file = readdir($dirp)) !== false) 
+      if ($file{0} != '.') $count++;
+    closedir($dirp);
+  }
+  return $count;
+}
+
 
