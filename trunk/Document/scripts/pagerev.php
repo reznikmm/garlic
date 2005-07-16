@@ -59,7 +59,8 @@ $HTMLStylesFmt[] = "
   .diffadd { border-left:5px #99ff99 solid; padding-left:5px; }
   .diffdel { border-left:5px #ffff99 solid; padding-left:5px; }
   .diffrestore { clear:both; font-family:verdana,sans-serif; 
-    font-size:66%; margin:1.5em 0px; }";
+    font-size:66%; margin:1.5em 0px; }
+  .diffmarkup { font-family:monospace; } ";
 
 function PrintDiff($pagename) {
   global $DiffShow,$DiffStartFmt,$TimeFmt,$DiffDelFmt,$DiffAddFmt,
@@ -104,9 +105,9 @@ function PrintDiff($pagename) {
           $FmtV['$DiffLines'] = $count;
           echo FmtPageName($txt,$pagename);
           if ($DiffShow['source']=='y') 
-            echo "<code>",
+            echo "<div class='diffmarkup'>",
               str_replace("\n","<br />",htmlspecialchars(join("\n",$in))),
-              "</code>";
+              "</div>";
           else echo MarkupToHTML($pagename,
             preg_replace('/\\(:(.*?):\\)/','[@$1@]',join("\n",$in)));
         }
@@ -115,9 +116,9 @@ function PrintDiff($pagename) {
           $FmtV['$DiffLines'] = $count;
           echo FmtPageName($txt,$pagename);
           if ($DiffShow['source']=='y') 
-            echo "<code>",
+            echo "<div class='diffmarkup'>",
               str_replace("\n","<br />",htmlspecialchars(join("\n",$out))),
-              "</code>";
+              "</div>";
           else echo MarkupToHTML($pagename,
             preg_replace('/(\\(:.*?:\\))/','[@$1@]',join("\n",$out)));
         }

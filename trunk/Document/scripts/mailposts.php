@@ -47,7 +47,7 @@ SDV($MailPostsDelay,0);
 SDV($MailPostsSquelch,7200);
 SDV($MailPostsFile,"$WorkDir/.mailposts");
 SDV($MailPostsMessage,"Recent wiki posts:\n"
-  ."  ($ScriptUrl/Main/AllRecentChanges)\n\n\$MailPostsList\n");
+  ."  ($ScriptUrl/$SiteGroup/AllRecentChanges)\n\n\$MailPostsList\n");
 SDV($MailPostsSubject,"$WikiTitle recent wiki posts");
 SDV($MailPostsFunction,"mail");
 SDV($MailPostsTimeFmt,$TimeFmt);

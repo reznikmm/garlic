@@ -35,7 +35,7 @@ SDV($SearchResultsFmt, "<div class='wikisearch'>\$[SearchFor]
 SDV($SearchBoxFmt, 
   "<form class='wikisearch' action='$ScriptUrl'
     method='get'><input type='hidden' name='n'
-    value='$[Main/SearchWiki]' /><input class='wikisearchbox'
+    value='$[Site/Search]' /><input class='wikisearchbox'
     type='text' name='q' value='\$SearchQuery' size='40' /><input
     class='wikisearchbutton' type='submit' value='$[Search]' /></form>");
 SDV($SearchQuery, str_replace('$', '&#036;', 
