@@ -43,14 +43,18 @@ if (@$EnableIMSCaching && in_array($action,(array)$CacheActions)) {
 }
 
 ## Scripts that are part of a standard PmWiki distribution.
-if (IsEnabled($EnableStdMarkup,1))
-  include_once("$FarmD/scripts/stdmarkup.php");
 if (IsEnabled($EnableAuthorTracking,1)) 
   include_once("$FarmD/scripts/author.php");
 if (IsEnabled($EnableSimulEdit,1))
   include_once("$FarmD/scripts/simuledit.php");
+if (IsEnabled($EnablePrefs, 1))
+  include_once("$FarmD/scripts/prefs.php");
 if (IsEnabled($EnableSkinLayout,1))
-  include_once("$FarmD/scripts/skins.php");
+  include_once("$FarmD/scripts/skins.php");        # must come after prefs
+if (IsEnabled($EnableTransitions,1))
+  include_once("$FarmD/scripts/transition.php");   # must come after skins
+if (IsEnabled($EnableStdMarkup,1))
+  include_once("$FarmD/scripts/stdmarkup.php");
 if ($action=='diff' && @!$HandleActions['diff'])
   include_once("$FarmD/scripts/pagerev.php");
 if (IsEnabled($EnableWikiTrails,1))
@@ -63,8 +67,6 @@ if (IsEnabled($EnableUpload,0))
   include_once("$FarmD/scripts/upload.php");
 if (IsEnabled($EnablePageList,1))
   include_once("$FarmD/scripts/pagelist.php");
-if (IsEnabled($EnableDiag,0)) 
-  include_once("$FarmD/scripts/diag.php");
 if (IsEnabled($EnableVarMarkup,1))
   include_once("$FarmD/scripts/vardoc.php");
 if (!function_exists(@$DiffFunction)) 
@@ -73,10 +75,14 @@ if ($action=='crypt')
   include_once("$FarmD/scripts/crypt.php");
 if ($action=='edit' && IsEnabled($EnableGUIButtons,0))
   include_once("$FarmD/scripts/guiedit.php");
+if (IsEnabled($EnableForms,1))                     
+  include_once("$FarmD/scripts/forms.php");       # must come after prefs
+if (IsEnabled($EnableDiag,0)) 
+  include_once("$FarmD/scripts/diag.php");
 
 SDV($MetaRobots,
-  ($action!='browse' || preg_match('#^PmWiki[./](?!PmWiki$)#',$pagename))
-    ? 'noindex,nofollow' : 'index,follow');
+  ($action!='browse' || preg_match('#^PmWiki[./](?!PmWiki$)|^Site[./]#',
+    $pagename)) ? 'noindex,nofollow' : 'index,follow');
 if ($MetaRobots)
   $HTMLHeaderFmt['robots'] = 
     "  <meta name='robots' content='\$MetaRobots' />\n";

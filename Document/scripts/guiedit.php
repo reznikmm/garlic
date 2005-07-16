@@ -24,14 +24,15 @@
 $HTMLHeaderFmt[] = "<script language='javascript' 
   src='\$FarmPubDirUrl/guiedit/guiedit.js'></script>\n";
 
-array_push($EditFunctions, 'GUIEdit');
 SDV($GUIButtonDirUrlFmt,'$FarmPubDirUrl/guiedit');
 
 SDVA($GUIButtons, array(
   'em'       => array(100, "''", "''", '$[Emphasized]',
-                  '$GUIButtonDirUrlFmt/em.gif"$[Emphasized (italic)]"'),
+                  '$GUIButtonDirUrlFmt/em.gif"$[Emphasized (italic)]"', 
+                  '$[ak_em]'),
   'strong'   => array(110, "'''", "'''", '$[Strong]',
-                  '$GUIButtonDirUrlFmt/strong.gif"$[Strong (bold)]"'),
+                  '$GUIButtonDirUrlFmt/strong.gif"$[Strong (bold)]"',
+                  '$[ak_strong]'),
   'pagelink' => array(200, '[[', ']]', '$[Page link]', 
                   '$GUIButtonDirUrlFmt/pagelink.gif"$[Link to internal page]"'),
   'extlink'  => array(210, '[[', ']]', 'http:// | $[link text]',
@@ -49,13 +50,18 @@ SDVA($GUIButtons, array(
   'center'   => array(410, '%25center%25', '', '',
                   '$GUIButtonDirUrlFmt/center.gif"$[Center]"')));
 
-function GUIEdit($pagename, &$page, &$new) {
-  global $GUIButtons, $EditMessageFmt;
-  sort($GUIButtons);
+Markup('e_guibuttons', 'directives',
+  '/\\(:e_guibuttons:\\)/e',
+  "Keep(FmtPageName(GUIButtonCode(\$pagename), \$pagename))");
+
+function GUIButtonCode($pagename) {
+  global $GUIButtons;
+  $cmpfn = create_function('$a,$b', 'return $a[0]-$b[0];');
+  usort($GUIButtons, $cmpfn);
   $out = array("<script language='javascript' type='text/javascript'>\n");
   foreach ($GUIButtons as $k => $g) {
     if (!$g) continue;
-    list($when, $mopen, $mclose, $mtext, $tag) = $g;
+    list($when, $mopen, $mclose, $mtext, $tag, $mkey) = $g;
     if ($tag{0} == '<') { 
         $out[] = "document.write(\"$tag\");\n";
         continue; 
@@ -67,9 +73,10 @@ function GUIEdit($pagename, &$page, &$new) {
     $mopen = str_replace(array('\\', "'"), array('\\\\', "\\\\'"), $mopen);
     $mclose = str_replace(array('\\', "'"), array('\\\\', "\\\\'"), $mclose);
     $mtext = str_replace(array('\\', "'"), array('\\\\', "\\\\'"), $mtext);
-    $out[] = "insButton(\"$mopen\", \"$mclose\", '$mtext', \"$tag\");\n";
+    $out[] = 
+      "insButton(\"$mopen\", \"$mclose\", '$mtext', \"$tag\", \"$mkey\");\n";
   }
-  $out[] = '</script><br />';
-  $EditMessageFmt .= implode('', $out);
+  $out[] = '</script>';
+  return implode('', $out);
 }
 
