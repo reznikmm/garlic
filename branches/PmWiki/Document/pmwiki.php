@@ -47,43 +47,21 @@ $Now=time();
 define('READPAGE_CURRENT', $Now+604800);
 $TimeFmt = '%B %d, %Y, at %I:%M %p';
 $Newline="\262";
-$PageEditFmt = "<div id='wikiedit'>
-  <a id='top' name='top'></a>
-  <h1 class='wikiaction'>$[Editing \$FullName]</h1>
-  <form method='post' action='\$PageUrl?action=edit'>
-  <input type='hidden' name='action' value='edit' />
-  <input type='hidden' name='n' value='\$FullName' />
-  <input type='hidden' name='basetime' value='\$EditBaseTime' />
-  \$EditMessageFmt
-  <textarea id='text' name='text' rows='25' cols='60'
-    onkeydown='if (event.keyCode==27) event.returnValue=false;'
-    >\$EditText</textarea><br />
-  $[Author]: <input type='text' name='author' value='\$Author' />
-  <input type='checkbox' name='diffclass' value='minor' \$DiffClassMinor />
-    $[This is a minor edit]<br />
-  <input type='submit' name='post' value=' $[Save] ' />
-  <input type='submit' name='preview' value=' $[Preview] ' />
-  <input type='reset' value=' $[Reset] ' /></form></div>";
-$PagePreviewFmt = "<div id='wikipreview'>
-  <h2 class='wikiaction'>$[Preview \$FullName]</h2>
-  <p><b>$[Page is unsaved]</b></p>
-  \$PreviewText
-  <hr /><p><b>$[End of preview -- remember to save]</b><br />
-  <a href='#top'>$[Top]</a></p></div>";
-$EditMessageFmt = '';
+$MessagesFmt = array();
 $BlockMessageFmt = "<h3 class='wikimessage'>$[This post has been blocked by the administrator]</h3>";
 $EditFields = array('text');
 $EditFunctions = array('EditTemplate', 'RestorePage', 'ReplaceOnSave',
   'SaveAttributes', 'PostPage', 'PostRecentChanges', 'PreviewPage');
+$ChangeSummary = stripmagic(@$_REQUEST['csum']);
 $AsSpacedFunction = 'AsSpaced';
 $SpaceWikiWords = 0;
 $LinkWikiWords = 1;
 $RCDelimPattern = '  ';
 $RecentChangesFmt = array(
-  'Main.AllRecentChanges' => 
-    '* [[$Group.$Name]]  . . . $CurrentTime $[by] $AuthorLink',
+  '$SiteGroup.AllRecentChanges' => 
+    '* [[$Group.$Name]]  . . . $CurrentTime $[by] $AuthorLink: [=$ChangeSummary=]',
   '$Group.RecentChanges' =>
-    '* [[$Group/$Name]]  . . . $CurrentTime $[by] $AuthorLink');
+    '* [[$Group/$Name]]  . . . $CurrentTime $[by] $AuthorLink: [=$ChangeSummary=]');
 $DefaultPageTextFmt = '$[Describe $Name here.]';
 $ScriptUrl = 'http://'.$_SERVER['HTTP_HOST'].$_SERVER['SCRIPT_NAME'];
 $PubDirUrl = preg_replace('#/[^/]*$#','/pub',$ScriptUrl,1);
@@ -91,7 +69,7 @@ $HTMLVSpace = "<p class='vspace'></p>";
 $HTMLPNewline = '';
 $MarkupFrame = array();
 $MarkupFrameBase = array('cs' => array(), 'vs' => '', 'ref' => 0,
-  'posteval' => array('block' => "\$out .= Block('block');"));
+  'closeall' => array('block' => '<:block>'));
 $WikiWordCountMax = 1000000;
 $WikiWordCount['PmWiki'] = 1;
 $UrlExcludeChars = '<>"{}|\\\\^`()[\\]\'';
@@ -105,6 +83,7 @@ $LinkPageCreateFmt =
 $UrlLinkFmt = 
   "<a class='urllink' href='\$LinkUrl' rel='nofollow'>\$LinkText</a>";
 umask(002);
+$SiteGroup = 'Site';
 $DefaultGroup = 'Main';
 $DefaultName = 'HomePage';
 $GroupHeaderFmt = '(:include $Group.GroupHeader:)(:nl:)';
@@ -120,7 +99,6 @@ if (preg_match('/^C$|\.UTF-?8/i',setlocale(LC_ALL,0)))
 $FmtP = array(
   '/\\$PageUrl/' => '$ScriptUrl/$Group/$Name',
   '/\\$FullName/' => '$Group.$Name',
-  '/\\$PageName/' => '$Group.$Name',       # deprecated, 2.0.devel14
   '/\\$Titlespaced/e' => '(@$PCache[$pagename]["title"]) ? $PCache[$pagename]["title"] : \'$Namespaced\'',
   '/\\$Title/e' => '(@$PCache[$pagename]["title"]) ? $PCache[$pagename]["title"] : (($GLOBALS["SpaceWikiWords"]) ? \'$Namespaced\' : \'$Name\')',
   '/\\$Groupspaced/e' => '$AsSpacedFunction(@$match[1])',
@@ -153,6 +131,7 @@ $HTMLStylesFmt['pmwiki'] = "
   a.createlinktext { text-decoration:none; border-bottom:1px dotted gray; }
   a.createlink { text-decoration:none; position:relative; top:-0.5em;
     font-weight:bold; font-size:smaller; border-bottom:none; }
+  img { border:0px; }
   ";
 $HTMLHeaderFmt['styles'] = array(
   "<style type='text/css'><!--",&$HTMLStylesFmt,"\n--></style>");
@@ -191,9 +170,12 @@ Markup('inline','>directives');
 Markup('links','>inline');
 Markup('block','>links');
 Markup('style','>block');
+Markup('closeall', '_begin',
+  '/^\\(:closeall:\\)$/e', 
+  "implode('', (array)\$GLOBALS['MarkupFrame'][0]['closeall'])");
 
 $ImgExtPattern="\\.(?:gif|jpg|jpeg|png|GIF|JPG|JPEG|PNG)";
-$ImgTagFmt="<img src='\$LinkUrl' style='border:0px;' alt='\$LinkAlt' />";
+$ImgTagFmt="<img src='\$LinkUrl' alt='\$LinkAlt' />";
 
 $BlockMarkups = array(
   'block' => array('','','',0),
@@ -258,7 +240,7 @@ else if ($p && (PageExists($p) || preg_match('/[\\/.]/', $pagename))) {
   if (IsEnabled($EnableFixedUrlRedirect,1)) { Redirect($p); exit(); }
 } else {
   $UrlPage = preg_replace('/^.*[\\/.]/', '', $p);
-  SDV($PageNotFound, "$DefaultGroup.PageNotFound");
+  SDV($PageNotFound, "$SiteGroup.PageNotFound");
   $pagename = $PageNotFound;
   SDV($MetaRobots, "noindex,nofollow");
 }
@@ -738,11 +720,12 @@ function PrintWikiPage($pagename,$wikilist=NULL) {
   }
 }
 
-function Keep($x,$level='') {
+function Keep($x,$pool='') {
   # Keep preserves a string from being processed by wiki markups
   global $KeepToken,$KPV,$KPCount;
-  $KPCount++; $KPV[$KPCount.$level]=$x;
-  return $KeepToken.$KPCount.$level.$KeepToken;
+  $x = preg_replace("/$KeepToken(\\d.*?)$KeepToken/e", "\$KPV['\$1']", $x);
+  $KPCount++; $KPV[$KPCount.$pool]=$x;
+  return $KeepToken.$KPCount.$pool.$KeepToken;
 }
 
 function CondText($pagename,$condspec,$condtext) {
@@ -982,6 +965,7 @@ function MarkupToHTML($pagename,$text) {
   $MarkupFrame[0]['wwcount'] = $WikiWordCount;
   $markrules = BuildMarkupRules();
   foreach((array)$text as $l) $lines[] = htmlspecialchars($l,ENT_NOQUOTES);
+  $lines[] = '(:closeall:)';
   $out = array();
   while (count($lines)>0) {
     $x = array_shift($lines);
@@ -1107,7 +1091,7 @@ function PostPage($pagename, &$page, &$new) {
   $IsPagePosted = false;
   if (@$_POST['post']) {
     $new['text'] = str_replace($Newline, "\n", $new['text']);
-    if ($new['text']==@$page['text']) { Redirect($pagename); return; }
+    if ($new['text']==@$page['text']) { $IsPagePosted=true; return; }
     $new["author"]=@$Author;
     $new["author:$Now"] = @$Author;
     $new["host:$Now"] = $_SERVER['REMOTE_ADDR'];
@@ -1150,16 +1134,18 @@ function PostRecentChanges($pagename,&$page,&$new) {
 }
 
 function PreviewPage($pagename,&$page,&$new) {
-  global $IsPageSaved,$FmtV,$PagePreviewFmt;
+  global $IsPageSaved, $FmtV;
   if (!$IsPageSaved && @$_POST['preview']) {
     $text = '(:groupheader:)'.$new['text'].'(:groupfooter:)';
     $FmtV['$PreviewText'] = MarkupToHTML($pagename,$text);
-  } else $PagePreviewFmt = '';
+  } 
 }
   
 function HandleEdit($pagename) {
-  global $IsPagePosted,$EditFields,$EditFunctions,$FmtV,$Now,
-    $HandleEditFmt,$PageStartFmt,$PageEditFmt,$PagePreviewFmt,$PageEndFmt;
+  global $IsPagePosted, $EditFields, $ChangeSummary, $EditFunctions, $FmtV, 
+    $Now, $PageEditForm, $HandleEditFmt, $PageStartFmt, $PageEditFmt, 
+    $PageEndFmt;
+  if ($_POST['cancel']) { Redirect($pagename); return; }
   Lock(2);
   $IsPagePosted = false;
   $page = RetrieveAuthPage($pagename,'edit');
@@ -1168,18 +1154,33 @@ function HandleEdit($pagename) {
   $new = $page;
   foreach((array)$EditFields as $k) 
     if (isset($_POST[$k])) $new[$k]=str_replace("\r",'',stripmagic($_POST[$k]));
+  if ($ChangeSummary) $new["csum:$Now"] = $ChangeSummary;
+  if (@$_POST['postedit']) $_POST['post']=1;
   foreach((array)$EditFunctions as $fn) $fn($pagename,$page,$new);
   Lock(0);
-  if ($IsPagePosted) { Redirect($pagename); return; }
+  if ($IsPagePosted && !@$_POST['postedit']) { Redirect($pagename); return; }
   $FmtV['$DiffClassMinor'] = 
     (@$_POST['diffclass']=='minor') ?  "checked='checked'" : '';
   $FmtV['$EditText'] = 
     str_replace('$','&#036;',htmlspecialchars(@$new['text'],ENT_NOQUOTES));
   $FmtV['$EditBaseTime'] = $Now;
-  SDV($HandleEditFmt,array(&$PageStartFmt,
-    &$PageEditFmt,'wiki:$[PmWiki.EditQuickReference]',&$PagePreviewFmt,
-    &$PageEndFmt));
-  PrintFmt($pagename,$HandleEditFmt);
+  if (@$PageEditForm) {
+    $form = ReadPage(FmtPageName($PageEditForm, $pagename), READPAGE_CURRENT);
+    $FmtV['$EditForm'] = MarkupToHTML($pagename, $form['text']);
+  }
+  SDV($PageEditFmt, "<div id='wikiedit'>
+    <h1 class='wikiaction'>$[Editing {\$FullName}]</h1>
+    <form method='post' action='\$PageUrl?action=edit'>
+    <input type='hidden' name='action' value='edit' />
+    <input type='hidden' name='n' value='\$FullName' />
+    <input type='hidden' name='basetime' value='\$EditBaseTime' />
+    \$EditMessageFmt
+    <textarea id='text' name='text' rows='25' cols='60'
+      onkeydown='if (event.keyCode==27) event.returnValue=false;'
+      >\$EditText</textarea><br />
+    <input type='submit' name='post' value=' $[Save] ' />");
+  SDV($HandleEditFmt, array(&$PageStartFmt, &$PageEditFmt, &$PageEndFmt));
+  PrintFmt($pagename, $HandleEditFmt);
 }
 
 function HandleSource($pagename) {

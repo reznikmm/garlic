@@ -10,8 +10,9 @@
     PHP and PmWiki's codebase.  
 */
 
-function insButton(mopen, mclose, mtext, mlabel) {
-  document.write("<a href=\"javascript:insMarkup('"
+function insButton(mopen, mclose, mtext, mlabel, mkey) {
+  if (mkey > '') { mkey = 'accesskey="' + mkey + '" ' }
+  document.write("<a " + mkey + "href=\"javascript:insMarkup('"
     + mopen + "','"
     + mclose + "','"
     + mtext + "');\">"

@@ -38,10 +38,10 @@ if (IsEnabled($EnablePostAuthorRequired,0))
   array_unshift($EditFunctions,'RequireAuthor');
 
 ## RequireAuthor forces an author to enter a name before posting.
-function RequireAuthor($pagename,&$page,&$new) {
-  global $Author,$EditMessageFmt,$AuthorRequiredFmt;
+function RequireAuthor($pagename, &$page, &$new) {
+  global $Author, $MessagesFmt, $AuthorRequiredFmt;
   if (!$Author) {
-    $EditMessageFmt .= $AuthorRequiredFmt;
+    $MessagesFmt[] = $AuthorRequiredFmt;
     $_POST['post'] = '';
   }
 }

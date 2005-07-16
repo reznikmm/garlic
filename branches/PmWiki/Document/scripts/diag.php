@@ -13,6 +13,7 @@
 ini_set('track_errors','1');
 
 if ($action=='diag') {
+  @session_start();
   header('Content-type: text/plain');
   print_r($GLOBALS);
   exit();
@@ -43,7 +44,7 @@ function DisplayStopWatch() {
   foreach((array)$StopWatch as $k => $x) {
     $out[] = "$x\n";
   }
-  array_pop($StopWatch);
+  if (is_array($StopWatch)) array_pop($StopWatch);
   $out[] = '</pre>';
   return implode('',$out);
 }
