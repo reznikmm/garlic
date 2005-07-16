@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta26
+newline=²
+text=!! Basic markup²²Tables are created via use of the double pipe character: @@||@@. Lines beginning with this markup denote the beginning of table rows. Appearance of this character within a line denotes table cells. A border has been added to this table for visual purposes; default border width is 0.²²!!!Example 1. Basic table²(:markup:) [=²|| border=1²|| cell 1 || cell 2 || cell 3 ||²|| cell 1 || cell 2 || cell 3 ||=]²²Header cells can be created by placing ! as the first character of a cell:²(:markup:) [=²|| border=1²||! cell 1 ||! cell 2 ||! cell 3 ||²|| cell 1  ||  cell 2 ||  cell 3 ||=]²This markup does not extend to !!, !!!, etc²²!! Alignment of cell contents²²Cell contents may be aligned left, centered, or aligned right. ²* To left-align contents, place the cell contents next to the leading @@||@@.²* To center contents, add a space before and after the cell contents.²* To right-align contents, place a space before the cell contents and leave the cell contents next to the trailing @@||@@.²²!!!Example 2. Changing alignment of cell contents²(:markup:) [=²|| border=1 width=100%²||!cell 1      ||! cell 2  ||!       cell 3||²||left-aligned || centered || right-aligned||=]²²!!!Example 3. Default alignment of cell contents²(:markup:) [=²|| border=1 width=100%²||!cell default||!cell left ||²||default-aligned||left-aligned ||=]²Notice that the header and detail cells have different defaults.²²!!! Column spanning²(:markup:) [=²|| border=1 width=100%²|||||| right column ||²|||| middle column ||||²|| left column ||||||²|| left column || middle column || right column ||²=]²²%trail%<<|PmWiki.DocumentationIndex|>>
+time=1111223142
+name=PmWiki.SimpleTables
+host=203.79.95.184
+agent=Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1)
+rev=6
+targets=PmWiki.TextFormattingRules,PmWiki.SimpleTables2,PmWiki.DocumentationIndex
+author=Simon

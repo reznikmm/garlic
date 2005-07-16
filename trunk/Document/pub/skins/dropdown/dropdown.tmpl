@@ -1,0 +1,71 @@
+<!DOCTYPE html 
+	PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+	<title>$WikiTitle | $Group / $Title $Action</title>
+<!--HeaderText-->
+	<style type='text/css'>
+	<!--
+		/* makes tabs work */
+		#tabs #$action {
+			border-bottom:1px solid #fff;
+			background:#fff;
+			}
+		#tabs #$action a:hover {
+			color:#bb0;
+			}
+	-->
+	</style>
+</head>
+<body>
+	<a name='Topp'>&nbsp;</a>
+<!--PageLeftFmt-->
+	<div id='left'>
+		<div id='logo'>
+			<a href='$ScriptUrl'><img src='$PageLogoUrl' alt='$WikiTitle' border='0' /></a>
+		</div>
+<!--function:IsSearchboxActive-->
+		<div id='sidebar'>
+<!--wiki:$Group.SideBar $DefaultGroup.SideBar Main.SideBar-->
+		</div>
+	</div>
+<!--/PageLeftFmt-->
+	<div id='right'
+<!--function:IsPageLeftFmtVisible-->
+>
+<!--PageMenuFmt-->
+		<div id='menubar'>
+<!--wiki:$Group.MenuBar $DefaultGroup.MenuBar Main.MenuBar-->
+		</div>
+<!--/PageMenuFmt-->
+		<div id='main'>
+<!--PageTitleFmt-->
+			<div id='page'>
+				<div class='pagegroup'><a href='$ScriptUrl/$Group'>$Group</a>/</div><div class='pagetitle'><a href='$PageUrl'>$Title</a></div>
+			</div>
+<!--/PageTitleFmt-->
+<!--PageHeaderFmt-->
+			<div id='tabs'>
+				<a id='browse' href="$PageUrl">$[Read Page]</a><a
+				id='edit' href="$PageUrl?action=edit">$[Edit Page]</a><a
+				id='attr' href="$PageUrl?action=attr">$[Page Attributes]</a><a
+				id='diff' href="$PageUrl?action=diff">$[Page History]</a><a
+				id='upload' href="$PageUrl?action=upload">$[Upload]</a>
+			</div>
+<!--/PageHeaderFmt-->
+<!--function:DisplayPrintPreview-->
+<!--PageText-->
+			<div class='lastmod'>
+				$[Page last modified on $LastModified]
+			</div>
+		</div>
+<!--PageFooterFmt-->
+		<div id='foot'>
+<!--wiki:$Group.BottomBar $DefaultGroup.BottomBar Main.BottomBar-->
+<!--function:DisplayEditButtons-->
+		</div>
+	</div>
+<!--/PageFooterFmt-->
+</body>
+</html>

@@ -1,0 +1,11 @@
+version=pmwiki-2.0.beta38 ordered=1
+newline=²
+agent=Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.8) Gecko/20050511 Firefox/1.0.4
+author=Ed Wildgoose
+host=81.6.236.5
+name=PmWiki.Contributors
+post= Save
+rev=34
+targets=PmWiki.PmWiki,PmWiki.Uploads,PmWiki.Links,PmWiki.WikiTrails,PmWiki.EditQuickReference,PmWiki.WikiStyles,PmWiki.WikiGroup,PmWiki.Audiences,PmWiki.DocumentationIndex,PmWiki.MailingLists
+text=Here's a list of contributors to [[PmWiki]] development and improvement.  My apologies if I've forgotten anyone -- feel free to add your name if you've²been left out, feel free to remove your name if you don't want to be associated with these people.  :-)²²* Scott Duff - pmwe, simple-journal.php, all-around Pm sanity checker ²* Ross Kowalski - [[uploads]] and printable page research²* Robert Abitbol - Customization; suggestions for various features or modifications²* John Rankin - WikiTrails, [[Links]], EditQuickReference, notify.php, documentation, debugging²* Joachim Durchholz - hacking documentation, general pest²* Jessica Tishmack - uploads, testing²* Jean-Claude Gorichon - voting²* Janice Heinold - early PmWiki testing and suggestions, documentation²* James Davis - WikiStyles markup, testing²* Isabelle Michaud - floating images markup, [[Wiki Group]]s, [[uploads]]/attachments²* Glenn Blalock - WikiStyles suggestions, testing, documentation²* Dawn Green - WikiStyles suggestions, [[uploads]], documentation²* Christian Ridderström - [[Cookbook:EmacsPmWikiMode |pmwiki-mode for Emacs]] and some other hacks/modifications.²* Carlo Strozzi - Internationalization, PmWiki on Boa, HTML redirection²²%trail%<<|[[PmWiki.Documentation Index]]|>>
+time=1118915273

@@ -1,0 +1,10 @@
+version=pmwiki-2.0.devel27
+newline=²
+time=1101448437
+text=%define=mystyle color:green font-family:Courier%²²!!!!Markup²%mystyle%[=http://www.pmwiki.org/pmwiki/pub/skins/pmwiki/pmwiki-32.gif=]%%²²!!!!Result²http://www.pmwiki.org/pmwiki/pub/skins/pmwiki/pmwiki-32.gif²²----²²!!!!Markup²%color:green font-family:Courier%²%mystyle%[=²(:table width=100%:)²(:cell align=center:)²http://www.pmwiki.org/pmwiki/pub/skins/pmwiki/pmwiki-32.gif²(:tableend:)²=]%%²²!!!!Result²(:table width=100%:)²(:cell align=center:)²http://www.pmwiki.org/pmwiki/pub/skins/pmwiki/pmwiki-32.gif²(:tableend:)²²----²!!!!Markup²%mystyle%[=[[http://www.pmwiki.org/pmwiki/pub/skins/pmwiki/pmwiki-32.gif]]=]%%²²!!!!Result²[[http://www.pmwiki.org/pmwiki/pub/skins/pmwiki/pmwiki-32.gif]]²²----²²!!!!Markup²%mystyle%[=[[http://www.pmichaud.com/pmwiki2/pub/skins/pmwikidevel/pmwiki2devel-36.gif | http://www.pmwiki.org/pmwiki/pub/skins/pmwiki/pmwiki-32.gif]]=]%%²²!!!!Result²[[http://www.pmichaud.com/pmwiki2/pub/skins/pmwikidevel/pmwiki2devel-36.gif | http://www.pmwiki.org/pmwiki/pub/skins/pmwiki/pmwiki-32.gif]]²²----²%trail%<<|DocumentationIndex|>>
+targets=PmWiki.Links,PmWiki.TipsForEditing,PmWiki.DocumentationIndex
+author=
+name=PmWiki.ImagesInWikiPages
+host=165.121.192.132
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+rev=5
