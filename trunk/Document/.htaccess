@@ -1,0 +1,10 @@
+Redirect /Header.html http://gnat-glade.sourceforge.net/pmwiki.php
+Redirect /index.html http://gnat-glade.sourceforge.net/pmwiki.php
+DirectoryIndex index.php
+ErrorDocument 404 http://gnat-glade.sourceforge.net/pmwiki.php?n=Error.404
+ErrorDocument 500 http://gnat-glade.sourceforge.net/pmwiki.php?n=Error.500
+ErrorDocument 401 http://gnat-glade.sourceforge.net/pmwiki.php?n=Error.401
+Order Deny,Allow
+Allow from all
+Options -Indexes
+

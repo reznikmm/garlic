@@ -7,13 +7,13 @@
 
 ##  $WikiTitle is the name that appears in the browser's title bar.
 
-$WikiTitle = 'Programing:Ada';
+$WikiTitle = 'GNAT GLADE';
 
 ##  $ScriptUrl is your preferred URL for accessing wiki pages
 ##  $PubDirUrl is the URL for the pub directory.
 
-$ScriptUrl = 'http://wikibook-ada.sourceforge.net/pmwiki.php';
-$PubDirUrl = 'http://wikibook-ada.sourceforge.net/pub';
+$ScriptUrl = 'http://gnat-glade.sourceforge.net/pmwiki.php';
+$PubDirUrl = 'http://gnat-glade.sourceforge.net/pub';
 
 ##  If you want to use URLs of the form .../pmwiki.php/Group/PageName
 ##  instead of .../pmwiki.php?p=Group.PageName, try setting
@@ -27,7 +27,7 @@ $EnablePathInfo = 1;
 ## $PageLogoUrl is the URL for a logo image -- you can change this
 ## to your own logo if you wish.
 
-$PageLogoUrl = "http://wikibook-ada.sourceforge.net/ada.jpg";
+$PageLogoUrl = "http://gnat-glade.sourceforge.net/ada.jpg";
 
 ## If you want to have a custom skin, then set $Skin to the name
 ## of the directory (in pub/skins/) that contains your skin files.
@@ -42,7 +42,7 @@ $Skin = 'dropdown';
 ## and PmWiki.PasswordsAdmin.
 
 $DefaultPasswords['admin']  = '$1$.HWpOj1B$XuhpxFURi8khZnXGg2HG80';
-$DefaultPasswords['edit']   = '$1$.HWpOj1B$XuhpxFURi8khZnXGg2HG80';
+#$DefaultPasswords['edit']   = '$1$.HWpOj1B$XuhpxFURi8khZnXGg2HG80';
 $DefaultPasswords['attr']   = '$1$.HWpOj1B$XuhpxFURi8khZnXGg2HG80';
 $DefaultPasswords['upload'] = '$1$.HWpOj1B$XuhpxFURi8khZnXGg2HG80';
 
