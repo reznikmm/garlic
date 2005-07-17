@@ -112,7 +112,8 @@ $DiffKeepDays=30;
 
 ##  The rss.php script enables ?action=rss and ?action=rdf, which
 ##  provides RSS feeds for a site based on WikiTrails.  See PmWiki.RSS.
-# if ($action == 'rss' || $action == 'rdf') include_once('scripts/rss.php');
+
+if ($action == 'rss' || $action == 'rdf') include_once('scripts/rss.php');
 
 ##  PmWiki allows a great deal of flexibility for creating custom markup.
 ##  To add support for '*bold*' and '~italic~' markup (the single quotes

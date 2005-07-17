@@ -1,0 +1,19 @@
+version=pmwiki-2.0.beta40 ordered=1
+newline=¿ä
+agent=Opera/8.0 (X11; Linux x86_64; U; de)
+author=Martin Krischik
+host=84.73.3.177
+name=Main.SideBar
+rev=44
+targets=Main.SideBar,Main.HomePage,Main.Skin
+text=!Main/SideBar [-([[Main.SideBar?action=edit | edit]])-]¿ä* [[Main/Home Page]]¿ä* [[http://sourceforge.net/news/?group_id=105524|News]]¿ä* [[http://gnat-gnat.sourceforge.net/|Project's Homepage]]¿ä* [[http://sourceforge.net/projects/gnat-gnat|Sourceforge Project Info]]¿ä* [[http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/gnat-gnat|Sourceforge CVS Archive]]¿ä* [[http://sourceforge.net/project/showfiles.php?group_id=105524|Download]]¿ä¿ä![[Main/Skin]]¿ä* [[{$Name}?setskin=pmwiki | Standart ]]¿ä* [[{$Name}?setskin=dropdown | DropDown ]]¿ä* [[{$Name}?setskin=monobook | Monobook ]]¿ä¿ä(:sflogo 105524:)
+time=1121534266
+author:1121534266=Martin Krischik
+diff:1121534266:1121534138:minor=13,14d12¿ä< ¿ä< (:sflogo 105524:)¿ä\ No newline at end of file¿ä
+host:1121534266=84.73.3.177
+author:1121534138=Martin Krischik
+diff:1121534138:1121533746:=3,8c3,8¿ä< * [[http://sourceforge.net/news/?group_id=105524|News]]¿ä< * [[http://gnat-gnat.sourceforge.net/|Project's Homepage]]¿ä< * [[http://sourceforge.net/projects/gnat-gnat|Sourceforge Project Info]]¿ä< * [[http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/gnat-gnat|Sourceforge CVS Archive]]¿ä< * [[http://sourceforge.net/project/showfiles.php?group_id=105524|Download]]¿ä< ¿ä---¿ä> * [[http://sourceforge.net/news/?group_id=124904|News]]¿ä> * [[http://wikibook-ada.sourceforge.net/|Project's Homepage]]¿ä> * [[http://sourceforge.net/projects/wikibook-ada|Sourceforge Project Info]]¿ä> * [[http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/wikibook-ada|Sourceforge CVS Archive]]¿ä> * [[http://sourceforge.net/project/showfiles.php?group_id=124904|Download]]¿ä> ¿ä
+host:1121534138=84.73.3.177
+author:1121533746=Martin Krischik
+diff:1121533746:1102511123:=1c1¿ä< !Main/SideBar [-([[Main.SideBar?action=edit | edit]])-]¿ä---¿ä> !Main.SideBar [-([[Main.SideBar?action=edit | edit]])-]¿ä3,12c3,20¿ä< * [[http://sourceforge.net/news/?group_id=124904|News]]¿ä< * [[http://wikibook-ada.sourceforge.net/|Project's Homepage]]¿ä< * [[http://sourceforge.net/projects/wikibook-ada|Sourceforge Project Info]]¿ä< * [[http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/wikibook-ada|Sourceforge CVS Archive]]¿ä< * [[http://sourceforge.net/project/showfiles.php?group_id=124904|Download]]¿ä< ¿ä< ![[Main/Skin]]¿ä< * [[{$Name}?setskin=pmwiki | Standart ]]¿ä< * [[{$Name}?setskin=dropdown | DropDown ]]¿ä< * [[{$Name}?setskin=monobook | Monobook ]]¿ä---¿ä> * [[Main/WikiSandbox]]¿ä> ¿ä> ![[PmWiki/PmWiki]]¿ä> * [[PmWiki/Installation | Download and Install]]¿ä> * [[PmWiki/Tips For Editing]]¿ä> * [[PmWiki/Documentation Index]]¿ä> * [[PmWiki/FAQ]]¿ä> * [[PmWiki/PmWikiPhilosophy]]¿ä> * [[PmWiki/Release Notes]]¿ä> * [[PmWiki/ChangeLog]]¿ä> * [[PmWiki/Changes from PmWiki 1]]¿ä> ¿ä> ![[(http://www.)pmwiki.org]]¿ä> * [[(Cookbook:)Cookbook]]¿ä> * [[(PITS:)PITS]] (bugs, development)¿ä> * [[(PmWiki:)PmWikiUsers]]¿ä> * [[(PmWiki:)Success Stories]]¿ä> ¿ä
+host:1121533746=84.73.3.177
