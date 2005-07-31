@@ -1,0 +1,14 @@
+version=pmwiki-2.0.beta48 ordered=1
+newline=ÀŠ
+agent=Opera/8.0 (X11; Linux x86_64; U; de)
+author=Martin Krischik
+host=84.73.3.177
+name=Main.Skin
+rev=1
+targets=Main.Skin
+text=||cellpadding=0 cellspacing=1 border=6ÀŠ||[[http://www.pmwiki.org/pmwiki/uploads/Cookbook/DefaultSkin.jpg -> {$Name}?setskin=pmwiki]]||[[http://www.pmwiki.org/pmwiki/uploads/Cookbook/DropDown.jpg -> {$Name}?setskin=dropdown]]||ÀŠ|| [[Default Skin -> {$Name}?setskin=pmwiki]] || [[Drop Down -> {$Name}?setskin=dropdown]] ||ÀŠÀŠ
+time=1122570691
+author:1122570691=Martin Krischik
+csum:1122570691=new
+diff:1122570691:1122570691:minor=1,4d0ÀŠ< ||cellpadding=0 cellspacing=1 border=6ÀŠ< ||[[http://www.pmwiki.org/pmwiki/uploads/Cookbook/DefaultSkin.jpg -> {$Name}?setskin=pmwiki]]||[[http://www.pmwiki.org/pmwiki/uploads/Cookbook/DropDown.jpg -> {$Name}?setskin=dropdown]]||ÀŠ< || [[Default Skin -> {$Name}?setskin=pmwiki]] || [[Drop Down -> {$Name}?setskin=dropdown]] ||ÀŠ< ÀŠ
+host:1122570691=84.73.3.177
