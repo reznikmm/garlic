@@ -20,8 +20,8 @@
           include_once('scripts/rss.php');
 */
 
-SDV($HandleActions['rss'],'HandleRss');
-SDV($HandleActions['rdf'],'HandleRss');
+SDV($HandleActions['rss'],'HandleRss');  
+SDV($HandleActions['rdf'],'HandleRss'); 
 
 SDV($RssMaxItems,20);				# maximum items to display
 SDV($RssSourceSize,400);			# max size to build desc from
@@ -77,13 +77,13 @@ SDV($RssItemFmt,'
         </item>');
 SDV($HandleRssFmt,array(&$RssChannelFmt,&$RssItems,'</channel></rss>'));
 
-function HandleRss($pagename) {
+function HandleRss($pagename, $auth='read') {
   global $RssMaxItems,$RssSourceSize,$RssDescSize,
     $RssChannelFmt,$RssChannelDesc,$RssTimeFmt,$RssChannelBuildDate,
     $RssItemsRDFList,$RssItemsRDFListFmt,$RssItems,$RssItemFmt,
     $HandleRssFmt,$FmtV;
   $t = ReadTrail($pagename,$pagename);
-  $page = RetrieveAuthPage($pagename, 'read', false, READPAGE_CURRENT);
+  $page = RetrieveAuthPage($pagename, $auth, false, READPAGE_CURRENT);
   if (!$page) Abort("?cannot read $pagename");
   $cbgmt = $page['time'];
   $r = array();

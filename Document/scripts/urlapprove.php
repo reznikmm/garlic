@@ -37,9 +37,11 @@ $UnapprovedLinkFmt =
 $HTMLStylesFmt[] = '.apprlink { font-size:smaller; }';
 $ApproveUrlPattern = 
   "\\bhttps?:[^\\s$UrlExcludeChars]*[^\\s.,?!$UrlExcludeChars]";
-$WhiteUrlPatterns = array();
-$HandleActions['approveurls'] = 'HandleApprove';
-$HandleActions['approvesites'] = 'HandleApprove';
+$WhiteUrlPatterns = (array)$WhiteUrlPatterns;
+SDV($HandleActions['approveurls'], 'HandleApprove');
+SDV($HandleAuth['approveurls'], 'edit');
+SDV($HandleActions['approvesites'], 'HandleApprove');
+SDV($HandleAuth['approvesites'], 'edit');
 SDV($UnapprovedLinkCountMax, 1000000);
 array_splice($EditFunctions, array_search('PostPage', $EditFunctions),
   0, 'BlockUnapprovedPosts');
@@ -77,7 +79,7 @@ function ReadApprovedUrls($pagename) {
   }
 }
 
-function HandleApprove($pagename) {
+function HandleApprove($pagename, $auth='edit') {
   global $ApproveUrlPattern,$WhiteUrlPatterns,$ApprovedUrlPagesFmt,$action;
   Lock(2);
   $page = ReadPage($pagename);
@@ -94,7 +96,7 @@ function HandleApprove($pagename) {
   }
   if (count($addpat)>0) {
     $aname = FmtPageName($ApprovedUrlPagesFmt[0],$pagename);
-    $apage = RetrieveAuthPage($aname,'edit');
+    $apage = RetrieveAuthPage($aname, $auth);
     if (!$apage) Abort("?cannot edit $aname");
     $new = $apage;
     if (substr($new['text'],-1,1)!="\n") $new['text'].="\n";
@@ -107,10 +109,10 @@ function HandleApprove($pagename) {
 
 function BlockUnapprovedPosts($pagename, &$page, &$new) {
   global $EnableUrlApprovalRequired, $UnapprovedLinkCount, 
-    $UnapprovedLinkCountMax, $MessagesFmt, $BlockMessageFmt;
+    $UnapprovedLinkCountMax, $EnablePost, $MessagesFmt, $BlockMessageFmt;
   if (!IsEnabled($EnableUrlApprovalRequired, 1)) return;
   if ($UnapprovedLinkCount <= $UnapprovedLinkCountMax) return;
-  unset($_POST['post']);
+  $EnablePost = 0;
   $MessagesFmt[] = $BlockMessageFmt;
 }
     

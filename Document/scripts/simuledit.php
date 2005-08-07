@@ -38,11 +38,11 @@ function Merge($newtext,$oldtext,$pagetext) {
 }
 
 function MergeSimulEdits($pagename,&$page,&$new) {
-  global $MessagesFmt, $WorkDir, $SysMergeCmd;
+  global $EnablePost, $MessagesFmt, $WorkDir, $SysMergeCmd;
   SDV($SysMergeCmd,"/usr/bin/diff3 -L '' -L '' -L '' -m -E");
   if (@!$_POST['basetime'] || !PageExists($pagename) ||
     $_POST['basetime']>=$page['time']) return;
-  unset($_POST['post']);
+  $EnablePost = 0;
   $MessagesFmt[] = "<p class='editconflict'>The page you are 
     editing has been modified since you started editing it.  
     The modifications have been merged into the text below,

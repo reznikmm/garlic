@@ -12,7 +12,7 @@
 SDV($HandleActions['crypt'],'HandleCrypt');
 SDV($ActionTitleFmt['crypt'],'| $[Password encryption]');
 
-function HandleCrypt($pagename) {
+function HandleCrypt($pagename, $auth='read') {
   global $ScriptUrl,$HTMLStartFmt,$HTMLEndFmt;
   PrintFmt($pagename,$HTMLStartFmt);
   $passwd = @$_POST["passwd"];
