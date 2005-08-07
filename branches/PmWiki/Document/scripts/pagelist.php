@@ -32,12 +32,6 @@ $SearchPatterns['normal'][] = '!\.Group(Print)?(Header|Footer|Attributes)$!';
 SDV($SearchResultsFmt, "<div class='wikisearch'>\$[SearchFor]
   $HTMLVSpace\$MatchList
   $HTMLVSpace\$[SearchFound]$HTMLVSpace</div>");
-SDV($SearchBoxFmt, 
-  "<form class='wikisearch' action='$ScriptUrl'
-    method='get'><input type='hidden' name='n'
-    value='$[Site/Search]' /><input class='wikisearchbox'
-    type='text' name='q' value='\$SearchQuery' size='40' /><input
-    class='wikisearchbutton' type='submit' value='$[Search]' /></form>");
 SDV($SearchQuery, str_replace('$', '&#036;', 
   htmlspecialchars(stripmagic(@$_REQUEST['q']), ENT_NOQUOTES)));
 XLSDV('en', array(
@@ -59,9 +53,35 @@ Markup('searchresults', 'directives',
   "FmtPageList(\$GLOBALS['SearchResultsFmt'], \$pagename,
        array('o' => PSS('$1'), 'req' => 1))");
 Markup('searchbox', '>links',
-  '/\\(:searchbox:\\)/ie',
-  "FmtPageName(\$GLOBALS['SearchBoxFmt'], \$pagename)");
+  '/\\(:searchbox(\\s.*?)?:\\)/e',
+  "SearchBox(\$pagename, ParseArgs(PSS('$1')))");
 
+SDV($HandleActions['search'], 'HandleSearchA');
+SDV($HandleAuth['search'], 'read');
+
+## SearchBox generates the output of the (:searchbox:) markup.
+## If $SearchBoxFmt is defined, that is used, otherwise a searchbox
+## is generated.  Options include group=, size=, label=.
+function SearchBox($pagename, $opt) {
+  global $SearchBoxFmt, $SearchBoxOpt, $SearchQuery;
+  if (isset($SearchBoxFmt)) return FmtPageName($SearchBoxFmt, $pagename);
+  SDVA($SearchBoxOpt, array('size' => '40', 
+    'label' => FmtPageName('$[Search]', $pagename),
+    'group' => @$_REQUEST['group'],
+    'value' => $SearchQuery));
+  $opt = array_merge($SearchBoxOpt, (array)$opt);
+  $group = $opt['group'];
+  $out[] = FmtPageName("<form 
+    class='wikisearch' action='\$ScriptUrl' method='get'><input 
+    type='hidden' name='n' value='\$FullName' /><input
+    type='hidden' name='action' value='search' />", $pagename);
+  if ($group) 
+    $out[] = "<input type='hidden' name='group' value='$group' />";
+  $out[] = "<input type='text' name='q' value='{$opt['value']}' 
+    size='{$opt['size']}' /><input class='wikisearchbutton' 
+    type='submit' value='{$opt['label']}' /></form>";
+  return implode('', $out);
+}
 
 ## FmtPageList combines options from markup, request form, and url,
 ## calls the appropriate formatting function, and returns the string
@@ -140,7 +160,7 @@ function MakePageList($pagename, $opt) {
   $FmtV['$MatchSearched'] = count($list);
   foreach((array)$list as $pn) {
     if ($readf) {
-      $page = ($readf == 1000) 
+      $page = ($readf >= 1000) 
               ? RetrieveAuthPage($pn, 'read', false, READPAGE_CURRENT)
               : ReadPage($pn, READPAGE_CURRENT);
       if (!$page) continue;
@@ -161,7 +181,6 @@ function MakePageList($pagename, $opt) {
   return $matches;
 }
 
-
 function SortPageList(&$matches, $order) {
   $code = '';
   foreach(preg_split("/[\\s,|]+/", $order, -1, PREG_SPLIT_NO_EMPTY) as $o) {
@@ -175,6 +194,19 @@ function SortPageList(&$matches, $order) {
     uasort($matches, create_function('$x,$y', "$code return 0;"));
 }
 
+## HandleSearchA performs ?action=search.  It's basically the same
+## as ?action=browse, except it takes its contents from Site.Search.
+function HandleSearchA($pagename, $level = 'read') {
+  global $PageSearchForm, $FmtV, $HandleSearchFmt, 
+    $PageStartFmt, $PageEndFmt;
+  SDV($HandleSearchFmt,array(&$PageStartFmt, '$PageText', &$PageEndFmt));
+  SDV($PageSearchForm, '$[Site.Search]');
+  $form = ReadPage(FmtPageName($PageSearchForm, $pagename), READPAGE_CURRENT);
+  $text = @$form['text'];
+  if (!$text) $text = '(:searchresults:)';
+  $FmtV['$PageText'] = MarkupToHTML($pagename,$text);
+  PrintFmt($pagename, $HandleSearchFmt);
+}
 
 ## FPLByGroup provides a simple listing of pages organized by group
 function FPLByGroup($pagename, &$matches, $opt) {

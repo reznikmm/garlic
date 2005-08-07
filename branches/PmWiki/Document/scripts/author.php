@@ -39,9 +39,9 @@ if (IsEnabled($EnablePostAuthorRequired,0))
 
 ## RequireAuthor forces an author to enter a name before posting.
 function RequireAuthor($pagename, &$page, &$new) {
-  global $Author, $MessagesFmt, $AuthorRequiredFmt;
+  global $Author, $MessagesFmt, $AuthorRequiredFmt, $EnablePost;
   if (!$Author) {
     $MessagesFmt[] = $AuthorRequiredFmt;
-    $_POST['post'] = '';
+    $EnablePost = 0;
   }
 }

@@ -11,8 +11,9 @@ SDV($InputAttrs, array('name', 'value', 'id', 'class', 'rows', 'cols',
   'checked', 'size', 'action', 'method', 'accesskey'));
 
 # Set up formatting for text, submit, hidden, radio, etc. types
-foreach(array('text', 'submit', 'hidden', 'password', 'radio', 'checkbox') 
-  as $t) SDV($InputTags[$t][':html'], "<input type='$t' \$InputFormArgs />");
+foreach(array('text', 'submit', 'hidden', 'password', 'radio', 'checkbox',
+              'reset') as $t) 
+  SDV($InputTags[$t][':html'], "<input type='$t' \$InputFormArgs />");
 
 # (:input form:)
 SDVA($InputTags['form'], array(
@@ -95,7 +96,7 @@ SDVA($InputTags['e_author'], array(
 SDVA($InputTags['e_changesummary'], array(
   ':html' => "<input type='text' \$InputFormArgs />",
   'name' => 'csum', 'size' => '60',
-  'value' => htmlspecialchars(@$_POST['csum'], ENT_QUOTES)));
+  'value' => htmlspecialchars(stripmagic(@$_POST['csum']), ENT_QUOTES)));
 SDVA($InputTags['e_minorcheckbox'], array(
   ':html' => "<input type='checkbox' \$InputFormArgs />",
   'name' => 'diffclass', 'value' => 'minor'));

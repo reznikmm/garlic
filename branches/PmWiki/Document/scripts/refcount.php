@@ -18,7 +18,7 @@
 
 SDV($PageRefCountFmt,"<h2 class='wikiaction'>Reference Count Results</h2>");
 SDV($RefCountTimeFmt," <small>%Y-%b-%d %H:%M</small>");
-SDV($HandleActions['refcount'],'HandleRefCount');
+SDV($HandleActions['refcount'], 'HandleRefCount');
 
 function PrintRefCount($pagename) {
   global $GroupPattern,$NamePattern,$PageRefCountFmt,$RefCountTimeFmt;
@@ -109,8 +109,10 @@ function RefCountCmp($ua,$ub) {
 
 
 
-function HandleRefCount($pagename) {
+function HandleRefCount($pagename, $auth='read') {
   global $HandleRefCountFmt,$PageStartFmt,$PageEndFmt;
+  $page = RetrieveAuthPage($pagename, $auth, true, READPAGE_CURRENT);
+  if (!$page) Abort('?unauthorized');
   SDV($HandleRefCountFmt,array(&$PageStartFmt,
     'function:PrintRefCount',&$PageEndFmt));
   PrintFmt($pagename,$HandleRefCountFmt);

@@ -4,6 +4,7 @@
 <html>
 <head>
   <title>$WikiTitle | $Group / $Title $Action</title>
+  <meta http-equiv='Content-Style-Type' content='text/css' />
   <link rel='stylesheet' href='$SkinDirUrl/pmwiki.css' type='text/css' />
   <!--HeaderText-->
 </head>
@@ -12,8 +13,9 @@
   <div id='wikilogo'><a href='$ScriptUrl'><img src='$PageLogoUrl'
     alt='$WikiTitle' border='0' /></a></div>
   <div id='wikihead'>
-  <form action='$ScriptUrl/$[Site/Search]'>
-    <input type='hidden' name='n' value='$[Site/Search]' />
+  <form action='$ScriptUrl'>
+    <input type='hidden' name='n' value='$FullName' />
+    <input type='hidden' name='action' value='search' />
     <a href='$ScriptUrl/$[Site/Search]'>$[Search]</a>:
     <input class='searchbox' type='text' name='q' value='' />
     <input class='searchbutton' type='submit' value='$[Go]' /></form></div>

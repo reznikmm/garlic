@@ -26,9 +26,10 @@ if (IsEnabled($EnableStdWikiStyles,1)) {
   SDV($WikiStyle['comment']['display'],'none');
   ## display, margin, padding, and border css properties
   $WikiStyleCSS[] = 
-    'display|(margin|padding|border)(-(left|right|top|bottom))?';
+    'float|display|(margin|padding|border)(-(left|right|top|bottom))?';
   ## list-styles
   $WikiStyleCSS[] = 'list-style';
+  $WikiStyleCSS[] = 'width|height';
   foreach(array('decimal'=>'decimal', 'roman'=>'lower-roman',
     'ROMAN'=>'upper-roman', 'alpha'=>'lower-alpha', 'ALPHA'=>'upper-alpha')
     as $k=>$v) 
@@ -38,6 +39,7 @@ if (IsEnabled($EnableStdWikiStyles,1)) {
     'item' => 'li|dt',
     'list' => 'ul|ol|dl',
     'div' => 'div',
+    'img' => 'img',
     'block' => 'p(?!\\sclass=)|div|ul|ol|dl|li|dt|pre|h[1-6]',
     'p' => 'p(?!\\sclass=)'));
   foreach(array('item', 'list', 'block', 'p', 'div') as $c)
@@ -45,6 +47,16 @@ if (IsEnabled($EnableStdWikiStyles,1)) {
   ## block justifications
   foreach(array('left','right','center') as $c)
     SDV($WikiStyle[$c],array('apply'=>'block','text-align'=>$c));
+  ## frames, floating frames, and floats
+  SDV($HTMLStylesFmt['wikistyles'], " 
+    .frame 
+      { border:1px solid #cccccc; padding:4px; background-color:#f9f9f9; }
+    .lfloat { float:left; margin-right:0.5em; }
+    .rfloat { float:right; margin-left:0.5em; }\n");
+  SDV($WikiStyle['thumb'], array('width' => '100px'));
+  SDV($WikiStyle['frame'], array('class' => 'frame'));
+  SDV($WikiStyle['lframe'], array('class' => 'frame lfloat'));
+  SDV($WikiStyle['rframe'], array('class' => 'frame rfloat'));
 }
 
 SDV($WikiStylePattern,'%%|%[A-Za-z][-,=:#\\w\\s\'"]*%');
@@ -107,7 +119,7 @@ function ApplyStyles($x) {
     foreach((array)$alist as $a=>$s) {
       $classv=array(); $stylev=array(); $id='';
       foreach((array)$s as $k=>$v) {
-        if (@$WikiStyleAttr[$k]) 
+        if (!@$WikiStyleApply[$a] && @$WikiStyleAttr[$k]) 
           $p=preg_replace("/<({$WikiStyleAttr[$k]}(?![^>]*\\s$k=))([^>]*)>/s",
             "<$1 $k='$v' $2>",$p);
         elseif ($k=='class') $classv[]=$v;
@@ -122,8 +134,10 @@ function ApplyStyles($x) {
         if (!@$WikiStyleApply[$a]) {
           $p = preg_replace("!^(.*?)($|</?(form|div|table|tr|td|th|p|ul|ol|dl|li|dt|dd|h[1-6]|blockquote|pre|hr))!s", "<span $spanattr>$1</span>$2", $p, 1);
 }
-        elseif (!preg_match('/^(\\s*<[^>]+>)*$/s',$p)) 
+        elseif (!preg_match('/^(\\s*<[^>]+>)*$/s',$p) ||
+                strpos($p, '<img')!==false) {
           $p = preg_replace("/<({$WikiStyleApply[$a]})\\b/","<$1 $spanattr",$p);
+        }
       }
       if ($s['color'])
         $p = preg_replace('/<a\\b/', "<a style='color: {$s['color']}'", $p);

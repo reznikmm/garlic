@@ -46,8 +46,9 @@ SDV($DiffAuthorPageExistsFmt,"<a class='authorlink'
    href='\$ScriptUrl/\$DiffAuthorPage'>\$DiffAuthor</a>");
 SDV($DiffAuthorPageMissingFmt,"\$DiffAuthor");
 
-SDV($HandleActions['diff'],'HandleDiff');
-SDV($ActionTitleFmt['diff'],'| $[History]');
+SDV($HandleActions['diff'], 'HandleDiff');
+SDV($HandleAuth['diff'], 'read');
+SDV($ActionTitleFmt['diff'], '| $[History]');
 $HTMLStylesFmt[] = "
   .diffbox { border:1px #999999 solid; margin-top:1.33em; }
   .diffauthor { font-weight:bold; }
@@ -132,9 +133,9 @@ function PrintDiff($pagename) {
   $LinkFunctions = $lf;
 }
 
-function HandleDiff($pagename) {
+function HandleDiff($pagename, $auth='read') {
   global $HandleDiffFmt, $PageStartFmt, $PageDiffFmt, $PageEndFmt;
-  $page = RetrieveAuthPage($pagename, 'read');
+  $page = RetrieveAuthPage($pagename, $auth, true);
   if (!$page) { Abort("?cannot diff $pagename"); }
   PCache($pagename, $page);
   SDV($HandleDiffFmt,array(&$PageStartFmt,
