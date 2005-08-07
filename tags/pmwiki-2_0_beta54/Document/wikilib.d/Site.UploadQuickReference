@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta44 ordered=1
+newline=²
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.6) Gecko/20050317 Firefox/1.0.2
+author=Pm
+host=24.1.26.255
+name=Site.UploadQuickReference
+rev=7
+targets=PmWiki.Uploads,Site.UploadQuickReference
+text=>>bgcolor=#eeeeff font-family=Arial font-size=12px<<²'''[[PmWiki/Uploads]]'''\\²1. Use the "Browse" button above to find the "File to upload" on your local computer.²²2. For the "Name attachment as:" field, enter the name you prefer the file to have once it has been uploaded to the site. This can be the same as its filename on your source disk ''or it can be different'', but make sure it has the correct file extension.²²3. Press "$[Upload]" to upload the file.²²4. To refer to an attachment within a wiki page in this {$Group} `WikiGroup, simply enter @@[=Attach:=]''filename.ext''@@ in the page text.²²5. After uploading, you can ²**[[{$Name} | View the {$Name} page]] or²** [[{$Name}?action=edit | Edit the {$Name} page]] or²**Scroll down to view the list of files that have been uploaded to the {$Group} `WikiGroup.²²(:divend:)²²----²²!!Existing uploads²²(:attachlist:)
+time=1121014591
