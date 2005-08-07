@@ -60,12 +60,12 @@ Markup('groupfooter','>nogroupfooter',
   "PRR().FmtPageName(\$GLOBALS['GroupFooterFmt'],\$pagename)");
 
 ## (:nl:)
-Markup('nl0','<split',"/([^\n])\\(:nl:\\)([^\n])/i","$1\n$2");
+Markup('nl0','<split',"/([^\n])(?>(?:\\(:nl:\\))+)([^\n])/i","$1\n$2");
 Markup('nl1','>nl0',"/\\(:nl:\\)/i",'');
 
 ## \\$  (end of line joins)
 Markup('\\$','>nl1',"/\\\\(?>(\\\\*))\n/e",
-  "Keep(' '.str_repeat('<br />',strlen('$1')))");
+  "' '.str_repeat('<br />',strlen('$1'))");
 
 ## (:noheader:),(:nofooter:),(:notitle:)...
 Markup('noheader', 'directives',
@@ -84,30 +84,6 @@ Markup('noright', 'directives',
   '/\\(:noright:\\)/ei',
   "SetTmplDisplay('PageRightFmt',0)");
 
-## (:title:)
-Markup('title','directives',
-  '/\\(:title\\s(.*?):\\)/ei',
-  "PZZ(\$GLOBALS['PCache'][\$pagename]['title']=PSS('$1'))");
-
-## (:messages:)
-Markup('messages', 'directives',
-  '/^\\(:messages:\\)/ei',
-  "'<:block>'.Keep(
-    FmtPageName(implode('',(array)\$GLOBALS['MessagesFmt']), \$pagename))");
-
-## (:comment:)
-Markup('comment', 'directives', '/\\(:comment .*?:\\)/i', '');
-
-## (:keywords:)
-Markup('keywords', 'directives', 
-  "/\\(:keywords?\\s+([^'\n]+?):\\)/ei",
-  "PZZ(\$GLOBALS['HTMLHeaderFmt'][] = 
-    \"<meta name='keywords' content='$1' />\")");
-Markup('description', 'directives',
-  "/\\(:description\\s+(.+?):\\)/ei",
-  "PZZ(\$GLOBALS['HTMLHeaderFmt'][] = \"<meta name='description' content='\".
-    str_replace('\\'','&#39;',PSS('$1')).\"' />\")"); 
-
 ## (:spacewikiwords:)
 Markup('spacewikiwords', 'directives',
   '/\\(:(no)?spacewikiwords:\\)/ei',
@@ -118,11 +94,35 @@ Markup('linkwikiwords', 'directives',
   '/\\(:(no)?linkwikiwords:\\)/ei',
   "PZZ(\$GLOBALS['LinkWikiWords']=('$1'!='no'))");
 
-#### inline markups ####
+## (:messages:)
+Markup('messages', 'directives',
+  '/^\\(:messages:\\)/ei',
+  "'<:block>'.Keep(
+    FmtPageName(implode('',(array)\$GLOBALS['MessagesFmt']), \$pagename))");
+
+## (:comment:)
+Markup('comment', 'directives', '/\\(:comment .*?:\\)/i', '');
+
 ## character entities
 Markup('&','directives','/&amp;(?>([A-Za-z0-9]+|#\\d+|#[xX][A-Fa-f0-9]+));/',
   '&$1;');
 
+## (:title:)
+Markup('title','>&',
+  '/\\(:title\\s(.*?):\\)/ei',
+  "PZZ(\$GLOBALS['PCache'][\$pagename]['title']=PSS('$1'))");
+
+## (:keywords:)
+Markup('keywords', '>&', 
+  "/\\(:keywords?\\s+([^'\n]+?):\\)/ei",
+  "PZZ(\$GLOBALS['HTMLHeaderFmt'][] = 
+    \"<meta name='keywords' content='$1' />\")");
+Markup('description', '>&',
+  "/\\(:description\\s+(.+?):\\)/ei",
+  "PZZ(\$GLOBALS['HTMLHeaderFmt'][] = \"<meta name='description' content='\".
+    str_replace('\\'','&#39;',PSS('$1')).\"' />\")"); 
+
+#### inline markups ####
 ## ''emphasis''
 Markup("''",'inline',"/''(.*?)''/",'<em>$1</em>');
 
@@ -206,7 +206,16 @@ Markup('wikilink','>urllink',"/\\b($GroupPattern([\\/.]))?($WikiWordPattern)/e",
   "Keep(WikiLink(\$pagename,'$0'),'L')");
 
 ## escaped `WikiWords
-Markup('`wikiword','<wikilink',"/`(($GroupPattern([\\/.]))?($WikiWordPattern))/e","Keep('$1')");
+Markup('`wikiword', '<wikilink',
+  "/`(($GroupPattern([\\/.]))?($WikiWordPattern))/e",
+  "Keep('$1')");
+
+## Lines that begin with displayed images receive their own block.  A
+## pipe following the image indicates a "caption" (generates a linebreak).
+Markup('^img', '<block',
+  "/^((?>(\\s+|%%|%[A-Za-z][-,=:#\\w\\s'\"]*%)*)$KeepToken(\\d+L)$KeepToken)(\\s*\\|\\s?)?(.*)$/e",
+  "PSS((strpos(\$GLOBALS['KPV']['$3'],'<img')===false) ? '$0' : 
+       '<:block><div>$1' . ('$4' ? '<br />' : '') .'$5</div>')");
 
 #### Block markups ####
 ## process any <:...> markup
@@ -297,19 +306,15 @@ Markup('^>>', '<table',
 #### special stuff ####
 ## (:markup:) for displaying markup examples
 Markup('markup', '<[=',
-  "/^\\(:markup:\\)[^\\S\n]*\\[=(.*?)=\\]/seim",
-  "'\n'.Keep('<div class=\"markup\"><pre>'.wordwrap(PSS('$1'),60).
-    '</pre>').PSS('\n$1\n(:divend:)</div>\n')");
+  "/(^|\\(:nl:\\))\\(:markup:\\)[^\\S\n]*\\[=(.*?)=\\]/seim",
+  "'$1'.Keep('<table class=\"markup\" align=\"center\"><tr><td class=\"markup\"><pre>'.wordwrap(PSS('$2'),70).'</pre></td></tr><tr><td>').PSS('\n$2\n(:divend:)</td></tr></table>\n')");
 Markup('markupend', '>markup',
-  "/^\\(:markup:\\)[^\\S\n]*\n(.*?)\\(:markupend:\\)/seim",
-  "'\n'.Keep('<div class=\"markup\"><pre>'.wordwrap(PSS('$1'),60).
-    '</pre>').PSS('\n$1\n(:divend:)</div>\n')");
+  "/(^|\\(:nl:\\))\\(:markup:\\)[^\\S\n]*\n(.*?)\\(:markupend:\\)/seim",
+  "'$1'.Keep('<table class=\"markup\" align=\"center\"><tr><td class=\"markup\"><pre>'.wordwrap(PSS('$2'),70).'</pre></td></tr><tr><td>').PSS('\n$2\n(:divend:)</td></tr></table>\n')");
 $HTMLStylesFmt['markup'] = "
-  div.markup { border:2px dotted #ccf; 
-    margin-left:30px; margin-right:30px; 
-    padding-left:10px; padding-right:10px; }
-  div.markup pre { border-bottom:1px solid #ccf; 
-    padding-top:10px; padding-bottom:10px; }
+  table.markup { border: 2px dotted #ccf; width:90%; }
+  table.markup td { padding-left:10px; padding-right:10px; }
+  td.markup { border-bottom: 1px solid #ccf; }
   p.question { font-weight:bold; }
   ";
 
