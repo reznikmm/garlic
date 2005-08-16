@@ -164,5 +164,6 @@ $PageSkinList = array (
 include_once('cookbook/sourceforge.php');
 include_once('scripts/xlpage-utf-8.php');
 include_once('local/skinchange.php');
+if ($action=='edit') include_once('cookbook/blocklist2.php');
 
 ?>
