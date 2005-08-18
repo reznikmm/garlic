@@ -1,72 +1,73 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
                       "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml1" xml:lang="en" lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <!-- See CSS for credits -->
 <head>
-	<title>$Titlespaced - $WikiTitle</title>
-	<!--HeaderText-->
-	<link rel='stylesheet' href='$SkinDirUrl/monobook.css' type='text/css'/>
+  <title>$Titlespaced - $WikiTitle</title>
+  <meta http-equiv='Content-Style-Type' content='text/css' />
+  <!--HeaderText-->
+  <link rel='stylesheet' href='$SkinDirUrl/monobook.css' type='text/css'/>
 <!--function:RenderStyle LeftBarDisabled #content { margin-left: 0; }-->
 <!--function:RenderStyle ! TabsDisabled #header { border-bottom: none; }-->
 </head>
 <body>
-	<div id='globalwrapper'>
-		<!--PageLeftFmt--><div id='pageleft'>
-			<div id='pageleftcontent'>
-				<div class='pageleftbody' id='sidebar'>
-					<!--wiki:$Group.SideBar $SiteGroup.SideBar-->
-				</div><!-- id='sidebar' -->
-				<div class='pageleftbody' id='sidesearch'>
-					<form name='searchform' action='$ScriptUrl/$[$SiteGroup/Search]'>
-						<input type='hidden' name='pagename' value='$[$SiteGroup/Search]'/>
-						<a href='$ScriptUrl/$[$SiteGroup/Search]'>$[Search]</a>:<br/>
-						<input class='searchbox' type='text' name='q' value=''/>
-						<input class='searchbutton' type='submit' value='$[Go]'/>
-					</form>
-				</div><!-- id='sidesearch' -->
-			</div><!-- id='pageleft_content' -->
-			<div id='pagelogo'>
-				<a style='background-image: url($PageLogoUrl);'
-				   href='$ScriptUrl' title='$WikiTitle'></a>
-			</div><!-- id='pagelogo' -->
-		</div><!--/PageLeftFmt-->
-		<a name='topcontent'></a>
-		<div id='content'>
-			<!--PageHeaderFmt--><div id='header'></div><!--/PageHeaderFmt-->
-			<!--PageTabsFmt--><div id='tabs'>
+  <div id='globalwrapper'>
+    <!--PageLeftFmt--><div id='pageleft'>
+      <div id='pageleftcontent'>
+        <div class='pageleftbody' id='sidebar'>
+          <!--wiki:$Group.SideBar $SiteGroup.SideBar-->
+        </div><!-- id='sidebar' -->
+        <div class='pageleftbody' id='sidesearch'>
+          <form name='searchform' action='$ScriptUrl/$[$SiteGroup/Search]'>
+            <input type='hidden' name='pagename' value='$[$SiteGroup/Search]'/>
+            <a href='$ScriptUrl/$[$SiteGroup/Search]'>$[Search]</a>:<br/>
+            <input class='searchbox' type='text' name='q' value=''/>
+            <input class='searchbutton' type='submit' value='$[Go]'/>
+          </form>
+        </div><!-- id='sidesearch' -->
+      </div><!-- id='pageleft_content' -->
+      <div id='pagelogo'>
+        <a style='background-image: url($PageLogoUrl);'
+           href='$ScriptUrl' title='$WikiTitle'></a>
+      </div><!-- id='pagelogo' -->
+    </div><!--/PageLeftFmt-->
+    <a name='topcontent'></a>
+    <div id='content'>
+      <!--PageHeaderFmt--><div id='header'></div><!--/PageHeaderFmt-->
+      <!--PageTabsFmt--><div id='tabs'>
 <!--function:DefineAction browse $Groupspaced-...|$ScriptUrl/$Group-->
 <!--function:DefineAction edit $[Edit Page]-->
 <!--function:DefineAction attr $[Page Attributes]-->
 <!--function:DefineAction diff $[Page History]-->
 <!--function:DefineAction upload $[Upload]-->
 <!--function:RenderActions $PageUrl-->
-			</div><!--/PageTabsFmt-->
-			<div id='tabpage'>
-				<div id='contentbody'>
-					<div id='rightbody'>
-					<!--PagePrintFmt--><div id='print'><a href='$PageUrl?action=print' target='_new'
-						title='$[Printable View]'><img src='$SkinDirUrl/printer.gif'
-						alt='$[Printable View]'/>$[Printable View]</a></div><!--/PagePrintFmt-->
-						<!--PageRightFmt--><div id='rightbar' class='$RightBarClass'><!--wiki:$Group.RightBar $SiteGroup.RightBar--></div><!--/PageRightFmt-->
-					</div><!-- id='rightbody' -->
-					<!--PageTitleFmt--><h1 class='titlepage'>$Titlespaced</h1><!--/PageTitleFmt-->
-					<div id='main'>
-					<!--PageText-->
-				</div><!-- id='main' -->
-				</div><!-- id='contentbody' -->
-			</div><!-- id='tabpage' -->
-			<!--PageFooterFmt--><div id='footer'>
-				<div class='lastmod'>$[Page last modified on $LastModified]</div>
-				<ul>
-					<li class='navbox'><a
-						href='$PageUrl$PageQueryString#topcontent'>&#9650; $[Top] &#9650;</a></li>
-					<li><a href='$ScriptUrl/$[$SiteGroup/Search]'>$[Search]</a></li>
-					<li><a href='$ScriptUrl/$[$Group/RecentChanges]'>$[Recent Changes]</a></li>
-					<li><a href='$ScriptUrl/$[$SiteGroup/AllRecentChanges]'>$[All Recent Changes]</a></li>
-					<li><a href='$ScriptUrl/$[$SiteGroup/WikiHelp]'>$[WikiHelp]</a></li>
-				</ul>
-			</div><!--/PageFooterFmt-->
-		</div><!-- id='content' -->
-	</div><!-- id='globalwrapper' -->
+      </div><!--/PageTabsFmt-->
+      <div id='tabpage'>
+        <div id='contentbody'>
+          <div id='rightbody'>
+            <!--PagePrintFmt--><div id='print'><a href='$PageUrl?action=print' target='_new'
+              title='$[Printable View]'><img src='$SkinDirUrl/printer.gif'
+              alt='$[Printable View]'/>$[Printable View]</a></div><!--/PagePrintFmt-->
+            <!--PageRightFmt--><div id='rightbar' class='$RightBarClass'><!--wiki:$Group.RightBar $SiteGroup.RightBar--></div><!--/PageRightFmt-->
+          </div><!-- id='rightbody' -->
+          <!--PageTitleFmt--><h1 class='titlepage'>$Titlespaced</h1><!--/PageTitleFmt-->
+          <!-- <div id='main'> -->
+          <!--PageText-->
+          <span style='clear:both;'></span>
+          <!-- </div>id='main' -->
+        </div><!-- id='contentbody' -->
+      </div><!-- id='tabpage' -->
+      <!--PageFooterFmt--><div id='footer'>
+        <div class='lastmod'>$[Page last modified on $LastModified]</div>
+        <ul>
+          <li class='navbox'><a
+            href='$PageUrl$PageQueryString#topcontent'>&#9650; $[Top] &#9650;</a></li>
+          <li><a href='$ScriptUrl/$[$SiteGroup/Search]'>$[Search]</a></li>
+          <li><a href='$ScriptUrl/$[$Group/RecentChanges]'>$[Recent Changes]</a></li>
+          <li><a href='$ScriptUrl/$[$SiteGroup/AllRecentChanges]'>$[All Recent Changes]</a></li>
+        </ul>
+      </div><!--/PageFooterFmt-->
+    </div><!-- id='content' -->
+  </div><!-- id='globalwrapper' -->
 </body>
 </html>
