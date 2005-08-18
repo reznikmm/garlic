@@ -15,6 +15,11 @@ $WikiTitle = 'GNAT GLADE';
 $ScriptUrl = 'http://gnat-glade.sourceforge.net/pmwiki.php';
 $PubDirUrl = 'http://gnat-glade.sourceforge.net/pub';
 
+session_save_path         ('/tmp/persistent/gnat-glade/sessions');
+$WorkDir   =               '/tmp/persistent/gnat-glade/wiki.d';
+$WikiDir   = new PageStore('/tmp/persistent/gnat-glade/wiki.d/$FullName');
+$UploadDir =               '/tmp/persistent/gnat-glade/uploads';
+
 ##  If you want to use URLs of the form .../pmwiki.php/Group/PageName
 ##  instead of .../pmwiki.php?p=Group.PageName, try setting
 ##  $EnablePathInfo below.  Note that this doesn't work in all environments,
@@ -33,7 +38,7 @@ $PageLogoUrl = "http://gnat-glade.sourceforge.net/ada.jpg";
 ## of the directory (in pub/skins/) that contains your skin files.
 ## See PmWiki.LayoutBasics and Cookbook.Skins.
 
-$Skin = 'dropdown';
+$Skin = 'monobook';
 
 ## You'll probably want to set an administrative password that you
 ## can use to get into password-protected pages.  Also, by default 
@@ -56,8 +61,9 @@ $EnableGUIButtons = 1;
 ##  passwords on individual groups and pages.  For more information
 ##  see PmWiki.UploadsAdmin.
 
-$EnableUpload = 1;
-$EnableTransitions = 0;
+$EnableDirectDownload = 0;
+$EnableUpload         = 1;
+$EnableTransitions    = 0;
 
 ##  Setting $EnableDiag turns on the ?action=diag and ?action=phpinfo
 ##  actions, which often helps the PmWiki authors to troubleshoot 

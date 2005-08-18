@@ -224,6 +224,7 @@ body {
 .titlepage {
 	/*width: 100%;*/
 	margin-bottom: 0.1em;
+	clear: none;
 }
 
 a {
@@ -252,8 +253,8 @@ h1, h2, h3, h4, h5, h6 {
 	padding-bottom: 0.17em;
 	border-bottom: 1px solid #aaaaaa;
 }
-h1 { font-size: 188%; }
-h2 { font-size: 150%; }
+h1 { font-size: 188%; clear:both; }
+h2 { font-size: 150%; clear:both; }
 h3, h4, h5, h6 {
 	border-bottom: none;
 	font-weight: bold;
@@ -301,6 +302,19 @@ pre {
 a.urllink {
 	background: url(external.png) center right no-repeat;
 	padding-right: 13px;
+}
+a.attachlink {
+	background: url(attachment.png) center right no-repeat;
+	padding-right: 9px;
+}
+a.createlinktext {
+	color: red;
+	border-bottom: none;
+}
+a.createlinkupload {
+	background: url(attachnew.png) center right no-repeat;
+	color: red;
+	padding-right: 9px;
 }
 
 .wikitrail {
