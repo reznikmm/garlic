@@ -1,0 +1,13 @@
+version=pmwiki-2.0.beta54 ordered=1
+newline=ÀŠ
+agent=Opera/8.0 (X11; Linux x86_64; U; de)
+author=Martin Krischik
+host=84.72.114.216
+name=Guestbook.TOC
+rev=1
+targets=Guestbook.HomePage,Guestbook.TOC
+text=! [[Guestbook/Home Page|Guestbook]] [-([[Guestbook.TOC?action=edit|edit]])-]ÀŠ
+time=1124729175
+author:1124729175=Martin Krischik
+diff:1124729175:1124729175:=1d0ÀŠ< ! [[Guestbook/Home Page|Guestbook]] [-([[Guestbook.TOC?action=edit|edit]])-]ÀŠ
+host:1124729175=84.72.114.216
