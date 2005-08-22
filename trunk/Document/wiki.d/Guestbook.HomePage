@@ -1,0 +1,14 @@
+version=pmwiki-2.0.beta54 ordered=1
+newline=ÀŠ
+agent=Opera/8.0 (X11; Linux x86_64; U; de)
+author=Martin Krischik
+host=84.72.114.216
+name=Guestbook.HomePage
+rev=1
+targets=Guestbook.WikiSpam
+text=This this the Guestbook. Feel free to add whatever you like to say - apart from WikiSpam that is '-(The site is monitored by RSS Feed- so WikiSpam has no chance of survival)-'ÀŠ-----
+time=1124729473
+author:1124729473=Martin Krischik
+csum:1124729473=Intro
+diff:1124729473:1124729473:=1,2d0ÀŠ< This this the Guestbook. Feel free to add whatever you like to say - apart from WikiSpam that is '-(The site is monitored by RSS Feed- so WikiSpam has no chance of survival)-'ÀŠ< -----ÀŠ\ No newline at end of fileÀŠ
+host:1124729473=84.72.114.216
