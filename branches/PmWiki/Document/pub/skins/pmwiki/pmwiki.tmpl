@@ -14,9 +14,11 @@
     alt='$WikiTitle' border='0' /></a></div>
   <div id='wikihead'>
   <form action='$ScriptUrl'>
+    <a href='$ScriptUrl/$[$Group/RecentChanges]'
+      accesskey='$[ak_recentchanges]'>$[Recent Changes]</a> -
     <input type='hidden' name='n' value='$FullName' />
     <input type='hidden' name='action' value='search' />
-    <a href='$ScriptUrl/$[Site/Search]'>$[Search]</a>:
+    <a href='$ScriptUrl/$[$SiteGroup/Search]'>$[Search]</a>:
     <input class='searchbox' type='text' name='q' value='' />
     <input class='searchbutton' type='submit' value='$[Go]' /></form></div>
 <!--/PageHeaderFmt-->
@@ -26,30 +28,22 @@
         <!--wiki:$Group.SideBar $SiteGroup.SideBar--></td>
 <!--/PageLeftFmt-->
       <td id='wikibody' valign='top'>
+        <div id='wikicmds'><!--wiki:$Group.PageActions $SiteGroup.PageActions--></div>
 <!--PageTitleFmt-->
-        <table width='100%' cellspacing='0' cellpadding='0' border='0'><tr>
-        <td id='wikititle'>
+        <div id='wikititle'>
           <div class='pagegroup'><a href='$ScriptUrl/$Group'>$Group</a> /</div>
-          <div class='pagetitle'><a href='$PageUrl'>$Title</a></div></td>
-        <td id='wikicmds'>
-          <a href='$ScriptUrl/$[$Group/RecentChanges]'
-            accesskey='$[ak_recentchanges]'>$[Recent Changes]</a>
-          <a href='$PageUrl?action=print' target='_blank'>$[Printable View]</a>
-          <a href='$PageUrl?action=diff'
-            accesskey='$[ak_history]'>$[Page History]</a>
-          <a href='$PageUrl?action=edit'
-            accesskey='$[ak_edit]'>$[Edit Page]</a></td></tr></table>
+          <h1 class='pagetitle'>$Title</h1></div>
 <!--PageText-->
       </td>
     </tr></table>
 <!--PageFooterFmt-->
   <div id='wikifoot'>
     <div class='footnav'>
-      <a href='$PageUrl?action=edit'>$[Edit Page]</a> -
-      <a href='$PageUrl?action=diff'>$[Page History]</a> -
-      <a href='$PageUrl?action=print' target='_blank'>$[Printable View]</a> -
+      <a href='$PageUrl?action=edit'>$[Edit]</a> -
+      <a href='$PageUrl?action=diff'>$[History]</a> -
+      <a href='$PageUrl?action=print' target='_blank'>$[Print]</a> -
       <a href='$ScriptUrl/$[$Group/RecentChanges]'>$[Recent Changes]</a> -
-      <a href='$ScriptUrl/$[Site/Search]'>$[Search]</a></div>
+      <a href='$ScriptUrl/$[$SiteGroup/Search]'>$[Search]</a></div>
     <div class='lastmod'>$[Page last modified on $LastModified]</div></div>
 <!--/PageFooterFmt-->
 </body>

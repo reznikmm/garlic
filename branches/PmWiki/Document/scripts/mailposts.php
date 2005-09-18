@@ -11,10 +11,6 @@
     the $MailPostsTo variable or the scratch file will grow without
     limit.
 
-    To explicitly enable this feature, execute
-	include_once("scripts/mailposts.php");
-    from config.php somewhere.
-
     Several variables control the functioning of this script:
 
     $MailPostsTo - comma separated list of email recipients
@@ -58,32 +54,33 @@ if (@$MailPostsFrom)
 
 array_push($EditFunctions,'MailPosts');
 
-function MailPosts($pagename,&$page,&$new) {
-  global $IsPagePosted,$MailPostsFile,$MailPostsTimeFmt,$Now,$Newline,
-    $MailPostsItemFmt,$PostTime;
+function MailPosts($pagename, &$page, &$new) {
+  global $IsPagePosted, $MailPostsFile, $MailPostsTimeFmt, $Now,
+    $MailPostsItemFmt, $PostTime;
   if (!$IsPagePosted) return;
-  $fp = @fopen($MailPostsFile,"a");
+  $fp = @fopen($MailPostsFile, "a");
   if ($fp) { 
-    $PostTime = strftime($MailPostsTimeFmt,$Now);
-    fputs($fp,str_replace("\n",$Newline,
-      FmtPageName("$Now $MailPostsItemFmt",$pagename))."\n"); 
+    $PostTime = strftime($MailPostsTimeFmt, $Now);
+    fputs($fp,
+        urlencode(FmtPageName("$Now $MailPostsItemFmt", $pagename))."\n"); 
     fclose($fp); 
   }
 }
 
-if (@$MailPostsTo=="") return;
-$fp = @fopen($MailPostsFile,"r");
+if (@$MailPostsTo == "") return;
+$fp = @fopen($MailPostsFile, "r");
 if (!$fp) return;
 $oldestpost = $Now+1; $mailpost=array();
 while (!feof($fp)) {
-  @(list($t,$p) = explode(' ',rtrim(fgets($fp,1024)),2));
+  $x = urldecode(rtrim(fgets($fp, 1024)));
+  @(list($t,$p) = explode(' ', $x, 2));
   if (!$t) continue;
   if ($p=='#lastmailed') {
     if ($t > $Now-$MailPostsSquelch) { fclose($fp); return; }
     continue;
   }
   Lock(2);
-  array_push($mailpost,str_replace($Newline,"\n",$p)."\n");
+  array_push($mailpost, $p."\n");
   if ($t<$oldestpost) $oldestpost=$t;
 }
 fclose($fp);

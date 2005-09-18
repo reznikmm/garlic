@@ -8,6 +8,8 @@
     This script handles author tracking.
 */
 
+SDV($AuthorNameChars, "- '\\w\\x80-\\xff");
+SDV($AuthorCookie, $CookiePrefix.'author');
 SDV($AuthorCookieExpires,$Now+60*60*24*30);
 SDV($AuthorCookieDir,'/');
 SDV($AuthorGroup,'Profiles');
@@ -15,24 +17,27 @@ SDV($AuthorRequiredFmt,
   "<h3 class='wikimessage'>$[An author name is required.]</h3>");
 Markup('[[~','<[[','/\\[\\[~(.*?)\\]\\]/',"[[$AuthorGroup/$1]]");
 
+$LogoutCookies[] = $AuthorCookie;
+
 if (!isset($Author)) {
   if (isset($_POST['author'])) {
-    $Author = htmlspecialchars(stripmagic($_POST['author']),ENT_QUOTES);
-    setcookie('author',$Author,$AuthorCookieExpires,$AuthorCookieDir);
+    $x = stripmagic($_POST['author']);
+    setcookie($AuthorCookie, $x, $AuthorCookieExpires, $AuthorCookieDir);
   } else {
-    $Author = htmlspecialchars(stripmagic(@$_COOKIE['author']),ENT_QUOTES);
+    $x = stripmagic(@$_COOKIE[$AuthorCookie]);
   }
-  $Author = preg_replace('/(^[^[:alpha:]]+)|[^-\\w ]/','',$Author);
+  $Author = htmlspecialchars(preg_replace("/[^$AuthorNameChars]/", '', $x), 
+                ENT_QUOTES);
 }
 if (!isset($AuthorPage)) $AuthorPage = 
     FmtPageName('$AuthorGroup/$Name', MakePageName($pagename, $Author));
 SDV($AuthorLink,($Author) ? "[[~$Author]]" : '?');
 
 if (IsEnabled($EnableAuthorSignature,1)) {
-  $ROSPatterns['/~~~~/'] = '[[~$Author]] $CurrentTime';
-  $ROSPatterns['/~~~/'] = '[[~$Author]]';
-  Markup('~~~~','<links','/~~~~/',"[[~$Author]] $CurrentTime");
-  Markup('~~~','>~~~~','/~~~/',"[[~$Author]]");
+  $ROSPatterns['/(?<!~)~~~~(?!~)/'] = '[[~$Author]] $CurrentTime';
+  $ROSPatterns['/(?<!~)~~~(?!~)/'] = '[[~$Author]]';
+  Markup('~~~~','<links','/(?<!~)~~~~(?!~)/',"[[~$Author]] $CurrentTime");
+  Markup('~~~','>~~~~','/(?<!~)~~~(?!~)/',"[[~$Author]]");
 }
 if (IsEnabled($EnablePostAuthorRequired,0))
   array_unshift($EditFunctions,'RequireAuthor');

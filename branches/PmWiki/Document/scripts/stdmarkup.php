@@ -17,10 +17,21 @@
 */
 
 ## first we preserve text in [=...=] and [@...@]
-Markup('[=','_begin','/\\[([=@])(.*?)\\1\\]/se',
-    "Keep(\$K0['$1'].PSS('$2').\$K1['$1'])");
+function PreserveText($sigil, $text, $lead) {
+  if ($sigil=='=') return $lead.Keep($text);
+  if (strpos($text, "\n")===false) 
+    return "$lead<code>".Keep($text)."</code>";
+  $text = preg_replace("/^[^\\S\n]*\n/", "\n", substr($lead,1).$text);
+  $text = preg_replace("/\n[^\\S\n]*$/", "\n", $text);
+  return "<pre>".Keep($text)."</pre>";
+}
+
+Markup('[=','_begin',"/(\n[^\\S\n]*)?\\[([=@])(.*?)\\2\\]/se",
+    "PreserveText('$2', PSS('$3'), '$1')");
 Markup('restore','<_end',"/$KeepToken(\\d.*?)$KeepToken/e",
     '$GLOBALS[\'KPV\'][\'$1\']');
+Markup('<:', '>restore',
+  "/<:[^>]*>/", "");
 
 ## remove carriage returns before preserving text
 Markup('\\r','<[=','/\\r/','');
@@ -34,7 +45,7 @@ Markup('{$fmt}','>$[phrase]',
   '/{\\$((Group|Name|Title)(spaced)?|LastModified(By|Host)?|FullName)}/e',
   "FmtPageName('$$1',\$pagename)");
 Markup('{$var}','>{$fmt}',
-  '/{\\$(Version|Author|UrlPage|DefaultName|DefaultGroup|AuthId|SiteGroup)}/e',
+  '/{\\$(Version(Num)?|Auth(or|Id)|UrlPage|Default(Name|Group)|SiteGroup)}/e',
   "\$GLOBALS['$1']");
 Markup('if', 'fulltext',
   "/\\(:(if[^\n]*?):\\)(.*?)(?=\\(:if[^\n]*?:\\)|$)/sei",
@@ -42,8 +53,8 @@ Markup('if', 'fulltext',
 
 ## (:include:)
 Markup('include', '>if',
-  '/\\(:(include\\s+.+?):\\)/ei',
-  "PRR().IncludeText(\$pagename,'$1')");
+  '/\\(:include\\s+(\\S.*?):\\)/ei',
+  "PRR().IncludeText(\$pagename, '$1')");
 
 ## GroupHeader/GroupFooter handling
 Markup('nogroupheader', '>include',
@@ -65,7 +76,7 @@ Markup('nl1','>nl0',"/\\(:nl:\\)/i",'');
 
 ## \\$  (end of line joins)
 Markup('\\$','>nl1',"/\\\\(?>(\\\\*))\n/e",
-  "' '.str_repeat('<br />',strlen('$1'))");
+  "str_repeat('<br />',strlen('$1'))");
 
 ## (:noheader:),(:nofooter:),(:notitle:)...
 Markup('noheader', 'directives',
@@ -219,11 +230,11 @@ Markup('^img', '<block',
 
 #### Block markups ####
 ## process any <:...> markup
-Markup('^<:','>block','/^(<:([^>]+)>)?/e',"Block('$2')");
+Markup('^<:','>block','/^(?=\\s*\\S)(<:([^>]+)>)?/e',"Block('$2')");
 
 # unblocked lines w/block markup become anonymous <:block>
 Markup('^!<:', '<^<:',
-  '/^(?!<:)(?=.*<(form|div|table|p|ul|ol|dl|h[1-6]|blockquote|pre|hr|textarea)\\b)/',
+  '/^(?!<:)(?=.*<\\/?(form|div|table|p|ul|ol|dl|h[1-6]|blockquote|pre|hr|textarea)\\b)/',
   '<:block>');
 
 ## bullet lists
@@ -242,12 +253,12 @@ Markup('^::','block','/^(:+)([^:]+):/','<:dl,$1><dt>$2</dt><dd>');
 ## preformatted text
 Markup('^ ','block','/^(\\s)/','<:pre,1>$1');
 
+## blank lines
+Markup('blank', '<^ ', '/^\\s+$/', '');
+
 ## Q: and A:
 Markup('^Q:', 'block', '/^Q:(.*)$/', "<:block><p class='question'>$1</p>");
-Markup('^A:', 'block', '/^(A:.*)$/', "<:block><p class='answer'>$1</p>");
-
-## blank lines
-Markup('blank','<^ ','/^\\s*$/','<:vspace>');
+Markup('^A:', 'block', '/^A:/', Keep(''));
 
 ## tables
 ## ||cell||, ||!header cell||, ||!caption!||
@@ -287,6 +298,7 @@ function Cells($name,$attr) {
   }
   if ($name == 'table') $MarkupFrame[0]['tattr'] = $attr;
   if (strncmp($name, 'cell', 4) == 0) {
+    if (strpos($attr, "valign=")===false) $attr .= " valign='top'";
     if (!@$MarkupFrame[0]['closeall']['table']) {
        $MarkupFrame[0]['closeall']['table'] = "</td></tr></table>";
        $out[] = "<table $tattr><tr><td $attr>";
@@ -296,25 +308,38 @@ function Cells($name,$attr) {
   return implode('', $out);
 }
 
-Markup('^table', '<block',
+Markup('table', '<block',
   '/^\\(:(table|cell|cellnr|tableend|div|divend)(\\s.*?)?:\\)/ie',
   "Cells('$1',PSS('$2'))");
 Markup('^>>', '<table',
-  '/^&gt;&gt;(.*?)&lt;&lt;(.*)$/',
+  '/^&gt;&gt;(.+?)&lt;&lt;(.*)$/',
   '(:div:)%div $1 apply=div%$2 ');
+Markup('^>><<', '<^>>',
+  '/^&gt;&gt;&lt;&lt;/',
+  '(:divend:)');
 
 #### special stuff ####
 ## (:markup:) for displaying markup examples
+function MarkupMarkup($pagename, $lead, $text) {
+  return "$lead<:block>" .
+    Keep("<table class='markup' align='center'><tr><td class='markup1'><pre>" .
+      wordwrap($text, 70) .  "</pre></td></tr><tr><td class='markup2'>") .
+    "\n$text\n(:divend:)</td></tr></table>\n";
+}
+
 Markup('markup', '<[=',
-  "/(^|\\(:nl:\\))\\(:markup:\\)[^\\S\n]*\\[=(.*?)=\\]/seim",
-  "'$1'.Keep('<table class=\"markup\" align=\"center\"><tr><td class=\"markup\"><pre>'.wordwrap(PSS('$2'),70).'</pre></td></tr><tr><td>').PSS('\n$2\n(:divend:)</td></tr></table>\n')");
+  "/(^|\\(:nl:\\))\\(:markup:\\)[^\\S\n]*\\[([=@])(.*?)\\2\\]/seim",
+  "MarkupMarkup(\$pagename, '$1', PSS('$3'))");
 Markup('markupend', '>markup',
   "/(^|\\(:nl:\\))\\(:markup:\\)[^\\S\n]*\n(.*?)\\(:markupend:\\)/seim",
-  "'$1'.Keep('<table class=\"markup\" align=\"center\"><tr><td class=\"markup\"><pre>'.wordwrap(PSS('$2'),70).'</pre></td></tr><tr><td>').PSS('\n$2\n(:divend:)</td></tr></table>\n')");
+  "MarkupMarkup(\$pagename, '$1', PSS('$2'))");
+
 $HTMLStylesFmt['markup'] = "
   table.markup { border: 2px dotted #ccf; width:90%; }
-  table.markup td { padding-left:10px; padding-right:10px; }
-  td.markup { border-bottom: 1px solid #ccf; }
-  p.question { font-weight:bold; }
+  td.markup1, td.markup2 { padding-left:10px; padding-right:10px; }
+  td.markup1 { border-bottom: 1px solid #ccf; }
+  div.faq { margin-left:2em; }
+  div.faq p.question { margin: 1em 0 0.75em -2em; font-weight:bold; }
+  div.faq hr { margin-left: -2em; }
   ";
 

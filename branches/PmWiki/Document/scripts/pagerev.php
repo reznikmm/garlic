@@ -20,12 +20,12 @@ SDV($DiffMinorFmt, ($DiffShow['minor']=='y') ?
 SDV($DiffSourceFmt, ($DiffShow['source']=='y') ?
   "<a href='\$PageUrl?action=diff&amp;source=n&amp;minor=".$DiffShow['minor']."'>$[Show changes to output]</a>" :
   "<a href='\$PageUrl?action=diff&amp;source=y&amp;minor=".$DiffShow['minor']."'>$[Show changes to markup]</a>");
-SDV($PageDiffFmt,"<h1 class='wikiaction'>$[\$FullName History]</h1>
+SDV($PageDiffFmt,"<h2 class='wikiaction'>$[\$FullName History]</h2>
   <p>$DiffMinorFmt - $DiffSourceFmt</p>
   ");
 SDV($DiffStartFmt,"
       <div class='diffbox'><div class='difftime'>\$DiffTime 
-        \$[by] <span class='diffauthor' title='\$DiffHost'>\$DiffAuthor</span></div>");
+        \$[by] <span class='diffauthor' title='\$DiffHost'>\$DiffAuthor</span> - \$DiffChangeSum</div>");
 SDV($DiffDelFmt['a'],"
         <div class='difftype'>\$[Deleted line \$DiffLines:]</div>
         <div class='diffdel'>");
@@ -49,8 +49,8 @@ SDV($DiffAuthorPageMissingFmt,"\$DiffAuthor");
 SDV($HandleActions['diff'], 'HandleDiff');
 SDV($HandleAuth['diff'], 'read');
 SDV($ActionTitleFmt['diff'], '| $[History]');
-$HTMLStylesFmt[] = "
-  .diffbox { border:1px #999999 solid; margin-top:1.33em; }
+SDV($HTMLStylesFmt['diff'], "
+  .diffbox { width:570px; border-left:1px #999999 solid; margin-top:1.33em; }
   .diffauthor { font-weight:bold; }
   .diffchangesum { font-weight:bold; }
   .difftime { font-family:verdana,sans-serif; font-size:66%; 
@@ -61,7 +61,7 @@ $HTMLStylesFmt[] = "
   .diffdel { border-left:5px #ffff99 solid; padding-left:5px; }
   .diffrestore { clear:both; font-family:verdana,sans-serif; 
     font-size:66%; margin:1.5em 0px; }
-  .diffmarkup { font-family:monospace; } ";
+  .diffmarkup { font-family:monospace; } ");
 
 function PrintDiff($pagename) {
   global $DiffShow,$DiffStartFmt,$TimeFmt,$DiffDelFmt,$DiffAddFmt,
@@ -80,7 +80,7 @@ function PrintDiff($pagename) {
     $diffauthor = @$page["author:$diffgmt"]; 
     if (!$diffauthor) @$diffauthor=$page["host:$diffgmt"];
     if (!$diffauthor) $diffauthor="unknown";
-    $FmtV['$DiffChangeSum'] = @$page["csum:$diffgmt"];
+    $FmtV['$DiffChangeSum'] = htmlspecialchars(@$page["csum:$diffgmt"]);
     $FmtV['$DiffHost'] = @$page["host:$diffgmt"];
     $FmtV['$DiffAuthor'] = $diffauthor;
     $FmtV['$DiffId'] = $k; 

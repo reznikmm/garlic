@@ -43,14 +43,17 @@ function MergeSimulEdits($pagename,&$page,&$new) {
   if (@!$_POST['basetime'] || !PageExists($pagename) ||
     $_POST['basetime']>=$page['time']) return;
   $EnablePost = 0;
-  $MessagesFmt[] = "<p class='editconflict'>The page you are 
-    editing has been modified since you started editing it.  
-    The modifications have been merged into the text below,
-    you may want to verify the results of the merge before
-    pressing save.  Conflicts the system couldn't resolve are
-    bracketed by &lt;&lt;&lt;&lt;&lt;&lt;&lt; and 
-    &gt;&gt;&gt;&gt;&gt;&gt;&gt;.  (<a target='_blank' 
-    href='\$PageUrl?action=diff'>View changes</a>)</p>\n";
+  XLSDV('en', array(
+    'EditConflict' => "The page you are
+      editing has been modified since you started editing it.
+      The modifications have been merged into the text below, 
+      you may want to verify the results of the merge before
+      pressing save.  Conflicts the system couldn't resolve are
+      bracketed by &lt;&lt;&lt;&lt;&lt;&lt;&lt; and
+      &gt;&gt;&gt;&gt;&gt;&gt;&gt;."));
+  $MessagesFmt[] = "<p class='editconflict'>$[EditConflict]
+    (<a target='_blank' href='\$PageUrl?action=diff'>$[View changes]</a>)
+    </p>\n";
   $old = array();
   RestorePage($pagename,$page,$old,"diff:{$_POST['basetime']}");
   $new['text'] = Merge($new['text'],$old['text'],$page['text']);

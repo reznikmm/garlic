@@ -41,19 +41,19 @@ $WikiDir = new PageStore('wiki.d/$FullName');
 $WikiLibDirs = array(&$WikiDir,new PageStore('$FarmD/wikilib.d/$FullName'));
 $InterMapFiles = array("$FarmD/scripts/intermap.txt",
   "$FarmD/local/farmmap.txt", 'local/localmap.txt');
+$Newline = "\263";                                 # deprecated, 2.0.0
 $KeepToken = "\235\235";  
 $K0=array('='=>'','@'=>'<code>');  $K1=array('='=>'','@'=>'</code>');
 $Now=time();
 define('READPAGE_CURRENT', $Now+604800);
 $TimeFmt = '%B %d, %Y, at %I:%M %p';
-$Newline="\262";
 $MessagesFmt = array();
 $BlockMessageFmt = "<h3 class='wikimessage'>$[This post has been blocked by the administrator]</h3>";
 $EditFields = array('text');
 $EditFunctions = array('EditTemplate', 'RestorePage', 'ReplaceOnSave',
   'SaveAttributes', 'PostPage', 'PostRecentChanges', 'PreviewPage');
 $EnablePost = 1;
-$ChangeSummary = stripmagic(@$_REQUEST['csum']);
+$ChangeSummary = substr(stripmagic(@$_REQUEST['csum']), 0, 100);
 $AsSpacedFunction = 'AsSpaced';
 $SpaceWikiWords = 0;
 $LinkWikiWords = 1;
@@ -84,6 +84,7 @@ $LinkPageCreateFmt =
 $UrlLinkFmt = 
   "<a class='urllink' href='\$LinkUrl' rel='nofollow'>\$LinkText</a>";
 umask(002);
+$CookiePrefix = '';
 $SiteGroup = 'Site';
 $DefaultGroup = 'Main';
 $DefaultName = 'HomePage';
@@ -146,10 +147,12 @@ $PageEndFmt = array('</div>',&$HTMLEndFmt);
 $HandleActions = array(
   'browse' => 'HandleBrowse',
   'edit' => 'HandleEdit', 'source' => 'HandleSource', 
-  'attr'=>'HandleAttr', 'postattr' => 'HandlePostAttr');
+  'attr' => 'HandleAttr', 'postattr' => 'HandlePostAttr',
+  'logout' => 'HandleLogoutA');
 $HandleAuth = array(
   'browse' => 'read', 'source' => 'read',
-  'edit' => 'edit', 'attr' => 'attr', 'postattr' => 'attr');
+  'edit' => 'edit', 'attr' => 'attr', 'postattr' => 'attr',
+  'logout' => 'read');
 $ActionTitleFmt = array(
   'edit' => '| $[Edit]',
   'attr' => '| $[Attributes]');
@@ -280,6 +283,8 @@ function stripmagic($x)
   { return get_magic_quotes_gpc() ? stripslashes($x) : $x; }
 function PSS($x) 
   { return str_replace('\\"','"',$x); }
+function PVS($x) 
+  { return preg_replace("/\n[^\\S\n]*(?=\n)/", "\n<:vspace>", $x); }
 function PZZ($x,$y='') { return ''; }
 function PRR($x='') { $GLOBALS['RedoMarkupLine']++; return $x; }
 function PUE($x)
@@ -490,8 +495,8 @@ function XLPage($lang,$p) {
       $i18n = preg_replace('/[^-\\w]/','',$xl['xlpage-i18n']);
       include_once("$FarmD/scripts/xlpage-$i18n.php");
     }
-    if ($xl['Locale']) setlocale(LC_ALL,$xl['Locale']);
-    if ($xl['TimeFmt']) $TimeFmt=$xl['TimeFmt'];
+    if (@$xl['Locale']) setlocale(LC_ALL,$xl['Locale']);
+    if (@$xl['TimeFmt']) $TimeFmt=$xl['TimeFmt'];
     array_unshift($XLLangs,$lang);
     XLSDV($lang,$xl);
   }
@@ -527,30 +532,37 @@ class PageStore {
     return FmtPageName($dfmt, $pagename);
   }
   function read($pagename, $since=0) {
-    $newline = "\262";
+    $newline = '';
+    $urlencoded = false;
     $pagefile = $this->pagefile($pagename);
-    if ($pagefile && $fp=@fopen($pagefile,"r")) {
+    if ($pagefile && ($fp=@fopen($pagefile, "r"))) {
       while (!feof($fp)) {
-        $line = fgets($fp,4096);
-        while (substr($line,-1,1)!="\n" && !feof($fp)) 
-          { $line .= fgets($fp,4096); }
-        @list($k,$v) = explode('=',rtrim($line),2);
-        if ($k == 'newline') { $newline = $v; continue; }
-        if ($since > 0) {
-          if ($k == 'version') $ordered = (strpos($v, 'ordered=') !== false); 
-          if (preg_match('/:(\\d+)/', $k, $m) && $m[1] < $since) {
-            if ($ordered) break;
-            continue;
-          }
+        $line = fgets($fp, 4096);
+        while (substr($line, -1, 1) != "\n" && !feof($fp)) 
+          { $line .= fgets($fp, 4096); }
+        $line = rtrim($line);
+        if ($urlencoded) $line = urldecode(str_replace('+', '%2b', $line));
+        @list($k,$v) = explode('=', $line, 2);
+        if (!$k) continue;
+        if ($k == 'version') { 
+          $ordered = (strpos($v, 'ordered=1') !== false); 
+          $urlencoded = (strpos($v, 'urlencoded=1') !== false); 
+          if (strpos($v, 'pmwiki-0.')) $newline="\262";
         }
-        if ($k) $page[$k] = str_replace($newline,"\n",$v);
+        if ($k == 'newline') { $newline = $v; continue; }
+        if ($since > 0 && preg_match('/:(\\d+)/', $k, $m) && $m[1] < $since) {
+          if ($ordered) break;
+          continue;
+        }
+        if ($newline) $v = str_replace($newline, "\n", $v);
+        $page[$k] = $v;
       }
       fclose($fp);
     }
     return @$page;
   }
   function write($pagename,$page) {
-    global $Now,$Version,$Newline;
+    global $Now, $Version, $NewlineXXX;
     $page['name'] = $pagename;
     $page['time'] = $Now;
     $page['host'] = $_SERVER['REMOTE_ADDR'];
@@ -564,11 +576,14 @@ class PageStore {
     if (!file_exists("$dir/.htaccess") && $fp = @fopen("$dir/.htaccess", "w")) 
       { fwrite($fp, "Order Deny,Allow\nDeny from all\n"); fclose($fp); }
     if ($pagefile && ($fp=fopen("$pagefile,new","w"))) {
-      $x = "version=$Version ordered=1\nnewline=$Newline\n";
+      $r0 = array('%', "\n", '<');
+      $r1 = array('%25', '%0a', '%3c');
+      $x = "version=$Version ordered=1 urlencoded=1\n";
+      if ($NewlineXXX) { $r1[1] = $NewlineXXX; $x .= "newline=$NewlineXXX\n"; }
       $s = true && fputs($fp, $x); $sz = strlen($x);
       foreach($page as $k=>$v) 
         if ($k > '' && $k{0} != '=') {
-          $x = str_replace("\n", $Newline, "$k=$v") . "\n";
+          $x = str_replace($r0, $r1, "$k=$v") . "\n";
           $s = $s && fputs($fp, $x); $sz += strlen($x);
         }
       $s = fclose($fp) && $s;
@@ -588,7 +603,7 @@ class PageStore {
   function delete($pagename) {
     global $Now;
     $pagefile = $this->pagefile($pagename);
-    @rename($pagefile,"$pagefile,$Now");
+    @rename($pagefile,"$pagefile,del-$Now");
   }
   function ls($pats=NULL) {
     global $GroupPattern, $NamePattern;
@@ -745,45 +760,50 @@ function CondText($pagename,$condspec,$condtext) {
   }
   return $condtext;
 }
-  
-function IncludeText($pagename,$inclspec) {
-  global $MaxIncludes,$IncludeBadAnchorFmt,$InclCount,$FmtV;
+
+
+function IncludeText($pagename, $inclspec) {
+  global $MaxIncludes, $InclCount;
   SDV($MaxIncludes,50);
-  SDV($IncludeBadAnchorFmt,"include:\$FullName - #\$BadAnchor \$[not found]\n");
   $npat = '[[:alpha:]][-\\w]*';
   if ($InclCount++>=$MaxIncludes) return Keep($inclspec);
-  if (preg_match("/^include\\s+([^#\\s]+)(.*)$/",$inclspec,$match)) {
-    @list($inclstr,$inclname,$opts) = $match;
-    $inclname = MakePageName($pagename,$inclname);
-    if ($inclname==$pagename) return '';
-    $inclpage = RetrieveAuthPage($inclname, 'read', false, READPAGE_CURRENT);
-    $itext=@$inclpage['text'];
-    foreach(preg_split('/\\s+/',$opts) as $o) {
-      if (preg_match("/^#($npat)?(\\.\\.)?(#($npat)?)?$/",$o,$match)) {
-        @list($x,$aa,$dots,$b,$bb)=$match;
-        if (!$dots && !$b) $bb=$npat;
-        if ($b=='#') $bb=$npat;
+  $args = ParseArgs($inclspec);
+  while (count($args['#'])>0) {
+    $k = array_shift($args['#']); $v = array_shift($args['#']);
+    if ($k=='') {
+      preg_match('/^([^#\\s]*)(.*)$/', $v, $match);
+      if ($match[1]) {                                 # include a page
+        if (isset($itext)) continue;
+        $iname = MakePageName($pagename, $match[1]);
+        if (!PageExists($iname)) continue;
+        $ipage = RetrieveAuthPage($iname, 'read', false, READPAGE_CURRENT);
+        $itext = @$ipage['text'];
+      }
+      if (preg_match("/^#($npat)?(\\.\\.)?(#($npat)?)?$/", $match[2], $m)) {
+        @list($x, $aa, $dots, $b, $bb) = $m;
+        if (!$dots && !$b) $bb = $npat;
+        if ($b == '#') $bb = $npat;
         if ($aa)
           $itext=preg_replace("/^.*?([^\n]*\\[\\[#$aa\\]\\])/s",'$1',$itext,1);
         if ($bb)
           $itext=preg_replace("/(.)[^\n]*\\[\\[#$bb\\]\\].*$/s",'$1',$itext,1);
-        continue;
-      } 
-      if (preg_match('/^(lines?|paras?)=(\\d*)(\\.\\.(\\d*))?$/',
-          $o,$match)) {
-        @list($x,$unit,$a,$dots,$b) = $match;
-        $upat = ($unit{0} == 'p') ? ".*?(\n\\s*\n|$)" : "[^\n]*\n";
-        if (!$dots) { $b=$a; $a=0; }
-        if ($a>0) $a--;
-        $itext=preg_replace("/^(($upat)\{0,$b}).*$/s",'$1',$itext,1);
-        $itext=preg_replace("/^($upat)\{0,$a}/s",'',$itext,1); 
-        continue;
       }
+      continue;
     }
-    return htmlspecialchars($itext,ENT_NOQUOTES);
+    if (in_array($k, array('line', 'lines', 'para', 'paras'))) {
+      preg_match('/^(\\d*)(\\.\\.(\\d*))?$/', $v, $match);
+      @list($x, $a, $dots, $b) = $match;
+      $upat = ($k{0} == 'p') ? ".*?(\n\\s*\n|$)" : "[^\n]*\n";
+      if (!$dots) { $b=$a; $a=0; }
+      if ($a>0) $a--;
+      $itext=preg_replace("/^(($upat)\{0,$b}).*$/s",'$1',$itext,1);
+      $itext=preg_replace("/^($upat)\{0,$a}/s",'',$itext,1);
+      continue;
+    }
   }
-  return Keep($inclspec);
+  return PVS(htmlspecialchars(@$itext, ENT_NOQUOTES));
 }
+
 
 function Block($b) {
   global $BlockMarkups,$HTMLVSpace,$HTMLPNewline,$MarkupFrame;
@@ -840,13 +860,13 @@ function FormatTableRow($x) {
     for ($colspan=1;$i+$colspan<count($td);$colspan++) 
       if ($td[$colspan+$i]!='') break;
     if ($colspan>1) { $attr .= " colspan='$colspan'"; }
-    $y .= "<$t $attr>".$td[$i]."</$t>";
+    $y .= "<$t $attr>".trim($td[$i])."</$t>";
   }
   if ($t=='caption') return "<:table,1>$y";
-  if ($MarkupFrame[0]['cs'][0] != 'table') $rowcount = 0; else $rowcount++;
+  if (@$MarkupFrame[0]['cs'][0] != 'table') $rowcount = 0; else $rowcount++;
   $FmtV['$TableRowCount'] = $rowcount + 1;
   $FmtV['$TableRowIndex'] = ($rowcount % $TableRowIndexMax) + 1;
-  $trattr = FmtPageName($TableRowAttrFmt, $pagename);
+  $trattr = FmtPageName($TableRowAttrFmt, '');
   return "<:table,1><tr $trattr>$y</tr>";
 }
 
@@ -954,7 +974,7 @@ function BuildMarkupRules() {
   if (!$MarkupRules) {
     uasort($MarkupTable,'mpcmp');
     foreach($MarkupTable as $id=>$m) 
-      if ($m['pat']) 
+      if (@$m['pat']) 
         $MarkupRules[str_replace('\\L',$LinkPattern,$m['pat'])]=$m['rep'];
   }
   return $MarkupRules;
@@ -970,7 +990,8 @@ function MarkupToHTML($pagename,$text) {
   array_unshift($MarkupFrame,$MarkupFrameBase);
   $MarkupFrame[0]['wwcount'] = $WikiWordCount;
   $markrules = BuildMarkupRules();
-  foreach((array)$text as $l) $lines[] = htmlspecialchars($l,ENT_NOQUOTES);
+  foreach((array)$text as $l) 
+    $lines[] = PVS(htmlspecialchars($l, ENT_NOQUOTES));
   $lines[] = '(:closeall:)';
   $out = array();
   while (count($lines)>0) {
@@ -985,7 +1006,7 @@ function MarkupToHTML($pagename,$text) {
     if ($x>'') $out[] = "$x\n";
   }
   $out = implode('',(array)$out);
-  foreach((array)($MarkupFrame[0]['posteval']) as $v) eval($v);
+  foreach((array)(@$MarkupFrame[0]['posteval']) as $v) eval($v);
   array_shift($MarkupFrame);
   StopWatch('MarkupToHTML end');
   return $out;
@@ -1020,7 +1041,7 @@ function HandleBrowse($pagename, $auth = 'read') {
 # with the contents of another page.
 function EditTemplate($pagename, &$page, &$new) {
   global $EditTemplatesFmt;
-  if ($new['text'] > '') return;
+  if (@$new['text'] > '') return;
   if (@$_REQUEST['template'] && PageExists($_REQUEST['template'])) {
     $p = RetrieveAuthPage($_REQUEST['template'], 'read', false,
              READPAGE_CURRENT);
@@ -1091,12 +1112,12 @@ function SaveAttributes($pagename,&$page,&$new) {
 
 function PostPage($pagename, &$page, &$new) {
   global $DiffKeepDays, $DiffFunction, $DeleteKeyPattern, $EnablePost,
-    $Now, $Author, $WikiDir, $IsPagePosted, $Newline;
+    $Now, $Author, $WikiDir, $IsPagePosted, $NewlineXXX;
   SDV($DiffKeepDays,3650);
   SDV($DeleteKeyPattern,"^\\s*delete\\s*$");
   $IsPagePosted = false;
   if ($EnablePost) {
-    $new['text'] = str_replace($Newline, "\n", $new['text']);
+    if (@$NewlineXXX) $new['text']=str_replace($NewlineXXX,"\n",$new['text']);
     if ($new['text']==@$page['text']) { $IsPagePosted=true; return; }
     $new["author"]=@$Author;
     $new["author:$Now"] = @$Author;
@@ -1151,7 +1172,7 @@ function HandleEdit($pagename, $auth = 'edit') {
   global $IsPagePosted, $EditFields, $ChangeSummary, $EditFunctions, 
     $EnablePost, $FmtV, $Now, 
     $PageEditForm, $HandleEditFmt, $PageStartFmt, $PageEditFmt, $PageEndFmt;
-  if ($_POST['cancel']) { Redirect($pagename); return; }
+  if (@$_POST['cancel']) { Redirect($pagename); return; }
   Lock(2);
   $IsPagePosted = false;
   $page = RetrieveAuthPage($pagename, $auth, true);
@@ -1248,26 +1269,27 @@ function PmWikiAuth($pagename, $level, $authprompt=true, $since=0) {
     if (!$sid) session_write_close();
   }
   foreach($passwd as $lv => $a) {
-    if (!$a) { $page['=auth'][$lv]++; continue; }
+    if (!$a) { @$page['=auth'][$lv]++; continue; }
     foreach((array)$a as $pwchal) {
       if ($AuthId && strncmp($pwchal, 'id:', 3) == 0) {
         $idlist = explode(',', substr($pwchal, 3));
         foreach($idlist as $id) {
           if ($id == $AuthId || $id == '*') 
-            { $page['=auth'][$lv]++; continue 3; }
+            { @$page['=auth'][$lv]++; continue 3; }
           if ($id == "-$AuthId") { continue 3; }
         }
       }
-      if ($pwchal == '' || crypt($AllowPassword, $pwchal) == $pwchal) 
-        { $page['=auth'][$lv]++; continue 2; }
+      if ($pwchal == '' || $pwchal == 'nopass:' 
+          || crypt($AllowPassword, $pwchal) == $pwchal) 
+        { @$page['=auth'][$lv]++; continue 2; }
       foreach ($authpw as $pwresp)
         if (crypt($pwresp, $pwchal) == $pwchal)
-          { $page['=auth'][$lv]++; continue 3; }
+          { @$page['=auth'][$lv]++; continue 3; }
     }
   }
-  if ($page['=auth']['admin']) 
-    foreach($passwd as $lv=>$a) $page['=auth'][$lv]++;
-  if ($page['=auth'][$level]) return $page;
+  if (@$page['=auth']['admin']) 
+    foreach($passwd as $lv=>$a) @$page['=auth'][$lv]++;
+  if (@$page['=auth'][$level]) return $page;
   if (!$authprompt) return false;
   PCache($pagename, $page);
   $postvars = '';
@@ -1279,19 +1301,19 @@ function PmWikiAuth($pagename, $level, $authprompt=true, $since=0) {
   }
   $FmtV['$PostVars'] = $postvars;
   SDV($AuthPromptFmt,array(&$PageStartFmt,
-    "<p><b>Password required</b></p>
+    "<p><b>$[Password required]</b></p>
       <form name='authform' action='{$_SERVER['REQUEST_URI']}' method='post'>
-        Password: <input tabindex='1' type='password' name='authpw' value='' />
+        $[Password]: <input tabindex='1' type='password' name='authpw' 
+          value='' />
         <input type='submit' value='OK' />\$PostVars</form>
-        <script language='javascript'><!--
+        <script language='javascript' type='text/javascript'><!--
           document.authform.authpw.focus() //--></script>", &$PageEndFmt));
   PrintFmt($pagename,$AuthPromptFmt);
   exit;
 }
 
-
 function PrintAttrForm($pagename) {
-  global $PageAttributes, $PCache;
+  global $PageAttributes, $PCache, $FmtV;
   echo FmtPageName("<form action='\$PageUrl' method='post'>
     <input type='hidden' name='action' value='postattr' />
     <input type='hidden' name='n' value='\$FullName' />
@@ -1299,17 +1321,20 @@ function PrintAttrForm($pagename) {
   $page = $PCache[$pagename];
   foreach($PageAttributes as $attr=>$p) {
     $prompt = FmtPageName($p, $pagename);
-    $setting = $page[$attr];
-    $value = $page[$attr];
+    $setting = @$page[$attr];
+    $value = @$page[$attr];
     if (strncmp($attr, 'passwd', 6) == 0) {
       $a = substr($attr, 6);
       $value = '';
       $setting = implode(' ', 
         preg_replace('/^(?!\\w+:).+$/', '****', (array)$page['=passwd'][$a]));
-      if ($page['=pwsource'][$a]=='group' || $page['=pwsource'][$a]=='site')
-        $setting = "(set by {$page['=pwsource'][$a]}) $setting";
-      if (strncmp($page['=pwsource'][$a], 'cascade:', 8) == 0)
-        $setting = "(using ".substr($page['=pwsource'][$a], 8)." password)";
+      $pwsource = $page['=pwsource'][$a];
+      $FmtV['$PWSource'] = $pwsource;
+      $FmtV['$PWCascade'] = substr($pwsource, 8);
+      if ($pwsource == 'group' || $pwsource == 'site')
+        $setting = FmtPageName('$[(set by $PWSource)]', $pagename)." $setting";
+      if (strncmp($pwsource, 'cascade:', 8) == 0)
+        $setting = FmtPageName('$[(using $PWCascade password)]', $pagename);
      }
     $prompt = FmtPageName($p,$pagename);
     echo "<tr><td>$prompt</td>
@@ -1324,11 +1349,13 @@ function HandleAttr($pagename, $auth = 'attr') {
   $page = RetrieveAuthPage($pagename, $auth, true, READPAGE_CURRENT);
   if (!$page) { Abort("?unable to read $pagename"); }
   PCache($pagename,$page);
+  XLSDV('en', array('EnterAttributes' =>
+    "Enter new attributes for this page below.  Leaving a field blank
+    will leave the attribute unchanged.  To clear an attribute, enter
+    'clear'."));
   SDV($PageAttrFmt,"<div class='wikiattr'>
     <h1 class='wikiaction'>$[\$FullName Attributes]</h1>
-    <p>Enter new attributes for this page below.  Leaving a field blank
-    will leave the attribute unchanged.  To clear an attribute, enter
-    'clear'.</p></div>");
+    <p>$[EnterAttributes]</p></div>");
   SDV($HandleAttrFmt,array(&$PageStartFmt,&$PageAttrFmt,
     'function:PrintAttrForm',&$PageEndFmt));
   PrintFmt($pagename,$HandleAttrFmt);
@@ -1361,4 +1388,19 @@ function HandlePostAttr($pagename, $auth = 'attr') {
   Redirect($pagename);
   exit;
 } 
+
+
+function HandleLogoutA($pagename, $auth = 'read') {
+  global $LogoutRedirectFmt, $LogoutCookies;
+  SDV($LogoutRedirectFmt, '$FullName');
+  SDV($LogoutCookies, array());
+  @session_start();
+  $_SESSION = array();
+  if (isset($_COOKIE[session_name()]))
+    setcookie(session_name(), '', time()-43200, '/');
+  foreach ($LogoutCookies as $c)
+    if (isset($_COOKIE[$c])) setcookie($c, '', time()-43200, '/');
+  session_destroy();
+  Redirect(FmtPageName($LogoutRedirectFmt, $pagename));
+}
 
