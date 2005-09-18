@@ -171,7 +171,8 @@ function HandleDownload($pagename, $auth = 'read') {
 }  
  
 function HandlePostUpload($pagename, $auth = 'upload') {
-  global $UploadVerifyFunction,$UploadFileFmt,$LastModFile;
+  global $UploadVerifyFunction, $UploadFileFmt, $LastModFile, 
+    $EnableUploadVersions, $Now;
   $page = RetrieveAuthPage($pagename, $auth, true, READPAGE_CURRENT);
   if (!$page) Abort("?cannot upload to $pagename");
   $uploadfile = $_FILES['uploadfile'];
@@ -185,6 +186,8 @@ function HandlePostUpload($pagename, $auth = 'upload') {
   if ($result=='') {
     $filedir = preg_replace('#/[^/]*$#','',$filepath);
     mkdirp($filedir);
+    if (IsEnabled($EnableUploadVersions, 0))
+      @rename($filepath, "$filepath,$Now");
     if (!move_uploaded_file($uploadfile['tmp_name'],$filepath))
       { Abort("?cannot move uploaded file to $filepath"); return; }
     fixperms($filepath,0444);

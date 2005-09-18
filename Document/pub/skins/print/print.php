@@ -18,16 +18,12 @@
         of GroupHeader and GroupFooter
 */
 
-global $LinkPageExistsFmt, $UrlLinkTextFmt, 
-  $GroupPrintHeaderFmt, $GroupPrintFooterFmt,
-  $GroupHeaderFmt, $GroupFooterFmt;
+global $LinkPageExistsFmt, $GroupPrintHeaderFmt, 
+  $GroupPrintFooterFmt, $GroupHeaderFmt, $GroupFooterFmt;
 
 $LinkPageExistsFmt = "<a class='wikilink' href='\$PageUrl?action=print'>\$LinkText</a>";
-$UrlLinkTextFmt = "<cite class='urllink'>\$LinkText</cite> [<a class='urllink' href='\$Url'>\$Url</a>]";
 SDV($GroupPrintHeaderFmt,'(:include $Group.GroupPrintHeader:)(:nl:)');
 SDV($GroupPrintFooterFmt,'(:nl:)(:include $Group.GroupPrintFooter:)');
 $GroupHeaderFmt = $GroupPrintHeaderFmt;
 $GroupFooterFmt = $GroupPrintFooterFmt;
-#$DoubleBrackets["/\\[\\[mailto:($UrlPathPattern)(.*?)\\]\\]/"] = 
-#  "''\$2'' [mailto:\$1]";
 

@@ -19,11 +19,23 @@
     'setprefs' cookie from the browser to load the preference settings.
 */
 
+SDV($PrefsCookie, $CookiePrefix.'setprefs');
 SDV($PrefsCookieExpires, $Now + 60 * 60 * 24 * 365);
-if (@$_COOKIE['setprefs']) $sp = $_COOKIE['setprefs'];
+$LogoutCookies[] = $PrefsCookie;
+
+$sp = '';
+if (@$_COOKIE[$PrefsCookie]) $sp = $_COOKIE[$PrefsCookie];
 if (isset($_GET['setprefs'])) {
   $sp = $_GET['setprefs'];
-  setcookie('setprefs', $sp, $PrefsCookieExpires, '/');
+  setcookie($PrefsCookie, $sp, $PrefsCookieExpires, '/');
 }
-if (PageExists($sp)) XLPage('prefs', $sp);
+if ($sp && PageExists($sp)) XLPage('prefs', $sp);
+
+XLSDV('en', array(
+  'ak_edit' => 'e',
+  'ak_history' => 'h',
+  'ak_recentchanges' => 'c',
+  'ak_save' => 's',
+  'ak_saveedit' => 'u',
+  'ak_preview' => 'p'));
 

@@ -23,16 +23,19 @@
     directly in the $AuthUser array, such as:
         $AuthUser['pmichaud'] = crypt('secret');
 
+    To authenticate against an LDAP server, put the url for
+    the server in $AuthUser['ldap'], as in:
+        $AuthUser['ldap'] = 'ldap://ldap.example.com/ou=People,o=example?uid';
 */
 
 # Let's set up an authorization prompt that includes usernames.
 SDV($AuthPromptFmt, array(&$PageStartFmt,
-  "<p><b>Password required</b></p>
+  "<p><b>$[Password required]</b></p>
     <form name='authform' action='{$_SERVER['REQUEST_URI']}' method='post'>
-      Name: <input tabindex='1' type='text' name='authid' value='' /><br />
-      Password: <input tabindex='2' type='password' name='authpw' value='' />
+      $[Name]: <input tabindex='1' type='text' name='authid' value='' /><br />
+      $[Password]: <input tabindex='2' type='password' name='authpw' value='' />
       <input type='submit' value='OK' />\$PostVars</form>
-      <script language='javascript'><!--
+      <script language='javascript' type='text/javascript'><!--
         document.authform.authid.focus() //--></script>", &$PageEndFmt));
 
 # This is a helper function called when someone meets the
@@ -74,6 +77,28 @@ foreach((array)($AuthUser['htpasswd']) as $f) {
   fclose($fp);
 }
 
+# LDAP authentication.  
+if ($AuthUser['ldap'] &&
+    preg_match('!ldap://([^:]+)(?::(\d+))?/(.+)$!', 
+        $AuthUser['ldap'], $match)) {
+  list($z, $server, $port, $path) = $match;
+  list($basedn, $attr, $sub) = explode('?', $path);
+  if (!$port) $port=389;
+  if (!$attr) $attr = 'uid';
+  if (!$sub) $sub = 'one';
+  $ds = ldap_connect($server, $port);
+  ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
+  if (ldap_bind($ds)) {
+    $fn = ($sub == 'sub') ? 'ldap_search' : 'ldap_list';
+    $sr = $fn($ds, $basedn, "($attr=$id)", array($attr));
+    $x = ldap_get_entries($ds, $sr);
+    if ($x['count'] == 1) {
+      $dn = $x[0]['dn'];
+      if (ldap_bind($ds, $dn, $pw)) AuthenticateUser($id);
+    }
+  }
+  ldap_close($ds);
+}
 
 #  The _crypt function provides support for SHA1 encrypted passwords 
 #  (keyed by '{SHA}') and Apache MD5 encrypted passwords (keyed by 

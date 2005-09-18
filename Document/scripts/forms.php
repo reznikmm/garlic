@@ -8,7 +8,8 @@
 
 # $InputAttrs are the attributes we allow in output tags
 SDV($InputAttrs, array('name', 'value', 'id', 'class', 'rows', 'cols', 
-  'checked', 'size', 'action', 'method', 'accesskey'));
+  'size', 'maxlength', 'action', 'method', 'accesskey', 
+  'checked', 'disabled', 'readonly', 'enctype'));
 
 # Set up formatting for text, submit, hidden, radio, etc. types
 foreach(array('text', 'submit', 'hidden', 'password', 'radio', 'checkbox',
@@ -36,10 +37,12 @@ function InputMarkup($pagename, $type, $args) {
   global $InputTags, $InputAttrs, $FmtV;
   if (!$InputTags[$type]) return "(:input $type $args:)";
   $opt = array_merge($InputTags[$type], ParseArgs($args));
-  $args = $opt[':args'];
+  $args = @$opt[':args'];
   if (!$args) $args = array('name', 'value');
-  while (count($opt['']) > 0 && count($args) > 0) 
+  while (count(@$opt['']) > 0 && count($args) > 0) 
     $opt[array_shift($args)] = array_shift($opt['']);
+  foreach ((array)@$opt[''] as $a) 
+    if (!isset($opt[$a])) $opt[$a] = $a;
   $attr = array();
   foreach ($InputAttrs as $a) {
     if (!isset($opt[$a])) continue;
@@ -95,7 +98,7 @@ SDVA($InputTags['e_author'], array(
   'name' => 'author', 'value' => $Author));
 SDVA($InputTags['e_changesummary'], array(
   ':html' => "<input type='text' \$InputFormArgs />",
-  'name' => 'csum', 'size' => '60',
+  'name' => 'csum', 'size' => '60', 'maxlength' => '100',
   'value' => htmlspecialchars(stripmagic(@$_POST['csum']), ENT_QUOTES)));
 SDVA($InputTags['e_minorcheckbox'], array(
   ':html' => "<input type='checkbox' \$InputFormArgs />",
