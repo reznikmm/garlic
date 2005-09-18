@@ -1,0 +1,9 @@
+version=pmwiki-2.0.beta55 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.10) Gecko/20050716 Firefox/1.0.6
+author=Pm
+host=24.1.26.255
+name=PmWiki.DesignNotes
+rev=14
+targets=PmWiki.PmWikiPhilosophy,PmWiki.MailingLists,PmWiki.PmWiki,PmWiki.SimultaneousEdits,PmWiki.DocumentationIndex,PmWiki.Glossary
+text=Here are some of the features and notes about PmWiki's design decisions.  Many of these derive directly from the [[PmWikiPhilosophy]] and lots of discussion on the [[mailing lists]].%0a%0a* PmWiki:FlatFileAdvantages - why PmWiki uses flat files to store pages instead of an SQL database%0a* PmWiki:HierarchicalGroups - why PmWiki doesn't support nested groups%0a* PmWiki:PageLocking - how PmWiki works without locking pages (see also [[simultaneous edits]])%0a* PmWiki:SearchImprovements - why PmWiki has a native search engine%0a* PmWiki:FilePermissions - some information about PmWiki's file permission settings%0a%0a%25trail%25 %3c%3c|[[DocumentationIndex]]|>>
+time=1125531378
