@@ -1,0 +1,11 @@
+version=pmwiki-2.0.beta54 ordered=1
+newline=²
+agent=Mozilla/5.0 (Windows; U; Win98; en-US; rv:1.7.8) Gecko/20050511 Firefox/1.0.4
+author=HaganFox
+host=216.161.175.221
+name=PmWiki.CreatingNewPages
+rev=16
+targets=PmWiki.Links,PmWiki.WikiWikiWeb,PmWiki.PmWiki,Main.HomePage,Main.WikiSandbox,PmWiki.WikiWords,PmWiki.WikiGroup,PmWiki.BasicEditing,PmWiki.DocumentationIndex
+text=(:title Creating New Pages:)²The ability to easily create new pages is a common feature of most [[WikiWikiWeb]] systems, including PmWiki.  First, you should know that every page has a name of some sort -- for example, the name of this page is "`CreatingNewPages".  Placing the name of a page in double brackets (e.g., [@[[Creating new pages]]@]) automatically [[Links | creates a link]] to a page with that name, or is followed by a "?" if the named page doesn't exist.  Clicking on the "?" takes you to a form to be able to create the new page.²²Thus, a simple mechanism to create a new page is to simply edit an existing page and add a link to the page you want to create, such as [@[[my new page]]@].  ([[Main.HomePage]] and [[Main.WikiSandbox]] are good places in which to create initial links.) Then, after saving the changes to the existing page, click on the "?" following your link to bring up a form for creating your new page.  Enter the text of your new page in the form, press Save, and you're done!²²In addition to using the double-bracket links above, many PmWiki sites also recognize [[WikiWords]], which are simply sequences of capitalized words joined together.  On such sites, WikiWords simply become links to pages of the same name without requiring the brackets.²²Another way to create a new page:  In your browser's URL field, replace the name of the current page with the name of the page you wish to create, and hit Enter or do whatever you would normally do to go to a new location.  This will bring up a new page with the text "Describe <page name> here."  Click on the "Edit Page" link to edit and save your new page.²²Try to use descriptive words to name your new pages to make the contents clear to the users.  ²²PmWiki supports the notion of organizing sets of related pages into groups; see [[wiki group]]s for information on creating new groups and linking to pages in other groups.²²%trail%<<|[[Documentation Index]]|>>
+time=1124069021
+title=Creating New Pages

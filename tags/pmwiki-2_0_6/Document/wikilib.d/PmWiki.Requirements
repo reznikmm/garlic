@@ -1,0 +1,9 @@
+version=pmwiki-2.0.beta55 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.10) Gecko/20050716 Firefox/1.0.6
+author=Pm
+host=24.1.26.255
+name=PmWiki.Requirements
+rev=18
+targets=PmWiki.PmWiki,PmWiki.DocumentationIndex
+text=%25audience%25 administrators (basic)%0a%0aPrerequisites for running the PmWiki wiki engine:%0a# [[http://www.php.net/ | PHP]] 4.1 or later%0a# Some sort of webserver that can run PHP scripts.%0a%0aPmWiki has been reported to work with the following OS/webserver combinations:%0a* Apache 1.3 or 2.0, on roughly anything (Unix, Linux, Windows, and Mac OS/X)%0a* Microsoft Internet Information Server, on Windows%0a%0aPmWiki has been reported not to work on:%0a* `MacOS 8.6 (this is just hearsay and rumors, so we'd be glad to hear something definite)%0a%0aThe [[(Cookbook:)Standalone]] recipe provides a special, bare-bones webserver application that can be used to run PmWiki in places where another webserver isn't available.%0a%0a%3c%3c|[[DocumentationIndex]]|>>
+time=1125519295
