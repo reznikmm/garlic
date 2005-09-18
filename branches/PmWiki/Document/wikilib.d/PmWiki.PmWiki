@@ -1,9 +1,4 @@
-version=pmwiki-2.0.devel1
-newline=²
-version=
-text=PmWiki is a [[WikiWikiWeb]] system developed by [[Patrick Michaud]] in the PHP scripting language.  PmWiki has been primarily designed as a tool to support easy, collaborative authoring and maintenance of web sites.  ²²This site is running {$Version}.  The software is freely available under the GNU Public License and may be downloaded from http://www.pmichaud.com/pub/pmwiki.  Documentation is available via the [[documentation index]].²²PmWiki is a registered trademark of Patrick R. Michaud (http://www.pmichaud.com).²²
-time=1093547499
+version=pmwiki-2.0.beta55 ordered=1 urlencoded=1
 name=PmWiki.PmWiki
-host=24.1.26.221
-agent=Mozilla/5.0 (Windows; U; Windows NT 5.0; en-US; rv:1.7) Gecko/20040707 Firefox/0.8
-rev=5
+text=PmWiki is a [[wiki(WikiWeb)]]-based system for collaborative creation and maintenance of websites.%0a%0aPmWiki pages look and act like normal web pages, except they have an "Edit" link that makes it easy to modify existing pages and add new pages into the website, using [[basic editing]] rules. You do not need to know or use any HTML or CSS.  Page editing can be left open to the public or restricted to small groups of authors.%0a%0aPmWiki is written in PHP and distributed under the General Public License.  It is designed to be simple to install, customize, and maintain for a variety of applications. This site is running {$Version}.%0a%0aPmWiki is a registered trademark of [[http://www.pmichaud.com | Patrick R. Michaud ]].%0a%0aPmWiki's home on the web is at [[(http://)pmwiki.org(/)]]%0a%0a
+time=1125578870
