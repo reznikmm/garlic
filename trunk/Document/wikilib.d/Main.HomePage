@@ -1,10 +1,9 @@
-version=pmwiki-2.0.beta26
-newline=²
-text=Here are some useful default pages installed along with the PmWiki software : ²* PmWiki documentation is available at [[PmWiki.DocumentationIndex]].²* What is the [[PmWiki/WikiWikiWeb]]?²* [[PmWiki/TipsForEditing]] and [[PmWiki/TextFormattingRules]] describe how to create pages in PmWiki.²* Practice editing pages in the [[WikiSandbox]].²²More information about [[PmWiki/PmWiki]] can be found at http://www.pmwiki.org/.
-time=1111460456
-host=64.26.155.237
-agent=Mozilla/5.0 (Macintosh; U; PPC Mac OS X; en-us) AppleWebKit/125.5.6 (KHTML, like Gecko) Safari/125.12
-rev=159
-author=
+version=pmwiki-2.0.beta55 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Win98; en-US; rv:1.7.8) Gecko/20050511 Firefox/1.0.4
+author=HaganFox
+host=216.161.175.221
 name=Main.HomePage
-targets=PmWiki.PmWiki,PmWiki.DocumentationIndex,PmWiki.WikiWikiWeb,PmWiki.TipsForEditing,PmWiki.TextFormattingRules,Main.WikiSandbox
+rev=193
+targets=PmWiki.PmWiki,PmWiki.DocumentationIndex,PmWiki.WikiWikiWeb,PmWiki.BasicEditing,Main.WikiSandbox
+text=Here are some useful default pages installed along with the PmWiki software:%0a%0a* PmWiki documentation is available at [[PmWiki.DocumentationIndex]].%0a* What is the [[PmWiki/WikiWikiWeb]]?%0a* [[PmWiki/Basic Editing]] describes how to create pages in PmWiki.%0a* Practice editing pages in the [[WikiSandbox]].%0a%0aMore information about [[PmWiki/PmWiki]] can be found at http://www.pmwiki.org/.
+time=1125534324

@@ -57,13 +57,15 @@ if (IsEnabled($EnableStdWikiStyles,1)) {
   SDV($WikiStyle['frame'], array('class' => 'frame'));
   SDV($WikiStyle['lframe'], array('class' => 'frame lfloat'));
   SDV($WikiStyle['rframe'], array('class' => 'frame rfloat'));
+  SDV($WikiStyle['cframe'], array(
+    'class' => 'frame', 'margin-left' => 'auto', 'margin-right' => 'auto',
+    'width' => '200px', 'apply' => 'block', 'text-align' => 'center'));
+  SDV($WikiStyle['sidehead'], array('apply' => 'block', 'class' => 'sidehead'));
 }
 
-SDV($WikiStylePattern,'%%|%[A-Za-z][-,=:#\\w\\s\'"]*%');
+SDV($WikiStylePattern,'%%|%[A-Za-z][-,=:#\\w\\s\'"().]*%');
 
 SDVA($WikiStyleAttr,array(
-  'height' => 'img',
-  'width' => 'img',
   'vspace' => 'img',
   'hspace' => 'img',
   'align' => 'img',
@@ -93,7 +95,7 @@ function ApplyStyles($x) {
       $WikiStyle['curr']=$style; $style=array();
       foreach((array)$WikiStyleRepl as $pat=>$rep) 
         $p=preg_replace($pat,$rep,$p);
-      preg_match_all('/\\b([a-zA-Z][-\\w]*)([:=]([-#,\\w]+|([\'"]).*?\\4))?/',
+      preg_match_all('/\\b([a-zA-Z][-\\w]*)([:=]([-#,\\w.()]+|([\'"]).*?\\4))?/',
         $p,$match,PREG_SET_ORDER);
       while ($match) {
         $m = array_shift($match);
@@ -119,7 +121,10 @@ function ApplyStyles($x) {
     foreach((array)$alist as $a=>$s) {
       $classv=array(); $stylev=array(); $id='';
       foreach((array)$s as $k=>$v) {
-        if (!@$WikiStyleApply[$a] && @$WikiStyleAttr[$k]) 
+        if (($k=='width' || $k=='height') && !@$WikiStyleApply[$a]
+            && preg_match('/\\s*<img\\b/', $p)) 
+          $p = preg_replace("/<img(?![^>]*\\s$k=)/", "<img $k='$v'", $p);
+        elseif (@$WikiStyleAttr[$k]) 
           $p=preg_replace("/<({$WikiStyleAttr[$k]}(?![^>]*\\s$k=))([^>]*)>/s",
             "<$1 $k='$v' $2>",$p);
         elseif ($k=='class') $classv[]=$v;
@@ -139,7 +144,7 @@ function ApplyStyles($x) {
           $p = preg_replace("/<({$WikiStyleApply[$a]})\\b/","<$1 $spanattr",$p);
         }
       }
-      if ($s['color'])
+      if (@$s['color'])
         $p = preg_replace('/<a\\b/', "<a style='color: {$s['color']}'", $p);
     }
     $out[] = $p;

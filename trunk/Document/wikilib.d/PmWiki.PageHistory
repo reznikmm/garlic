@@ -1,10 +1,9 @@
-version=pmwiki-2.0.beta44 ordered=1
-newline=²
-agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.6) Gecko/20050317 Firefox/1.0.2
+version=pmwiki-2.0.beta55 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.10) Gecko/20050716 Firefox/1.0.6
 author=Pm
 host=24.1.26.255
 name=PmWiki.PageHistory
-rev=3
-targets=PmWiki.PageHistory,PmWiki.WikiAdministrator,PmWiki.WikiTrails,PmWiki.DocumentationIndex,PmWiki.Passwords
-text=[[Page History]] displays a summary of past edits on a page. Each past edit is shown in a box which shows lines added, changed or deleted during that edit in a before & after format.²²Below each box is a "Restore" link. Clicking the link will open an edit box with the page as it was ''before'' that edit.  You can make changes or simply click Save to restore the text.²²There are two additional options specific to Page''''History:²* '''Hide minor edits''' - hides any edit that the author marked as 'minor'.²* '''Show changes to markup'''- shows changes to the markup (as opposed to the normal display which shows changes to the output).²²A page's history is kept for the number of days given by the $DiffKeepDays variable (set by the site's [[Wiki Administrator]]).  When a page is edited, any page history information older than this value is automatically discarded.²²%trail% <<|[[DocumentationIndex]]|>>²
-time=1121012749
+rev=5
+targets=PmWiki.PmWiki,PmWiki.WikiAdministrator,PmWiki.WikiTrails,PmWiki.DocumentationIndex,PmWiki.Passwords
+text=%25audience%25 authors (basic) %0a%0aWhen PmWiki is called with '?action=diff', it displays a summary of past edits on a page. Each past edit is shown in a box which shows lines added, changed or deleted during that edit in a before & after format.%0a%0aBelow each box is a "Restore" link. Clicking the link will open an edit box with the page as it was ''before'' that edit.  You can make changes or simply click Save to restore the text.%0a%0aThere are two additional options specific to Page''''History:%0a* '''Hide minor edits''' - hides any edit that the author marked as 'minor'.%0a* '''Show changes to markup'''- shows changes to the markup (as opposed to the normal display which shows changes to the output).%0a%0aA page's history is kept for the number of days given by the $DiffKeepDays variable (set by the site's [[wiki administrator]]).  When a page is edited, any page history information older than this value is automatically discarded.%0a%0a%25trail%25 %3c%3c|[[DocumentationIndex]]|>>%0a
+time=1125519037

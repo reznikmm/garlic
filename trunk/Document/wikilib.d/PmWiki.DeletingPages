@@ -1,10 +1,10 @@
-version=pmwiki-2.0.beta39 ordered=1
+version=pmwiki-2.0.beta55 ordered=1
 newline=�
-agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.7.8) Gecko/20050511 Firefox/1.0.4
-author=HansB
-host=84.68.83.106
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.10) Gecko/20050716 Firefox/1.0.6
+author=Pm
+host=24.1.26.255
 name=PmWiki.DeletingPages
-rev=7
-targets=PmWiki.EditVariables,PmWiki.Uploads,PmWiki.DocumentationIndex,PmWiki.WikiGroup
-text=To delete a page, edit the page, highlight all text in the edit textarea and replace it with the single word 께->delete 께After saving the changes the page is deleted, but as an added safety feature a backup file with a time stamp still exists on the server which could be restored to the former page by admin.께->'''Note''': The default word used for page deletion 께-->delete께->can be changed in config.php by setting variable [@$DeleteKeyPattern@]. See more at [[PmWiki.Edit Variables]]. If there is a danger of malicious page deletion it may be a good idea to change the delete word to something more obscure. Or use a password protected action=delete by installing [[Cookbook:DeleteAction]].께%trail%<<|[[PmWiki.Documentation Index]]|>>
-time=1119337138
+rev=11
+targets=PmWiki.WikiAdministrator,PmWiki.EditVariables,PmWiki.Uploads,PmWiki.DocumentationIndex,PmWiki.PageFileFormat
+text=To delete a page, edit the page, select (highlight) all text in the edit textarea and replace it with the single word께    [@delete@]께After saving the changes the page is deleted.  As an added safety feature, the deleted page still exists on the server (with a timestamp) and can be restored to the former page by the [[wiki administrator]].께The default word used for page deletion ("delete") can be changed in config.php by setting the variable $DeleteKeyPattern (see [[EditVariables]]). If there is a danger of malicious page deletion it may be a good idea to change the delete word to something more obscure. There is also a recipe for creating a separate delete action at Cookbook:DeleteAction.께%trail%<<|[[DocumentationIndex]]|>>
+time=1125083025
