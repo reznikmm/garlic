@@ -37,7 +37,7 @@ if (PageExists('Main.ApprovedUrls')) {
 ## that appears to have happened we restore PmWiki's older defaults here.
 ## If not, then we take any $EditMessages (which may have come from
 ## cookbook scripts) and stick them into the new $MessagesFmt array.
-if ($PageEditFmt || $PagePreviewFmt || $HandleEditFmt) {
+if (@$PageEditFmt || @$PagePreviewFmt || @$HandleEditFmt) {
   SDV($PageEditFmt, "<div id='wikiedit'>
     <a id='top' name='top'></a>
     <h1 class='wikiaction'>$[Editing \$FullName]</h1>
@@ -68,7 +68,7 @@ if ($PageEditFmt || $PagePreviewFmt || $HandleEditFmt) {
   $EditMessageFmt = implode('', $MessagesFmt) . $EditMessageFmt;
   if ($action=='edit' && IsEnabled($EnableGUIButtons, 0)) 
     array_push($EditFunctions, 'GUIEdit');
-} else $MessagesFmt[] = $EditMessageFmt;
+} else $MessagesFmt[] = @$EditMessageFmt;
 
     
 function GUIEdit($pagename, &$page, &$new) {

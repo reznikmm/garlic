@@ -43,9 +43,20 @@ function insMarkup(mopen, mclose, mtext) {
     tarea.scrollTop = top;
   } else if (document.selection) {
     var str = document.selection.createRange().text;
-    if (str == '') str = mtext;
     tarea.focus();
-    document.selection.createRange().text = mopen + str + mclose;
+    range = document.selection.createRange()
+    if (str == '') {
+      range.text = mopen + mtext + mclose;
+      range.moveStart('character', -mclose.length - mtext.length );
+      range.moveEnd('character', -mclose.length );
+    } else {
+      if (str.charAt(str.length - 1) == " ") {
+        mclose = mclose + " ";
+        str = str.substr(0, str.length - 1);
+      }
+      range.text = mopen + str + mclose;
+    }
+    range.select();
   } else { tarea.value += mopen + mtext + mclose; }
   return;
 }

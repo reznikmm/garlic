@@ -21,7 +21,7 @@
     button) are specified in their respective cookbook module.
 */
 
-$HTMLHeaderFmt[] = "<script language='javascript' 
+$HTMLHeaderFmt[] = "<script language='javascript' type='text/javascript'
   src='\$FarmPubDirUrl/guiedit/guiedit.js'></script>\n";
 
 SDV($GUIButtonDirUrlFmt,'$FarmPubDirUrl/guiedit');
@@ -61,7 +61,7 @@ function GUIButtonCode($pagename) {
   $out = array("<script language='javascript' type='text/javascript'>\n");
   foreach ($GUIButtons as $k => $g) {
     if (!$g) continue;
-    list($when, $mopen, $mclose, $mtext, $tag, $mkey) = $g;
+    @list($when, $mopen, $mclose, $mtext, $tag, $mkey) = $g;
     if ($tag{0} == '<') { 
         $out[] = "document.write(\"$tag\");\n";
         continue; 

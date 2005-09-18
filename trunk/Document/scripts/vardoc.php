@@ -39,6 +39,7 @@ function VarLink($pagename,$tgt,$txt) {
 function VarIndexLoad($pagename) {
   global $VarPagesFmt,$VarIndex,$WikiWordPattern;
   static $loaded;
+  $VarIndex = (array)@$VarIndex;
   if ($loaded) return;
   foreach($VarPagesFmt as $vf) {
     $v = FmtPageName($vf, $pagename);

@@ -27,7 +27,7 @@ $WikiTitle = 'PmWiki';
 
 ## If you want to have a custom skin, then set $Skin to the name
 ## of the directory (in pub/skins/) that contains your skin files.
-## See PmWiki.LayoutBasics and Cookbook.Skins.
+## See PmWiki.Skins and Cookbook.Skins.
 # $Skin = 'pmwiki';
 
 ## You'll probably want to set an administrative password that you
@@ -48,6 +48,10 @@ $WikiTitle = 'PmWiki';
 # $EnableUpload = 1;                       
 # $DefaultPasswords['upload'] = crypt('secret');
 
+##  Set $LinkWikiWords to zero if you don't want WikiWord links (i.e.,
+##  all links are made using [[...]].
+# $LinkWikiWords = 0;                      # disable WikiWord links
+
 ##  Setting $EnableDiag turns on the ?action=diag and ?action=phpinfo
 ##  actions, which often helps the PmWiki authors to troubleshoot 
 ##  various configuration and execution problems.
@@ -62,10 +66,6 @@ $WikiTitle = 'PmWiki';
 ##  Set $SpaceWikiWords if you want WikiWords to automatically 
 ##  have spaces before each sequence of capital letters.
 # $SpaceWikiWords = 1;                     # turn on WikiWord spacing
-
-##  Set $LinkWikiWords to zero if you don't want WikiWord links (i.e.,
-##  all links are made using [[...]].
-# $LinkWikiWords = 0;                      # disable WikiWord links
 
 ##  If you want only the first occurrence of a WikiWord to be converted
 ##  to a link, set $WikiWordCountMax=1.
@@ -93,6 +93,12 @@ $WikiTitle = 'PmWiki';
 ##  $DiffKeepDays specifies the minimum number of days to keep a page's
 ##  revision history.  The default is 3650 (approximately 10 years).
 # $DiffKeepDays=30;                        # keep page history at least 30 days
+
+## By default, viewers are able to see the names (but not the
+## contents) of read-protected pages in search results and
+## page listings.  Set $EnablePageListProtect to keep read-protected
+## pages from appearing in search results.
+# $EnablePageListProtect = 1;
 
 ##  The refcount.php script enables ?action=refcount, which helps to
 ##  find missing and orphaned pages.  See PmWiki.RefCount.
