@@ -1,10 +1,9 @@
-version=pmwiki-2.0.beta26
-newline=²
-text=There are currently two mailing lists available for PmWiki.²²:[+[[(http://pmichaud.com/lists/)pmwiki-users]]+]: This is a great resource where a very helpful group of people will answer questions and discuss PmWiki development. Traffic is around 20-40 messages a day.  Archives are available from:²-->http://pmichaud.com/pipermail/pmwiki-users/²-->http://news.gmane.org/gmane.comp.web.wiki.pmwiki.user²searchable at²-->http://search.gmane.org/search.php?group=gmane.comp.web.wiki.pmwiki.user²²->''Note'': You can change your settings for the mail list by logging in to http://pmichaud.com/mailman/listinfo/pmwiki-users²²:[+[[(http://pmichaud.com/lists/)pmwiki-announce]]+]: Announcements of new version releases.  The archive is at:²-->http://pmichaud.com/pipermail/pmwiki-announce²²:[+[[(http://pmichaud.com/lists/)pmwiki-users-de]]+]: A mailing list for german-speaking users of PmWiki.  Archived at²-->http://pmichaud.com/pipermail/pmwiki-users-de²²%trail% <<|PmWiki.DocumentationIndex|>>
-time=1110322429
+version=pmwiki-2.0.2 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.10) Gecko/20050716 Firefox/1.0.6
+author=Pm
+host=24.1.26.255
 name=PmWiki.MailingLists
-host=24.43.175.212
-agent=Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)
-rev=9
-targets=PmWiki.PmWiki,PmWiki.Contributors,PmWiki.PmWikiPhilosophy,PmWiki.DocumentationIndex
-author=Radu
+rev=25
+targets=PmWiki.PmWiki,PmWiki.Contributors,PmWiki.DocumentationIndex,PmWiki.PmWikiPhilosophy
+text=There are several mailing lists available for [[PmWiki]].%0a%0a:[ [[(http://pmichaud.com/lists/)pmwiki-users]] ]: This is a great resource where a very helpful group of people will answer questions and discuss PmWiki development. Traffic is around 20-40 messages a day (on slow days :).  Archives are available from:%0a-->http://pmichaud.com/pipermail/pmwiki-users/%0a-->http://news.gmane.org/gmane.comp.web.wiki.pmwiki.user%0a: :searchable at%0a-->http://search.gmane.org/search.php?group=gmane.comp.web.wiki.pmwiki.user%0a%0a->%25note%25''Hint:'' If you ask a question on the list and it doesn't get answered, don't feel let down. Just '''ask it again'''. It probably slipped unnoticed.%0a%0a->%25note%25 ''Note'': You can change your settings for the mail list by logging in at the bottom of http://pmichaud.com/mailman/listinfo/pmwiki-users.%0a%0a:[ [[(http://pmichaud.com/lists/)pmwiki-announce]] ]: Announcements of new version releases.  The archive is at:%0a-->http://pmichaud.com/pipermail/pmwiki-announce%0a%0a:[ [[(http://pmichaud.com/lists/)pmwiki-users-de]] ]: A mailing list for german-speaking users of PmWiki.  Archived at%0a-->http://pmichaud.com/pipermail/pmwiki-users-de%0a%0aSuggestions:%0a* if you reply to a digest message, please remove the messages irrelevant to your reply before sending it back to the list.%0a* if you address a reply to a single list member, please take the [pmwiki-users] off the subject line, or it's possible for your message to get lost in the mailing list traffic. Many people filter list traffic to a separate mailbox.%0a%0a%25trail%25 %3c%3c|[[DocumentationIndex]]|>>
+time=1126014388

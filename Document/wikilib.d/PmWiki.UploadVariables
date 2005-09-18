@@ -1,10 +1,9 @@
-version=pmwiki-2.0.beta30 ordered=1
-newline=²
-agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.6) Gecko/20050317 Firefox/1.0.2
-author=Pm
-host=24.1.26.255
+version=pmwiki-2.0.2 ordered=1 urlencoded=1
+agent=Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)
+author=Henning
+host=199.40.15.205
 name=PmWiki.UploadVariables
-rev=15
+rev=18
 targets=PmWiki.EditVariables,PmWiki.Variables,PmWiki.I18nVariables,PmWiki.UploadsAdmin,PmWiki.PmWiki
-text=<<|[[PmWiki.Variables]]|>>²²:$EnableUpload:The upload.php script is automatically included from stdconfig.php if the $EnableUpload variable is true in config.php.  Note that one may still need to set an upload password before users can upload (see UploadsAdmin).²²:$UploadDir:The directory where uploads are to be stored.  Defaults to ''uploads/'' in the pmwiki directory, but can be set to any location on the server.  This directory must be writable by the webserver process if uploading is to occur.²²:$UploadUrlFmt:The url of the directory given by $UploadDir.  ²²:$UploadPrefixFmt:Sets the prefix for uploaded files to allow attachments to be organized other than by groups.  Defaults to [@'/$Group'@] (uploads are organized per-group), but can be set to other values for sitewide or per-page attachments.²    $UploadPrefixFmt = '/$FullName';    # per-page attachments²    $UploadPrefixFmt = '';              # sitewide attachments²²:$EnableDirectDownload:When set to 1 (the default), links to attachments bypass PmWiki and come directly from the webserver.  Setting $EnableDirectDownload=0; causes requests for attachments to be obtained via [@?action=download@].  This allows PmWiki to protect attachments using a page's read permissions, but also increases the load on the server.²²
-time=1113545049
+text=%3c%3c|[[PmWiki.Variables]]|>>%0a%0a:$EnableUpload:The upload.php script is automatically included from stdconfig.php if the $EnableUpload variable is true in config.php.  Note that one may still need to set an upload password before users can upload (see UploadsAdmin).%0a%0a:$UploadDir:The directory where uploads are to be stored.  Defaults to ''uploads/'' in the pmwiki directory, but can be set to any location on the server.  This directory must be writable by the webserver process if uploading is to occur.%0a%0a:$UploadUrlFmt:The url of the directory given by $UploadDir.  %0a%0a:$UploadPrefixFmt:Sets the prefix for uploaded files to allow attachments to be organized other than by groups.  Defaults to [@'/$Group'@] (uploads are organized per-group), but can be set to other values for sitewide or per-page attachments.%0a    $UploadPrefixFmt = '/$FullName';    # per-page attachments%0a    $UploadPrefixFmt = '';              # sitewide attachments%0a%0a:$EnableDirectDownload:When set to 1 (the default), links to attachments bypass PmWiki and come directly from the webserver.  Setting $EnableDirectDownload=0; causes requests for attachments to be obtained via [@?action=download@].  This allows PmWiki to protect attachments using a page's read permissions, but also increases the load on the server.%0a%0a:$EnableUploadVersions:When set to 1 (default is 0), uploading a file to a location where a file of the same name already exists causes the old version to be renamed to @@file.ext,timestamp@@ (instead of being overwritten). @@timestamp@@ is a Unix-style timestamp.
+time=1125936150
