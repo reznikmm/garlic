@@ -1,0 +1,9 @@
+version=pmwiki-2.0.1 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.10) Gecko/20050716 Firefox/1.0.6
+author=Pm
+host=24.1.26.255
+name=Site.PageActions
+rev=19
+targets=Site.PageActions
+text=* %25item class=browse accesskey=$[ak_view]%25[[{$FullName} | $[View] ]]%0a* %25item class=edit accesskey=$[ak_edit]%25[[{$FullName}?action=edit | $[Edit] ]]%0a* %25item class=diff accesskey=$[ak_history]%25[[{$FullName}?action=diff | $[History] ]]%0a(:if auth upload:)%0a* %25item class=upload accesskey=$[ak_attach]%25[[{$FullName}?action=upload | $[Attach] ]]%0a(:if:)%0a* %25item class=print accesskey=$[ak_print]%25[[{$FullName}?action=print | $[Print] ]]
+time=1125680670
