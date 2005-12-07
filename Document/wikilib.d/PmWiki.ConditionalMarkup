@@ -1,9 +1,9 @@
-version=pmwiki-2.0.5 ordered=1 urlencoded=1
-agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.10) Gecko/20050716 Firefox/1.0.6
-author=Pm
-host=24.1.26.255
+version=pmwiki-2.0.11 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Macintosh; U; PPC Mac OS X Mach-O; fr-FR; rv:1.7.12) Gecko/20050919 Firefox/1.0.7
+author=Pierre79
+host=83.193.202.38
 name=PmWiki.ConditionalMarkup
-rev=49
+rev=51
 targets=PmWiki.InterMap,PmWiki.DocumentationIndex,PmWiki.MarkupVariables
-text=%25audience%25 authors, admins (advanced)%0a!! Using the [=(:if:)=] Directive%0aThe [@(:if:)@] directive allows portions of a page to be included or excluded from processing.  The generic form of the [@(:if:)@] directive is%0a%0a    [@(:if cond param:) body (:ifend:)@]%0a%0awhere "cond" names a condition to be tested (described below), and "param" is a parameter or other argument to the condition.%0a%0aThe built-in conditions include:%0a%0a    [@(:if name [name]:)@]   - current page is named "name"%0a    [@(:if auth [level]:)@]  - viewer is authorized at "level"%0a    [@(:if authid:)@]        - current viewer is authenticated%0a    [@(:if true:)@]          - always include text%0a    [@(:if false:)@]         - always exclude text (same as a comment)%0a    [@(:if attachments:)@]   - current page has attachments%0a%0aNegated forms of conditions also work%0a%0a    [@(:if !attachments:) This page has no attachments@]%0a%0aAny [@(:if:)@] automatically terminates the previous one, thus markup can be easily cased:%0a%0a    [@(:if auth read:)* You can read%0a    (:if auth edit:)* You can edit%0a    (:if auth upload:)* You can upload%0a    (:ifend:)@]%0a%0a%25audience%25 admins (advanced)%0a!! Creating new conditions%0a%0aSee Cookbook:ConditionalMarkupSamples.%0a%0a%25trail%25%3c%3c|[[DocumentationIndex]]|>>%0a
-time=1126892732
+text=%25audience%25 authors, admins (advanced)%0a!! Using the [=(:if:)=] Directive%0aThe [@(:if:)@] directive allows portions of a page to be included or excluded from processing.  The generic form of the [@(:if:)@] directive is%0a%0a    [@(:if cond param:) body (:ifend:)@]%0a%0awhere "cond" names a condition to be tested (described below), and "param" is a parameter or other argument to the condition.%0a%0aThe built-in conditions include:%0a%0a    [@(:if name [name]:)     - current page is named "name"%0a    (:if auth [level]:)    - viewer is authorized at "level"%0a    (:if authid:)        - current viewer is authenticated%0a    (:if true:)          - always include text%0a    (:if false:)         - always exclude text (same as a comment)%0a    (:if attachments:)   - current page has attachments%0a    (:if date [date1..date2]:)%0a                         - current date is in range (dates are yyyy-mm-dd)%0a                           %0a%0aNegated forms of conditions also work%0a%0a    [@(:if !attachments:) This page has no attachments@]%0a%0aAny [@(:if:)@] automatically terminates the previous one, thus markup can be easily cased:%0a%0a    [@(:if auth read:)* You can read%0a    (:if auth edit:)* You can edit%0a    (:if auth upload:)* You can upload%0a    (:ifend:)@]%0a%0a%25audience%25 admins (advanced)%0a!! Creating new conditions%0a%0aSee Cookbook:ConditionalMarkupSamples.%0a%0a%25trail%25%3c%3c|[[DocumentationIndex]]|>>%0a
+time=1129539568

@@ -35,7 +35,7 @@ Markup('input', 'directives',
 
 function InputMarkup($pagename, $type, $args) {
   global $InputTags, $InputAttrs, $FmtV;
-  if (!$InputTags[$type]) return "(:input $type $args:)";
+  if (!@$InputTags[$type]) return "(:input $type $args:)";
   $opt = array_merge($InputTags[$type], ParseArgs($args));
   $args = @$opt[':args'];
   if (!$args) $args = array('name', 'value');
@@ -70,6 +70,7 @@ XLSDV('en', array(
   'ak_save' => 's',
   'ak_saveedit' => 'u',
   'ak_preview' => 'p',
+  'ak_textedit' => ',',
   'e_rows' => '25',
   'e_cols' => '60'));
 
@@ -91,8 +92,8 @@ SDVA($InputTags['e_textarea'], array(
   ':html' => "<textarea \$InputFormArgs 
     onkeydown='if (event.keyCode==27) event.returnValue=false;' 
     >\$EditText</textarea>",
-  'name' => 'text', 'id' => 'text', 'rows' => XL('e_rows'), 
-  'cols' => XL('e_cols')));
+  'name' => 'text', 'id' => 'text', 'accesskey' => XL('ak_textedit'),
+  'rows' => XL('e_rows'), 'cols' => XL('e_cols')));
 SDVA($InputTags['e_author'], array(
   ':html' => "<input type='text' \$InputFormArgs />",
   'name' => 'author', 'value' => $Author));

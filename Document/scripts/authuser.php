@@ -78,9 +78,9 @@ foreach((array)($AuthUser['htpasswd']) as $f) {
 }
 
 # LDAP authentication.  
-if ($AuthUser['ldap'] &&
-    preg_match('!ldap://([^:]+)(?::(\d+))?/(.+)$!', 
-        $AuthUser['ldap'], $match)) {
+if ($AuthUser['ldap'] && $id && $pw 
+    && preg_match('!ldap://([^:]+)(?::(\d+))?/(.+)$!', 
+                  $AuthUser['ldap'], $match)) {
   list($z, $server, $port, $path) = $match;
   list($basedn, $attr, $sub) = explode('?', $path);
   if (!$port) $port=389;
@@ -88,7 +88,7 @@ if ($AuthUser['ldap'] &&
   if (!$sub) $sub = 'one';
   $ds = ldap_connect($server, $port);
   ldap_set_option($ds, LDAP_OPT_PROTOCOL_VERSION, 3);
-  if (ldap_bind($ds)) {
+  if (ldap_bind($ds, @$AuthLDAPBindDN, @$AuthLDAPBindPassword)) {
     $fn = ($sub == 'sub') ? 'ldap_search' : 'ldap_list';
     $sr = $fn($ds, $basedn, "($attr=$id)", array($attr));
     $x = ldap_get_entries($ds, $sr);
@@ -139,5 +139,6 @@ function _crypt($plain, $salt=null) {
            './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz');
     return "\$apr1\$$salt\$$q";
   }
+  if (md5($plain) == $salt) return $salt;
   return crypt($plain, $salt);
 }

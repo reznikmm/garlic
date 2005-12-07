@@ -68,7 +68,7 @@ function SearchBox($pagename, $opt) {
   SDVA($SearchBoxOpt, array('size' => '40', 
     'label' => FmtPageName('$[Search]', $pagename),
     'group' => @$_REQUEST['group'],
-    'value' => $SearchQuery));
+    'value' => str_replace("'", "&#039;", $SearchQuery)));
   $opt = array_merge((array)$SearchBoxOpt, (array)$opt);
   $group = $opt['group'];
   $out[] = FmtPageName("
@@ -172,8 +172,8 @@ function MakePageList($pagename, $opt) {
               ? RetrieveAuthPage($pn, 'read', false, READPAGE_CURRENT)
               : ReadPage($pn, READPAGE_CURRENT);
       if (!$page) continue;
-      if (@$linkpat && !preg_match($linkpat, $page['targets'])) 
-        { $PCache[$pn]['targets'] = $page['targets']; $xlist[]=$pn; continue; }
+      if (@$linkpat && !preg_match($linkpat, @$page['targets'])) 
+        { $PCache[$pn]['targets'] = @$page['targets']; $xlist[]=$pn; continue; }
       if ($searchterms) {
         $text = $pn."\n".@$page['targets']."\n".@$page['text'];
         foreach($inclp as $i) if (!preg_match($i, $text)) continue 2;
@@ -198,8 +198,8 @@ function SortPageList(&$matches, $order) {
   foreach(preg_split("/[\\s,|]+/", $order, -1, PREG_SPLIT_NO_EMPTY) as $o) {
     if ($o{0}=='-') { $r = '-'; $o = substr($o, 1); }
     else $r = '';
-    if ($o == 'size' || $o == 'time') $code .= "\$c = \$x['$o']-\$y['$o']; ";
-    else $code .= "\$c = strcasecmp(\$x['$o'],\$y['$o']); ";
+    if ($o == 'size' || $o == 'time') $code .= "\$c = @(\$x['$o']-\$y['$o']); ";
+    else $code .= "\$c = @strcasecmp(\$x['$o'],\$y['$o']); ";
     $code .= "if (\$c) return $r\$c;\n";
   }
   if ($code) 
@@ -333,18 +333,21 @@ function BacklinksTo($pagename, $incl=true) {
 ## If the targets are cached then LinkIndexUpdate uses that,
 ## otherwise the pages are read to get the current targets.
 function LinkIndexUpdate($pagelist) {
-  global $LinkIndexFile, $PCache;
+  global $LinkIndexFile, $PCache, $LinkIndexTime;
+  SDV($LinkIndexTime, 10);
   if (!$pagelist || !$LinkIndexFile) return;
   StopWatch('LinkIndexUpdate begin');
   $pagelist = (array)$pagelist;
   Lock(2);
   $ofp = fopen("$LinkIndexFile,new", 'w');
+  $timeout = time() + $LinkIndexTime;
   foreach($pagelist as $n) {
+    if (time() > $timeout) break;
     if (isset($PCache[$n]['targets'])) $targets=$PCache[$n]['targets'];
     else {
       $page = ReadPage($n, READPAGE_CURRENT);
       if (!$page) continue;
-      $targets = $page['targets'];
+      $targets = @$page['targets'];
     }
     fputs($ofp, "$n=$targets\n");
   }
@@ -354,8 +357,9 @@ function LinkIndexUpdate($pagelist) {
       $line = fgets($ifp, 4096);
       while (substr($line, -1, 1) != "\n" && !feof($ifp)) 
         $line .= fgets($ifp, 4096);
-      if (strpos($line, '=') === false) continue;
-      list($n, $t) = explode('=', $line, 2);
+      $i = strpos($line, '=');
+      if ($i === false) continue;
+      $n = substr($line, 0, $i);
       if (in_array($n, $pagelist)) continue;
       fputs($ofp, $line);
     }
