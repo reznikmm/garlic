@@ -1,0 +1,8 @@
+version=pmwiki-2.0.beta37 ordered=1
+newline=²
+author=Pm
+host=69.26.213.178
+name=Site.PageNotFound
+rev=6
+text=We couldn't find a page called "{$UrlPage}".  You can:²²* Create [[{$UrlPage}.{$UrlPage}]]²* Create [[{$UrlPage}.{$DefaultName}]]²* Create [[{$DefaultGroup}.{$UrlPage}]]²²Or, perhaps the page you want is listed below:²²(:pagelist group={$UrlPage}:)²²
+time=1117759470

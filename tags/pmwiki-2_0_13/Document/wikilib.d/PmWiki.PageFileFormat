@@ -1,0 +1,9 @@
+version=pmwiki-2.0.beta55 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Win98; en-US; rv:1.7.8) Gecko/20050511 Firefox/1.0.4
+author=HaganFox
+host=216.161.175.221
+name=PmWiki.PageFileFormat
+rev=18
+targets=PmWiki.PmWiki
+text=You may have many documents that you would like to use a local program to format in a format pmWiki can display.%0a%0aYou could open each document and copy/paste the content to new pmwiki pages or you could format the document in advance and upload it using a ftp client.%0a%0aOnly two lines are necessary in a PmWiki page file:%0a# @@urlencoded=1@@%0a# @@text=''markup text''@@%0a%0aAny line break characters in the markup text need to be replaced by [@%250a@] and any percent signs replaced with [@%2525@].  Alternately, one can use a different character sequence for newlines by doing%0a%0a# @@newline=%3cnewline sequence>@@%0a# @@text=''markup text''@@%0a%0aKeys you could see in a raw pmWiki file:%0a%0a:'''version''': version of PmWiki used to create the file%0a:'''newline''': character used for newlines%0a:'''agent''': browser used when saving page%0a:'''author''': last author to save page%0a:'''host''': host created this page%0a:'''name''': name of the page (e.g., [@Main.WikiSandbox@])%0a:'''rev''': number of times the page has been edited%0a:'''targets''': targets for links in the page%0a:'''time''': time the page was last saved (seconds since 1 Jan 1970 00:00 UTC)%0a%0a!![[#creating]] Creating a Page for Distribution%0a%0aA simple way to create a wikipage file to for distribution (for example with a recipe or a skin) is to create the page with [=PmWiki=] and then use a text editor to delete all lines but ''version'', ''text'', and ''time''.  Example:%0a%0a%25block bgcolor=#f9f9fc border='1px solid #666666' margin=10px padding=5px%25[@%0aversion=pmwiki-2.0.0 ordered=1 urlencoded=1 %0atext=This is a line.%250aThis is another.%0atime=1124826105%0a@]
+time=1125538690
