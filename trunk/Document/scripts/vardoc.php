@@ -1,5 +1,5 @@
 <?php if (!defined('PmWiki')) exit();
-/*  Copyright 2002-2004 Patrick R. Michaud (pmichaud@pobox.com)
+/*  Copyright 2002-2005 Patrick R. Michaud (pmichaud@pobox.com)
     This file is part of PmWiki; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published
     by the Free Software Foundation; either version 2 of the License, or
@@ -22,7 +22,7 @@ Markup('varindex', 'directives',
   '/\\(:varindex:\\)/ei',
   "Keep(VarIndexList(\$pagename))");
 
-$HTMLStylesFmt[] = "a.varlink { text-decoration:none; }\n";
+$HTMLStylesFmt['vardoc'] = "a.varlink { text-decoration:none; }\n";
 
 function VarLink($pagename,$tgt,$txt) {
   global $VarIndex,$FmtV,$VarLinkMissingFmt,$VarLinkExistsFmt;

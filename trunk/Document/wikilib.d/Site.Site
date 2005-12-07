@@ -1,10 +1,10 @@
-version=pmwiki-2.0.beta55 ordered=1 urlencoded=1
-agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.10) Gecko/20050716 Firefox/1.0.6
-author=Pm
-host=24.1.26.255
+version=pmwiki-2.0.10 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; fr-FR; rv:1.7.10) Gecko/20050717 Firefox/1.0.6
+author=PRZ
+host=82.120.145.61
 name=Site.Site
-rev=11
-targets=PmWiki.PasswordsAdmin,Site.SideBar,Site.Preferences,Site.EditForm
-text=(:title Site Admin:)%0aHere you find some links to Site configuration pages. Add links to other pages you may need for your site's configuration here, as necessary. Some links may only apply to certain configurations or skins.%0a%0a'''Note to new administrators''': All pages in the 'Site' group (except Site.SideBar) are locked for editing as the default. In order to edit any page in this group you need to create in local/config.php a sitewide '''admin''' password (see [[PmWiki.PasswordsAdmin]]). Then you can edit pages and change the access protection of individual pages  by changing the page attributes with [@?action=attr@].%0a %0a!!Configuration & Menu Pages%0a*[[Site.SideBar?action=edit| Edit Site.SideBar]]%0a*[[Preferences]] Template to set access key and other configurations.%0a*[[EditForm]] Template to create your own edit page layout. %0a
-time=1125540748
+rev=12
+targets=PmWiki.PasswordsAdmin,Site.SideBar,Site.Preferences,Site.EditForm,Site.PageActions
+text=(:title Site Admin:)%0aHere you find some links to Site configuration pages. Add links to other pages you may need for your site's configuration here, as necessary. Some links may only apply to certain configurations or skins.%0a%0a'''Note to new administrators''': All pages in the 'Site' group (except Site.SideBar) are locked for editing as the default. In order to edit any page in this group you need to create in local/config.php a sitewide '''admin''' password (see [[PmWiki.PasswordsAdmin]]). Then you can edit pages and change the access protection of individual pages  by changing the page attributes with [@?action=attr@].%0a %0a!!Configuration & Menu Pages%0a*[[Site.SideBar?action=edit| Edit Site.SideBar]]%0a*[[Preferences]] Template to set access key and other configurations.%0a*[[EditForm]] Template to create your own edit page layout. %0a*[[PageActions]] Contains the 'action' links (like Browse, Edit, History, etc.), to be placed at the top of the page.%0a
+time=1128374691
 title=Site Admin

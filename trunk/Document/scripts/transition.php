@@ -26,6 +26,7 @@ if (PageExists('Main.AllRecentChanges'))
 ## Beta50 switches Main.ApprovedUrls to be $SiteGroup.ApprovedUrls .
 ## This setting keeps using Main.ApprovedUrls if it exists.
 if (PageExists('Main.ApprovedUrls')) {
+  $ApprovedUrlPagesFmt = (array)$ApprovedUrlPagesFmt;
   if (PageExists(FmtPageName($ApprovedUrlPagesFmt[0], $pagename))) 
     $ApprovedUrlPagesFmt[] = 'Main.ApprovedUrls';
   else array_unshift($ApprovedUrlPagesFmt, 'Main.ApprovedUrls');
