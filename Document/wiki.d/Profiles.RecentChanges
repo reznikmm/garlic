@@ -1,8 +1,7 @@
-version=pmwiki-2.0.beta48 ordered=1
-newline=ÀŠ
-agent=Opera/8.01 (Windows NT 5.0; U; de)
+version=pmwiki-2.0.6 ordered=1 urlencoded=1
+agent=Opera/8.50 (Windows NT 5.0; U; de)
 host=138.189.120.38
 name=Profiles.RecentChanges
-rev=2
-text=* [[Profiles/MartinKrischik]]  . . . August 05, 2005, at 04:44 AM by [[~Martin Krischik]]: [=correct the links=]ÀŠ
-time=1123242298
+rev=4
+text=* [[Profiles/RobertAMatthews]]  . . . October 14, 2005, at 05:59 AM by [[~Martin Krischik]]: [=new=]%0a* [[Profiles/HomePage]]  . . . October 14, 2005, at 05:17 AM by [[~Martin Krischik]]: [=profile=]%0a* [[Profiles/MartinKrischik]]  . . . August 05, 2005, at 04:44 AM by [[~Martin Krischik]]: [=correct the links=]%0a
+time=1129294768

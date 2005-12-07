@@ -1,13 +1,13 @@
-version=pmwiki-2.0.beta54 ordered=1
-newline=ÀŠ
-agent=Opera/8.0 (X11; Linux x86_64; U; de)
+version=pmwiki-2.0.6 ordered=1 urlencoded=1
+agent=Opera/8.50 (Windows NT 5.0; U; de)
 author=Martin Krischik
-host=84.72.114.216
+host=138.189.120.38
 name=Guestbook.TOC
-rev=1
-targets=Guestbook.HomePage,Guestbook.TOC
-text=! [[Guestbook/Home Page|Guestbook]] [-([[Guestbook.TOC?action=edit|edit]])-]ÀŠ
-time=1124729175
-author:1124729175=Martin Krischik
-diff:1124729175:1124729175:=1d0ÀŠ< ! [[Guestbook/Home Page|Guestbook]] [-([[Guestbook.TOC?action=edit|edit]])-]ÀŠ
-host:1124729175=84.72.114.216
+rev=2
+targets=Guestbook.HomePage,Guestbook.TOC,Profiles.HomePage
+text=! [[Guestbook/Home Page|Guestbook]] [-([[Guestbook.TOC?action=edit|edit]])-]%0a* [[Profiles/HomePage|Profiles]]
+time=1129291113
+author:1129291113=Martin Krischik
+csum:1129291113=profile
+diff:1129291113:1124729175:=2d1%0a%3c * [[Profiles/HomePage|Profiles]]%0a\ No newline at end of file%0a
+host:1129291113=138.189.120.38

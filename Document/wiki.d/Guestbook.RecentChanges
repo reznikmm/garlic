@@ -1,8 +1,7 @@
-version=pmwiki-2.0.beta54 ordered=1
-newline=ÀŠ
-agent=Opera/8.0 (X11; Linux x86_64; U; de)
-host=84.72.114.216
+version=pmwiki-2.0.6 ordered=1 urlencoded=1
+agent=Opera/8.50 (Windows NT 5.0; U; de)
+host=138.189.120.38
 name=Guestbook.RecentChanges
-rev=2
-text=* [[Guestbook/HomePage]]  . . . August 22, 2005, at 09:51 AM by [[~Martin Krischik]]: [=Intro=]ÀŠ* [[Guestbook/TOC]]  . . . August 22, 2005, at 09:46 AM by [[~Martin Krischik]]: [==]ÀŠ
-time=1124729473
+rev=3
+text=* [[Guestbook/TOC]]  . . . October 14, 2005, at 04:58 AM by [[~Martin Krischik]]: [=profile=]%0a* [[Guestbook/HomePage]]  . . . August 22, 2005, at 09:51 AM by [[~Martin Krischik]]: [=Intro=]%0a
+time=1129291113
