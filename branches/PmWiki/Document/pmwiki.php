@@ -70,7 +70,7 @@ $HTMLVSpace = "<p class='vspace'></p>";
 $HTMLPNewline = '';
 $MarkupFrame = array();
 $MarkupFrameBase = array('cs' => array(), 'vs' => '', 'ref' => 0,
-  'closeall' => array('block' => '<:block>'));
+  'closeall' => array('block' => '<:block>'), 'is' => array());
 $WikiWordCountMax = 1000000;
 $WikiWordCount['PmWiki'] = 1;
 $UrlExcludeChars = '<>"{}|\\\\^`()[\\]\'';
@@ -276,7 +276,7 @@ if (!function_exists(@$HandleActions[$action])) $action='browse';
 SDV($HandleAuth[$action], 'read');
 $HandleActions[$action]($pagename, $HandleAuth[$action]);
 Lock(0);
-exit;
+return;
 
 ## helper functions
 function stripmagic($x) 
@@ -807,30 +807,38 @@ function IncludeText($pagename, $inclspec) {
 
 function Block($b) {
   global $BlockMarkups,$HTMLVSpace,$HTMLPNewline,$MarkupFrame;
-  $cs = &$MarkupFrame[0]['cs'];  $vspaces = &$MarkupFrame[0]['vs'];
+  $mf = &$MarkupFrame[0]; $cs = &$mf['cs']; $vspaces = &$mf['vs'];
   if (!$b) $b='p,1';
-  @list($code,$depth) = explode(',',$b);
-  $out = ($code=='p' && @$cs[0]=='p') ? $HTMLPNewline : '';
+  @list($code, $depth, $icol) = explode(',', $b);
+  $out = ($code=='p' && @end($cs)=='p') ? $HTMLPNewline : '';
+  if ($depth == 0) $depth = strlen($depth);
+  if ($icol == 0) $icol = strlen($icol);
+  if ($depth > 0) $depth += @$mf['idep'];
+  if ($icol > 0) $mf['is'][$depth] = $icol + @$mf['icol'];
+  @$mf['idep'] = @$mf['icol'] = 0;
   if ($code=='vspace') { 
-    $vspaces.="\n"; 
-    if (@$cs[0]!='p') return; 
+    $vspaces .= "\n"; 
+    if (@end($cs) != 'p') return;
+    $depth = count($cs) - 1;
   }
-  if ($depth==0) $depth=strlen($depth);
   while (count($cs)>$depth) 
     { $c = array_pop($cs); $out .= $BlockMarkups[$c][2]; }
+  if ($code == 'vspace') return $out;
   if ($depth>0 && $depth==count($cs) && $cs[$depth-1]!=$code)
     { $c = array_pop($cs); $out .= $BlockMarkups[$c][2]; }
-  while (count($cs)>0 && $cs[count($cs)-1]!=$code &&
-      @$BlockMarkups[$cs[count($cs)-1]][3]==0)
+  while (count($cs)>0 && @end($cs)!=$code &&
+      @$BlockMarkups[@end($cs)][3]==0)
     { $c = array_pop($cs); $out .= $BlockMarkups[$c][2]; }
   if ($vspaces) { 
-    $out .= (@$cs[0]=='pre') ? $vspaces : $HTMLVSpace; 
+    $out .= (@end($cs) == 'pre') ? $vspaces : $HTMLVSpace; 
     $vspaces=''; 
   }
   if ($depth==0) { return $out; }
   if ($depth==count($cs)) { return $out.$BlockMarkups[$code][1]; }
-  while (count($cs)<$depth-1) 
-    { array_push($cs,'dl'); $out .= $BlockMarkups['dl'][0].'<dd>'; }
+  while (count($cs)<$depth-1) { 
+    array_push($cs, 'dl'); $mf['is'][count($cs)] = 0;
+    $out .= $BlockMarkups['dl'][0].'<dd>'; 
+  }
   if (count($cs)<$depth) {
     array_push($cs,$code);
     $out .= $BlockMarkups[$code][0];
@@ -902,7 +910,7 @@ function LinkPage($pagename,$imap,$path,$title,$txt,$fmt=NULL) {
   if (!preg_match("/^([^#?]+)($QueryFragPattern)?$/",$path,$match))
     return '';
   $tgtname = MakePageName($pagename,$match[1]); 
-  $qf = str_replace('&amp;', '&', @$match[2]);
+  $qf = @$match[2];
   @$LinkTargets[$tgtname]++;
   if (!$fmt) {
     if (PageExists($tgtname)) 
@@ -1067,6 +1075,7 @@ function RestorePage($pagename,&$page,&$new,$restore=NULL) {
   krsort($page); reset($page);
   foreach($page as $k=>$v) {
     if ($k<$restore) break;
+    if (strncmp($k, 'diff:', 5) != 0) continue;
     foreach(explode("\n",$v) as $x) {
       if (preg_match('/^(\\d+)(,(\\d+))?([adc])(\\d+)/',$x,$match)) {
         $a1 = $a2 = $match[1];
@@ -1162,7 +1171,7 @@ function PostRecentChanges($pagename,&$page,&$new) {
 
 function PreviewPage($pagename,&$page,&$new) {
   global $IsPageSaved, $FmtV;
-  if (!$IsPageSaved && @$_POST['preview']) {
+  if (@$_POST['preview']) {
     $text = '(:groupheader:)'.$new['text'].'(:groupfooter:)';
     $FmtV['$PreviewText'] = MarkupToHTML($pagename,$text);
   } 
@@ -1364,17 +1373,19 @@ function HandleAttr($pagename, $auth = 'attr') {
 function HandlePostAttr($pagename, $auth = 'attr') {
   global $PageAttributes, $EnablePostAttrClearSession;
   Lock(2);
-  $page = RetrieveAuthPage($pagename, $auth, true, READPAGE_CURRENT);
+  $page = RetrieveAuthPage($pagename, $auth, true);
   if (!$page) { Abort("?unable to read $pagename"); }
   foreach($PageAttributes as $attr=>$p) {
-    $v = @$_POST[$attr];
+    $v = stripmagic(@$_POST[$attr]);
     if ($v == '') continue;
     if ($v=='clear') unset($page[$attr]);
     else if (strncmp($attr, 'passwd', 6) != 0) $page[$attr] = $v;
     else {
       $a = array();
-      foreach(preg_split('/\\s+/', $v, -1, PREG_SPLIT_NO_EMPTY) as $pw) 
-        $a[] = preg_match('/^\\w+:/', $pw) ? $pw : crypt($pw);
+      preg_match_all('/"[^"]*"|\'[^\']*\'|\\S+/', $v, $match);
+      foreach($match[0] as $pw) 
+        $a[] = preg_match('/^\\w+:/', $pw) ? $pw 
+                   : crypt(preg_replace('/^([\'"])(.*)\\1$/', '$2', $pw));
       if ($a) $page[$attr] = implode(' ',$a);
     }
   }

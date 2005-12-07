@@ -1,5 +1,5 @@
 <?php if (!defined('PmWiki')) exit();
-/*  Copyright 2004 Patrick R. Michaud (pmichaud@pobox.com)
+/*  Copyright 2004-2005 Patrick R. Michaud (pmichaud@pobox.com)
     This file is part of PmWiki; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published
     by the Free Software Foundation; either version 2 of the License, or
@@ -104,6 +104,11 @@ Markup('spacewikiwords', 'directives',
 Markup('linkwikiwords', 'directives',
   '/\\(:(no)?linkwikiwords:\\)/ei',
   "PZZ(\$GLOBALS['LinkWikiWords']=('$1'!='no'))");
+
+## (:linebreaks:)
+Markup('linebreaks', 'directives',
+  '/\\(:(no)?linebreaks:\\)/ei',
+  "PZZ(\$GLOBALS['HTMLPNewline'] = ('$1'!='no') ? '<br  />' : '')");
 
 ## (:messages:)
 Markup('messages', 'directives',
@@ -221,16 +226,16 @@ Markup('`wikiword', '<wikilink',
   "/`(($GroupPattern([\\/.]))?($WikiWordPattern))/e",
   "Keep('$1')");
 
-## Lines that begin with displayed images receive their own block.  A
-## pipe following the image indicates a "caption" (generates a linebreak).
-Markup('^img', '<block',
-  "/^((?>(\\s+|%%|%[A-Za-z][-,=:#\\w\\s'\"]*%)*)$KeepToken(\\d+L)$KeepToken)(\\s*\\|\\s?)?(.*)$/e",
-  "PSS((strpos(\$GLOBALS['KPV']['$3'],'<img')===false) ? '$0' : 
-       '<:block><div>$1' . ('$4' ? '<br />' : '') .'$5</div>')");
-
 #### Block markups ####
 ## process any <:...> markup
 Markup('^<:','>block','/^(?=\\s*\\S)(<:([^>]+)>)?/e',"Block('$2')");
+
+## Lines that begin with displayed images receive their own block.  A
+## pipe following the image indicates a "caption" (generates a linebreak).
+Markup('^img', 'block',
+  "/^((?>(\\s+|%%|%[A-Za-z][-,=:#\\w\\s'\"]*%)*)$KeepToken(\\d+L)$KeepToken)(\\s*\\|\\s?)?(.*)$/e",
+  "PSS((strpos(\$GLOBALS['KPV']['$3'],'<img')===false) ? '$0' : 
+       '<:block,1><div>$1' . ('$4' ? '<br />' : '') .'$5</div>')");
 
 # unblocked lines w/block markup become anonymous <:block>
 Markup('^!<:', '<^<:',
@@ -238,17 +243,17 @@ Markup('^!<:', '<^<:',
   '<:block>');
 
 ## bullet lists
-Markup('^*','block','/^(\\*+)\\s?/','<:ul,$1>');
+Markup('^*','block','/^(\\*+)\\s?(\\s*)/','<:ul,$1,$0>$2');
 
 ## numbered lists
-Markup('^#','block','/^(#+)\\s?/','<:ol,$1>');
+Markup('^#','block','/^(#+)\\s?(\\s*)/','<:ol,$1,$0>$2');
 
 ## indented (->) /hanging indent (-<) text
-Markup('^->','block','/^(?>(-+))&gt;\\s?/','<:indent,$1>');
-Markup('^-<','block','/^(?>(-+))&lt;\\s?/','<:outdent,$1>');
+Markup('^->','block','/^(?>(-+))&gt;\\s?(\\s*)/','<:indent,$1,$1  $2>$2');
+Markup('^-<','block','/^(?>(-+))&lt;\\s?(\\s*)/','<:outdent,$1,$1  $2>$2');
 
 ## definition lists
-Markup('^::','block','/^(:+)([^:]+):/','<:dl,$1><dt>$2</dt><dd>');
+Markup('^::','block','/^(:+)(\s*)([^:]+):/','<:dl,$1,$1$2><dt>$2$3</dt><dd>');
 
 ## preformatted text
 Markup('^ ','block','/^(\\s)/','<:pre,1>$1');
@@ -257,7 +262,7 @@ Markup('^ ','block','/^(\\s)/','<:pre,1>$1');
 Markup('blank', '<^ ', '/^\\s+$/', '');
 
 ## Q: and A:
-Markup('^Q:', 'block', '/^Q:(.*)$/', "<:block><p class='question'>$1</p>");
+Markup('^Q:', 'block', '/^Q:(.*)$/', "<:block,1><p class='question'>$1</p>");
 Markup('^A:', 'block', '/^A:/', Keep(''));
 
 ## tables
@@ -268,15 +273,15 @@ Markup('^||||', 'block',
 ## ||table attributes
 Markup('^||','>^||||','/^\\|\\|(.*)$/e',
   "PZZ(\$GLOBALS['BlockMarkups']['table'][0] = PQA(PSS('<table $1>')))
-    .'<:block>'");
+    .'<:block,1>'");
 
 ## headings
 Markup('^!', 'block',
   '/^(!{1,6})\\s?(.*)$/e',
-  "'<:block><h'.strlen('$1').PSS('>$2</h').strlen('$1').'>'");
+  "'<:block,1><h'.strlen('$1').PSS('>$2</h').strlen('$1').'>'");
 
 ## horiz rule
-Markup('^----','>^->','/^----+/','<:block><hr />');
+Markup('^----','>^->','/^----+/','<:block,1><hr />');
 
 #### (:table:) markup (AdvancedTables)
 
@@ -343,3 +348,27 @@ $HTMLStylesFmt['markup'] = "
   div.faq hr { margin-left: -2em; }
   ";
 
+#### Special conditions ####
+## The code below adds (:if date:) conditions to the markup.
+$Conditions['date'] = "CondDate(\$condparm)";
+
+function CondDate($condparm) {
+  global $Now;
+  if (!preg_match('/^(.*?)(\\.\\.(.*))?$/', $condparm, $match)) return false;
+  if ($match[2]) {
+    $t0 = $match[1];  if ($t0 == '') $t0 = '19700101';
+    $t1 = $match[3];  if ($t1 == '') $t1 = '20380101';
+  } else $t0 = $t1 = $match[1];
+  $t0 = preg_replace('/\\D/', '', $t0);
+  if (!preg_match('/^(\\d{4})(\\d\\d)(\\d\\d)$/', $t0, $m)) return false;
+  $g0 = mktime(0, 0, 0, $m[2], $m[3], $m[1]);
+  if ($Now < $g0) return false;
+
+  $t1 = preg_replace('/\\D/', '', $t1);
+  $t1++;
+  if (!preg_match('/^(\\d{4})(\\d\\d)(\\d\\d)$/', $t1, $m)) return false;
+  $g1 = mktime(0, 0, 0, $m[2], $m[3], $m[1]);
+  if ($Now >= $g1) return false;
+  return true;
+}
+  

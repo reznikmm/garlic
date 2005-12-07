@@ -1,5 +1,5 @@
 <?php if (!defined('PmWiki')) exit();
-/*  Copyright 2004 Patrick R. Michaud (pmichaud@pobox.com)
+/*  Copyright 2004-2005 Patrick R. Michaud (pmichaud@pobox.com)
     This file is part of PmWiki; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published
     by the Free Software Foundation; either version 2 of the License, or
@@ -116,6 +116,7 @@ function BlockUnapprovedPosts($pagename, &$page, &$new) {
     $UnapprovedLinkCountMax, $EnablePost, $MessagesFmt, $BlockMessageFmt;
   if (!IsEnabled($EnableUrlApprovalRequired, 1)) return;
   if ($UnapprovedLinkCount <= $UnapprovedLinkCountMax) return;
+  if ($page['=auth']['admin']) return;
   $EnablePost = 0;
   $MessagesFmt[] = $BlockMessageFmt;
 }
