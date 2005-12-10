@@ -64,10 +64,11 @@ $EnableGUIButtons = 1;
 $EnableDirectDownload = 0;
 $EnableUpload         = 1;
 $EnableTransitions    = 0;
-$UploadMaxSize = 1000000;
+$UploadMaxSize        = 1000000;
 $UploadExtSize['gif'] = 200000;
-$UploadExts['bash'] = 'application/x-shellscript';
-$UploadExts['cmd'] = 'application/x-cmdscript';
+$UploadExts['bash']   = 'application/x-shellscript';
+$UploadExts['spec']   = 'application/x-rpmscript';
+$UploadExts['cmd']    = 'application/x-cmdscript';
 
 ##  Setting $EnableDiag turns on the ?action=diag and ?action=phpinfo
 ##  actions, which often helps the PmWiki authors to troubleshoot 
