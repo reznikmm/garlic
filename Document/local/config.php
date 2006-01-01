@@ -83,11 +83,13 @@ $UploadExts['cmd']    = 'application/x-cmdscript';
 
 ##  Set $SpaceWikiWords if you want WikiWords to automatically 
 ##  have spaces before each sequence of capital letters.
-# $SpaceWikiWords = 1;                     # turn on WikiWord spacing
+
+$SpaceWikiWords = 1;                     # turn on WikiWord spacing
 
 ##  Set $LinkWikiWords to zero if you don't want WikiWord links (i.e.,
 ##  all links are made using [[...]].
-# $LinkWikiWords = 0;                      # disable WikiWord links
+
+$LinkWikiWords = 0;                      # disable WikiWord links
 
 ##  If you want only the first occurrence of a WikiWord to be converted
 ##  to a link, set $WikiWordCountMax=1.
