@@ -1,0 +1,13 @@
+version=pmwiki-2.0.13 ordered=1 urlencoded=1
+agent=Opera/8.51 (X11; Linux x86_64; U; de)
+author=Martin Krischik
+host=84.74.134.212
+name=Main.GroupFooter
+rev=1
+targets=Profiles.HomePage
+text=----%0a© 2005,2006 [[Profiles/HomePage|the Authors]], Content is available under [[http://www.gnu.org/copyleft/fdl.html|GNU Free Documentation License]].
+time=1136128247
+author:1136128247=Martin Krischik
+csum:1136128247=Licence
+diff:1136128247:1136128247:=1,2d0%0a%3c ----%0a%3c © 2005,2006 [[Profiles/HomePage|the Authors]], Content is available under [[http://www.gnu.org/copyleft/fdl.html|GNU Free Documentation License]].%0a\ No newline at end of file%0a
+host:1136128247=84.74.134.212
