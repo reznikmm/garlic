@@ -1,0 +1,9 @@
+version=pmwiki-2.0.10 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-TW; rv:1.7.12) Gecko/20050919 Firefox/1.0.7
+author=Ren
+host=163.32.186.216
+name=PmWikiZhTw.WikiWikiWeb
+rev=1
+targets=PmWikiZhTw.WikiWikiWeb,PmWikiZhTw.TextFormattingRules寫作語法,PmWikiZhTw.WikiWord,Main.AllRecentChanges所有最近更動,PmWikiZhTw.TipsForEditing頁面編輯技巧,Main.WikiSandbox測試沙箱
+text=WikiWikiWeb （或是簡稱 Wiki）是一個「開放性共同編輯」系統，它著重於'''寫作'''和'''組織整理'''網頁的內容，而不是僅僅簡單地顯示網頁好供人瀏覽。%0a%0aWiki 的基本理念是允許（幾乎）任何人可以編輯網站中的任何頁面。%0a%0a聽起來，這種理念是很嚇人、或是混亂不堪的無政府主義，但真實的現狀是，使用 Wiki 的網站往往能夠發展成驚人複雜的、擁有大量組織整理過的文件資訊，可供特定社群共同來交流分享。%0a%0a不可避免的，是會有惡意的人到網站上來破壞頁面，但是這種事不是經常發生。並且很多系統（包括本網站）有內建復原機制，能夠恢復被篡改或破壞的內容。%0a%0aWiki 的目標是儘可能使建立和編輯網路內容的工作，變得簡單而且值得投入。使用任何一個合乎標準的網頁瀏覽器，你只要熟悉相當簡單的 [[TextFormattingRules 寫作語法]]，就能編輯網站中的（幾乎）任意網頁。%0a%0a要建立連到新的或已經存在的頁面的連結，只需簡單地輸入 WikiWord -- 由兩個以上、單字間不含空白、且字首皆為大寫的英文單字，連在一起組合而成 -- 來做為目標頁面的連結標題。%0a%0a甚至不需學習 [[TextFormattingRules 寫作語法]] 就能開始進行，只要先將文件內容寫入網頁，就會有熱心的人為你重新編排文件格式。畢竟，任何人都能編輯你的頁面！%0a%0a在網站的 [[Main/AllRecentChanges 所有最近更動]] 裡頭，你也可以看到其他人編修的內容。%0a%0a想要瞭解更多在 Wiki 中撰寫網頁的方法，請參考 [[TipsForEditing 頁面編輯技巧]]，然後在 [[Main/WikiSandbox 測試沙箱]] 中試著學習如何編輯網頁。%0a%0a如果你要瞭解更多關於 WikiWikiWeb 的理念，請參考底下這些網站（英文）：%0a%0a* Wiki:WikiWikiWeb -- WikiWikiWeb 的起源%0a* Meatball:WhyWikiWorks -- 如何和為什麼 Wiki 能夠運作%0a* Meatball:SoftSecurity -- 開放性共同編輯如何成就好的網站%0a* [[http://www.emacswiki.org/cgi-bin/community/CategoryWiki Wiki]] 在 [[http://www.emacswiki.org/cgi-bin/community/SiteMap CommunityWiki]]%0a* [[http://wikifeatures.wiki.taoriver.net/moin.cgi/FrontPage WikiFeatures]] -- Wiki 的特徵和如何使用它們的訊息%0a* Wikipedia:Why_Wikipedia_is_so_great -- 如何和為什麼世界上最大的 Wiki 寫出一套免費的綜合性百科全書%0a* [[http://wikitravel.org/en/article/Wikitravel:WikiWiki | Wikitravel:WikiWiki]] -- another introduction to wikis, on another exemplary site%0a%0a或者寫信給 Patrick Michaud，寄到 mailto:pmichaud@pobox.com.
+time=1128514289

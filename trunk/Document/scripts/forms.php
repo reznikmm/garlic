@@ -1,5 +1,5 @@
 <?php if (!defined('PmWiki')) exit();
-/*  Copyright 2005 Patrick R. Michaud (pmichaud@pobox.com)
+/*  Copyright 2005-2006 Patrick R. Michaud (pmichaud@pobox.com)
     This file is part of PmWiki; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published
     by the Free Software Foundation; either version 2 of the License, or
@@ -13,8 +13,11 @@ SDV($InputAttrs, array('name', 'value', 'id', 'class', 'rows', 'cols',
 
 # Set up formatting for text, submit, hidden, radio, etc. types
 foreach(array('text', 'submit', 'hidden', 'password', 'radio', 'checkbox',
-              'reset') as $t) 
+              'reset', 'file') as $t) 
   SDV($InputTags[$t][':html'], "<input type='$t' \$InputFormArgs />");
+SDV($InputTags['text']['class'], 'inputbox');
+SDV($InputTags['password']['class'], 'inputbox');
+SDV($InputTags['submit']['class'], 'inputbutton');
 
 # (:input form:)
 SDVA($InputTags['form'], array(
@@ -34,7 +37,7 @@ Markup('input', 'directives',
   "InputMarkup(\$pagename, '$1', PSS('$2'))");
 
 function InputMarkup($pagename, $type, $args) {
-  global $InputTags, $InputAttrs, $FmtV;
+  global $InputTags, $InputAttrs, $InputValues, $FmtV;
   if (!@$InputTags[$type]) return "(:input $type $args:)";
   $opt = array_merge($InputTags[$type], ParseArgs($args));
   $args = @$opt[':args'];
@@ -43,6 +46,8 @@ function InputMarkup($pagename, $type, $args) {
     $opt[array_shift($args)] = array_shift($opt['']);
   foreach ((array)@$opt[''] as $a) 
     if (!isset($opt[$a])) $opt[$a] = $a;
+  if (!isset($opt['value']) && isset($InputValues[@$opt['name']])) 
+    $opt['value'] = $InputValues[$opt['name']];
   $attr = array();
   foreach ($InputAttrs as $a) {
     if (!isset($opt[$a])) continue;
@@ -52,6 +57,17 @@ function InputMarkup($pagename, $type, $args) {
   $out = FmtPageName($opt[':html'], $pagename);
   return preg_replace('/<(\\w+\\s)(.*)$/es',"'<$1'.Keep(PSS('$2'))", $out);
 }
+
+## Form-based authorization prompts (for use with PmWikiAuth)
+
+SDVA($InputTags['auth_form'], array(
+  ':html' => "<form action='{$_SERVER['REQUEST_URI']}' method='post' 
+    name='authform'>\$PostVars"));
+SDV($AuthPromptFmt, array(&$PageStartFmt, 'page:$SiteGroup.AuthForm',
+  "<script language='javascript' type='text/javascript'><!--
+    try { document.authform.authid.focus(); }
+    catch(e) { document.authform.authpw.focus(); } //--></script>",
+  &$PageEndFmt));
 
 ## The section below handles specialized EditForm pages.
 ## We don't bother to load it if we're not editing.
@@ -71,7 +87,7 @@ XLSDV('en', array(
   'ak_saveedit' => 'u',
   'ak_preview' => 'p',
   'ak_textedit' => ',',
-  'e_rows' => '25',
+  'e_rows' => '23',
   'e_cols' => '60'));
 
 # (:e_preview:) displays the preview of formatted text.
@@ -84,9 +100,9 @@ Markup('e_preview', 'directives',
 Markup('e_guibuttons', 'directives', '/\\(:e_guibuttons:\\)/', '');
 
 SDVA($InputTags['e_form'], array(
-  ':html' => "<form action='\$PageUrl?action=edit' method='post'><input 
+  ':html' => "<form action='{\$PageUrl}?action=edit' method='post'><input 
     type='hidden' name='action' value='edit' /><input 
-    type='hidden' name='n' value='\$FullName' /><input 
+    type='hidden' name='n' value='{\$FullName}' /><input 
     type='hidden' name='basetime' value='\$EditBaseTime' />"));
 SDVA($InputTags['e_textarea'], array(
   ':html' => "<textarea \$InputFormArgs 
@@ -114,6 +130,7 @@ SDVA($InputTags['e_saveeditbutton'], array(
   ':html' => "<input type='submit' \$InputFormArgs />",
   'name' => 'postedit', 'value' => ' '.XL('Save and edit').' ',
   'accesskey' => XL('ak_saveedit')));
+SDVA($InputTags['e_savedraftbutton'], array(':html' => ''));
 SDVA($InputTags['e_previewbutton'], array(
   ':html' => "<input type='submit' \$InputFormArgs />",
   'name' => 'preview', 'value' => ' '.XL('Preview').' ', 

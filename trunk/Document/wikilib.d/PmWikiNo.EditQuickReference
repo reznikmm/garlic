@@ -1,0 +1,9 @@
+version=pmwiki-2.0.12 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; nb-NO; rv:1.7.8) Gecko/20050511
+author=erik_h
+host=195.204.19.164
+name=PmWikiNo.EditQuickReference
+rev=1
+targets=PmWiki.BasicEditing,PmWiki.TextFormattingRules,PmWiki.DocumentationIndex,PmWiki.SimpleTables,PmWiki.AdvancedTables
+text=(:table class='quickref' width='100%25' cellspacing='0' cellpadding='0' style='font-size:12px; font-family:Arial; padding:2px; border:1px solid #cccccc;' bgcolor=#f9f9f9 :)%0a(:cellnr:)%0a%25target=_blank%25 [[PmWiki/Basic Editing | Grunnleggende endring]] - [[PmWiki/Text Formatting Rules | Tekstformattering]] - [[PmWiki/Documentation Index | Dokumentasjonsindeks]]%0a(:cell align=right:)%0a%25target=_blank%25 '''Tabeller:''' [[PmWiki/Simple(Tables) | Enkle]] - [[PmWiki/Advanced(Tables) | Avanserte]]%0a(:cellnr:)%0a-%3c'''Avsnitt:''' for nytt avsnitt, bruk tom linje;\\%0a'''[=->=]''' rykke inn tekst, '''[=-%3c=]''' hengende innrykk %0a(:cell align=right:)%0a'''Linjebryting:''' '''[=\\=]''' eller '''[=[[%3c%3c]]=]'''%0a(:cellnr colspan='2':)%0a-%3c'''Lister''' '''*''' for merka lister, '''#''' for nummererte lister, ''':'''term''':'''definisjon for definisjonsliste%0a-%3c'''Utheving:''' [=''kursiv'', '''fet''', '''''fet kursiv''''', @@skrivemaskin@@ (fast tegnavstand)=]%0a-%3c'''Referanser:''' [=[[en annen side]], [[http://www.example.com]], [[en annen side | lenketekst]], [[#anker]]=]%0a-%3c'''Grupper:''' [=[[Gruppe/Side]] viser side, [[Gruppe.Side]] viser Gruppe.Side, [[Gruppe(.Side)]] viser Gruppe=]%0a(:cellnr:)%0a-%3c'''Separatorer:''' '''!!''', '''!!!''' for overskrifter, '''[=----=]''' for vannrett linje%0a-%3c'''Andre koder:''' [=[+større+], [-mindre-], '^hevet^', '_senket_', {+innsatt+}, {-sletta-}=]%0a(:cell align=right:)%0a'''Forhindre formattering:''' [=[=...=]=]\\%0a'''Preformattert blokk:''' [=[@...@]=]%0a(:tableend:)
+time=1130609677

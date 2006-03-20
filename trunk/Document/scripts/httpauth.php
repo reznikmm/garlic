@@ -24,7 +24,9 @@ if (IsEnabled($EnableRemoteUserAuth, 1) && @$_SERVER['REMOTE_USER']) {
 if (@$_SERVER['PHP_AUTH_PW']) {
   @session_start();
   @$_SESSION['authpw'][$_SERVER['PHP_AUTH_PW']]++;
+  $_REQUEST[session_name()] = 1;
 }
+
 
 ## $EnableHTTPBasicAuth tells PmWikiAuth to use the browser's
 ## HTTP Basic protocol prompt instead of a form-based prompt.

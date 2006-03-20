@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta26
+newline=²
+time=1111865039
+text=!!!But²²Passer en mode édition quand on double-clique sur la page.²²!!!Solution²²Ajouter cette ligne à la déclaration <body> du modèle que vous utilisez :²² ondblclick="window.location.href='$PageUrl?action=edit'"²²--[[~Pyros]]²²en pratique : ²²  <body onDblClick="window.location.href='$PageUrl?action=edit'">²²----²%trail%<<|[[Index compléments]]|>>²²----²%tr% Traduction de PmWiki:Cookbook.EditOnDblClick - page originale sur PmWiki:PmWikiFr.EditerParDoubleClick²
+targets=Profiles.Pyros,PmWikiFr.CheminDeRecherche,PmWikiFr.IndexCompléments,PmWikiFr.BarreDédition
+author=PRZ
+name=PmWikiFr.EditerParDoubleClick
+host=82.124.112.212
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; fr-FR; rv:1.7.6) Gecko/20050226 Firefox/1.0.1
+rev=3

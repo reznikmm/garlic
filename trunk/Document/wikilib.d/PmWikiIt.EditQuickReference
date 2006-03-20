@@ -1,0 +1,9 @@
+version=pmwiki-2.0.6 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (X11; U; Linux i686; it-IT; rv:1.7.8) Gecko/20050813 Firefox/1.0.4 (Debian package 1.0.4-2sarge2)
+author=Alex
+host=82.57.15.33
+name=PmWikiIt.EditQuickReference
+rev=10
+targets=PmWikiIt.RegoleFormattazione,PmWikiIt.ConsigliPerLaModifica,PmWikiIt.IndiceDocumentazione
+text=(:table width='100%25' cellspacing='0' cellpadding='0':)%0a(:cell style='font-size:12px; font-family:Arial;' bgcolor='#eeeeff' colspan='2':)%0a%25target=_blank%25 [[PmWikiIt/RegoleFormattazione | Regole di formattazione]] - [[PmWikiIt/ConsigliPerLaModifica | Consigli per la modifica]] - [[PmWikiIt/IndiceDocumentazione|Indice Documentazione]] \\%0a'''Paragrafi:''' per un nuovo paragrafo, premi il tasto ''ritorno a capo'' due volte; usa [=->=] per indentare il testo \\%0a'''Liste:''' * per liste non numerate, # per liste numerate, :termine:definizione per liste definition \\%0a'''Enfasi:''' [=''corsivo''=], [='''grassetto'''=], [='''''corsivo in grassetto'''''=], [=@@macchina da scrivere@@=] (monospazio) \\%0a'''Riferimenti:''' [=[[altra pagina]]=], [=[[http://www.esempio.com]]=], [=[[altra pagina | testo del link]]=] \\%0a'''Gruppi:''' [=[[Gruppo/Pagina]]=] mostra la Pagina, [=[[Gruppo.Pagina]]=] mostra Gruppo.Pagina%0a(:cellnr style='font-size:12px; font-family:Arial;' bgcolor='#eeeeff':)%0a'''Separatori:''' !, !!, !!! per le intestazioni, [=----=] per una linea orizzontale \\%0a'''Modifica grandezza:''' [=[+...+]=] è più grande, [=[-...-]=] è più piccolo%0a(:cell style='font-size:12px; font-family:Arial;' bgcolor='#eeeeff' :)%0a'''Evitare la formattazione:''' [=[=...=]=] \\%0a'''Ritorno a capo:''' [=\\=] or [=[[%3c%3c]]=]%0a(:tableend:)%0a%0a
+time=1127573001

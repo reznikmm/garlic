@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta37 ordered=1
+newline=²
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; sv-SE; rv:1.7.7) Gecko/20050414 Firefox/1.0.3
+author=bengibollen
+host=193.11.248.65
+name=PmWikiSv.EditQuickReference
+rev=2
+targets=PmWiki.TextFormattingRules,PmWiki.TipsForEditing
+text=(:table width='100%' cellspacing='0' cellpadding='0':)²(:cell style='font-size:12px; font-family:Arial;' bgcolor='#ffeedd' colspan='2':)²%target=_blank% [[PmWiki/TextFormattingRules | Textformateringsregler (E)]] - [[PmWiki/TipsForEditing | Redigeringstips (E)]] \\²'''Stycken:''' Tryck ''return'' två gånger för ett nytt stycke. Använd [=->=] för att indentera text \\²'''Listor:''' * för punktlistor, # för numrerade listor, :term:definition för definitionslistor \\²'''Stil:''' [=''kursiv''=], [='''fetstil'''=], [='''''kursiv fetstil'''''=], [=@@typewriter@@=] (fast bredd) \\²'''Länkar:''' [=[[Annan sida]]=], [=[[http://www.example.com]]=] \\²'''Grupper:''' [=[[Grupp/Sida]]=] visar Sida, [=[[Grupp.Sida]]=] visar Grupp.Sida²(:cellnr style='font-size:12px; font-family:Arial;' bgcolor='#ffeedd':)²'''Skiljetecken:''' !, !!, !!! för rubriker, [=----=] för horisontell linje \\²'''Ändra storlek:''' [=[+...+]=] är större, [=[-...-]=] är mindre²(:cell style='font-size:12px; font-family:Arial;' bgcolor='#ffeedd' :)²'''Hindra formatering:''' [=[=...=]=] \\²'''Radbrytning:''' [=\\=] eller [=[[<<]]=]²(:tableend:)
+time=1117711317

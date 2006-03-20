@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta11
+newline=²
+time=1103651938
+text=!!!Guter Stil, der "Wiki-Knigge"²²[-%green%(deutsche Übersetzung der Seite PmWiki.GoodStyle, Stand 21.Dez 2004)-]²²²Die Hinweise dieser Seite sollten aufmerksam gelesen werden, auch wenn man sich entscheidet sie anschließend nicht zu befolgen.²²Für Beiträge in diesem Wiki wird normalerweise die zweite oder dritte Person verwendet. Denk an den Slogan von '''Focus''' (ein deutsches Nachrichtenmagazin) und schreibe nur "''' Fakten, Fakten, Fakten!'''" Nur genaue Erklärungen können helfen.²²Die erste Person wird in der Regel benutzt, um eigene Erfahrungen zu beschreiben. Wer in der ersten Person schreibt, sollte seinen Beitrag namentlich kennzeichnen. Mit [@~~@][@~~@] (vier Tilde) (Autor einschliesslich Datum) oder [@~~@][@~@] (drei Tilde) (nur Autor) oder [@[[~Mein Name]]@] wird ein Beitrag signiert.²²Es gehört zum guten Ton Absätze die von Anderen unterzeichnet wurden, nicht zu verändern. Ausgenommen sind davon offensichtliche Fehler. Wer eine Veränderung anderer ausschließen will, sollte seinen Beitrag daher unbedingt kennzeichnen. Unsignierter Text darf frei verändert werden. ²²Sei zurückhaltend. Schreibe in einfacher, unmissverständlicher Sprache. Sei nett und tolerant zu anderen.²²%trail%<<|PmWikiDe.DokumentationsIndex|>>
+targets=PmWiki.GoodStyle,PmWikiDe.DokumentationsIndex
+author=HansB
+name=PmWikiDe.GuterStil
+host=81.76.5.149
+agent=Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; NetCaptor 7.5.2; .NET CLR 1.0.3705)
+rev=17

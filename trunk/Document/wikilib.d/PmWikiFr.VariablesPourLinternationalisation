@@ -1,0 +1,11 @@
+version=pmwiki-2.0.beta28
+newline=²
+time=1112697421
+text=(:title Variables pour l'internationalisation:)²²<<|[[Variables]]|>>²²:$VarPagesFmt:Tableau contenant les noms des pages où sont définies les variables. A modifier pour une documentation locale (dito, qui n'est pas en anglais). voir ''vardoc.php''²²----²%tr%Traduction de [[(PmWiki:)I18nVariables]] - Page originale sur PmWiki:PmWikFr.VariablesPourLinternationalisation
+targets=PmWikiFr.VariablesDeTéléchargement,PmWikiFr.Variables,PmWikiFr.AutresVariables
+author=Khing
+name=PmWikiFr.VariablesPourLinternationalisation
+host=84.98.246.233
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; fr-FR; rv:1.7.6) Gecko/20050318 Firefox/1.0.2
+rev=5
+title=Variables pour l'internationalisation

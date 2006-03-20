@@ -1,5 +1,5 @@
 <?php if (!defined('PmWiki')) exit();
-/*  Copyright 2004-2005 Patrick R. Michaud (pmichaud@pobox.com)
+/*  Copyright 2004-2006 Patrick R. Michaud (pmichaud@pobox.com)
     This file is part of PmWiki; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published
     by the Free Software Foundation; either version 2 of the License, or
@@ -15,12 +15,12 @@ function LinkSuppress($pagename,$imap,$path,$title,$txt,$fmt=NULL)
 SDV($DiffShow['minor'],(@$_REQUEST['minor']!='n')?'y':'n');
 SDV($DiffShow['source'],(@$_REQUEST['source']=='y')?'y':'n');
 SDV($DiffMinorFmt, ($DiffShow['minor']=='y') ?
-  "<a href='\$PageUrl?action=diff&amp;source=".$DiffShow['source']."&amp;minor=n'>$[Hide minor edits]</a>" :
-  "<a href='\$PageUrl?action=diff&amp;source=".$DiffShow['source']."&amp;minor=y'>$[Show minor edits]</a>" );
+  "<a href='{\$PageUrl}?action=diff&amp;source=".$DiffShow['source']."&amp;minor=n'>$[Hide minor edits]</a>" :
+  "<a href='{\$PageUrl}?action=diff&amp;source=".$DiffShow['source']."&amp;minor=y'>$[Show minor edits]</a>" );
 SDV($DiffSourceFmt, ($DiffShow['source']=='y') ?
-  "<a href='\$PageUrl?action=diff&amp;source=n&amp;minor=".$DiffShow['minor']."'>$[Show changes to output]</a>" :
-  "<a href='\$PageUrl?action=diff&amp;source=y&amp;minor=".$DiffShow['minor']."'>$[Show changes to markup]</a>");
-SDV($PageDiffFmt,"<h2 class='wikiaction'>$[\$FullName History]</h2>
+  "<a href='{\$PageUrl}?action=diff&amp;source=n&amp;minor=".$DiffShow['minor']."'>$[Show changes to output]</a>" :
+  "<a href='{\$PageUrl}?action=diff&amp;source=y&amp;minor=".$DiffShow['minor']."'>$[Show changes to markup]</a>");
+SDV($PageDiffFmt,"<h2 class='wikiaction'>$[{\$FullName} History]</h2>
   <p>$DiffMinorFmt - $DiffSourceFmt</p>
   ");
 SDV($DiffStartFmt,"
@@ -41,10 +41,7 @@ SDV($DiffAddFmt['c'],"</div>
 SDV($DiffEndDelAddFmt,"</div>");
 SDV($DiffEndFmt,"</div>");
 SDV($DiffRestoreFmt,"
-      <div class='diffrestore'><a href='\$PageUrl?action=edit&amp;restore=\$DiffId&amp;preview=y'>$[Restore]</a></div>");
-SDV($DiffAuthorPageExistsFmt,"<a class='authorlink'
-   href='\$ScriptUrl/\$DiffAuthorPage'>\$DiffAuthor</a>");
-SDV($DiffAuthorPageMissingFmt,"\$DiffAuthor");
+      <div class='diffrestore'><a href='{\$PageUrl}?action=edit&amp;restore=\$DiffId&amp;preview=y'>$[Restore]</a></div>");
 
 SDV($HandleActions['diff'], 'HandleDiff');
 SDV($HandleAuth['diff'], 'read');
@@ -110,7 +107,7 @@ function PrintDiff($pagename) {
               str_replace("\n","<br />",htmlspecialchars(join("\n",$in))),
               "</div>";
           else echo MarkupToHTML($pagename,
-            preg_replace('/\\(:(.*?):\\)/','[@$1@]',join("\n",$in)));
+            preg_replace('/\\(:.*?:\\)/e',"Keep(PSS('$0'))",join("\n",$in)));
         }
         if ($match[4]=='d' || $match[4]=='c') {
           $txt = str_replace('line',$lines,$DiffAddFmt[$match[4]]);
@@ -121,7 +118,7 @@ function PrintDiff($pagename) {
               str_replace("\n","<br />",htmlspecialchars(join("\n",$out))),
               "</div>";
           else echo MarkupToHTML($pagename,
-            preg_replace('/(\\(:.*?:\\))/','[@$1@]',join("\n",$out)));
+            preg_replace('/\\(:.*?:\\)/e',"Keep(PSS('$0'))",join("\n",$out)));
         }
         echo FmtPageName($DiffEndDelAddFmt,$pagename);
       }

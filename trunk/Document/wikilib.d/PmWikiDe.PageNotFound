@@ -1,0 +1,10 @@
+version=pmwiki-2.0.3 ordered=1 urlencoded=1
+agent=Opera/8.02 (Windows NT 5.0; U; de)
+author=Klonk
+host=62.245.250.121
+name=PmWikiDe.PageNotFound
+rev=2
+targets=Site.EditQuickReference,UrlPage.UrlPage,UrlPage.HomePage,Main.UrlPage
+text=(:title Seite nicht gefunden:)%0a%25comment%25(deutsche Übersetzung der Seite Site.EditQuickReference, Stand 08.09.2005)%0aEs konnte keine Seite mit dem Namen "{$UrlPage}" gefunden werden.  Man kann:%0a%0a* [[{$UrlPage}.{$UrlPage}]] erzeugen%0a* [[{$UrlPage}.{$DefaultName}]] erzeugen%0a* [[{$DefaultGroup}.{$UrlPage}]] erzeugen%0a%0aVielleicht ist die gesuchte Seite auch in der nachfolgenden Liste enthalten:%0a%0a(:pagelist group={$UrlPage}:)
+time=1126167121
+title=Seite nicht gefunden

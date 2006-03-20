@@ -1,5 +1,5 @@
 <?php if (!defined('PmWiki')) exit();
-/*  Copyright 2005 Patrick R. Michaud (pmichaud@pobox.com)
+/*  Copyright 2005-2006 Patrick R. Michaud (pmichaud@pobox.com)
     This file is part of PmWiki; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published
     by the Free Software Foundation; either version 2 of the License, or
@@ -9,36 +9,105 @@
     occur to help existing sites smoothly upgrade to newer releases of 
     PmWiki.  Rather than put the workarounds in the main code files, we 
     try to centralize them here so we can see what's deprecated and a
-    simple switch ($EnableTransitions=0, or ?trans=0 in the url) can tell 
-    the admin if his site is relying on an outdated feature or
-    way of doing things.
+    simple switch (?trans=0 in the url) can tell the admin if his site 
+    is relying on an outdated feature or way of doing things.
+
+    Transitions defined in this script:
+
+      $Transition['fplbygroup']         - restore FPLByGroup function
+
+      $Transition['version'] < 2000915  - all transitions listed above
+    
+      $Transition['mainrc']             - keep using Main.AllRecentChanges
+      $Transition['mainapprovedurls']   - keep using Main.ApprovedUrls
+      $Transition['pageeditfmt']        - default $PageEditFmt value
+      $Transition['mainpages']          - other default pages in Main
+
+      $Transition['version'] < 1999944  - all transitions listed above
+
+    To get all of the transitions for compatibility with a previous
+    version of PmWiki, simply set $Transition['version'] in a local
+    configuration file to the version number you want compatibility
+    with.  All of the transitions associated with that version will
+    then be enabled. Example:
+
+            # Keep compatibility with PmWiki version 2.0.13
+            $Transition['version'] = 2000013;
+
+    To explicitly enable or disable specific transitions, set
+    the corresponding $Transition[] element to 1 or 0.  This will 
+    override the $Transition['version'] item listed above.  For 
+    example, to enable just the 'pageeditfmt' transition, use
+
+            $Transition['pageeditfmt'] = 1;
+
 */
 
 ## if ?trans=0 is specified, then we don't do any fixups.
 if (@$_REQUEST['trans']==='0') return;
 
-## Beta50 switches Main.AllRecentChanges to be $SiteGroup.AllRecentChanges .
-## This setting keeps Main.AllRecentChanges going if it exists.
-if (PageExists('Main.AllRecentChanges')) 
+## Transitions from 2.1.beta15
+
+if (@$Transition['version'] < 2000915) 
+  SDVA($Transition, array('fplbygroup' => 1));
+
+## fplbygroup:
+##   The FPLByGroup function was removed in 2.1.beta15, this restores it.
+if (@$Transition['fplbygroup'] && !function_exists('FPLByGroup')) {
+  SDV($FPLFormatOpt['bygroup'], array('fn' => 'FPLByGroup'));
+  function FPLByGroup($pagename, &$matches, $opt) {
+    global $FPLByGroupStartFmt, $FPLByGroupEndFmt, $FPLByGroupGFmt,
+      $FPLByGroupIFmt, $FPLByGroupOpt;
+    SDV($FPLByGroupStartFmt,"<dl class='fplbygroup'>");
+    SDV($FPLByGroupEndFmt,'</dl>');
+    SDV($FPLByGroupGFmt,"<dt><a href='\$ScriptUrl/\$Group'>\$Group</a> /</dt>\n");
+    SDV($FPLByGroupIFmt,"<dd><a href='\$PageUrl'>\$Name</a></dd>\n");
+    SDVA($FPLByGroupOpt, array('readf' => 0, 'order' => 'name'));
+    $matches = MakePageList($pagename, 
+                            array_merge((array)$FPLByGroupOpt, $opt), 0);
+    if (@$opt['count']) array_splice($matches, $opt['count']);
+    if (count($matches)<1) return '';
+    $out = '';
+    foreach($matches as $pn) {
+      $pgroup = FmtPageName($FPLByGroupGFmt, $pn);
+      if ($pgroup != @$lgroup) { $out .= $pgroup; $lgroup = $pgroup; }
+      $out .= FmtPageName($FPLByGroupIFmt, $pn);
+    }
+    return FmtPageName($FPLByGroupStartFmt, $pagename) . $out .
+           FmtPageName($FPLByGroupEndFmt, $pagename);
+  }
+}
+
+## Transitions from 2.0.beta44
+
+if (@$Transition['version'] < 1999944) 
+  SDVA($Transition, array('mainrc' => 1, 'mainapprovedurls' => 1,
+    'pageeditfmt' => 1, 'mainpages' => 1));
+
+## mainrc:
+##   2.0.beta44 switched Main.AllRecentChanges to be 
+##   $SiteGroup.AllRecentChanges.  This setting keeps Main.AllRecentChanges
+##   if it exists.
+if (@$Transition['mainrc'] && PageExists('Main.AllRecentChanges')) {
   SDV($RecentChangesFmt['Main.AllRecentChanges'],
     '* [[$Group.$Name]]  . . . $CurrentTime $[by] $AuthorLink');
+}
 
-## Beta50 switches Main.ApprovedUrls to be $SiteGroup.ApprovedUrls .
-## This setting keeps using Main.ApprovedUrls if it exists.
-if (PageExists('Main.ApprovedUrls')) {
+## siteapprovedurls:
+##   2.0.beta44 switched Main.ApprovedUrls to be $SiteGroup.ApprovedUrls .
+##   This setting keeps using Main.ApprovedUrls if it exists.
+if (@$Transition['mainapprovedurls'] && PageExists('Main.ApprovedUrls')) {
   $ApprovedUrlPagesFmt = (array)$ApprovedUrlPagesFmt;
   if (PageExists(FmtPageName($ApprovedUrlPagesFmt[0], $pagename))) 
     $ApprovedUrlPagesFmt[] = 'Main.ApprovedUrls';
   else array_unshift($ApprovedUrlPagesFmt, 'Main.ApprovedUrls');
 }
 
-## $PageEditFmt has been deprecated in favor of using wiki markup forms
-## to layout the edit page (as controlled by the $EditFormPage variable).
-## However, some sites and skins have customized $PageEditFmt -- if
-## that appears to have happened we restore PmWiki's older defaults here.
-## If not, then we take any $EditMessages (which may have come from
-## cookbook scripts) and stick them into the new $MessagesFmt array.
-if (@$PageEditFmt || @$PagePreviewFmt || @$HandleEditFmt) {
+## pageeditfmt:
+##   2.0.beta44 switched to using wiki markup forms for page editing.
+##   However, some sites and skins have customized values of $PageEdit.
+##   This setting restores the default values.
+if (@$Transition['pageeditfmt']) {
   SDV($PageEditFmt, "<div id='wikiedit'>
     <a id='top' name='top'></a>
     <h1 class='wikiaction'>$[Editing \$FullName]</h1>
@@ -77,12 +146,15 @@ function GUIEdit($pagename, &$page, &$new) {
   $EditMessageFmt .= GUIButtonCode($pagename);
 }
 
-## In beta50 several utility pages change location to the new Site
-## group.  These settings cause some skins (that use translations)
-## to know to link to the new locations.
-XLSDV('en', array(
-  'Main/SearchWiki' => XL('Site/Search'),
-  'PmWiki.EditQuickReference' => XL('Site/EditQuickReference'),
-  'PmWiki.UploadQuickReference' => XL('Site/UploadQuickReference'),
-  ));
+## mainpages:
+##   In 2.0.beta44 several utility pages change location to the new Site
+##   group.  These settings cause some skins (that use translations)
+##   to know to link to the new locations.
+if ($Transition['mainpages']) {
+  XLSDV('en', array(
+    'Main/SearchWiki' => XL('Site/Search'),
+    'PmWiki.EditQuickReference' => XL('Site/EditQuickReference'),
+    'PmWiki.UploadQuickReference' => XL('Site/UploadQuickReference'),
+    ));
+}
 

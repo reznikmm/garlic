@@ -1,0 +1,9 @@
+version=pmwiki-2.0.10 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-TW; rv:1.7.12) Gecko/20050919 Firefox/1.0.7
+author=Ren
+host=163.32.186.216
+name=PmWikiZhTw.測試沙箱
+rev=1
+targets=PmWiki.TextFormattingRules
+text=請在此盡情地嘗試[[PmWiki/Text Formatting Rules]]中提到的各種標記用法，點選 "編輯" 連結即可開始編輯本頁面。%0a%0a測試沙箱每十五分鐘會自動清空內容。%0a----
+time=1128511879

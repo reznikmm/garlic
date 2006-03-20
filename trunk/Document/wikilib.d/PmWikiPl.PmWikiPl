@@ -1,0 +1,9 @@
+version=pmwiki-2.0.12 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; fr-FR; rv:1.7.10) Gecko/20050717 Firefox/1.0.6
+author=PRZ
+host=212.194.201.133
+name=PmWikiPl.PmWikiPl
+rev=10
+targets=PmWiki.WikiWikiWeb,PmWiki.PatrickMichaud,PmWiki.PmWiki,PmWiki.DocumentationIndex
+text=Aplikacja PmWiki jest implementacją sytemu [[PmWiki/WikiWikiWeb]] w języku PHP. Jej autorem jest [[PmWiki/Patrick Michaud]]. PmWiki została stworzona jako narzędzie pracy grupowej, pozwalające w prosty sposób tworzyć i utrzymywać witryny WWW. %0a%0aWitryna którą właśnie oglądasz korzysta z wersji {$Version}. Aplikacja jest dostępna na zasadach licencji GNU General Public License (GPL) pod adresem http://www.pmichaud.com/pub/pmwiki. Dokumentacja jest dostępna przez łącze [[PmWiki/Documentation Index]].%0a%0aPmWiki jest zarejestrowanym znakiem towarowym należącym do Patricka R. Michauda (http://www.pmichaud.com).%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a
+time=1129977092

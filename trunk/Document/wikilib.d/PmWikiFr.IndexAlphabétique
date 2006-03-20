@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta26
+newline=²
+time=1111864913
+text=!!!Question²²Comment avoir la liste des pages ordonnée comme un "index alphabétique", c'est à dire avec des paragraphes séparés pour chaque lettre de l'alphabet?²²!!!Réponse²²Le script [[dictindex.php->http://www.pmwiki.org/uploads/Cookbook/dictindex.php]]  active la liste des pages suivant le format "index alphabétique". Ce format peut être utilisé par toute commande produisant une liste; par exemple on peut faire :²²    [=(:pagelist group=Cookbook fmt=dictindex:)=]²    [=(:searchresults group=Cookbook text=index fmt=dictindex:)=]²²!!!Discussion²²La sortie peut être personnalisée avec des variables  $FPLDictIndex...Fmt diverses -- voir la documentation du script pour les détails.²²!!!Contributeurs²²* [[~Pm]], 19-Oct-2004²²!!!Exemples/Essais²Nota: cette fonction n'est pas activée sur ce groupe, pour voir un exemple, allez voir sur la page originale en anglais: PmWiki:Cookbook.DictIndex .²²Liste de toutes les pages du groupe `PmWikiFr:² [=²(:pagelist group=PmWikiFr fmt=dictindex:)²=]²²Liste de toutes les pages de `PmWikiFr contenant le mot "google":² [=²(:searchresults group=PmWikiFr fmt=dictindex google:)²=]²²----²%trail%<<|[[Index compléments]]|>>²²----²%tr% Traduction de PmWiki:Cookbook.DictIndex - page originale sur PmWiki:PmWikiFr.IndexAlphabétique²²
+targets=Profiles.Pm,PmWikiFr.SautsDeLigne,PmWikiFr.IndexCompléments,PmWikiFr.ChangementDuGroupePrincipal
+author=PRZ
+name=PmWikiFr.IndexAlphabétique
+host=82.124.112.212
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; fr-FR; rv:1.7.6) Gecko/20050226 Firefox/1.0.1
+rev=4

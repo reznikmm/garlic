@@ -1,0 +1,9 @@
+version=pmwiki-2.0.10 ordered=1 urlencoded=1
+agent=Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.0.3705; Tablet PC 1.7; .NET CLR 1.1.4322)
+author=oc
+host=61.228.117.64
+name=PmWikiZhTw.PmWikiZhTw
+rev=15
+targets=PmWiki.WikiWikiWeb,PmWiki.PmWiki,PmWikiZhCn.PmWikiZhCn,Localization.Localization,PmWikiZhTw.StateOfTranslationTemplate
+text=PmWiki是Patrick Michaud用PHP程式語言寫成的維基網站（[[PmWiki/WikiWikiWeb]]）系統，PmWiki的主要目標是希望設計成一套網頁工具，讓網站容易集合多人協作，而維護也簡單。%0a%0a本站運作的版本是{$Version}。這套系統以 GNU 通用公共許可證 (GPL) 發布，並可由http://www.pmichaud.com/pub/pmwiki 下載。說明文件說明可以在頁面左方的索引找到。%0a%0aPmWiki 是 Patrick R. Michaud (http://www.pmichaud.com) 的註冊商標。%0a%0a簡體中文︰[[PmWikiZhCn/PmWikiZhCn]]\\%0a舊版 PmWiki-1.0.14-utf-8_chinese︰http://www.docu.org.tw/utf8/pmwiki.php%0a%0a'''幫忙翻譯'''︰%0a->[[Localization/Localization |翻譯說明]]\\%0a[[StateOfTranslationTemplate |翻譯進度]]%0a----%0a請問：誰知道如何完成中文命名的頁面名稱？-oc-2005 年 09 月 23 日，03:42 上午\\%0a　　%25green%25完成%25%25是什麼意思？是指%25green%25建立中文名稱頁面%25%25嗎？-Ren- 2005 年 10 月 2 日，02:10 下午%0a-->就是用中文命名的[=[[WikiWord]]=]。不過剛剛在[[簡體頁面->http://www.pmwiki.org/wiki/PmWikiZhCn/PmWikiZhCn]]那裡看到一點說明了，目前[=[[中文PageName]]=]只能在Linux系統上使用，Windows系統還不支援。-oc-2005 年 10 月 3 日，12:42 上午
+time=1128872881

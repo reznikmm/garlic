@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta14
+newline=²
+time=1105364645
+text=Una ParaulaDelWiki és un joc de dues o més paralues juntes on la primera lletra de cada paraula és majúscula.²Les [[ParaulaDelWiki ParaulesDelWiki]] s'utilitzen com enllaç i títol de pàgina en un PmWiki/WikiWikiWeb. En altres paraules, simplement una sèrie de qualsevol seqüencia de paraules juntes i amb la primera lletra de cada paraula en majúscula per fer una ParaulaDelWiki vàlida. ²²%trail%<<|PmWikiCa.ÍndexDeLaDocumentació|>>
+targets=PmWikiCa.ParaulaDelWiki,PmWikiCa.ParaulaDelWikiParaulesDelWiki,PmWiki.WikiWikiWeb,PmWikiCa.ÍndexDeLaDocumentació,PmWikiCa.EdicióBàsica
+author=sim6
+name=PmWikiCa.ParaulaDelWiki
+host=80.58.34.235
+agent=Mozilla/5.0 (X11; U; Linux ppc; ca-AD; rv:1.7.5) Gecko/20041220 Firefox/1.0 (Debian package 1.0+dfsg.1-1)
+rev=1

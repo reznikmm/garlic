@@ -16,10 +16,10 @@ function HandleCrypt($pagename, $auth='read') {
   global $ScriptUrl,$HTMLStartFmt,$HTMLEndFmt;
   PrintFmt($pagename,$HTMLStartFmt);
   $passwd = @$_POST["passwd"];
-  echo "<form action='$PageUrl' method='POST'><p>
+  echo "<form action='{$PageUrl}' method='POST'><p>
     Enter password to encrypt: <input type='text' name='passwd' value='$passwd' />
     <input type='submit' />
-    <input type='hidden' name='n' value='$FullName' />
+    <input type='hidden' name='n' value='{$FullName}' />
     <input type='hidden' name='action' value='crypt' /></p></form>";
   if ($passwd) { 
     $crypt = crypt($passwd);

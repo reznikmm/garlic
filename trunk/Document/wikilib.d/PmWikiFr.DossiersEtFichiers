@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta54 ordered=1
+newline=²
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; fr-FR; rv:1.7.10) Gecko/20050717 Firefox/1.0.6 (ax)
+author=Jean-Dom
+host=62.35.164.27
+name=PmWikiFr.DossiersEtFichiers
+rev=5
+targets=PmWikiFr.PmWiki,PmWikiFr.PersonnalisationParGroupe,PmWikiFr.ConfigurationLocale,PmWikiFr.LiensInterMap,PmWikiFr.AdministrationDesStylesWiki,PmWikiFr.IndexDocAdmin,PmWikiFr.AvantagesDuStockageEnFichier
+text=!!! Organisation des fichiers de PmWiki²²* @@pmwiki.php@@ est le script principal qui fait fonctionner le système wiki. ²* @@local@@ (dossier) est un bon endroit pour stocker les [[PersonnalisationParGroupe |personnalisations de groupe]] et autres [[ConfigurationLocale |configurations locales]].²** @@local/config.php@@ contient les paramètres pour l'ensemble du site.²** @@local/localmap.txt@@ contient les raccourcis LiensInterMap définis localement.²* @@pub@@ (dossier) contient les fichiers qui doivent être accessibles aux navigateurs, tels que les images ou les fichiers.css. ²* @@wiki.d@@ (dossier) contient les pages créées par les utilisateurs, enregistrées dans des fichiers textes individuels. Il est créé automatiquement la première fois que pmwiki.php est lancé. Les noms de fichiers ont la forme: Nomdegroupe.Nomdepage. Les pages détruites celle-ci: Nomdegroupe.Nomdepage,temps. Vous pouvez retirer physiquement les fichiers détruits uniquement via un shell ou par commandes FTP.²* @@wikilib.d@@ (directory) contient les pages par défaut fournies avec la distribution de PmWiki. Les fichiers de ce dossier sont utilisés quand une page du même nom n'existe pas dans le dossier @@wiki.d@@.²* @@scripts@@ (dossier) contient des scripts additionnels dont :  ²** @@intermap.txt@@ qui définit les raccourcis LiensInterMap par défaut pour certaines [=URLs=].²** faq.php²** includeurl.php²** pgcust.php²** pmwe²** simple-journal.php²** trails.php²* @@COPYING@@ un exemplaire de la License publique Générale GNU.²²----²%trail%<<|[[Index doc admin]]|>>²²----²%tr%Traduction de ? - Page originale sur PmWiki:PmWikiFr.DossiersEtFichiers²
+time=1124741010

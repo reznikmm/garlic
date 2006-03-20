@@ -1,5 +1,5 @@
 <?php if (!defined('PmWiki')) exit();
-/*  Copyright 2004-2005 Patrick R. Michaud (pmichaud@pobox.com)
+/*  Copyright 2004-2006 Patrick R. Michaud (pmichaud@pobox.com)
     This file is part of PmWiki; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published
     by the Free Software Foundation; either version 2 of the License, or
@@ -55,15 +55,16 @@ foreach($UploadExts as $k=>$v)
 SDV($UploadDir,'uploads');
 SDV($UploadPrefixFmt,'/$Group');
 SDV($UploadFileFmt,"$UploadDir$UploadPrefixFmt");
-SDV($UploadUrlFmt,preg_replace('#/[^/]*$#',"/$UploadDir",$ScriptUrl,1));
+$v = preg_replace('#^/(.*/)#', '', $UploadDir);
+SDV($UploadUrlFmt,preg_replace('#/[^/]*$#', "/$v", $PubDirUrl, 1));
 SDV($LinkUploadCreateFmt, "<a class='createlinktext' href='\$LinkUpload'>\$LinkText</a><a class='createlink' href='\$LinkUpload'>&nbsp;&Delta;</a>");
 
 SDV($PageUploadFmt,array("
   <div id='wikiupload'>
-  <h2 class='wikiaction'>$[Attachments for] \$FullName</h2>
+  <h2 class='wikiaction'>$[Attachments for] {\$FullName}</h2>
   <h3>\$UploadResult</h3>
-  <form enctype='multipart/form-data' action='\$PageUrl' method='post'>
-  <input type='hidden' name='n' value='\$FullName' />
+  <form enctype='multipart/form-data' action='{\$PageUrl}' method='post'>
+  <input type='hidden' name='n' value='{\$FullName}' />
   <input type='hidden' name='action' value='postupload' />
   <table border='0'>
     <tr><td align='right'>$[File to upload:]</td><td><input
@@ -72,7 +73,7 @@ SDV($PageUploadFmt,array("
       <td><input type='text' name='upname' value='\$UploadName' /><input 
         type='submit' value=' $[Upload] ' /><br />
         </td></tr></table></form></div>",
-  'wiki:$[Site.UploadQuickReference]'));
+  'wiki:$[{$SiteGroup}/UploadQuickReference]'));
 XLSDV('en',array(
   'ULsuccess' => 'successfully uploaded',
   'ULbadname' => 'invalid attachment name',
@@ -105,10 +106,12 @@ SDVA($HandleAuth, array('upload' => 'upload',
 SDV($UploadVerifyFunction, 'UploadVerifyBasic');
 
 function MakeUploadName($pagename,$x) {
-  $x = preg_replace('/[^-\\w. ]/', '', $x);
+  global $UploadNameChars;
+  SDV($UploadNameChars, "-\\w. ");
+  $x = preg_replace("/[^$UploadNameChars]/", '', $x);
   $x = preg_replace('/\\.[^.]*$/e', "strtolower('$0')", $x);
   $x = preg_replace('/^[^[:alnum:]]+/', '', $x);
-  return preg_replace('/[^[:alnum:]]+$/', '', $x);
+  return preg_replace('/[^[:alnum:]_]+$/', '', $x);
 }
 
 function LinkUpload($pagename, $imap, $path, $title, $txt, $fmt=NULL) {
@@ -125,10 +128,10 @@ function LinkUpload($pagename, $imap, $path, $title, $txt, $fmt=NULL) {
   $FmtV['$LinkText'] = $txt;
   if (!file_exists($filepath)) 
     return FmtPageName($LinkUploadCreateFmt, $pagename);
-  $path = FmtPageName(IsEnabled($EnableDirectDownload, 1) 
-                          ? "$UploadUrlFmt$UploadPrefixFmt/$upname"
-                          : "\$PageUrl?action=download&amp;upname=$upname",
-                      $pagename);
+  $path = PUE(FmtPageName(IsEnabled($EnableDirectDownload, 1) 
+                            ? "$UploadUrlFmt$UploadPrefixFmt/$upname"
+                            : "{\$PageUrl}?action=download&amp;upname=$upname",
+                          $pagename));
   return LinkIMap($pagename, $imap, $path, $title, $txt, $fmt);
 }
 
@@ -198,7 +201,7 @@ function HandlePostUpload($pagename, $auth = 'upload') {
     if ($LastModFile) { touch($LastModFile); fixperms($LastModFile); }
     $result = "upresult=success";
   }
-  Redirect($pagename,"\$PageUrl?action=upload&uprname=$upname&$result");
+  Redirect($pagename,"{\$PageUrl}?action=upload&uprname=$upname&$result");
 }
 
 function UploadVerifyBasic($pagename,$uploadfile,$filepath) {
@@ -263,7 +266,7 @@ function FmtUploadList($pagename, $args) {
   $filelist = array();
   while (($file=readdir($dirp)) !== false) {
     if ($file{0} == '.') continue;
-    if ($matchext && !preg_match($matchext, $file)) continue;
+    if (@$matchext && !preg_match(@$matchext, $file)) continue;
     $filelist[$file] = $file;
   }
   closedir($dirp);

@@ -1,0 +1,9 @@
+version=pmwiki-2.1.beta3 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; fr-FR; rv:1.7.10) Gecko/20050717 Firefox/1.0.6
+author=PRZ
+host=212.194.114.75
+name=PmWikiFr.EditionDeBase
+rev=16
+targets=PmWikiFr.RèglesDeFormatage,PmWikiFr.SyntaxeDesLiens,PmWikiFr.CréerDeNouvellesPages
+text=%25vert%25 - La traduction en Français est à reprendre dans son intégralité -%0a%0aLes pages de ce site sont des pages WikiWikiWeb, ce qui signifie que ces pages peuvent être créées et éditées par plusieurs auteurs. Pour éditer une page, cliquez simplement sur ''''Éditer Page'''' qui existe quelque part dans la page (habituellement dans l'entête ou le pied de page). Quelques pages peuvent être protégées par mot de passe, en fonction de la configuration de la sécurité, mais beaucoup de sites WikiWikiWeb permettent l'édition de toutes les pages.%0a%0aLes règles de base pour l'édition de page sont assez simples -- commencez chaque ligne sans espaces et mettez une ligne vide entre les paragraphes. Quatre traits d'unions ou plus au début d'une ligne produit un trait horizontal. Les astérisques au début des lignes produisent des listes à puces.%0a%0aSi vous le souhaitez, il existe bien d'autres [[RèglesDeFormatage | règles de présentation]] pour les listes et tout autre texte spécialisé.%0a%0aSi vous voulez expérimenter avec éditer une page, essayez sur le BacASable. Vous pouvez éditer le BacASable sans risques pour ce site.%0a%0a----%0a%25trail%25%3c%3c|PmWikiFr.IndexDocumentation|>>%0a%0a----%0a%25tr%25Traduction de PmWiki:BasicEditing - Page originale sur PmWiki:PmWikiFr.EditionDeBase
+time=1132869851

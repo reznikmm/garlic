@@ -1,5 +1,5 @@
 <?php if (!defined('PmWiki')) exit();
-/*  Copyright 2004, 2005 Patrick R. Michaud (pmichaud@pobox.com)
+/*  Copyright 2004-2006 Patrick R. Michaud (pmichaud@pobox.com)
     This file is part of PmWiki; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published
     by the Free Software Foundation; either version 2 of the License, or
@@ -18,11 +18,10 @@
 
 global $HTTPHeaders, $KeepToken, $pagename,
   $GroupPattern, $NamePattern, $WikiWordPattern, $SuffixPattern,
-  $PageNameChars, $MakePageNamePatterns, $CaseConversions;
+  $PageNameChars, $MakePageNamePatterns, $CaseConversions, $Charset;
 
-$HTTPHeaders[] = 'Content-type: text/html; charset=utf-8';
-
-$KeepToken = "\263\263\263";
+$Charset = 'UTF-8';
+$HTTPHeaders[] = 'Content-type: text/html; charset=UTF-8';
 $pagename = $_REQUEST['n'];
 if (!$pagename) $pagename = $_REQUEST['pagename'];
 if (!$pagename &&
@@ -41,7 +40,8 @@ SDV($PageNameChars, '-[:alnum:]\\x80-\\xfe');
 SDV($MakePageNamePatterns, array(
     "/'/" => '',                           # strip single-quotes
     "/[^$PageNameChars]+/" => ' ',         # convert everything else to space
-    "/(?<=^| )(.)/eu" => "utf8toupper('$1')", 
+    "/(?<=^| )([a-z])/e" => "strtoupper('$1')", 
+    "/(?<=^| )([\\xc0-\\xdf].)/e" => "utf8toupper('$1')", 
     "/ /" => ''));
 
 function utf8toupper($x) {
