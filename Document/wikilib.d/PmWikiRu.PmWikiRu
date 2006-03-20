@@ -1,0 +1,9 @@
+version=pmwiki-2.0.12 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.10) Gecko/20050716 Firefox/1.0.6
+author=Pm
+host=24.1.26.255
+name=PmWikiRu.PmWikiRu
+rev=12
+targets=PmWiki.PmWiki,PmWikiRu.WikiWikiWeb
+text=PmWiki это WikiWikiWeb-система разработанная Патриком Мичадом на языке PHP. PmWiki изначально была создана как инструмент для простой, многопользовательской разработки и поддержки веб-сайтов.%0a%0aЭтот сайт использует {$Version}. Система распротраняется свободно, согласно GNU General Public License (GPL) и может быть скачана с http://www.pmichaud.com/pub/pmwiki. Документация доступна через оглавление.%0a%0aPmWiki - зарегистрированная торговая марка, принадлежащая Патрику Р. Мичаду (http://www.pmichaud.com). %0a
+time=1131458107

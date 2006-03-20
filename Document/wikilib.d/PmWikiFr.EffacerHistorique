@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta26
+newline=²
+time=1111865217
+text=%vert% vérifier la conformité en V2 ²²!!!But²²Fournit une action permettant la suppression de l'historique d'une page. Permet aussi l'effacement de l'historique plus ancien qu'un nombre de jours fixé.²²!!!Solution²²  expirediff.php²²Ce script ne fait pas partie de la distribution standard, il faut le télécharger sur le site `PmWiki original.²²http://www.pmwiki.org/uploads/Cookbook/expirediff.php²²!!!Discussion²²Ce script ajoute l' @@?action=expirediff@@, qui supprime toute information d'historique d'une page de Wiki. L'utilisateur doit avoir accès aux permissions de page. Le verrouillage est géré. Une copie de la page avec l'ensemble des révisions est créée (de la même manière que lorsque l'on demande un effacement de page).²²En sus, on peut ajouter le paramètre @@keepdays=nn@@ , qui dit de conserver l'historique des pages des ''nn'' jours précédents. Par exemple, [@?action=expirediff&keepdays=7@] supprimera tout l'historique plus ancien que 7 jours. Par défaut @@keepdays@@ est à zéro, ce qui supprime tout l'historique de page.  ²²Pour installer ce script, copiez le simplement dans le répertoire ''local/'', et ensuite ajoutez dans le fichier ''local/config.php''²²    include_once('local/expirediff.php');²²ou (selon l'endroit ou est stocké le script) :²²    include_once('local/scripts/expirediff.php');²²!!!Voir aussi²²!!!Contributeurs²²* [[~Pm]]²²----²%trail%<<|[[Index compléments]]|>>²²----²%tr%Traduction de PmWiki:Cookbook.ExpireDiff - Page originale sur PmWiki:PmWikiFr.EffacerHistorique
+targets=Profiles.Pm,PmWikiFr.ListeDeBlocage,PmWikiFr.IndexCompléments,PmWikiFr.FeuillesDeDonnéesVersPmWiki
+author=PRZ
+name=PmWikiFr.EffacerHistorique
+host=82.124.112.212
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; fr-FR; rv:1.7.6) Gecko/20050226 Firefox/1.0.1
+rev=3

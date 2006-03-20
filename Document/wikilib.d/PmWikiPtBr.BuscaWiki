@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta13
+newline=²
+time=1103821419
+text=(:searchbox:)²²(:searchresults:)²²Digite na caixa de texto o que você deseja procurar.  A página de resultados lhe retornará as páginas que contêm todas as palavras que você digitou. Para procurar frases inteiras use aspas duplas ('''"''') no início e no final da frase.²²Para limitar a busca a um único grupo digite o nome do grupo seguido de uma barra '''/''' antes do texto que deseja procurar. '''Não''' use barras invertidas ('''\'''). Por exemplo, "[=PmWiki/=]" or "Main/". Para obter uma lista de todas as páginas do wiki digite apenas '''/'''.²²!!!Exemplos de busca²  ²||border='0' cellspacing='0' width='100%' cellpadding='0' ²||'''Digite'''     ||'''Localizar páginas contendo...''' ||²||torta goiaba     ||ambas as palavras 'torta' e 'goiaba' ||²||"torta de goiaba"||a frase 'torta de goiaba' ||²||pmwiki/goiaba    ||a palavra 'goiaba' no grupo [=PmWiki=] ||²||"pmwiki/goiaba"  ||a frase 'pmwiki/goiaba' em todos os grupos ||²||goiaba -torta    ||a palavra 'goiaba', ignorando as que contêm 'torta' ||²||ninja -"torta de goiaba" ||a palavra 'ninja', ignorando as que contêm a frase 'torta de goiaba' ||²||"-torta" goiaba  ||ambas as palavras 'goiaba' e '-torta' ||²||torta - goiaba   ||as palavras 'torta', '-', e 'goiaba' ||
+targets=
+author=
+name=PmWikiPtBr.BuscaWiki
+host=200.198.54.147
+agent=Mozilla/5.0 (X11; U; Linux i686; pt-BR; rv:1.7.3) Gecko/20041007 Debian/1.7.3-5
+rev=3

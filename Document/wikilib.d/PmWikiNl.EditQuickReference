@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta11
+newline=²
+time=1103650755
+text=(:table width='100%' cellspacing='0' cellpadding='0':)²(:cell style='font-size:12px; font-family:Arial;' bgcolor='#ffeedd' colspan='2':)²%target=_blank% PmWikiNl/TekstopmaakRegels - PmWikiNl/TipsForEditing \\²'''Paragraaf:''' voor een nieuwe paragraaf, druk 2 keer op de ''Enter'' toets; gebruik [=->=] om in te springen. \\²'''Lijsten:''' * voor puntenlijst, # genummerde lijst, :term:definitie voor een definitie lijst. \\²'''Nadruk:''' [=''Schuin''=], [='''Vet'''=], [='''''Schuin en vet'''''=], [=@@typewriter@@=] (g e s p a t i e e r d) \\²'''Links:''' [=[[andere pagina]]=], [=[[http://www.voorbeeld.nl]]=], of `SamengevoegdeHoofdletterWoorden`  \\²'''Groepen:''' [=[[Groep/Pagina]]=] toont Pagina, [=[[Groep.Pagina]]=] toont Groep.Pagina ²(:cellnr style='font-size:12px; font-family:Arial;' bgcolor='#ffeedd':)²'''Gebruik:''' !, !!, !!! voor koppen, [=----=] horizontale lijnen \\²'''Wijzig Formaat:''' [=[+...+]=] is groter, [=[-...-]=] is kleiner²(:cell style='font-size:12px; font-family:Arial;' bgcolor='#ffeedd' :)²'''Voorkom opmaak:''' [=[=...=]=] \\²'''Nieuwe regel:''' [=\\=] of [=[[<<]]=]²(:tableend:)
+targets=PmWikiNl.TekstopmaakRegels,PmWikiNl.TipsForEditing
+author=Pm
+name=PmWikiNl.EditQuickReverence
+host=24.1.28.47
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.5) Gecko/20041107 Firefox/1.0
+rev=2

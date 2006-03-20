@@ -1,5 +1,5 @@
 <?php if (!defined('PmWiki')) exit();
-/*  Copyright 2004-2005 Patrick R. Michaud (pmichaud@pobox.com)
+/*  Copyright 2004-2006 Patrick R. Michaud (pmichaud@pobox.com)
     This file is part of PmWiki; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published
     by the Free Software Foundation; either version 2 of the License, or
@@ -29,8 +29,8 @@ else {
 
 SDV($PageCSSListFmt,array(
   'pub/css/local.css' => '$PubDirUrl/css/local.css',
-  'pub/css/$Group.css' => '$PubDirUrl/css/$Group.css',
-  'pub/css/$FullName.css' => '$PubDirUrl/css/$FullName.css'));
+  'pub/css/{$Group}.css' => '$PubDirUrl/css/{$Group}.css',
+  'pub/css/{$FullName}.css' => '$PubDirUrl/css/{$FullName}.css'));
 
 foreach((array)$PageCSSListFmt as $k=>$v) 
   if (file_exists(FmtPageName($k,$pagename))) 
@@ -43,7 +43,7 @@ function SetSkin($pagename, $skin) {
     $FarmPubDirUrl, $FarmD;
   unset($Skin);
   foreach((array)$skin as $s) {
-    $sd = FmtPageName("pub/skins/$s", $pagename);
+    $sd = FmtPageName("./pub/skins/$s", $pagename);
     if (is_dir($sd)) 
       { $Skin=$s; $SkinDirUrl="$PubDirUrl/skins/$Skin"; break; }
     $sd = FmtPageName("$FarmD/pub/skins/$s", $pagename);

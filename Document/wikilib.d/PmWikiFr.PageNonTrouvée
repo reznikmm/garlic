@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta10
+newline=²
+time=1103414220
+text=La page nommée "{$UrlPage}" n'a pas été trouvée. Vous pouvez:²²* Créer [[{$UrlPage}.{$UrlPage}]]²* Créer [[{$UrlPage}.{$DefaultName}]]²* Créer [[{$DefaultGroup}.{$UrlPage}]]²²Ou alors la page recherchée est-elle listée ci-dessous:²²(:searchresults group={$UrlPage}:)
+targets=UrlPage.UrlPage,UrlPage.Accueil,CNCLoisirs.UrlPage
+author=PRZ
+name=PmWikiFr.PageNonTrouvée
+host=82.124.116.81
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; fr-FR; rv:1.7.5) Gecko/20041108 Firefox/1.0
+rev=3

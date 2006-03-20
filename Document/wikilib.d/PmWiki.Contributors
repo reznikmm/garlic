@@ -1,10 +1,11 @@
-version=pmwiki-2.0.beta55 ordered=1 urlencoded=1
-agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.10) Gecko/20050716 Firefox/1.0.6
-author=Pm
-host=24.1.26.255
+version=pmwiki-2.1.1 ordered=1 urlencoded=1
+agent=Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; NetCaptor 7.5.4; .NET CLR 1.1.4322)
+author=Michael Weiner
+csum=
+host=68.58.127.44
 name=PmWiki.Contributors
 post= Save
-rev=35
-targets=PmWiki.PmWiki,PmWiki.Uploads,PmWiki.Links,PmWiki.WikiTrails,PmWiki.WikiStyles,PmWiki.WikiGroup,PmWiki.Audiences,PmWiki.DocumentationIndex,PmWiki.MailingLists
-text=Here's a list of contributors to [[PmWiki]] development and improvement.  My apologies if I've forgotten anyone -- feel free to add your name if you've%0abeen left out, feel free to remove your name if you don't want to be associated with these people.  :-)%0a%0a* Scott Duff - pmwe, simple-journal.php, all-around Pm sanity checker %0a* Ross Kowalski - [[uploads]] and printable page research%0a* Robert Abitbol - Customization; suggestions for various features or modifications%0a* John Rankin - WikiTrails, [[Links]], `EditQuickReference, notify.php, documentation, debugging%0a* Joachim Durchholz - hacking documentation, general pest%0a* Jessica Tishmack - uploads, testing%0a* Jean-Claude Gorichon - voting%0a* Janice Heinold - early PmWiki testing and suggestions, documentation%0a* James Davis - WikiStyles markup, testing%0a* Isabelle Michaud - floating images markup, [[Wiki Group]]s, [[uploads]]/attachments%0a* Glenn Blalock - WikiStyles suggestions, testing, documentation%0a* Dawn Green - WikiStyles suggestions, [[uploads]], documentation%0a* Christian Ridderström - [[Cookbook:EmacsPmWikiMode |pmwiki-mode for Emacs]] and some other hacks/modifications.%0a* Carlo Strozzi - Internationalization, PmWiki on Boa, HTML redirection%0a%0a%25trail%25%3c%3c|[[DocumentationIndex]]|>>
-time=1125530328
+rev=40
+targets=PmWiki.PmWiki,PmWiki.Uploads,PmWiki.Links,PmWiki.WikiGroup,Profiles.Mike,Cookbook.ToDo,Cookbook.RssFeedDisplay,Cookbook.MyPmWiki,Cookbook.CommentBox,PmWiki.DocumentationIndex
+text=Here's a list of contributors to [[PmWiki]] development and improvement.  My apologies if I've forgotten anyone -- feel free to add your name if you've%0abeen left out, feel free to remove your name if you don't want to be associated with these people.  :-)%0a%0a* Scott Duff - pmwe, simple-journal.php, all-around Pm sanity checker %0a* Ross Kowalski - [[uploads]] and printable page research%0a* Robert Abitbol - Customization; suggestions for various features or modifications%0a* John Rankin - WikiTrails, [[Links]], `EditQuickReference, notify.php, documentation, debugging%0a* Joachim Durchholz - hacking documentation, general pest%0a* Jessica Tishmack - uploads, testing%0a* Jean-Claude Gorichon - voting%0a* Janice Heinold - early PmWiki testing and suggestions, documentation%0a* James Davis - WikiStyles markup, testing%0a* Isabelle Michaud - floating images markup, [[Wiki Group]]s, [[uploads]]/attachments%0a* Glenn Blalock - WikiStyles suggestions, testing, documentation%0a* Dawn Green - WikiStyles suggestions, [[uploads]], documentation%0a* Christian Ridderström - [[Cookbook:EmacsPmWikiMode |pmwiki-mode for Emacs]] and some other hacks/modifications.%0a* Carlo Strozzi - Internationalization, PmWiki on Boa, HTML redirection%0a* [[Michael Weiner -> Profiles/Mike]]: modifications to [[Cookbook/ToDo]], [[Cookbook/RssFeedDisplay]], [[Cookbook/MyPmWiki]], and [[Cookbook/CommentBox]]%0a%0a%25trail%25%3c%3c|[[DocumentationIndex]]|>>
+time=1142519965

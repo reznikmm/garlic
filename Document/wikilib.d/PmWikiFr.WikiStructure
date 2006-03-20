@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta10
+newline=²
+text=Les Auteurs ont plusieurs options pour décider comment organiser un ensemble de [[pages wiki]]. Ces options combinées ensembles, offrent une grande flexibilité.²²:[[Mot(s)Wiki]]:Le principe d'organisation le plus puissant est le choix du nom des pages par l'auteur. Quand une recherche retourne une liste de pages, leurs noms doivent être suffisamment clairs pour guider un visiteur à la bonne place. ²²:[[PagesWiki]]: Une page avec du texte (et des images) dont le texte lui même peut contenir par exemple des [[MotsWiki]] qui deviendront automatiquement un lien vers d'autres [[pages Wiki]]. ²²:[[GroupesWiki]]: Ce wiki requiert que toute page soit membre d'un groupe. Un groupe est comme un wiki à l'intérieur d'un wiki. Il peut avoir sa propre présentation, ses propres contrôles de sécurité et sa propre aide à la navigation.²²:[[WikiTrail(s)]]: C'est un ensemble de pages, soit dans un même groupe ou soit éparpillées dans plusieurs groupes, qui peuvent être comparées à un cheminement. Un visiteur peut les parcourir pas à pas en cliquant sur les liens "suivant" et "précédent".²²:[[Liens]]: C'est un nom de page qui ne suit pas la convention d'écriture d'un [[Mot(s)Wiki]]. Il est utile pour éviter de créer des noms de page artificiels ou inélégants, ou juste parce que vous le désirez.²²---- ²%trail%<<|PmWikiFr.IndexDocumentation|>>
+time=1103414341
+author=PRZ
+name=PmWikiFr.WikiStructure
+host=82.124.116.81
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; fr-FR; rv:1.7.5) Gecko/20041108 Firefox/1.0
+rev=11
+targets=PmWikiFr.PagesWiki,AdminFr.MotsWiki,PmWikiFr.GroupesWiki,PmWikiFr.WikiTrails,PmWikiFr.Liens,PmWikiFr.FeuillesDeDonnéesVersPmWiki,PmWikiFr.IndexDocumentation

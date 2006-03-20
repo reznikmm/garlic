@@ -30,6 +30,9 @@ SDVA($Compat1x,array(
   # [[para:]] markup from cookbook recipe
   '/\\[\\[para:(.*?)\\]\\]/' => '(:para $1:)',
 
+  # [[tocauto]] from cookbook recipe
+  '/\\[\\[tocauto(.*?)\\]\\]/' => '(:toc$1:)',
+
   # nolinebreaks
   "/\\[\\[((no)?linebreaks)\\]\\]/" => '(:$1:)',
 
@@ -65,13 +68,14 @@ SDVA($Compat1x,array(
   "/\\[\\[Drawing:(.*?)\\]\\]/" => '(:drawing $1:)',
 
   # [[target linktext]]
-  "/\\[\\[((\\w|\\#)[^$UrlExcludeChars\\s]*)\\s(.*?)\\]\\]/" => '[[$1 |$3]]',
+  "/\\[\\[((\\w|\\#)[^$UrlExcludeChars\\s]*)\\s((.|\\\n)*?)\\]\\]/" 
+    => '[[$1 |$3]]',
 
   # [[target]]
   "/\\[\\[(\\w[^$UrlExcludeChars\\s]*)\\]\\]/" => '[[$1 |#]]',
 
   # [[Group.{{free link}} link text]]
-  "/\\[\\[($GroupPattern([\\/.]))?\\{\\{(~?\\w[-\\w\\s.\\/]*)\\}\\}([-#\\w]*)\\s(.*?)\\]\\]/" => '[[$1$3$4 |$5]]',
+  "/\\[\\[($GroupPattern([\\/.]))?\\{\\{(~?\\w[-\\w\\s.\\/]*)\\}\\}([-#\\w]*)\\s((.|\\\n)*?)\\]\\]/" => '[[$1$3$4 |$5]]',
 
   # [[Group.{{free link|s}} link text]]
   "/\\[\\[($GroupPattern([\\/.]))?\\{\\{(~?\\w[-\\w\\s.\\/]*)\\|([-\\w\\s]*)\\}\\}([-#\\w]*)\\s(.*?)\\]\\]/" => '[[$1$3$4$5 |$6]]',

@@ -1,0 +1,9 @@
+version=pmwiki-2.0.12 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; fr-FR; rv:1.7.10) Gecko/20050717 Firefox/1.0.6
+author=PRZ
+host=212.194.201.133
+name=PmWikiRo.PmWikiRo
+rev=23
+targets=PmWiki.PmWiki,PmWiki.WikiWikiWeb,PmWiki.DocumentationIndex
+text=PmWiki este un sistem PmWiki/WikiWikiWeb creat şi menţinut de Patrick Michaud în limbajul de programare PHP. PmWiki este un instrument de creare şi editare de site-uri web prin colaborare, care nu necesită cunoştinţe speciale (HTML sau de altă natură) din partea utilizatorilor.%0a%0aAcest site rulează {$Version}. Softul este disponibil gratuit sub Licenţa Publică Generală GNU şi se poate obţine de la adresa http://www.pmichaud.com/pub/pmwiki.  %0a%0aDocumentaţia softului este disponibilă (în limba engleză) la acest [[PmWiki.documentation index|index]].%0a%0aPmWiki este marcă inregistrată a lui Patrick R. Michaud (http://www.pmichaud.com).%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a
+time=1129977706

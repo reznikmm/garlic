@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta11
+newline=ÀŠ
+time=1103566426
+text=(:searchbox:)ÀŠÀŠ(:searchresults:)ÀŠIntroduceÅ£i mai sus textul pe care doriÅ£i sÄƒ Ã®l cÄƒutaÅ£i. Ãn pagina cu rezultate se vor afiÅŸa toate paginile care conÅ£in cuvintele care le-aÅ£i introdus. Pentru a cÄƒuta fraze, puneÅ£i toatÄƒ fraza Ã®ntre ghilimele.ÀŠÀŠPentru a limita cÄƒutarea la un singur grup, introduceÅ£i numele grupului urmat de un slash la inceputul termenilor de cÄƒutare (ex., "[=PmWiki/=]" sau "Main/"). Pentru a afiÅŸa toate paginile, introduceÅ£i un slash pentru cÄƒutare.ÀŠÀŠ!!!Exemple de cÄƒutare:ÀŠ  ÀŠ||border='0' cellspacing='0' width='100%' cellpadding='0' ÀŠ||'''Enter'''    ||'''Pentru a gÄƒsi pagini care conÅ£in''' ||ÀŠ||plÄƒcintÄƒ cu mere      ||'plÄƒcintÄƒ', 'cu' ÅŸi 'mere' ||ÀŠ||"plÄƒcintÄƒ cu mere"    ||fraza 'plÄƒcintÄƒ cu mere' ||ÀŠ||pmwiki/mÄƒr   ||'mÄƒr' in grupul [=PmWiki=] ||ÀŠ||"pmwiki/mÄƒr" ||fraza 'pmwiki/mÄƒr' Ã®n toate grupurile ||ÀŠ||mere -plÄƒcintÄƒ     ||'mere', Ã®n afarÄƒ de paginile care conÅ£in 'plÄƒcintÄƒ' ||ÀŠ||ninja -"plÄƒcintÄƒ cu mere" ||'ninja', Ã®n afarÄƒ de paginile care conÅ£in 'plÄƒcintÄƒ cu mere' ||ÀŠ||mÄƒr "-plÄƒcintÄƒ cu mere"   ||cuvintele 'mÄƒr' si '-plÄƒcintÄƒ cu mere' ||ÀŠ||plÄƒcintÄƒ cu - mÄƒr    ||'plÄƒcintÄƒ', 'cu', '-', ÅŸi 'mÄƒr' ||ÀŠ
+targets=
+author=eaglex
+name=PmWikiRo.CautareWiki
+host=82.79.34.38
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7) Gecko/20040803 Firefox/0.9.3
+rev=2

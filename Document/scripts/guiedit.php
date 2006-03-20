@@ -58,12 +58,12 @@ function GUIButtonCode($pagename) {
   global $GUIButtons;
   $cmpfn = create_function('$a,$b', 'return $a[0]-$b[0];');
   usort($GUIButtons, $cmpfn);
-  $out = array("<script language='javascript' type='text/javascript'>\n");
+  $out = "<script language='javascript' type='text/javascript'>\n";
   foreach ($GUIButtons as $k => $g) {
     if (!$g) continue;
     @list($when, $mopen, $mclose, $mtext, $tag, $mkey) = $g;
     if ($tag{0} == '<') { 
-        $out[] = "document.write(\"$tag\");\n";
+        $out .= "document.write(\"$tag\");\n";
         continue; 
     }
     if (preg_match('/^(.*\\.(gif|jpg|png))("([^"]+)")?$/', $tag, $m)) {
@@ -73,10 +73,10 @@ function GUIButtonCode($pagename) {
     $mopen = str_replace(array('\\', "'"), array('\\\\', "\\\\'"), $mopen);
     $mclose = str_replace(array('\\', "'"), array('\\\\', "\\\\'"), $mclose);
     $mtext = str_replace(array('\\', "'"), array('\\\\', "\\\\'"), $mtext);
-    $out[] = 
+    $out .= 
       "insButton(\"$mopen\", \"$mclose\", '$mtext', \"$tag\", \"$mkey\");\n";
   }
-  $out[] = '</script>';
-  return implode('', $out);
+  $out .= '</script>';
+  return $out;
 }
 

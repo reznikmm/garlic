@@ -23,11 +23,11 @@ if ($action=='phpinfo') { phpinfo(); exit(); }
 
 function Ruleset() {
   global $MarkupTable;
-  $out = array();
+  $out = '';
   BuildMarkupRules();
   foreach($MarkupTable as $id=>$m) 
-    $out[] = sprintf("%-16s %-16s %-16s",$id,@$m['cmd'],@$m['seq']);
-  return implode("\n",$out);
+    $out .= sprintf("%-16s %-16s %-16s\n",$id,@$m['cmd'],@$m['seq']);
+  return $out;
 }
 
 $HandleActions['ruleset'] = 'HandleRuleset';
@@ -40,13 +40,13 @@ function HandleRuleset($pagename) {
 function DisplayStopWatch() {
   global $StopWatch;
   StopWatch('now');
-  $out[] = "<pre>";
+  $out = "<pre>";
   foreach((array)$StopWatch as $k => $x) {
-    $out[] = "$x\n";
+    $out .= "$x\n";
   }
   if (is_array($StopWatch)) array_pop($StopWatch);
-  $out[] = '</pre>';
-  return implode('',$out);
+  $out .= '</pre>';
+  return $out;
 }
 
 $FmtP['/\\$StopWatch/e'] = 'DisplayStopWatch()';

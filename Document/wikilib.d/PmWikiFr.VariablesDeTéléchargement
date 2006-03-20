@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta31 ordered=1
+newline=²
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; fr-FR; rv:1.7.6) Gecko/20050226 Firefox/1.0.1
+author=PRZ
+host=194.133.14.20
+name=PmWikiFr.VariablesDeTéléchargement
+rev=11
+targets=PmWikiFr.VariablesDédition,PmWikiFr.Variables,PmWikiFr.VariablesPourLinternationalisation,PmWikiFr.AdministrationDesTéléchargements,PmWikiFr.PmWiki
+text=<<|[[Variables]]|>>²²:$EnableUpload:Le script upload.php est automatiquement inclus dans stdconfig.php si la variable $EnableUpload est vraie dans config.php.  Noter qu'on peut définir un mot de passe avant que les auteurs puissent télécharger (voir AdministrationDesTéléchargements).²²:$UploadDir:Le répertoire ou sont stockés les attachements. Par défaut ''uploads/'' dans le répertoire pmwiki, mais peut être assigné n'importe ou sur le serveur. Ce répertoire doit pouvoir être écrit par le programme php lors d'un envoi de fichier.²²:$UploadUrlFmt:Config.php peut définir les variables $UploadDir et $UploadUrlFmt pour spécifier le répertoire local où les fichiers téléchargés doivent être stockés, et l'URL qui doit être utilisée pour accéder à ce répertoire.²²:$UploadPrefixFmt:Définit si les attachements sont enregistrés dans un répertoire par groupe, dans un répertoire par page ou dans le répertoire global.²**par groupe (défaut): [@$UploadPrefixFmt = '/$Group';@]²**par page : [@$UploadPrefixFmt = '/$FullName';@]²**global au site : [@$UploadPrefixFmt = '';@]²²:$EnableDirectDownload:When set to 1 (the default), links to attachments bypass PmWiki and come directly from the webserver.  Setting $EnableDirectDownload=0; causes requests for attachments to be obtained via [@?action=download@].  This allows PmWiki to protect attachments using a page's read permissions, but also increases the load on the server.²²----²%tr%Traduction de la page [[(PmWiki:)UploadVariables]] - Page originale sur [[PmWiki:PmWikiFr.VariablesDeTéléchargement]]
+time=1113563410

@@ -1,0 +1,10 @@
+version=pmwiki-2.0.10 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.12) Gecko/20050915 Firefox/1.0.7
+author=
+host=129.27.46.110
+name=PmWikiJa.Testlso
+rev=1
+targets=
+text=(:title  :)%0a(:noheader:)%0a%0a!!!Dobrodošli na spletnih straneh Gobarskega društva "Lisička", Maribor!%0a%0a(:table cellpadding=5:)%0a(:cell valign=top:)%0aGobarsko društvo "Lisička", Maribor je neprofitno društvo, ki temelji predvsem na delu prostovoljcev. Društvo deluje na področju spoznavanja gob, prav tako pa tudi na področju rekreativnega in kulturnega udejstvovanja svojega članstva na izletih in drugih gobarskih srečanjih.%0a%0a%25center%25Slike:znak.jpg %0a%0a(:cell valign=top:)%0a(:include Novice:)%0a(:tableend:)
+time=1129298940
+title= 

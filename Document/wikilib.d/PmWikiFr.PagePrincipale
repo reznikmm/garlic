@@ -1,0 +1,9 @@
+version=pmwiki-2.0.beta10
+newline=²
+text=Ceci est la page par défaut d'une nouvelle installation PmWikiFr/PmWiki ². Si vous lisez cet écran, alors ²le programme PmWikiFr/PmWiki est probablement configuré correctement.²²----²²Vous trouverez ici quelques pages utiles installées en même temps que le programme PmWiki:²* PmWiki/PmWiki documentation est disponible sur PmWikiFr.DocumentationIndex.²* Qu'est-ce que le PmWiki/WikiWikiWeb?²* PmWiki/TipsForEditing and PmWiki/TextFormattingRules describe how to create pages in PmWiki/PmWiki.²* Practice editing pages in the WikiSandbox.²²More information about PmWiki/PmWiki can be found at http://www.pmwiki.org/.²
+time=1103414226
+host=82.124.116.81
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; fr-FR; rv:1.7.5) Gecko/20041108 Firefox/1.0
+rev=139
+author=
+name=PmWikiFr.PagePrincipale

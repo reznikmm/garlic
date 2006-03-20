@@ -1,5 +1,5 @@
 <?php if (!defined('PmWiki')) exit();
-/*  Copyright 2004-2005 Patrick R. Michaud (pmichaud@pobox.com)
+/*  Copyright 2004-2006 Patrick R. Michaud (pmichaud@pobox.com)
     This file is part of PmWiki; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published
     by the Free Software Foundation; either version 2 of the License, or
@@ -38,11 +38,17 @@ function Merge($newtext,$oldtext,$pagetext) {
 }
 
 function MergeSimulEdits($pagename,&$page,&$new) {
-  global $EnablePost, $MessagesFmt, $WorkDir, $SysMergeCmd;
-  SDV($SysMergeCmd,"/usr/bin/diff3 -L '' -L '' -L '' -m -E");
-  if (@!$_POST['basetime'] || !PageExists($pagename) ||
-    $_POST['basetime']>=$page['time']) return;
+  global $Now, $EnablePost, $MessagesFmt, $WorkDir;
+  if (@!$_POST['basetime'] || !PageExists($pagename) 
+      || $page['time'] >= $Now
+      || $_POST['basetime']>=$page['time']
+      || $page['text'] == $new['text']) return;
   $EnablePost = 0;
+  $old = array();
+  RestorePage($pagename,$page,$old,"diff:{$_POST['basetime']}");
+  $text = Merge($new['text'],$old['text'],$page['text']);
+  if ($text > '') { $new['text'] = $text; $ec = '$[EditConflict]'; }
+  else $ec = '$[EditWarning]';
   XLSDV('en', array(
     'EditConflict' => "The page you are
       editing has been modified since you started editing it.
@@ -50,12 +56,12 @@ function MergeSimulEdits($pagename,&$page,&$new) {
       you may want to verify the results of the merge before
       pressing save.  Conflicts the system couldn't resolve are
       bracketed by &lt;&lt;&lt;&lt;&lt;&lt;&lt; and
-      &gt;&gt;&gt;&gt;&gt;&gt;&gt;."));
-  $MessagesFmt[] = "<p class='editconflict'>$[EditConflict]
+      &gt;&gt;&gt;&gt;&gt;&gt;&gt;.",
+    'EditWarning' => "The page you are editing has been modified
+      since you started editing it.  If you continue, your
+      changes will overwrite any changes that others have made."));
+  $MessagesFmt[] = "<p class='editconflict'>$ec
     (<a target='_blank' href='\$PageUrl?action=diff'>$[View changes]</a>)
     </p>\n";
-  $old = array();
-  RestorePage($pagename,$page,$old,"diff:{$_POST['basetime']}");
-  $new['text'] = Merge($new['text'],$old['text'],$page['text']);
 }
 
