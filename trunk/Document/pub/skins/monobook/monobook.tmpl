@@ -1,14 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-                      "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <!-- See CSS for credits -->
 <head>
-  <title>$Titlespaced - $WikiTitle</title>
+  <title><!--function:RenderTitle--></title>
   <meta http-equiv='Content-Style-Type' content='text/css' />
   <!--HeaderText-->
   <link rel='stylesheet' href='$SkinDirUrl/monobook.css' type='text/css'/>
-<!--function:RenderStyle LeftBarDisabled #content { margin-left: 0; }-->
-<!--function:RenderStyle ! TabsDisabled #header { border-bottom: none; }-->
+<!--function:RenderStyle leftbardisabled #content { margin-left: 0; }-->
+<!--function:RenderStyle ! tabsdisabled #header { border-bottom: none; }-->
 </head>
 <body>
   <div id='globalwrapper'>
@@ -25,36 +24,27 @@
             <input class='searchbutton' type='submit' value='$[Go]'/>
           </form>
         </div><!-- id='sidesearch' -->
+        <!--function:RenderDivPart pageleftbody sidenote $Group.SideNote $SiteGroup.SideNote-->
       </div><!-- id='pageleft_content' -->
       <div id='pagelogo'>
         <a style='background-image: url($PageLogoUrl);'
-           href='$ScriptUrl' title='$WikiTitle'></a>
+           href='$ScriptUrl' title="<!--function:RenderTitle-->"></a>
       </div><!-- id='pagelogo' -->
     </div><!--/PageLeftFmt-->
     <a name='topcontent'></a>
     <div id='content'>
       <!--PageHeaderFmt--><div id='header'></div><!--/PageHeaderFmt-->
       <!--PageTabsFmt--><div id='tabs'>
-<!--function:DefineAction browse $Groupspaced-...|$ScriptUrl/$Group-->
-<!--function:DefineAction edit $[Edit Page]-->
-<!--function:DefineAction attr $[Page Attributes]-->
-<!--function:DefineAction diff $[Page History]-->
-<!--function:DefineAction upload $[Upload]-->
-<!--function:RenderActions $PageUrl-->
+      <!--function:RenderActions $Group.PageActions $SiteGroup.PageActions-->
       </div><!--/PageTabsFmt-->
       <div id='tabpage'>
         <div id='contentbody'>
+          <!--PageTitleFmt--><h1 class='titlepage'><!--function:RenderPart title--></h1><!--/PageTitleFmt-->
           <div id='rightbody'>
-            <!--PagePrintFmt--><div id='print'><a href='$PageUrl?action=print' target='_new'
-              title='$[Printable View]'><img src='$SkinDirUrl/printer.gif'
-              alt='$[Printable View]'/>$[Printable View]</a></div><!--/PagePrintFmt-->
             <!--PageRightFmt--><div id='rightbar' class='$RightBarClass'><!--wiki:$Group.RightBar $SiteGroup.RightBar--></div><!--/PageRightFmt-->
           </div><!-- id='rightbody' -->
-          <!--PageTitleFmt--><h1 class='titlepage'>$Titlespaced</h1><!--/PageTitleFmt-->
-          <!-- <div id='main'> -->
-          <!--PageText-->
-          <span style='clear:both;'></span>
-          <!-- </div>id='main' -->
+            <!--PageText-->
+            <span style='clear:both;'></span>
         </div><!-- id='contentbody' -->
       </div><!-- id='tabpage' -->
       <!--PageFooterFmt--><div id='footer'>

@@ -1,3 +1,13 @@
+/* monobook/monobook.css v0.3
+ *
+ * PmWiki Monobook skin stylesheet
+ * Copyright 2005 Dominique Faure (dfaure@cpan.org)
+ * Based on Monobook's mediawiki skin.
+ * This file is part of the PmWiki Monobook skin; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or (at your
+ * option) any later version.
+ */
 body {
 	font: x-small sans-serif;
 	background: #f9f9f9 url("headbg.jpg") 0px 0px no-repeat;
@@ -114,6 +124,7 @@ body {
 	border: 1px solid #aaaaaa;
 	border-left: none;
 	padding: 0 0.8em 0.3em 0.5em;
+	overflow: hidden;
 }
 .pageleftbody h1,
 .pageleftbody h2,
@@ -135,7 +146,7 @@ body {
 }
 .pageleftbody input { font-size: 95%; }
 
-#sidesearch form {
+.pageleftbody form {
 	margin: 0;
 	line-height: 1.5em;
 }
@@ -253,12 +264,15 @@ h1, h2, h3, h4, h5, h6 {
 	padding-bottom: 0.17em;
 	border-bottom: 1px solid #aaaaaa;
 }
-h1 { font-size: 188%; clear:both; }
-h2 { font-size: 150%; clear:both; }
+h1, h2 {
+	clear:both;
+}
 h3, h4, h5, h6 {
-	border-bottom: none;
+	border-bottom: 0px;
 	font-weight: bold;
 }
+h1 { font-size: 188%; }
+h2 { font-size: 150%; }
 h3 { font-size: 132%; }
 h4 { font-size: 116%; }
 h5 { font-size: 100%; }
@@ -297,30 +311,41 @@ pre {
 	color: black;
 	background-color: #f9f9f9;
 	line-height: 1.1em;
+	clear: both;
 }
-
+/*
+a.urllink img {
+	position: relative;
+	left: 2px;
+}*/
 a.urllink {
 	background: url(external.png) center right no-repeat;
 	padding-right: 13px;
 }
-a.attachlink {
-	background: url(attachment.png) center right no-repeat;
-	padding-right: 9px;
-}
-a.createlinktext {
+
+a.createlinktext,
+a.createlinktext:visited {
 	color: red;
 	border-bottom: none;
 }
-a.createlinkupload {
-	background: url(attachnew.png) center right no-repeat;
-	color: red;
-	padding-right: 9px;
+a.createlink,
+a.createlink:visited {
+	left: 2px;
+	top: 2px;
 }
 
-.wikitrail {
-	display: block;
-	text-align: right;
-	font-size: 90%;
+.sidehead {
+	color: black;
+	background: none;
+	font-weight: normal;
+	margin: 0.2em 0 0 0;
+	border-bottom: 1px solid #aaaaaa;
+	padding: 0;
+	font-size: 1.2em;
+}
+.wikilink .urllink {
+	background: none;
+	padding: 0;
 }
 
 #wikitext {
