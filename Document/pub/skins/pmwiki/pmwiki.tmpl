@@ -3,7 +3,7 @@
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html>
 <head>
-  <title>$WikiTitle | {$Group} / {$Title} $Action</title>
+  <title>$WikiTitle | {$Group} / {$Title} $ActionTitle</title>
   <meta http-equiv='Content-Style-Type' content='text/css' />
   <link rel='stylesheet' href='$SkinDirUrl/pmwiki.css' type='text/css' />
   <!--HeaderText-->
@@ -14,8 +14,8 @@
     alt='$WikiTitle' border='0' /></a></div>
   <div id='wikihead'>
   <form action='{$ScriptUrl}'>
-    <a href='{$ScriptUrl}/$[{$Group}/RecentChanges]'
-      accesskey='$[ak_recentchanges]'>$[Recent Changes]</a> -
+    <span class='headnav'><a href='{$ScriptUrl}/$[{$Group}/RecentChanges]'
+      accesskey='$[ak_recentchanges]'>$[Recent Changes]</a> -</span>
     <input type='hidden' name='n' value='{$FullName}' />
     <input type='hidden' name='action' value='search' />
     <a href='{$ScriptUrl}/$[{$SiteGroup}/Search]'>$[Search]</a>:

@@ -1,34 +1,33 @@
 <?php /*>*/ if (!defined('PmWiki')) exit();
 #
-# monobook/monobook.php v0.5
+# monobook/monobook.php
 #
 # PmWiki Monobook skin code
-# Copyright 2005 Dominique Faure (dfaure@cpan.org)
-# This file is part of the PmWiki Monobook skin; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License as published by
-# the Free Software Foundation; either version 2 of the License, or (at your
-# option) any later version.
+# Copyright 2005-2006 Dominique Faure (dfaure@cpan.org)
 #
-# 05/06/01: Initial release.
-# 05/06/03: Handling of forgotten ?action=print and minor tweaks.
-# 05/06/09: Applied suggested changes and relooked print action.
-# 05/06/10: Added support of RightBar sub pages compatible with HansB's
-#           GeminiSkin and FixFlowSkin.
-# 05/06/16: Corrected RightBar placement and added handling of Site group and
-#           related directives.
-# 05/06/17: Fixed forgotten AllRecentChanges link.
-# 05/08/05: Revamped attachment links. Dropped deprecated WikiHelp link in page
-#           footer. Fixed underlined titles style.
-# 05/09/05: Fixed several visual bugs including latest SideBar styling.
-# 05/09/07: Added handling of Site.PageActions (introduced with PmWiki v2.0
-#           default skin).
-# 05/10/06: Added header customization feature.
+# Based on original Monobook's mediawiki skin.
 #
-
-# Get current query string to construct *real* internal link.
-# aka.: <a href='$PageUrl$PageQueryString#topcontent'>...</a>
-global $PageQueryString;
-$PageQueryString = $_SERVER["QUERY_STRING"] ? '?' . $_SERVER["QUERY_STRING"] : '';
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+# See http://www.pmwiki.org/wiki/Cookbook/MonobookSkin for info.
+#
+define(MONOBOOK_VERSION, '2006-04-28');
 
 # Skin Parts handling
 global $SkinPartFmt, $WikiTitle;
@@ -36,21 +35,33 @@ SDVA($SkinPartFmt, array(
 'wikititle' => "$WikiTitle - {\$Titlespaced}",
 'title' => '{$Titlespaced}',
 'pageactions' => '
-* [[$[View] -> {$FullName}]] %comment%[[{$Groupspaced}/&hellip; -> {$Group}]]%%
-* [[$[Edit Page] -> {$FullName}?action=edit]]
-* [[$[Page Attributes] -> {$FullName}?action=attr]]
-* [[$[Page History] -> {$FullName}?action=diff]]
-* [[$[Upload] -> {$FullName}?action=upload]]
+* %item rel=nofollow% [[$[View] -> {$FullName}?action=browse]] %comment%[[{$Groupspaced}/&hellip; -> {$Group}]]%%
+* %item rel=nofollow% [[$[Edit Page] -> {$FullName}?action=edit]]
+* %item rel=nofollow% [[$[Page Attributes] -> {$FullName}?action=attr]]
+* %item rel=nofollow% [[$[Page History] -> {$FullName}?action=diff]]
+* %item rel=nofollow% [[$[Upload] -> {$FullName}?action=upload]]
 ',
 'leftbardisabled' => false,
 'tabsdisabled' => false,
+'attachalias' => 'AttachClip:',
+'rightbardisabled' => true,
+));
+global $SkinPartStylesFmt;
+SDVA($SkinPartStylesFmt, array(
+'leftbardisabled' => '#content { margin-left: 0; }',
+'tabsdisabled' => '#header { border-bottom: none; }',
 ));
 
+# Ensure local CSS customization files are included *after* skin style
+global $HTMLHeaderFmt;
+$HTMLHeaderFmt[] = "<link rel='stylesheet' type='text/css' href='\$SkinDirUrl/monobook.css' />\n";
+
 function RenderStyle($pagename, $params) {
-  global $SkinPartFmt;
-  preg_match('/^\s*(!?)\s*(\S+)\s*(.*)$/s', $params, $m);
+  global $SkinPartFmt, $SkinPartStylesFmt;
+  preg_match('/^\s*(!?)\s*(\S+)$/s', $params, $m);
   $bool = $SkinPartFmt[$m[2]];
-  print ($m[1] ? ! $bool : $bool) ? "<style type='text/css'>$m[3]</style>" : '';
+  $style = $SkinPartStylesFmt[$m[2]];
+  print ($m[1] ? ! $bool : $bool) ? "<style type='text/css'>$style</style>" : '';
 }
 
 function RenderMarkupText($pagename, $part, $fmt) {
@@ -133,42 +144,60 @@ function NoTabs() {
   SetTmplDisplay('PageTabsFmt', 0);
 }
 
-# link decoration
 # links decoration
-global $EnableSkinLinkDecoration, $IMapLinkFmt, $LinkPageCreateFmt, $LinkUploadCreateFmt;
+global $EnableSkinLinkDecoration;
 if(IsEnabled($EnableSkinLinkDecoration, 1)) {
-  $IMapLinkFmt['Attach:'] = "<a class='attachlink' href='\$LinkUrl' rel='nofollow'>\$LinkText</a><a class='createlink' href='\$LinkUpload'><img src='$SkinDirUrl/attachment.png' /></a>";
-  $LinkUploadCreateFmt = "<a class='createlinktext' href='\$LinkUpload'>\$LinkText</a><a class='createlink' href='\$LinkUpload'><img src='$SkinDirUrl/attachnew.png' /></a>";
+  global $SkinPartFmt, $IMapLinkFmt, $LinkFunctions, $IMap;
+  global $LinkPageCreateFmt, $LinkUploadCreateFmt, $UrlLinkFmt;
+
+  $intermap = $SkinPartFmt['attachalias'];
+
+  $IMapLinkFmt['Attach:'] = "<a class='attachlink' href='\$LinkUrl' rel='nofollow'>\$LinkText</a>";
+  $IMapLinkFmt[$intermap] = "<a class='attachlink' href='\$LinkUrl' rel='nofollow'>\$LinkText</a><a class='createlink' href='\$LinkUpload'><img src='$SkinDirUrl/attachment.png' /></a>";
+  $LinkFunctions[$intermap] = 'LinkUpload';
+  $IMap[$intermap] = '$1';
+
   $LinkPageCreateFmt = "<a class='createlinktext' href='\$PageUrl?action=edit'>\$LinkText</a>";
+  $LinkUploadCreateFmt = "<a class='createlinktext' href='\$LinkUpload'>\$LinkText</a><a class='createlink' href='\$LinkUpload'><img src='$SkinDirUrl/attachnew.png' /></a>";
+#  $UrlLinkFmt =  "<span class='urllink'><a class='urllink' href='\$LinkUrl' rel='nofollow'>\$LinkText</a></span>";
 }
 
-# Right bar handling
-global $Now, $RightBarClass;
-SDV($RightbarCookieExpires, $Now + 60*60*24*365); # cookie expire time defaults to 1 year
-SDV($DefaultRightBar, 'narrow');
-$PageRightBarList = array (
-  '0'      => 'rb-none',
-  'off'    => 'rb-none',
-  'on'     => 'rb-narrow',
-  '1'      => 'rb-narrow',
-  'narrow' => 'rb-narrow',
-  '2'      => 'rb-normal',
-  'normal' => 'rb-normal',
-  '3'      => 'rb-wide',
-  'wide'   => 'rb-wide',
-);
-if(isset($_COOKIE['setrb'])) $rb = $_COOKIE['setrb'];
-if(isset($_GET['setrb'])) {
-  $rb = $_GET['setrb'];
-  setcookie('setrb', $rb, $RightbarCookieExpires, '/');
+# $StopWatch handling
+global $EnableDiag, $FmtP;
+if(!$EnableDiag) $FmtP['/\\$StopWatch/e'] = '';
+
+# Right bar handling -- WARNING: this is un-maintained code
+if($SkinPartFmt['rightbardisabled'])
+  SetTmplDisplay('PageRightFmt', 0);
+else
+{
+  global $Now, $RightBarClass;
+  SDV($RightbarCookieExpires, $Now + 60*60*24*365); # cookie expire time defaults to 1 year
+  SDV($DefaultRightBar, 'narrow');
+  $PageRightBarList = array (
+    '0'      => 'rb-none',
+    'off'    => 'rb-none',
+    'on'     => 'rb-narrow',
+    '1'      => 'rb-narrow',
+    'narrow' => 'rb-narrow',
+    '2'      => 'rb-normal',
+    'normal' => 'rb-normal',
+    '3'      => 'rb-wide',
+    'wide'   => 'rb-wide',
+  );
+  if(isset($_COOKIE['setrb'])) $rb = $_COOKIE['setrb'];
+  if(isset($_GET['setrb'])) {
+    $rb = $_GET['setrb'];
+    setcookie('setrb', $rb, $RightbarCookieExpires, '/');
+  }
+  if(isset($_GET['rb'])) $rb = $_GET['rb'];
+
+  $RightBarClass = isset($PageRightBarList[$rb]) ? $PageRightBarList[$rb] : $PageRightBarList[$DefaultRightBar];
+
+  global $action;
+  SetTmplDisplay('PageRightFmt', 0);
+  Markup('noright', 'directives', '/\\(:noright:\\)/e',
+    "SetTmplDisplay('PageRightFmt', 0)");
+  Markup('showright', 'directives', '/\\(:showright:\\)/e',
+     ($action != 'browse') ? "" : "SetTmplDisplay('PageRightFmt', 1)");
 }
-if(isset($_GET['rb'])) $rb = $_GET['rb'];
-
-$RightBarClass = isset($PageRightBarList[$rb]) ? $PageRightBarList[$rb] : $PageRightBarList[$DefaultRightBar];
-
-global $action;
-SetTmplDisplay('PageRightFmt', 0);
-Markup('noright', 'directives', '/\\(:noright:\\)/e',
-  "SetTmplDisplay('PageRightFmt', 0)");
-Markup('showright', 'directives', '/\\(:showright:\\)/e',
-   ($action != 'browse') ? "" : "SetTmplDisplay('PageRightFmt', 1)");

@@ -48,7 +48,8 @@ function ReadTrail($pagename,$trailname) {
   if (!$trailpage) return false;
   $t = array();
   $n = 0;
-  foreach(explode("\n",@$trailpage['text']) as $x) {
+  foreach(explode("\n", htmlspecialchars(@$trailpage['text'], ENT_NOQUOTES)) 
+          as $x) {
     $x = preg_replace("/\\[\\[([^\\]]*)->([^\\]]*)\\]\\]/",'[[$2|$1]]',$x);
     if (!preg_match("/^([#*:]+) \\s* 
           (\\[\\[([^:#!|][^|:]*?)(\\|.*?)?\\]\\]($SuffixPattern)

@@ -168,11 +168,15 @@ function MakePageList($pagename, $opt, $retpages = 1) {
   if (@$opt['name']) $pats[] = FixGlob($opt['name'], '$1*.$2');
 
   # inclp/exclp contain words to be included/excluded.  
-  $incl = array(); $excl = array(); $inclp = ''; $exclp = '';
+  $incl = array(); $inclp = array(); $inclx = false;
+  $excl = array(); $exclp = ''; 
   foreach((array)@$opt[''] as $i) { $incl[] = $i; }
   foreach((array)@$opt['+'] as $i) { $incl[] = $i; }
   foreach((array)@$opt['-'] as $i) { $excl[] = $i; }
-  if ($incl) $inclp = '$'.implode('|', array_map('preg_quote', $incl)).'$i';
+  foreach($incl as $i) {
+    $inclp[] = '$'.preg_quote($i).'$i';
+    $inclx |= preg_match('[^\\w\\x80-\\xff]', $i);
+  }
   if ($excl) $exclp = '$'.implode('|', array_map('preg_quote', $excl)).'$i';
 
   $searchterms = count($incl) + count($excl);
@@ -211,7 +215,6 @@ function MakePageList($pagename, $opt, $retpages = 1) {
     StopWatch("MakePageList: PageIndex filtered $a pages");
   }
   $xlist = array();
-  $inclx = !preg_match('/[^\\w\\x80-\\xff|$]/', $inclp);
 
   StopWatch('MakePageList scanning '.count($list)." pages, readf=$readf");
   foreach((array)$list as $pn) {
@@ -224,9 +227,10 @@ function MakePageList($pagename, $opt, $retpages = 1) {
         { $xlist[] = $pn; continue; }
       if ($searchterms) {
         $text = $pn."\n".@$page['targets']."\n".@$page['text'];
-        if ($inclp && !preg_match($inclp, $text)) 
-          { if ($inclx) $xlist[] = $pn; continue; }
         if ($exclp && preg_match($exclp, $text)) continue;
+        foreach($inclp as $i) 
+          if (!preg_match($i, $text)) 
+            { if ($inclx) $xlist[] = $pn; continue 2; }
       }
       $page['size'] = strlen(@$page['text']);
     } else $page = array();
@@ -310,16 +314,24 @@ function HandleSearchA($pagename, $level = 'read') {
 
 function FPLTemplate($pagename, &$matches, $opt) {
   global $Cursor, $FPLFormatOpt, $FPLTemplatePageFmt;
-  SDV($FPLTemplatePageFmt, '{$SiteGroup}.PageListTemplates');
+  SDV($FPLTemplatePageFmt, array('{$FullName}',
+    '{$SiteGroup}.LocalTemplates','{$SiteGroup}.PageListTemplates'));
 
   $template = @$opt['template'];
   if (!$template) $template = @$opt['fmt'];
 
   list($tname, $qf) = explode('#', $template, 2);
-  if ($tname) $tname = MakePageName($pagename, $tname);
-  else $tname = FmtPageName($FPLTemplatePageFmt, $pagename);
-  if ($qf) $tname .= "#$qf";
-  $ttext = IncludeText($pagename, $tname, true);
+  if ($tname) $tname = array(MakePageName($pagename, $tname));
+  else $tname = (array)$FPLTemplatePageFmt;
+  foreach ($tname as $t) {
+    $t = FmtPageName($t, $pagename);
+    if (!PageExists($t)) continue;
+    if ($qf) $t .= "#$qf";
+    $ttext = IncludeText($pagename, $t, true);
+    if (!$qf || strpos($ttext, "[[#$qf]]") !== false) break;
+  }
+
+  ##   remove any anchor markups to avoid duplications
   $ttext = preg_replace('/\\[\\[#[A-Za-z][-.:\\w]*\\]\\]/', '', $ttext);
 
   if (!@$opt['order'] && !@$opt['trail']) $opt['order'] = 'name';

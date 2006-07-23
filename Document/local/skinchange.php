@@ -26,12 +26,13 @@
     session by setting $SkinCookieExpires=0;
 */
 
-SDV($SkinCookieExpires,$Now+60*60*24*365);
+SDV($SkinCookie, $CookiePrefix.'setskin');
+SDV($SkinCookieExpires, $Now+60*60*24*365);
 
-if (isset($_COOKIE['setskin'])) $sk = $_COOKIE['setskin'];
+if (isset($_COOKIE[$SkinCookie])) $sk = $_COOKIE[$SkinCookie];
 if (isset($_GET['setskin'])) {
   $sk = $_GET['setskin'];
-  setcookie('setskin',$sk,$SkinCookieExpires,'/');
+  setcookie($SkinCookie, $sk, $SkinCookieExpires, '/');
 }
 if (isset($_GET['skin'])) $sk = $_GET['skin'];
 if (@$PageSkinList[$sk]) $Skin = $PageSkinList[$sk];

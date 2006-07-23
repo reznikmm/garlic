@@ -69,13 +69,13 @@ function LinkHTTP($pagename,$imap,$path,$title,$txt,$fmt=NULL) {
 function ReadApprovedUrls($pagename) {
   global $ApprovedUrlPagesFmt,$ApproveUrlPattern,$WhiteUrlPatterns;
   foreach((array)$ApprovedUrlPagesFmt as $p) {
-    $apage = ReadPage(FmtPageName($p,$pagename));
+    $pn = FmtPageName($p, $pagename);
+    StopWatch("ReadApprovedUrls $pn begin");
+    $apage = ReadPage($pn, READPAGE_CURRENT);
     preg_match_all("/$ApproveUrlPattern/",@$apage['text'],$match);
-    foreach($match[0] as $a) {
-      $urlp = preg_quote($a,'!');
-      if (!in_array($urlp,$WhiteUrlPatterns))
-        $WhiteUrlPatterns[] = $urlp;
-    }
+    foreach($match[0] as $a) 
+      $WhiteUrlPatterns[] = preg_quote($a,'!');
+    StopWatch("ReadApprovedUrls $pn end");
   }
 }
 

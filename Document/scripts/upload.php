@@ -142,10 +142,10 @@ function HandleUpload($pagename, $auth = 'upload') {
   if (!$page) Abort("?cannot upload to $pagename");
   PCache($pagename,$page);
   $FmtV['$UploadName'] = MakeUploadName($pagename,@$_REQUEST['upname']);
-  $upresult = @$_REQUEST['upresult'];
-  $uprname = @$_REQUEST['uprname'];
-  $FmtV['$upext'] = @$_REQUEST['upext'];
-  $FmtV['$upmax'] = @$_REQUEST['upmax'];
+  $upresult = htmlspecialchars(@$_REQUEST['upresult']);
+  $uprname = htmlspecialchars(@$_REQUEST['uprname']);
+  $FmtV['$upext'] = htmlspecialchars(@$_REQUEST['upext']);
+  $FmtV['$upmax'] = htmlspecialchars(@$_REQUEST['upmax']);
   $FmtV['$UploadResult'] = ($upresult) ?
     FmtPageName("<i>$uprname</i>: $[UL$upresult]",$pagename) : '';
   SDV($HandleUploadFmt,array(&$PageStartFmt,&$PageUploadFmt,&$PageEndFmt));
@@ -271,7 +271,7 @@ function FmtUploadList($pagename, $args) {
   }
   closedir($dirp);
   $out = array();
-  asort($filelist);
+  natcasesort($filelist);
   $overwrite = '';
   foreach($filelist as $file=>$x) {
     $name = PUE("$uploadurl$file");

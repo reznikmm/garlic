@@ -168,6 +168,7 @@ function HandleFeed($pagename, $auth = 'read') {
   SDV($RSSTimeFmt, 'D, d M Y H:i:s \G\M\T');
   SDV($FeedDescPatterns, 
     array('/<[^>]*$/' => ' ', '/\\w+$/' => '', '/<[^>]+>/' => ''));
+  SDVA($FeedPageListOpt, array());
   SDVA($FeedCategoryOpt, array('link' => $pagename));
   SDVA($FeedTrailOpt, array('trail' => $pagename, 'count' => 10));
 
@@ -178,16 +179,19 @@ function HandleFeed($pagename, $auth = 'read') {
 
   # determine list of pages to display
   if (@($_REQUEST['trail'] || $_REQUEST['group'] || $_REQUEST['link'] 
-        || $_REQUEST['name']) || $action == 'dc') $opt = array();
+        || $_REQUEST['name'])) 
+    $opt = $FeedPageListOpt;
   else if (preg_match("/^$CategoryGroup\\./", $pagename)) 
     $opt = $FeedCategoryOpt;
-  else $opt = $FeedTrailOpt;
-  if (!$opt) 
-    { PCache($pagename, $page); $pagelist = array($pagename); }
-  else {
+  else if ($action != 'dc') $opt = $FeedTrailOpt;
+  else { 
+    PCache($pagename, $page); 
+    $pagelist = array($pagename); 
+  }
+  if (!$pagelist) {
     $opt = array_merge($opt, @$_REQUEST);
     $pagelist = MakePageList($pagename, $opt, 0);
-  } 
+  }
 
   # process list of pages in feed
   $rdfseq = '';

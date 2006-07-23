@@ -1,13 +1,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<!-- See CSS for credits -->
+<!-- monobook/monobook.tmpl
+See PHP for credits and license
+-->
 <head>
   <title><!--function:RenderTitle--></title>
   <meta http-equiv='Content-Style-Type' content='text/css' />
   <!--HeaderText-->
-  <link rel='stylesheet' href='$SkinDirUrl/monobook.css' type='text/css'/>
-<!--function:RenderStyle leftbardisabled #content { margin-left: 0; }-->
-<!--function:RenderStyle ! tabsdisabled #header { border-bottom: none; }-->
+  <!-- <link rel='stylesheet' href='$SkinDirUrl/monobook.css' type='text/css'/> -->
+<!--function:RenderStyle leftbardisabled-->
+<!--function:RenderStyle ! tabsdisabled-->
 </head>
 <body>
   <div id='globalwrapper'>
@@ -51,7 +53,7 @@
         <div class='lastmod'>$[Page last modified on $LastModified]</div>
         <ul>
           <li class='navbox'><a
-            href='$PageUrl$PageQueryString#topcontent'>&#9650; $[Top] &#9650;</a></li>
+            href='#topcontent'>&#9650; $[Top] &#9650;</a></li>
           <li><a href='$ScriptUrl/$[$SiteGroup/Search]'>$[Search]</a></li>
           <li><a href='$ScriptUrl/$[$Group/RecentChanges]'>$[Recent Changes]</a></li>
           <li><a href='$ScriptUrl/$[$SiteGroup/AllRecentChanges]'>$[All Recent Changes]</a></li>
@@ -59,5 +61,6 @@
       </div><!--/PageFooterFmt-->
     </div><!-- id='content' -->
   </div><!-- id='globalwrapper' -->
+  <div id='stopwatch'>$StopWatch</div>
 </body>
 </html>
