@@ -68,6 +68,8 @@ if (IsEnabled($EnableForms,1))
   include_once("$FarmD/scripts/forms.php");       # must come after prefs
 if (IsEnabled($EnableUpload,0))
   include_once("$FarmD/scripts/upload.php");      # must come after forms
+if (IsEnabled($EnableNotify,0))
+  include_once("$FarmD/scripts/notify.php");
 if (IsEnabled($EnableDiag,0)) 
   include_once("$FarmD/scripts/diag.php");
 

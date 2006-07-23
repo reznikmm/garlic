@@ -32,7 +32,13 @@ Markup('[=','_begin',"/(\n[^\\S\n]*)?\\[([=@])(.*?)\\2\\]/se",
 Markup('restore','<_end',"/$KeepToken(\\d.*?)$KeepToken/e",
     '$GLOBALS[\'KPV\'][\'$1\']');
 Markup('<:', '>restore',
-  "/<:[^>]*>/", "");
+  '/<:[^>]*>/', '');
+Markup('<vspace>', '<restore', 
+  '/<vspace>/', 
+  "<div class='vspace'></div>");
+Markup('<vspace><p>', '<<vspace>',
+  "/<vspace><p\\b(([^>]*)(\\s)class=(['\"])([^>]*?)\\4)?/",
+  "<p$2 class='vspace$3$5'");
 
 ## remove carriage returns before preserving text
 Markup('\\r','<[=','/\\r/','');
@@ -191,7 +197,7 @@ Markup('[[<<]]','inline','/\\[\\[&lt;&lt;\\]\\]/',"<br clear='all' />");
 
 ###### Links ######
 ## [[free links]]
-Markup('[[','links',"/(?>\\[\\[\\s*)(.*?)\\]\\]($SuffixPattern)/e",
+Markup('[[','links',"/(?>\\[\\[\\s*(.*?)\\]\\])($SuffixPattern)/e",
   "Keep(MakeLink(\$pagename,PSS('$1'),NULL,'$2'),'L')");
 
 ## [[!Category]]

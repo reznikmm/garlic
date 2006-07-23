@@ -1,8 +1,7 @@
-version=pmwiki-2.0.beta54 ordered=1
-newline=ÀŠ
-agent=Opera/8.0 (X11; Linux x86_64; U; de)
-host=84.72.114.216
+version=pmwiki-2.1.3 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.0; de; rv:1.8.0.4) Gecko/20060508 Firefox/1.5.0.4
+host=138.189.119.153
 name=Site.RecentChanges
-rev=1
-text=* [[Site/SideBar]]  . . . August 22, 2005, at 09:52 AM by [[~Martin Krischik]]: [==]ÀŠ
-time=1124729576
+rev=5
+text=* [[Site/GroupFooter]]  . . . June 26, 2006, at 03:45 AM by [[~Martin Krischik]]: [=----=]%0a* [[Site/SideBar]]  . . . August 22, 2005, at 09:52 AM by [[~Martin Krischik]]: [==]%0a
+time=1151318716

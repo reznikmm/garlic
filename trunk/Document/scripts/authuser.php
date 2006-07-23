@@ -32,7 +32,8 @@
 $EnableAuthUser = 1;
 
 if (@$_POST['authid']) 
-  AuthUserId($pagename, @$_POST['authid'], @$_POST['authpw']);
+  AuthUserId($pagename, stripmagic(@$_POST['authid']), 
+             stripmagic(@$_POST['authpw']));
 else SessionAuth($pagename);
 
 function AuthUserId($pagename, $id, $pw=NULL) {
@@ -122,7 +123,7 @@ function AuthUserLDAP($pagename, $id, $pw, $pwlist) {
       $x = ldap_get_entries($ds, $sr);
       if ($x['count'] == 1) {
         $dn = $x[0]['dn'];
-        if (ldap_bind($ds, $dn, $pw)) { ldap_close($ds); return true; }
+        if (@ldap_bind($ds, $dn, $pw)) { ldap_close($ds); return true; }
       }
     }
     ldap_close($ds);

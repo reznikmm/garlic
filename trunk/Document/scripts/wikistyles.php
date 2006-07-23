@@ -6,8 +6,16 @@
     (at your option) any later version.  See pmwiki.php for full details.
 */
 
+SDV($WikiStylePattern,'%%|%[A-Za-z][-,=:#\\w\\s\'"().]*%');
+
 ## %% markup
 Markup('%%','style','%','return ApplyStyles($x);');
+
+## %define=...% markup on a line by itself
+Markup('%define=', '>split',
+  "/^(?=%define=)((?:$WikiStylePattern)\\s*)+$/e",
+  "PZZ(ApplyStyles(PSS('$0')))");
+
 ## restore links before applying styles
 Markup('restorelinks','<%%',"/$KeepToken(\\d+L)$KeepToken/e",
   '$GLOBALS[\'KPV\'][\'$1\']');
@@ -61,8 +69,6 @@ if (IsEnabled($EnableStdWikiStyles,1)) {
     'width' => '200px', 'apply' => 'block', 'text-align' => 'center'));
   SDV($WikiStyle['sidehead'], array('apply' => 'block', 'class' => 'sidehead'));
 }
-
-SDV($WikiStylePattern,'%%|%[A-Za-z][-,=:#\\w\\s\'"().]*%');
 
 SDVA($WikiStyleAttr,array(
   'vspace' => 'img',

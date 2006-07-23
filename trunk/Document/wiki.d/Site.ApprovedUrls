@@ -1,0 +1,27 @@
+version=pmwiki-2.1.11 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (compatible; Konqueror/3.5; de, en_GB, en_US) KHTML/3.5.3 (like Gecko)
+author=Martin Krischik
+ctime=1153545661
+host=84.74.130.70
+name=Site.ApprovedUrls
+rev=6
+text=%0a  http://sourceforge.net%0a  http://gnat-gnat.sourceforge.net%0a  http://cvs.sourceforge.net%0a  http://ada.krischik.com%0a  http://en.wikibooks.org%0a  http://es.wikibooks.org%0a  http://fr.wikibooks.org%0a  http://adacl.sourceforge.net%0a  http://wikibook-ada.sourceforge.net%0a  http://gnat-asis.sourceforge.net%0a  http://gnat-glade.sourceforge.net%0a  http://gnat-florist.sourceforge.net%0a  http://www.adacore.com%0a  http://www.gnu.org%0a  http://en.wikipedia.org%0a  http://de.wikipedia.org%0a  http://ru.wikipedia.org%0a  http://sv.wikipedia.org%0a  http://pl.wikipedia.org%0a  http://he.wikipedia.org%0a  http://fr.wikipedia.org%0a  http://es.wikipedia.org%0a  http://da.wikipedia.org%0a  http://martin.krischik.com%0a  http://www.pmwiki.org%0a
+time=1153548400
+author:1153548400=Martin Krischik
+diff:1153548400:1153548328:=26d25%0a%3c   http://www.pmwiki.org%0a
+host:1153548400=84.74.130.70
+author:1153548328=Martin Krischik
+diff:1153548328:1153546691:=25d24%0a%3c   http://martin.krischik.com%0a
+host:1153548328=84.74.130.70
+author:1153546691=
+diff:1153546691:1153546214:=16,24d15%0a%3c   http://en.wikipedia.org%0a%3c   http://de.wikipedia.org%0a%3c   http://ru.wikipedia.org%0a%3c   http://sv.wikipedia.org%0a%3c   http://pl.wikipedia.org%0a%3c   http://he.wikipedia.org%0a%3c   http://fr.wikipedia.org%0a%3c   http://es.wikipedia.org%0a%3c   http://da.wikipedia.org%0a
+host:1153546691=84.74.130.70
+author:1153546214=
+diff:1153546214:1153545699:=15d14%0a%3c   http://www.gnu.org%0a
+host:1153546214=84.74.130.70
+author:1153545699=
+diff:1153545699:1153545661:=5,14d4%0a%3c   http://ada.krischik.com%0a%3c   http://en.wikibooks.org%0a%3c   http://es.wikibooks.org%0a%3c   http://fr.wikibooks.org%0a%3c   http://adacl.sourceforge.net%0a%3c   http://wikibook-ada.sourceforge.net%0a%3c   http://gnat-asis.sourceforge.net%0a%3c   http://gnat-glade.sourceforge.net%0a%3c   http://gnat-florist.sourceforge.net%0a%3c   http://www.adacore.com%0a
+host:1153545699=84.74.130.70
+author:1153545661=
+diff:1153545661:1153545661:=1,4d0%0a%3c %0a%3c   http://sourceforge.net%0a%3c   http://gnat-gnat.sourceforge.net%0a%3c   http://cvs.sourceforge.net%0a
+host:1153545661=84.74.130.70

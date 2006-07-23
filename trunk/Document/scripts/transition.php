@@ -14,6 +14,10 @@
 
     Transitions defined in this script:
 
+      $Transition['vspace']             - restore <p class='vspace'></p>
+
+      $Transition['version'] < 2001006  - all transitions listed above
+
       $Transition['fplbygroup']         - restore FPLByGroup function
 
       $Transition['version'] < 2000915  - all transitions listed above
@@ -45,6 +49,17 @@
 
 ## if ?trans=0 is specified, then we don't do any fixups.
 if (@$_REQUEST['trans']==='0') return;
+
+## Transitions from 2.1.7
+
+if (@$Transition['version'] < 2001007)
+  SDVA($Transition, array('vspace' => 1));
+
+## vspace:
+##   This restores PmWiki's use of <p class='vspace'></p> to mark
+##   vertical space in the output.
+if (@$Transition['vspace']) $HTMLVSpace = "<p class='vspace'></p>";
+
 
 ## Transitions from 2.1.beta15
 
