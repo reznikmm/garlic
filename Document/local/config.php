@@ -128,6 +128,14 @@ $DiffKeepDays=30;
 
 if ($action == 'rss' || $action == 'rdf') include_once('scripts/rss.php');
 
+if ( $action=="sitemap" ) {
+    $RssMaxItems=50000;                      # maximum items to display
+    $RssSourceSize=0;                        # max size to build desc from
+    $RssDescSize=0;                          # max desc size
+    $action="rss";
+    }
+include_once("scripts/rss.php");
+
 ##  PmWiki allows a great deal of flexibility for creating custom markup.
 ##  To add support for '*bold*' and '~italic~' markup (the single quotes
 ##  are part of the markup), uncomment the following lines. 
@@ -167,6 +175,10 @@ $HTTPHeaders = array (
    "Expires: Tue, 01 Jan 2006 00:00:00 GMT",
    "Cache-Control: no-store, no-cache, must-revalidate",
    "Content-type: text/html; charset=utf-8;");
+
+$HTMLHeaderFmt['verify-v1'] = '
+    <META name="verify-v1" content="KHqWiWX7a80QtiWfa6Ic3W7GNJMFQUCQJC+9/cGeWuk=" />
+    ';
 
 $PageSkinList = array (
    'pmwiki' => 'pmwiki',
