@@ -1,9 +1,0 @@
-version=pmwiki-2.0.10 ordered=1 urlencoded=1
-agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.12) Gecko/20050915 Firefox/1.0.7 (ax)
-author=Ren
-host=218.171.208.106
-name=PmWikiZhTw.搜尋Wiki
-rev=2
-targets=
-text=(:searchbox:)%0a%0a(:searchresults:)%0a%0a輸入想要搜尋的字詞，系統將找出所有包含這些字詞的頁面。%0a%0a若只想在限定群組中搜尋頁面的話，輸入群組名稱加上斜線後，再輸入要搜尋的字詞（例如︰"[=PmWiki/=]" or "Main/"）%0a%0a想要列出所有頁面，輸入斜線（/）並按下搜尋鈕即可。%0a%0a!!!輸入範例%0a  %0a||border='0' cellspacing='0' width='100%25' cellpadding='0' %0a||'''輸入'''    ||'''搜尋結果''' ||%0a||apple pie      ||both 'apple' and 'pie' ||%0a||"apple pie"    ||the phrase 'apple pie' ||%0a||pmwiki/apple   ||'apple' in the [=PmWiki=] group ||%0a||"pmwiki/apple" ||the phrase 'pmwiki/apple' in all groups ||%0a||apple -pie     ||'apple', omitting those containing 'pie' ||%0a||ninja -"apple pie" ||'ninja', omitting those containing 'apple pie' ||%0a||apple "-pie"   ||the words 'apple' and '-pie' ||%0a||apple - pie    ||'apple', '-', and 'pie' || %0a
-time=1128233548

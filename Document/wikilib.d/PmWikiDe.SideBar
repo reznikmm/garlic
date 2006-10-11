@@ -1,9 +1,0 @@
-version=pmwiki-2.0.2 ordered=1 urlencoded=1
-agent=Opera/8.02 (Windows NT 5.0; U; de)
-author=Klonk
-host=62.245.250.121
-name=PmWikiDe.SideBar
-rev=7
-targets=PmWikiDe.PmWikiDe,PmWikiDe.WikiWikiWeb,PmWikiDe.Installation,PmWikiDe.DocumentationIndex,PmWikiDe.WikiSandbox,PmWikiDe.RecentChanges
-text=![[PmWikiDe|Deutsches Wiki]]%0a* [[WikiWikiWeb | Was ist ein Wiki?]]%0a* [[Installation | Installation]]%0a* [[DocumentationIndex|Dokumentationsindex]]%0a* [[WikiSandbox|Sandkasten]]%0a* [[RecentChanges | Aktuelle Änderungen]]%0a----%0a%0a(:include Main/SideBar:)
-time=1126019320

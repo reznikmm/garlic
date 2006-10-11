@@ -1,9 +1,0 @@
-version=pmwiki-2.0.10 ordered=1 urlencoded=1
-agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; fr-FR; rv:1.7.10) Gecko/20050717 Firefox/1.0.6 (ax)
-author=Jean-Dom
-host=62.35.164.27
-name=PmWikiFr.DiminutionBandePassante
-rev=5
-targets=PmWikiFr.FormatageDesTableauxSimples,PmWikiFr.IndexCompléments,PmWikiFr.ListeDeBlocage
-text=%25tr%25Abrégé d'après la page en Anglais PmWiki:Cookbook.ReduceBandWidth%0a%0aObjectif%0a%0aReduire la bande passante utilisée sur le serveur.%0a%0aSi vous dépassez la bande passante allouée par votre hébergeur, celui-ci va bloquer votre service et/ou vous réclamer un complément d'argent.%0a%0aPar ailleurs il est aussi souhaitable d'accélérer l'affichage des pages, en particulier pour ceux qui possèdent encore un modem.%0a%0aSolution%0a%0aSelon l'installation de PHP de votre hébergeur%0a(PHP compilé avec "--with-zlib") ceci peut être très facile :%0aajouter la ligne dans votre fichier de configuration php%0a  ob_start("ob_gzhandler");%0a%0aPour du texte, la compression va de 80 à 50%25.%0a%0ahttp://www.php.net/manual/en/function.ob-gzhandler.php%0a%0aUn des inconvénients est que la page n'est affichée que lorsqu'elle a été entièrement générée, ce qui peut provoquer un léger délai d'attente (mais la page s'affichera plus vite !)%0a%0aComment vérifier si  zlib est installé chez votre hébergeur ? %0a%0aCréez un script (test.php ou autre), installez-le sur votre serveur et lancez-le:%0a->[@%0a%3c?%0aphpinfo();%0a?>%0a@]%0a-%3cChercher zlib sur la page qui va s'afficher.%0a%0aAttention, sur certains serveurs, cette option peut créer des messages d'erreur de manière irrégulières.%0a%0a----%0a%25trail%25%3c%3c|[[Index compléments]]|>>%0a%0a----%0a%25tr%25Adaptation de PmWiki:Cookbook.ReduceBandWidth - Page originale sur PmWiki:PmWikiFr.DiminutionBandePassante%0a%0a
-time=1128714677

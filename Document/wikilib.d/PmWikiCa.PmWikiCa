@@ -1,9 +1,0 @@
-version=pmwiki-2.1.beta2 ordered=1 urlencoded=1
-agent=Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0; en) Opera 8.50
-author=Lluís
-host=80.58.33.235
-name=PmWikiCa.PmWikiCa
-rev=17
-targets=PmWiki.WikiWikiWeb,PmWiki.PatrickMichaud
-text=PmWiki és un sistema [[PmWiki/WikiWikiWeb]] desenvolupat per [[PmWiki/Patrick Michaud]] en llenguatge PHP. PmWiki ha estat dissenyat principalment com una eina que habilita el fàcil desenvolupament i manteniment de portals web col·laboratius.%0a%0aAquest portal usa {$Version}. El programa està lliurement disponible sota la Llicència Pública GNU i pot ser descarregat desde http://www.pmichaud.com/pub/pmwiki. Trobarà més informació sobre PmWiki a http://www.pmwiki.com.%0a%0aPmWiki és una marca registrada de Patrick R. Michaud (http://www.pmichaud.com).%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a
-time=1132743993

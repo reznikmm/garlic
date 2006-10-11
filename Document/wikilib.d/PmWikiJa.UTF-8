@@ -1,9 +1,0 @@
-version=pmwiki-2.0.10 ordered=1 urlencoded=1
-agent=Opera/8.01 (Windows NT 5.1; U; jp)
-author=fox_b
-host=61.210.228.98
-name=PmWikiJa.UTF-8
-rev=8
-targets=PmWiki.PmWiki
-text=!!!Enabling UTF-8 Unicode language encoding in your page header.%0a!!!ページヘッダをUTF-8エンコード対応にする方法について%0a%0a''UTF-8 allows for support of Asian languages and their character depth.  It is a widely supported and flexible character encoding, used for Japanese and Chinese.''%0a%0aUTF-8は、アジアの言語およびそれらのcharacter depthをサポートします。それは、巾広くサポートされた柔軟な文字エンコードであり、日本語と中国語で使用されています。%0a%0a''It's fairly simple to enable UTF-8 on your wiki pages.  Currently PmWiki 2.0 versions have the UTF-8 file needed already loaded. ''%0a%0aあなたのwikiページをUTF-8対応にすることはとても簡単です。現バージョンであるPmWiki 2.0は、この作業に必要なUTF-8ファイルを標準で同梱しています。%0a%0a%0a!!!!Here are the steps to enable UTF-8 %0a%0a*Open your config.php file%0a*Add this line: '''include_once('scripts/xlpage-utf-8.php');'''%0a*(you must include the semicolon)%0a*save and upload your config.php file back to the server.%0a%0aIf you validate your site you should see that UTF-8 is default encoding.%0a%0a!!!!UTF-8対応にする方法：%0a*config.phpファイルを開く%0a*以下の行を追加する: '''include_once('scripts/xlpage-utf-8.php');'''%0a*(最後の";（セミコロン）"をお忘れなく)%0a*config.phpファイルを保存してサーバにアップロードしてください。%0a%0aサイトを有効にすれば、UTF-8がデフォルトのエンコーディングになっているでしょう。%0a
-time=1128922999

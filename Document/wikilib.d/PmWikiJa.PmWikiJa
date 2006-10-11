@@ -1,9 +1,0 @@
-version=pmwiki-2.1.beta7 ordered=1 urlencoded=1
-agent=Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322) Sleipnir/2.10
-author=chicken
-host=61.26.5.93
-name=PmWikiJa.PmWikiJa
-rev=64
-targets=PmWiki.WikiWikiWeb,PmWiki.WikiSandbox,Profiles.Pm,PmWikiJa.ページの新規作成,Profiles.Jose,Profiles.Morsma
-text=PmWiki は Patrick Michaud 氏が PHP で開発した [[PmWiki/WikiWikiWeb]] システムです。 PmWiki は共同で簡単にウェブサイトの制作とメンテナンスができるツールとしてデザインされています。%0a%0aこのサイトは [[PmWiki:Installation|{$Version}]]で動作しています。PmWikiの機能は[[PmWiki/WikiSandbox]]で試すことができます。%0a%0aこのソフトウェアはGNU General Public License (GPL)の元にフリーで利用できます。 ダウンロードはこちら http://www.pmichaud.com/pub/pmwiki からどうぞ。%0a%0aドキュメントは[[http://www.pmwiki.org/wiki/PmWikiJa/ドキュメント目次 | ドキュメント目次]]から参照してください。%0a%0aPmWiki は Patrick R. Michaud 氏の登録商標です。%0a(http://www.pmichaud.com). %0a----%0a%0a%25Pm%25 Could someone translate the above into Japanese?  Thanks!  --[[~Pm]]%0a%0a%25green%25翻訳すると、日本語は英語の文章の下に書いたほうがいいと思います　例：[[ページの新規作成]] [[~jose]]%25%25 %25blue%25（単に英文を載せたので、以上の文章を日本語に訳してください、という要望なので、特に英文を保存する必要はないでしょう。でも、一応、原文を下に載せておきます。）[[~morsma]]%0a%0aPmWiki is a WikiWikiWeb system developed by Patrick Michaud in the PHP scripting language. PmWiki has been primarily designed as a tool to support easy, collaborative authoring and maintenance of web sites. %0a%0aThis site is running [[PmWiki:Installation|{$Version}]]. The software is freely available under the GNU General Public License (GPL) and may be downloaded from http://www.pmichaud.com/pub/pmwiki. Documentation is available via the documentation index.%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a
-time=1133315192

@@ -1,9 +1,0 @@
-version=pmwiki-2.0.3 ordered=1 urlencoded=1
-agent=Mozilla/4.0 (compatible; MSIE 5.01; Windows NT 5.0)
-author=
-host=62.176.232.2
-name=PmWikiDe.ImagesInWikiPages
-rev=1
-targets=
-text=%25height=50%25 http://ww.example.com/some.gif%0a
-time=1126096207

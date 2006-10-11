@@ -1,9 +1,0 @@
-version=pmwiki-2.1.beta9 ordered=1 urlencoded=1
-agent=Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.3) Gecko/20040913
-author=Andrius Kulikauskas
-host=193.219.5.40
-name=PmWikiLt.PmWikiLt
-rev=30
-targets=PmWiki.PatrickMichaud,PmWiki.WikiWikiWeb,PmWikiLt.XLPage
-text=PmWiki yra [[PmWiki/WikiWikiWeb]] sistema, sukurta [[PmWiki/Patrick Michaud |Patrick Michaud (Patriko Mišodo)]], naudojant PHP programavimo kalbą. PmWiki buvo pirmiausia suprojektuota kaip įrankis paprastam, kolektyviniam šios svetainės rašymui ir papildymui.%0a%0aŠi svetainė naudoja {$Version}. Ši programa yra laisvai prieinama pagal GNU Bendrąją Viešąją Licenciją (GPL) ir yra gaunama iš interneto čia: http://www.pmichaud.com/pub/pmwiki. Anglišką programos aprašymą rasite dokumentų indekse (svetainės meniu).%0a%0aPmWiki yra registruotas prekės pavadinimas, priklausantis Patrick R. Michaud (Patrikui Mišodui) (http://www.pmichaud.com).%0a----%0aPats vertimo programavimas yra [[XLPage -> PmWikiLt.XLPage]] puslapyje.%0a%0a----%0a%0aKaip sutvarkyti lietuviškas raides?%0a%0aąčęėįšųūž ĄČĘĖĮŠŲŪŽ %0a%0aPmWiki naudoja [[http://www.ms.lt/lt/ |Minčių sodas]].%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a
-time=1133630329
