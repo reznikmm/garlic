@@ -1,0 +1,26 @@
+version=pmwiki-2.1.11 ordered=1 urlencoded=1
+agent=User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)
+author=replica
+csum=
+ctime=1162359610
+host=203.144.144.164
+name=Guestbook.SideBar
+rev=5
+targets=
+text=
+time=1163121781
+author:1163121781=replica
+diff:1163121781:1162551561:minor=
+host:1163121781=203.144.144.164
+author:1162551561=steroid
+diff:1162551561:1162455854:minor=
+host:1162551561=86.105.198.29
+author:1162455854=ephedra
+diff:1162455854:1162359614:minor=
+host:1162455854=201.26.142.93
+author:1162359614=costnerkevin
+diff:1162359614:1162359610:minor=
+host:1162359614=220.230.100.59
+author:1162359610=costnerkevin
+diff:1162359610:1162359610:minor=
+host:1162359610=220.230.100.59
