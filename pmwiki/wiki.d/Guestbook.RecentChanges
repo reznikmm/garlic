@@ -1,7 +1,7 @@
 version=pmwiki-2.1.11 ordered=1 urlencoded=1
-agent=User-Agent: Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1)
-host=200.117.175.67
+agent=Opera/9.02 (X11; Linux x86_64; U; de)
+host=80.218.118.14
 name=Guestbook.RecentChanges
-rev=15
-text=* [[Guestbook/HomePage]]  . . . January 10, 2007, at 08:12 AM by [[~aciphex]]: [==]%0a* [[Guestbook/SideBar]]  . . . November 26, 2006, at 01:33 AM by [[~Martin Krischik]]: [=typo=]%0a* [[Guestbook/TOC]]  . . . March 19, 2006, at 02:21 AM by [[~Martin Krischik]]: [=WikiSPAM=]%0a
-time=1168445553
+rev=17
+text=* [[Guestbook/HomePage]]  . . . January 18, 2007, at 08:11 AM by [[~Martin Krischik]]: [=WikiSPAM=]%0a* [[Guestbook/SideBar]]  . . . November 26, 2006, at 01:33 AM by [[~Martin Krischik]]: [=typo=]%0a* [[Guestbook/TOC]]  . . . March 19, 2006, at 02:21 AM by [[~Martin Krischik]]: [=WikiSPAM=]%0a
+time=1169136691
