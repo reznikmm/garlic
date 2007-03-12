@@ -37,9 +37,19 @@ $WikiTitle = 'PmWiki';
 ## and PmWiki.PasswordsAdmin.
 # $DefaultPasswords['admin'] = crypt('secret');
 
+## If you're running a publicly available site and allow anyone to
+## edit without requiring a password, you probably want to put some
+## blocklists in place to avoid wikispam.  See PmWiki.Blocklist.
+# $EnableBlocklist = 1;                    # enable manual blocklists
+# $EnableBlocklist = 10;                   # enable automatic blocklists
+
 ##  PmWiki comes with graphical user interface buttons for editing;
 ##  to enable these buttons, set $EnableGUIButtons to 1.  
 # $EnableGUIButtons = 1;
+
+##  To enable markup syntax from the Creole common wiki markup language
+##  (http://www.wikicreole.org/), include it here:
+# include_once('scripts/creole.php');
 
 ##  If you want uploads enabled on your system, set $EnableUpload=1.
 ##  You'll also need to set a default upload password, or else set
@@ -49,7 +59,7 @@ $WikiTitle = 'PmWiki';
 # $DefaultPasswords['upload'] = crypt('secret');
 
 ##  Setting $EnableDiag turns on the ?action=diag and ?action=phpinfo
-##  actions, which often helps the PmWiki authors to troubleshoot 
+##  actions, which often helps others to remotely troubleshoot 
 ##  various configuration and execution problems.
 # $EnableDiag = 1;                         # enable remote diagnostics
 
@@ -63,41 +73,23 @@ $WikiTitle = 'PmWiki';
 ##  have spaces before each sequence of capital letters.
 # $SpaceWikiWords = 1;                     # turn on WikiWord spacing
 
-##  Set $LinkWikiWords if you want to allow WikiWord links.
-# $LinkWikiWords = 1;                      # enable WikiWord links
-
-##  If you want only the first occurrence of a WikiWord to be converted
-##  to a link, set $WikiWordCountMax=1.
-# $WikiWordCountMax = 1;                   # converts only first WikiWord
-# $WikiWordCountMax = 0;                   # another way to disable WikiWords
-
-##  The $WikiWordCount array can be used to control the number of times
-##  a WikiWord is converted to a link.  This is useful for disabling
-##  or limiting specific WikiWords.
-# $WikiWordCount['PhD'] = 0;               # disables 'PhD'
-# $WikiWordCount['PmWiki'] = 1;            # convert only first 'PmWiki'
-
-##  By default, PmWiki is configured such that only the first occurrence
-##  of 'PmWiki' in a page is treated as a WikiWord.  If you want to 
-##  restore 'PmWiki' to be treated like other WikiWords, uncomment the
-##  line below.
-# unset($WikiWordCount['PmWiki']);
-
-##  If you want to disable WikiWords matching a pattern, you can use 
-##  something like the following.  Note that the first argument has to 
-##  be different for each call to Markup().  The example below disables
-##  WikiWord links like COM1, COM2, COM1234, etc.
-# Markup('COM\d+', '<wikilink', '/\\bCOM\\d+/', "Keep('$0')");
+##  Set $EnableWikiWords if you want to allow WikiWord links.
+##  For more options with WikiWords, see scripts/wikiwords.php .
+# $EnableWikiWords = 1;                      # enable WikiWord links
 
 ##  $DiffKeepDays specifies the minimum number of days to keep a page's
 ##  revision history.  The default is 3650 (approximately 10 years).
 # $DiffKeepDays=30;                        # keep page history at least 30 days
 
-## By default, viewers are able to see the names (but not the
-## contents) of read-protected pages in search results and
-## page listings.  Set $EnablePageListProtect to keep read-protected
-## pages from appearing in search results.
-# $EnablePageListProtect = 1;
+## By default, viewers are prevented from seeing the existence
+## of read-protected pages in search results and page listings,
+## but this can be slow as PmWiki has to check the permissions
+## of each page.  Setting $EnablePageListProtect to zero will
+## speed things up considerably, but it will also mean that
+## viewers may learn of the existence of read-protected pages.
+## (It does not enable them to access the contents of the
+## pages.)
+# $EnablePageListProtect = 0;
 
 ##  The refcount.php script enables ?action=refcount, which helps to
 ##  find missing and orphaned pages.  See PmWiki.RefCount.
@@ -109,6 +101,19 @@ $WikiTitle = 'PmWiki';
 # if ($action == 'atom') include_once('scripts/feeds.php');  # Atom 1.0
 # if ($action == 'dc') include_once('scripts/feeds.php');    # Dublin Core
 # if ($action == 'rdf') include_once('scripts/feeds.php');   # RSS 1.0
+
+##  In the 2.2.0-beta series, {$var} page variables are absolute by
+##  default, but a future version will make them relative.  This setting
+##  sets them out as relative to begin with.  (If you're starting a new
+##  site, it's probably best to leave this setting alone.)
+$EnableRelativePageVars = 1;
+
+##  By default, pages in the Category group are manually created.
+##  Uncomment the following line to have blank category pages
+##  automatically created whenever a link to a non-existent
+##  category page is saved.  (The page is created only if
+##  the author has edit permissions to the Category group.)
+# $AutoCreate['/^Category\\./'] = array('ctime' => $Now);
 
 ##  PmWiki allows a great deal of flexibility for creating custom markup.
 ##  To add support for '*bold*' and '~italic~' markup (the single quotes

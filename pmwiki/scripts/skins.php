@@ -1,5 +1,5 @@
 <?php if (!defined('PmWiki')) exit();
-/*  Copyright 2004-2006 Patrick R. Michaud (pmichaud@pobox.com)
+/*  Copyright 2004-2007 Patrick R. Michaud (pmichaud@pobox.com)
     This file is part of PmWiki; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published
     by the Free Software Foundation; either version 2 of the License, or
@@ -39,20 +39,23 @@ foreach((array)$PageCSSListFmt as $k=>$v)
 # SetSkin changes the current skin to the first available skin from 
 # the $skin array.
 function SetSkin($pagename, $skin) {
-  global $Skin, $SkinDir, $SkinDirUrl, $IsTemplateLoaded, $PubDirUrl,
-    $FarmPubDirUrl, $FarmD;
-  unset($Skin);
-  foreach((array)$skin as $s) {
-    $sd = FmtPageName("./pub/skins/$s", $pagename);
-    if (is_dir($sd)) 
-      { $Skin=$s; $SkinDirUrl="$PubDirUrl/skins/$Skin"; break; }
-    $sd = FmtPageName("$FarmD/pub/skins/$s", $pagename);
-    if (is_dir($sd)) 
-      { $Skin=$s; $SkinDirUrl="$FarmPubDirUrl/skins/$Skin"; break; }
+  global $Skin, $SkinLibDirs, $SkinDir, $SkinDirUrl, 
+    $IsTemplateLoaded, $PubDirUrl, $FarmPubDirUrl, $FarmD, $GCount;
+  SDV($SkinLibDirs, array(
+    "./pub/skins/\$Skin"      => "$PubDirUrl/skins/\$Skin",
+    "$FarmD/pub/skins/\$Skin" => "$FarmPubDirUrl/skins/\$Skin"));
+  foreach((array)$skin as $sfmt) {
+    $Skin = FmtPageName($sfmt, $pagename); $GCount = 0;
+    foreach($SkinLibDirs as $dirfmt => $urlfmt) {
+      $SkinDir = FmtPageName($dirfmt, $pagename);
+      if (is_dir($SkinDir)) 
+        { $SkinDirUrl = FmtPageName($urlfmt, $pagename); break 2; }
+    }
   }
-  if (!is_dir($sd)) 
+  if (!is_dir($SkinDir)) {
+    unset($Skin);
     Abort("?unable to find skin from list ".implode(' ',(array)$skin));
-  $SkinDir = $sd;
+  }
   $IsTemplateLoaded = 0;
   if (file_exists("$SkinDir/$Skin.php"))
     include_once("$SkinDir/$Skin.php");
@@ -72,28 +75,33 @@ function SetSkin($pagename, $skin) {
     }
     closedir($dh);
   }
-  if (!$IsTemplateLoaded) Abort("Unable to load $Skin template");
+  if (!$IsTemplateLoaded) Abort("Unable to load $Skin template", 'skin');
 }
 
 
 # LoadPageTemplate loads a template into $TmplFmt
 function LoadPageTemplate($pagename,$tfilefmt) {
-  global $PageStartFmt, $PageEndFmt, $HTMLHeaderFmt,
+  global $PageStartFmt, $PageEndFmt, 
+    $EnableSkinDiag, $HTMLHeaderFmt, $HTMLFooterFmt,
     $IsTemplateLoaded, $TmplFmt, $TmplDisplay,
     $PageTextStartFmt, $PageTextEndFmt;
-
-  # $BasicLayoutVars is deprecated
-  global $BasicLayoutVars;
-  if (isset($BasicLayoutVars)) 
-    foreach($BasicLayoutVars as $sw) $TmplDisplay[$sw] = 1;
 
   SDV($PageTextStartFmt, "\n<div id='wikitext'>\n");
   SDV($PageTextEndFmt, "</div>\n");
 
   $sddef = array('PageEditFmt' => 0);
-  $k = implode('',file(FmtPageName($tfilefmt,$pagename)));
-  $sect = preg_split('#[[<]!--(/?(?:Page[A-Za-z]+Fmt|PageText|HeaderText)\\s?.*?)--[]>]#',
-    $k,0,PREG_SPLIT_DELIM_CAPTURE);
+  $k = implode('', file(FmtPageName($tfilefmt, $pagename)));
+
+  if (IsEnabled($EnableSkinDiag, 0)) {
+    if (!preg_match('/<!--((No)?(HT|X)MLHeader|HeaderText)-->/i', $k))
+      Abort("Skin template missing &lt;!--HTMLHeader--&gt;", 'htmlheader');
+    if (!preg_match('/<!--(No)?(HT|X)MLFooter-->/i', $k))
+      Abort("Skin template missing &lt;!--HTMLFooter--&gt;", 'htmlheader');
+  }
+
+  $sect = preg_split(
+    '#[[<]!--(/?(?:Page[A-Za-z]+Fmt|(?:HT|X)ML(?:Head|Foot)er|HeaderText|PageText).*?)--[]>]#',
+    $k, 0, PREG_SPLIT_DELIM_CAPTURE);
   $TmplFmt['Start'] = array_merge(array('headers:'),
     preg_split('/[[<]!--((?:wiki|file|function|markup):.*?)--[]>]/s',
       array_shift($sect),0,PREG_SPLIT_DELIM_CAPTURE));
@@ -101,7 +109,7 @@ function LoadPageTemplate($pagename,$tfilefmt) {
   $ps = 'Start';
   while (count($sect)>0) {
     $k = array_shift($sect);
-    $v = preg_split('/[[<]!--((?:wiki|file|function|markup):.*?)--[]>]/',
+    $v = preg_split('/[[<]!--((?:wiki|file|function|markup):.*?)--[]>]/s',
       array_shift($sect),0,PREG_SPLIT_DELIM_CAPTURE);
     $TmplFmt[$ps][] = "<!--$k-->";
     if ($k{0} == '/') 
@@ -110,6 +118,11 @@ function LoadPageTemplate($pagename,$tfilefmt) {
     $GLOBALS[$var] = (count($v) > 1) ? $v : $v[0];
     if ($sd > '') $sddef[$var] = $sd;
     if ($var == 'PageText') { $ps = 'End'; }
+    if ($var == 'HTMLHeader' || $var == 'XMLHeader') 
+      $TmplFmt[$ps][] = &$HTMLHeaderFmt; 
+    if ($var == 'HTMLFooter' || $var == 'XMLFooter') 
+      $TmplFmt[$ps][] = &$HTMLFooterFmt; 
+    ##   <!--HeaderText--> deprecated, 2.1.16
     if ($var == 'HeaderText') { $TmplFmt[$ps][] = &$HTMLHeaderFmt; }
     $TmplFmt[$ps][$var] =& $GLOBALS[$var];
   }

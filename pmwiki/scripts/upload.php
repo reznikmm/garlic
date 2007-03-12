@@ -44,6 +44,9 @@ SDVA($UploadExts,array(
   'swf' => 'application/x-shockwave-flash',
   'txt' => 'text/plain', 'rtf' => 'application/rtf', 
   'tex' => 'application/x-tex', 'dvi' => 'application/x-dvi',
+  'odt' => 'application/vnd.oasis.opendocument.text',
+  'ods' => 'application/vnd.oasis.opendocument.spreadsheet',
+  'odp' => 'application/vnd.oasis.opendocument.presentation',
   '' => 'text/plain'));
 
 SDV($UploadMaxSize,50000);
@@ -57,7 +60,7 @@ SDV($UploadPrefixFmt,'/$Group');
 SDV($UploadFileFmt,"$UploadDir$UploadPrefixFmt");
 $v = preg_replace('#^/(.*/)#', '', $UploadDir);
 SDV($UploadUrlFmt,preg_replace('#/[^/]*$#', "/$v", $PubDirUrl, 1));
-SDV($LinkUploadCreateFmt, "<a class='createlinktext' href='\$LinkUpload'>\$LinkText</a><a class='createlink' href='\$LinkUpload'>&nbsp;&Delta;</a>");
+SDV($LinkUploadCreateFmt, "<a rel='nofollow' class='createlinktext' href='\$LinkUpload'>\$LinkText</a><a rel='nofollow' class='createlink' href='\$LinkUpload'>&nbsp;&Delta;</a>");
 
 SDV($PageUploadFmt,array("
   <div id='wikiupload'>
@@ -90,7 +93,7 @@ SDV($PageAttributes['passwdupload'],'$[Set new upload password:]');
 SDV($DefaultPasswords['upload'],'*');
 SDV($AuthCascade['upload'], 'read');
 
-Markup('attachlist', '<block', 
+Markup('attachlist', 'directives', 
   '/\\(:attachlist\\s*(.*?):\\)/ei',
   "Keep('<ul>'.FmtUploadList('$pagename',PSS('$1')).'</ul>')");
 SDV($GUIButtons['attach'], array(220, 'Attach:', '', '$[file.ext]',
@@ -277,7 +280,7 @@ function FmtUploadList($pagename, $args) {
     $name = PUE("$uploadurl$file");
     $stat = stat("$uploaddir/$file");
     if ($EnableUploadOverwrite) 
-      $overwrite = FmtPageName("<a class='createlink'
+      $overwrite = FmtPageName("<a rel='nofollow' class='createlink'
         href='\$PageUrl?action=upload&amp;upname=$file'>&nbsp;&Delta;</a>", 
         $pagename);
     $out[] = "<li> <a href='$name'>$file</a>$overwrite ... ".

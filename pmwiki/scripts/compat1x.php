@@ -98,8 +98,8 @@ class PageStore1x extends PageStore {
     if ($page) {
       $page['text'] = preg_replace('/(\\[([=@]).*?\\2\\])/se',"Keep(PSS('$1'))",
         @$page['text']);
-      $page['text'] = preg_replace(array_keys($Compat1x),
-        array_values($Compat1x), $page['text']);
+      foreach($Compat1x as $pat => $rep)
+        $page['text'] = preg_replace($pat, $rep, $page['text']);
       $page['text'] = preg_replace("/$KeepToken(\\d.*?)$KeepToken/e",
         '$GLOBALS[\'KPV\'][\'$1\']',$page['text']);
     }

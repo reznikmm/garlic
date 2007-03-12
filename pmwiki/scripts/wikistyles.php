@@ -1,5 +1,5 @@
 <?php if (!defined('PmWiki')) exit();
-/*  Copyright 2004-2006 Patrick R. Michaud (pmichaud@pobox.com)
+/*  Copyright 2004-2007 Patrick R. Michaud (pmichaud@pobox.com)
     This file is part of PmWiki; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published
     by the Free Software Foundation; either version 2 of the License, or
@@ -33,6 +33,7 @@ if (IsEnabled($EnableStdWikiStyles,1)) {
   ## display, margin, padding, and border css properties
   $WikiStyleCSS[] = 
     'float|display|(margin|padding|border)(-(left|right|top|bottom))?';
+  $WikiStyleCSS[] = 'white-space';
   ## list-styles
   $WikiStyleCSS[] = 'list-style';
   $WikiStyleCSS[] = 'width|height';
@@ -89,9 +90,13 @@ $WikiStyleCSS[] = 'color|background-color';
 $WikiStyleCSS[] = 'text-align|text-decoration';
 $WikiStyleCSS[] = 'font-size|font-family|font-weight|font-style';
 
+SDV($imgTag, '(?:img|object|embed)');  SDV($aTag, 'a'); SDV($spanTag, 'span');
+
 function ApplyStyles($x) {
   global $UrlExcludeChars, $WikiStylePattern, $WikiStyleRepl, $WikiStyle,
-    $WikiStyleAttr, $WikiStyleCSS, $WikiStyleApply, $BlockPattern;
+    $WikiStyleAttr, $WikiStyleCSS, $WikiStyleApply, $BlockPattern,
+    $WikiStyleTag, $imgTag, $aTag, $spanTag, $WikiStyleAttrPrefix;
+  $wt = @$WikiStyleTag; $ns = $WikiStyleAttrPrefix; $ws = '';
   $x = preg_replace("/\\bhttps?:[^$UrlExcludeChars]+/e", "Keep('$0')", $x);
   $parts = preg_split("/($WikiStylePattern)/",$x,-1,PREG_SPLIT_DELIM_CAPTURE);
   $parts[] = NULL;
@@ -136,30 +141,38 @@ function ApplyStyles($x) {
       $spanattr = ''; $stylev = array(); $id = '';
       foreach((array)$s as $k=>$v) {
         $v = trim($v);
-        if ($k == 'class' && $v) $spanattr = "class='$v'";
-        elseif ($k=='id') $id = preg_replace('/\W/', '_', $v);
+        if ($wt) $ws = str_replace('$1', "$ns$k='$v'", $wt);
+        if ($k == 'class' && $v) $spanattr = "{$ns}class='$v'";
+        elseif ($k=='id') $id = preg_replace('/[^-A-Za-z0-9:_.]+/', '_', $v);
         elseif (($k=='width' || $k=='height') && !@$WikiStyleApply[$a]
-            && preg_match('/\\s*<img\\b/', $p)) 
-          $p = preg_replace("/<img(?![^>]*\\s$k=)/", "<img $k='$v'", $p);
+            && preg_match("/\\s*<$imgTag\\b/", $p)) 
+          $p = preg_replace("/<($imgTag)\\b(?![^>]*\\s$k=)/", 
+                 "$ws<$1 $ns$k='$v'", $p);
         elseif (@$WikiStyleAttr[$k]) 
-          $p=preg_replace("/<({$WikiStyleAttr[$k]}(?![^>]*\\s$k=))([^>]*)>/s",
-            "<$1 $k='$v' $2>",$p);
+          $p = preg_replace(
+                 "/<({$WikiStyleAttr[$k]}(?![^>]*\\s(?:$ns)?$k=))([^>]*)>/s",
+                 "$ws<$1 $ns$k='$v' $2>", $p);
         elseif (preg_match($wikicsspat,$k)) $stylev[]="$k: $v;";
       }
-      if ($stylev) $spanattr .= " style='".implode(' ',$stylev)."'";
-      if ($id) $spanattr .= " id='$id'";
+      if ($stylev) $spanattr .= " {$ns}style='".implode(' ',$stylev)."'";
+      if ($id) $spanattr .= " {$ns}id='$id'";
       if ($spanattr) {
+        if ($wt) $ws = str_replace('$1', $spanattr, $wt);
         if (!@$WikiStyleApply[$a]) {
           $p = preg_replace("!^(.*?)($|</?($BlockPattern))!s", 
-                            "<span $spanattr>$1</span>$2", $p, 1);
+                            "$ws<$spanTag $spanattr>$1</$spanTag>$2", $p, 1);
 }
         elseif (!preg_match('/^(\\s*<[^>]+>)*$/s',$p) ||
-                strpos($p, '<img')!==false) {
-          $p = preg_replace("/<({$WikiStyleApply[$a]})\\b/","<$1 $spanattr",$p);
+                preg_match("/<$imgTag\\b/", $p)) {
+          $p = preg_replace("/<({$WikiStyleApply[$a]})\\b/",
+                 "$ws<$1 $spanattr", $p);
         }
       }
-      if (@$s['color'])
-        $p = preg_replace('/<a\\b/', "<a style='color: {$s['color']}'", $p);
+      if (@$s['color']) {
+        $colorattr = "{$ns}style='color: {$s['color']}'";
+        if ($wt) $ws = str_replace('$1', $colorattr, $wt);
+        $p = preg_replace("/<$aTag\\b/", "$ws<$aTag $colorattr", $p);
+      }
     }
     $out .= $p;
   }

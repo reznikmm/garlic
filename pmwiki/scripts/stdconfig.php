@@ -1,5 +1,5 @@
 <?php if (!defined('PmWiki')) exit();
-/*  Copyright 2002-2006 Patrick R. Michaud (pmichaud@pobox.com)
+/*  Copyright 2002-2007 Patrick R. Michaud (pmichaud@pobox.com)
     This file is part of PmWiki; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published
     by the Free Software Foundation; either version 2 of the License, or
@@ -44,8 +44,10 @@ if (IsEnabled($EnableSkinLayout,1))
   include_once("$FarmD/scripts/skins.php");        # must come after prefs
 if (@$Transition || IsEnabled($EnableTransitions, 0))
   include_once("$FarmD/scripts/transition.php");   # must come after skins
+if (@$LinkWikiWords || IsEnabled($EnableWikiWords, 0))
+  include_once("$FarmD/scripts/wikiwords.php");    # must come before stdmarkup
 if (IsEnabled($EnableStdMarkup,1))
-  include_once("$FarmD/scripts/stdmarkup.php");
+  include_once("$FarmD/scripts/stdmarkup.php");    # must come after transition
 if ($action=='diff' && @!$HandleActions['diff'])
   include_once("$FarmD/scripts/pagerev.php");
 if (IsEnabled($EnableWikiTrails,1))
@@ -68,6 +70,8 @@ if (IsEnabled($EnableForms,1))
   include_once("$FarmD/scripts/forms.php");       # must come after prefs
 if (IsEnabled($EnableUpload,0))
   include_once("$FarmD/scripts/upload.php");      # must come after forms
+if (IsEnabled($EnableBlocklist, 0))
+  include_once("$FarmD/scripts/blocklist.php");
 if (IsEnabled($EnableNotify,0))
   include_once("$FarmD/scripts/notify.php");
 if (IsEnabled($EnableDiag,0)) 

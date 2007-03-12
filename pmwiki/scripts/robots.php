@@ -36,14 +36,15 @@
 
 ## $MetaRobots provides the value for the <meta name='robots' ...> tag.
 SDV($MetaRobots,
-  ($action!='browse' || preg_match('#^PmWiki[./](?!PmWiki$)|^Site[./]#',
-    $pagename)) ? 'noindex,nofollow' : 'index,follow');
+      ($action!='browse' || !PageExists($pagename)
+        || preg_match('#^PmWiki[./](?!PmWiki$)|^Site[./]#', $pagename))
+      ? 'noindex,nofollow' : 'index,follow');
 if ($MetaRobots)
   $HTMLHeaderFmt['robots'] =
     "  <meta name='robots' content='\$MetaRobots' />\n";
 
 ## $RobotPattern is used to identify robots.
-SDV($RobotPattern,'Googlebot|Slurp|msnbot|Teoma|ia_archiver|BecomeBot|HTTrack|MJ12bot');
+SDV($RobotPattern,'Googlebot|Slurp|msnbot|Teoma|ia_archiver|BecomeBot|HTTrack|MJ12bot|XML Sitemaps');
 SDV($IsRobotAgent, 
   $RobotPattern && preg_match("!$RobotPattern!", @$_SERVER['HTTP_USER_AGENT']));
 if (!$IsRobotAgent) return;
@@ -51,6 +52,12 @@ if (!$IsRobotAgent) return;
 ## $RobotActions indicates which actions a robot is allowed to perform.
 SDVA($RobotActions, array('browse' => 1, 'rss' => 1, 'dc' => 1));
 if (!@$RobotActions[$action]) {
+  $pagename = ResolvePageName($pagename);
+  if (!PageExists($pagename)) {
+    header("HTTP/1.1 404 Not Found");
+    print("<h1>Not Found</h1>");
+    exit();
+  }
   header("HTTP/1.1 403 Forbidden");
   print("<h1>Forbidden</h1>");
   exit();
@@ -61,5 +68,9 @@ if (!@$RobotActions[$action]) {
 if (IsEnabled($EnableRobotCloakActions, 0)) {
   $p = create_function('$a', 'return (boolean)$a;');
   $p = join('|', array_keys(array_filter($RobotActions, $p)));
-  $FmtP["/(\\\$ScriptUrl[^#\"'\\s<>]+)\?action=(?!$p)\\w+/"] = '$1';
+  $FmtPV['$PageUrl'] = 
+    'PUE(($EnablePathInfo)
+         ? "\\$ScriptUrl/$group/$name"
+         : "\\$ScriptUrl?n=$group.$name")';
+  $FmtP["/(\\\$ScriptUrl[^#\"'\\s<>]+)\\?action=(?!$p)\\w+/"] = '$1';
 }

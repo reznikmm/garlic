@@ -48,13 +48,14 @@ array_splice($EditFunctions, array_search('PostPage', $EditFunctions),
 
 function LinkHTTP($pagename,$imap,$path,$title,$txt,$fmt=NULL) {
   global $EnableUrlApprovalRequired, $IMap, $WhiteUrlPatterns, $FmtV,
-    $UnapprovedLinkCount, $UnapprovedLinkFmt;
+    $UnapprovedLink, $UnapprovedLinkCount, $UnapprovedLinkFmt;
   if (!IsEnabled($EnableUrlApprovalRequired,1))
     return LinkIMap($pagename,$imap,$path,$title,$txt,$fmt);
   static $havereadpages;
   if (!$havereadpages) { ReadApprovedUrls($pagename); $havereadpages=true; }
   $p = str_replace(' ','%20',$path);
   $url = str_replace('$1',$p,$IMap[$imap]);
+  if (!isset($UnapprovedLink)) $UnapprovedLink = array();
   foreach((array)$WhiteUrlPatterns as $pat) {
     if (preg_match("!^$pat(/|$)!i",$url))
       return LinkIMap($pagename,$imap,$path,$title,$txt,$fmt);
@@ -62,6 +63,7 @@ function LinkHTTP($pagename,$imap,$path,$title,$txt,$fmt=NULL) {
   $FmtV['$LinkUrl'] = PUE(str_replace('$1',$path,$IMap[$imap]));
   $FmtV['$LinkText'] = $txt;
   $FmtV['$LinkAlt'] = str_replace(array('"',"'"),array('&#34;','&#39;'),$title);
+  $UnapprovedLink[] = $url;
   @$UnapprovedLinkCount++;
   return FmtPageName($UnapprovedLinkFmt,$pagename);
 }

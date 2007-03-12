@@ -1,5 +1,5 @@
 <?php if (!defined('PmWiki')) exit();
-/*  Copyright 2005-2006 Patrick R. Michaud (pmichaud@pobox.com)
+/*  Copyright 2005-2007 Patrick R. Michaud (pmichaud@pobox.com)
     This file is part of PmWiki; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published
     by the Free Software Foundation; either version 2 of the License, or
@@ -13,6 +13,14 @@
     is relying on an outdated feature or way of doing things.
 
     Transitions defined in this script:
+
+      $Transition['wikiwords']          - 2.1-style WikiWord processing
+
+      $Transition['version'] < 2001924  - all transitions listed above
+
+      $Transition['abslinks']           - absolute links/page vars
+
+      $Transition['version'] < 2001901  - all transitions listed above
 
       $Transition['vspace']             - restore <p class='vspace'></p>
 
@@ -49,6 +57,74 @@
 
 ## if ?trans=0 is specified, then we don't do any fixups.
 if (@$_REQUEST['trans']==='0') return;
+
+## Transitions from 2.2.0-beta24
+if (@$Transition['version'] < 2001924)
+  SDVA($Transition, array('wikiwords' => 1));
+
+## wikiwords:
+##   This restores the PmWiki 2.1 behavior for WikiWord processing.
+##   WikiWords aren't linked by default, but appear with
+##   <span class='wikiword'>...</span> tags around them.
+if (@$Transition['wikiwords']) {
+  SDV($EnableWikiWords, 1);
+  SDV($LinkWikiWords, 0);
+}
+
+## Transitions from 2.2.0-beta1
+if (@$Transition['version'] < 2001901) 
+  SDVA($Transition, array('abslinks' => 1));
+
+## abslinks:
+##   This restores settings so that PmWiki treats all links
+##   as absolute (following the 2.1.x and earlier interpretation).
+if (@$Transition['abslinks']) {
+  SDV($EnableRelativePageLinks, 0);
+  SDV($EnableRelativePageVars, 0);
+}
+
+## Transitions from 2.1.12
+
+if (@$Transition['version'] < 2001012) 
+  SDVA($Transition, array('nodivnest' => 1));
+
+## nodivnest:
+##   This restores the PmWiki 2.1.11 behavior that doesn't
+##   allow nesting of divs and tables.
+if (@$Transition['nodivnest']) {
+  function TCells($name,$attr) {
+    global $MarkupFrame;
+    $attr = preg_replace('/([a-zA-Z]=)([^\'"]\\S*)/',"\$1'\$2'",$attr);
+    $tattr = @$MarkupFrame[0]['tattr'];
+    $name = strtolower($name);
+    $out = '<:block>';
+    if (strncmp($name, 'cell', 4) != 0 || @$MarkupFrame[0]['closeall']['div']) {
+      $out .= @$MarkupFrame[0]['closeall']['div'];
+      unset($MarkupFrame[0]['closeall']['div']);
+      $out .= @$MarkupFrame[0]['closeall']['table'];
+      unset($MarkupFrame[0]['closeall']['table']);
+    }
+    if ($name == 'div') {
+      $MarkupFrame[0]['closeall']['div'] = "</div>";
+      $out .= "<div $attr>";
+    }
+    if ($name == 'table') $MarkupFrame[0]['tattr'] = $attr;
+    if (strncmp($name, 'cell', 4) == 0) {
+      if (strpos($attr, "valign=")===false) $attr .= " valign='top'";
+      if (!@$MarkupFrame[0]['closeall']['table']) {
+        $MarkupFrame[0]['closeall']['table'] = "</td></tr></table>";
+        $out .= "<table $tattr><tr><td $attr>";
+      } else if ($name == 'cellnr') $out .= "</td></tr><tr><td $attr>";
+      else $out .= "</td><td $attr>";
+    }
+    return $out;
+  }
+
+  Markup('table', '<block',
+    '/^\\(:(table|cell|cellnr|tableend|div|divend)(\\s.*?)?:\\)/ie',
+    "TCells('$1',PSS('$2'))");
+}
+
 
 ## Transitions from 2.1.7
 

@@ -1,5 +1,5 @@
 <?php if (!defined('PmWiki')) exit();
-/*  Copyright 2003-2005 Patrick R. Michaud (pmichaud@pobox.com)
+/*  Copyright 2003-2005, 2007 Patrick R. Michaud (pmichaud@pobox.com)
     This file is part of PmWiki; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published
     by the Free Software Foundation; either version 2 of the License, or
@@ -37,17 +37,12 @@ function HandleRuleset($pagename) {
   print Ruleset();
 }
 
-function DisplayStopWatch() {
+function StopWatchHTML($pagename, $print = 0) {
   global $StopWatch;
   StopWatch('now');
-  $out = "<pre>";
-  foreach((array)$StopWatch as $k => $x) {
-    $out .= "$x\n";
-  }
+  $out = '<pre>'.implode("\n", (array)$StopWatch)."\n</pre>";
   if (is_array($StopWatch)) array_pop($StopWatch);
-  $out .= '</pre>';
+  if ($print) print $out;
   return $out;
 }
-
-$FmtP['/\\$StopWatch/e'] = 'DisplayStopWatch()';
 

@@ -1,5 +1,5 @@
 <?php if (!defined('PmWiki')) exit();
-/*  Copyright 2005-2006 Patrick R. Michaud (pmichaud@pobox.com)
+/*  Copyright 2005-2007 Patrick R. Michaud (pmichaud@pobox.com)
     This file is part of PmWiki; you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published
     by the Free Software Foundation; either version 2 of the License, or
@@ -162,13 +162,13 @@ foreach(array_keys($FeedFmt) as $k) {
 }
 
 function HandleFeed($pagename, $auth = 'read') {
-  global $FeedFmt, $action, $PCache, $FmtV, $ISOTimeFmt, $RSSTimeFmt,
-    $FeedOpt, $FeedDescPatterns, $CategoryGroup, $EntitiesTable;
-  SDV($ISOTimeFmt, '%Y-%m-%dT%H:%M:%SZ');
+  global $FeedFmt, $action, $PCache, $FmtV, $TimeISOZFmt, $RSSTimeFmt,
+    $FeedPageListOpt, $FeedCategoryOpt, $FeedTrailOpt,
+    $FeedDescPatterns, $CategoryGroup, $EntitiesTable;
   SDV($RSSTimeFmt, 'D, d M Y H:i:s \G\M\T');
   SDV($FeedDescPatterns, 
     array('/<[^>]*$/' => ' ', '/\\w+$/' => '', '/<[^>]+>/' => ''));
-  SDVA($FeedPageListOpt, array());
+  $FeedPageListOpt = (array)@$FeedPageListOpt;
   SDVA($FeedCategoryOpt, array('link' => $pagename));
   SDVA($FeedTrailOpt, array('trail' => $pagename, 'count' => 10));
 
@@ -198,18 +198,18 @@ function HandleFeed($pagename, $auth = 'read') {
   $pl = array();
   foreach($pagelist as $pn) {
     if (!PageExists($pn)) continue;
-    if (!isset($PCache[$pn]['time']))
-      PCache($pn, ReadPage($pn, READPAGE_CURRENT));
-    $page = & $PCache[$pn];
+    if (!isset($PCache[$pn]['time'])) 
+      { $page = ReadPage($pn, READPAGE_CURRENT); PCache($pn, $page); }
+    $pc = & $PCache[$pn];
     $pl[] = $pn;
     if (@$opt['count'] && count($pl) >= $opt['count']) break;
     $rdfseq .= FmtPageName("<rdf:li resource=\"{\$PageUrl}\" />\n", $pn);
-    if ($page['time'] > $feedtime) $feedtime = $page['time'];
+    if ($pc['time'] > $feedtime) $feedtime = $pc['time'];
   }
   $pagelist = $pl;
 
   $FmtV['$FeedRDFSeq'] = $rdfseq;
-  $FmtV['$FeedISOTime'] = gmstrftime($ISOTimeFmt, $feedtime);
+  $FmtV['$FeedISOTime'] = gmstrftime($TimeISOZFmt, $feedtime);
   $FmtV['$FeedRSSTime'] = gmdate($RSSTimeFmt, $feedtime);
   # format start of feed
   $out = FmtPageName($f['feed']['_start'], $pagename);
@@ -228,7 +228,7 @@ function HandleFeed($pagename, $auth = 'read') {
   foreach($pagelist as $pn) {
     $page = &$PCache[$pn];
     $FmtV['$ItemDesc'] = @$page['description'];
-    $FmtV['$ItemISOTime'] = gmstrftime($ISOTimeFmt, $page['time']);
+    $FmtV['$ItemISOTime'] = gmstrftime($TimeISOZFmt, $page['time']);
     $FmtV['$ItemRSSTime'] = gmdate($RSSTimeFmt, $page['time']);
 
     $out .= FmtPageName($f['item']['_start'], $pn);
