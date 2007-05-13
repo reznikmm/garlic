@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -36,14 +34,15 @@
 with Ada.Unchecked_Deallocation;
 
 with GNAT.IO;
-with GNAT.Sockets;                    use GNAT.Sockets;
+with GNAT.Sockets;               use GNAT.Sockets;
+with GNAT.Strings;               use GNAT.Strings;
 
-with Interfaces.C;                    use Interfaces.C;
+with Interfaces.C;               use Interfaces.C;
 
-with System.Garlic.Debug;             use System.Garlic.Debug;
+with System.Garlic.Debug;        use System.Garlic.Debug;
 with System.Garlic.Options;
-with System.Garlic.Partitions;        use System.Garlic.Partitions;
-with System.Garlic.Utils;             use System.Garlic.Utils;
+with System.Garlic.Partitions;   use System.Garlic.Partitions;
+with System.Garlic.Utils;        use System.Garlic.Utils;
 
 package body System.Garlic.Remote is
 
@@ -54,12 +53,12 @@ package body System.Garlic.Remote is
      Debug_Initialize ("S_GARREM", "(s-garrem): ");
 
    procedure D
-     (Message : in String;
-      Key     : in Debug_Key := Private_Debug_Key)
+     (Message : String;
+      Key     : Debug_Key := Private_Debug_Key)
      renames Print_Debug_Info;
 
    procedure C_Dup2
-     (Fd1, Fd2 : in C.int);
+     (Fd1, Fd2 : C.int);
    pragma Import (C, C_Dup2, "dup2");
 
    function C_Open
@@ -79,7 +78,7 @@ package body System.Garlic.Remote is
    --  Return True if the Host we are trying to contact is the same as the
    --  local host.
 
-   procedure Spawn (Command : in String);
+   procedure Spawn (Command : String);
 
    type Partition_Info;
    type Partition_List is access Partition_Info;
@@ -94,7 +93,6 @@ package body System.Garlic.Remote is
       new Ada.Unchecked_Deallocation (Partition_Info, Partition_List);
 
    List : Partition_List;
-
 
    ------------
    -- Detach --
@@ -118,40 +116,42 @@ package body System.Garlic.Remote is
    -----------------
 
    procedure Full_Launch
-     (Host        : in String;
-      Command     : in String)
+     (Host    : String;
+      Command : String)
    is
       Arguments : constant String :=
-        "--detach --boot_location '" & Get_Boot_Locations & "' &";
+                    "--boot_location '" & Get_Boot_Locations & "' &";
    begin
       if System.Garlic.Options.Local_Launch
         and then Host (Host'First) /= '`'
         and then Is_Local_Host (Host)
       then
          declare
-            C1 : constant String := Quote (Command) & ' ' & Arguments;
-
+            Spawn_Command : constant String :=
+                              Quote (Command) & ' ' & Arguments;
          begin
-            pragma Debug (D ("Run Spawn: " & C1));
-
-            Spawn (C1);
+            pragma Debug (D ("Enter Spawn (local): " & Spawn_Command));
+            Spawn (Spawn_Command);
+            pragma Debug (D ("Leave Spawn (local): " & Spawn_Command));
          end;
 
       else
          declare
-            C1 : constant String := Command;
-            C2 : constant String := Quote (C1 & ' ' & Arguments);
-            C3 : constant String := Host & ' ' & Options.Rsh_Options.all;
-            C4 : constant String := Options.Rsh_Command.all & ' ' & C3;
-            C5 : constant String := C4 & ' ' & C2;
-            C6 : constant String := C5 & " < /dev/null > /dev/null 2>&1";
+            Target_Command : constant String :=
+                               Quote (Command & " --detach " & Arguments);
+
+            Rsh_Command    : constant String :=
+                               Options.Rsh_Command.all & ' '
+                                 & Host & ' ' & Options.Rsh_Options.all;
+
+            Spawn_Command  : constant String :=
+                               Rsh_Command & ' ' & Target_Command
+                                 & " < /dev/null > /dev/null 2>&1";
 
          begin
-            pragma Debug (D ("Enter Spawn: " & C6));
-
-            Spawn (C6);
-
-            pragma Debug (D ("Leave Spawn: " & C6));
+            pragma Debug (D ("Enter Spawn (remote): " & Spawn_Command));
+            Spawn (Spawn_Command);
+            pragma Debug (D ("Leave Spawn (remote): " & Spawn_Command));
          end;
       end if;
    end Full_Launch;
@@ -160,10 +160,7 @@ package body System.Garlic.Remote is
    -- Get_Host --
    --------------
 
-   function Get_Host
-     (Partition : String)
-     return String
-   is
+   function Get_Host (Partition : String) return String is
       Buffer : String (1 .. 64);
       Last   : Natural;
    begin
@@ -176,10 +173,7 @@ package body System.Garlic.Remote is
    -- Is_Local_Host --
    -------------------
 
-   function Is_Local_Host
-     (Host : String)
-     return Boolean
-   is
+   function Is_Local_Host (Host : String) return Boolean is
       Name_Of_Host : constant String
         := Official_Name (Get_Host_By_Name (Host));
    begin
@@ -192,8 +186,7 @@ package body System.Garlic.Remote is
    -- Launch_Registered_Partitions --
    ----------------------------------
 
-   procedure Launch_Registered_Partitions
-   is
+   procedure Launch_Registered_Partitions is
       P : Partition_List;
 
    begin
@@ -220,9 +213,9 @@ package body System.Garlic.Remote is
    ----------------------------------
 
    procedure Register_Partition_To_Launch
-     (Name_Is_Host : in Boolean;
-      General_Name : in String;
-      Command_Line : in String)
+     (Name_Is_Host : Boolean;
+      General_Name : String;
+      Command_Line : String)
    is
       P : Partition_List;
 
@@ -242,8 +235,7 @@ package body System.Garlic.Remote is
    -- Spawn --
    -----------
 
-   procedure Spawn (Command : in String)
-   is
+   procedure Spawn (Command : String) is
       C_Command : aliased String := Command & ASCII.NUL;
    begin
       if C_System (C_Command'Address) / 256 /= 0 then

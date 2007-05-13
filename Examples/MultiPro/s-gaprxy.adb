@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -50,9 +48,6 @@ with System.Garlic.Soft_Links;
 with System.Garlic.Streams;               use System.Garlic.Streams;
 with System.Garlic.Table;
 with System.Garlic.Types;                 use System.Garlic.Types;
-with System.Garlic.Utils;                 use System.Garlic.Utils;
-
-with System.Storage_Elements;             use System.Storage_Elements;
 
 package body System.Garlic.Protocols.Xyz is
 
@@ -64,7 +59,7 @@ package body System.Garlic.Protocols.Xyz is
       Key     : in Debug_Key := Private_Debug_Key)
      renames Print_Debug_Info;
 
-   use Ada.Streams, System.Garlic.Protocols, System.Garlic.Types;
+   use Ada.Streams, System.Garlic.Protocols;
 
    subtype Error_Type is Exceptions.Error_Type;
 
@@ -92,7 +87,6 @@ package body System.Garlic.Protocols.Xyz is
    package Outgoings is
      new System.Garlic.Table.Medium
         (Partition_ID,
-         Null_PID,
          First_PID,
          Partition_ID_Increment,
          Partition_ID_Increment,
@@ -116,8 +110,8 @@ package body System.Garlic.Protocols.Xyz is
    Banner_Size : constant := 4;
    --  Size of a header when it is encoded as a stream
 
-   subtype Banner_Stream is Stream_Element_Array (1 .. Banner_Size);
-   --  Constrained subtype for headers
+   No_Tasking_Receive_Selector : Selector_Type;
+   --  Selector for Receive (no-tasking case).
 
    procedure Read_Banner
      (Peer   : in Socket_Type;
@@ -179,7 +173,7 @@ package body System.Garlic.Protocols.Xyz is
 
    function Value (Image : String) return Sock_Addr_Type;
 
-   Data_Stream : aliased Stream_Element_Array
+   Data_Stream : constant Stream_Element_Array
      := (1 .. Banner_Size => Banner_Kind'Pos (Data_Banner));
 
    Quit_Stream : aliased Stream_Element_Array
@@ -226,7 +220,10 @@ package body System.Garlic.Protocols.Xyz is
                   --  Get a new task to handle this new connection
 
                   pragma Debug (D ("Accept Handler: receive data banner"));
-                  Set_Socket_Option (Peer, Option => (Keep_Alive, True));
+                  Set_Socket_Option
+                    (Peer, Socket_Level, (Keep_Alive, True));
+                  Set_Socket_Option
+                    (Peer, IP_Protocol_For_TCP_Level, (No_Delay, True));
                   Allocate_Connector_Task (Peer, Null_PID);
 
                when Quit_Banner =>
@@ -267,6 +264,8 @@ package body System.Garlic.Protocols.Xyz is
      (Protocol : access XYZ_Protocol;
       Error    : in out Error_Type)
    is
+      pragma Unreferenced (Protocol);
+      pragma Unreferenced (Error);
    begin
       if Activated then
          return;
@@ -279,7 +278,7 @@ package body System.Garlic.Protocols.Xyz is
       end if;
 
       for I in First_Incoming .. Last_Incoming loop
-         pragma Debug (D ("Start acceptor task on" &
+         pragma Debug (D ("Start acceptor task on " &
                           Image (Incomings (I).Sock_Addr)));
 
          Allocate_Acceptor_Task (I);
@@ -353,7 +352,7 @@ package body System.Garlic.Protocols.Xyz is
          return;
       end;
 
-      Set_Socket_Option (Self.Socket, Option => (Reuse_Address, True));
+      Set_Socket_Option (Self.Socket, Socket_Level, (Reuse_Address, True));
 
       begin
          Bind_Socket (Self.Socket, Self.Sock_Addr);
@@ -394,16 +393,17 @@ package body System.Garlic.Protocols.Xyz is
 
    function Get_Data
      (Protocol : access XYZ_Protocol)
-     return String_Array_Access
+     return String_List_Access
    is
-      Result : String_Array_Access;
+      pragma Unreferenced (Protocol);
+      Result : String_List_Access;
    begin
       if Options.Is_Pure_Client
         or else Last_Incoming = Null_Incoming
       then
          return null;
       end if;
-      Result := new String_Array (First_Incoming .. Last_Incoming);
+      Result := new String_List (First_Incoming .. Last_Incoming);
       for I in Result'Range loop
          Result (I) := new String'(Image (Incomings (I).Sock_Addr));
       end loop;
@@ -416,7 +416,9 @@ package body System.Garlic.Protocols.Xyz is
 
    function Get_Name
      (Protocol : access XYZ_Protocol)
-     return String is
+     return String
+   is
+      pragma Unreferenced (Protocol);
    begin
       return "xyz";
    end Get_Name;
@@ -432,6 +434,8 @@ package body System.Garlic.Protocols.Xyz is
       Performed : out Boolean;
       Error     : in out Error_Type)
    is
+      pragma Unreferenced (Protocol);
+
       Host  : constant Sock_Addr_Type := Value (Host_Name);
       Self  : Socket_Info := Null_Socket_Info;
       Index : Natural;
@@ -458,9 +462,10 @@ package body System.Garlic.Protocols.Xyz is
       Performed := False;
 
       if not Initialized then
-         pragma Debug (D ("Initialize GNAT.sockets for protocol xyz"));
+         pragma Debug (D ("Initialize GNAT.Sockets for protocol xyz"));
          Outgoings.Initialize;
          GNAT.Sockets.Initialize (Platform_Specific.Process_Blocking_IO);
+         Create_Selector (No_Tasking_Receive_Selector);
          Initialized := True;
       end if;
 
@@ -647,13 +652,14 @@ package body System.Garlic.Protocols.Xyz is
       Timeout   : Duration)
      return Boolean
    is
+      pragma Unreferenced (Protocol);
+
       RSet     : Socket_Set_Type;
       WSet     : Socket_Set_Type;
       Info     : Socket_Info;
       Done     : Boolean := False;
       Error    : Error_Type;
       PID      : Partition_ID;
-      Selector : Selector_Type;
       Status   : Selector_Status;
 
    begin
@@ -676,9 +682,8 @@ package body System.Garlic.Protocols.Xyz is
          return True;
       end if;
 
-      Create_Selector (Selector);
-      Check_Selector  (Selector, RSet, WSet, Status, Timeout);
-      Close_Selector  (Selector);
+      Check_Selector
+        (No_Tasking_Receive_Selector, RSet, WSet, Status, Timeout);
       pragma Debug (D ("select returned with status " & Status'Img));
 
       if Status = Expired then
@@ -724,8 +729,8 @@ package body System.Garlic.Protocols.Xyz is
   is
       Old_PID    : Partition_ID;
       Length     : Stream_Element_Count;
-      Filtered   : Stream_Element_Access;
-      Unfiltered : Stream_Element_Access;
+      Filtered   : Garlic.Streams.Stream_Element_Access;
+      Unfiltered : Garlic.Streams.Stream_Element_Access;
       Opcode     : Any_Opcode;
       Banner     : Banner_Kind;
 
@@ -760,7 +765,9 @@ package body System.Garlic.Protocols.Xyz is
                        Image (Peer) & " (pid =" & PID'Img & ")"));
 
       Filtered := new Stream_Element_Array (1 .. Length);
+
       Receive (Peer, Filtered, Error);
+
       if Found (Error) then
          return;
       end if;
@@ -817,9 +824,7 @@ package body System.Garlic.Protocols.Xyz is
 
       Process_Stream (PID, Opcode, Unfiltered, Error);
 
-      if Filtered /= null then
-         Free (Filtered);
-      end if;
+      Free (Filtered);
       if Unfiltered /= null then
          Free (Unfiltered);
       end if;
@@ -902,10 +907,11 @@ package body System.Garlic.Protocols.Xyz is
       Data      : access Stream_Element_Array;
       Error     : in out Error_Type)
    is
+      pragma Unreferenced (Protocol);
+
       Info     : Socket_Info;
       Hits     : Natural := 1;
       First    : Stream_Element_Count := Data'First + Unused_Space;
-      Count    : Stream_Element_Count;
       Location : Location_Type;
    begin
       Outgoings.Enter;
@@ -920,6 +926,7 @@ package body System.Garlic.Protocols.Xyz is
          Info.Sock_Addr := Value (Get_Data (Location));
 
          if Info.Sock_Addr = No_Sock_Addr then
+            Outgoings.Leave;
             Throw (Error, "Send: Cannot connect with peer without location");
             return;
          end if;
@@ -949,7 +956,10 @@ package body System.Garlic.Protocols.Xyz is
             return;
          end if;
 
-         Set_Socket_Option (Info.Socket, Option => (Keep_Alive, True));
+         Set_Socket_Option
+           (Info.Socket, Socket_Level, (Keep_Alive, True));
+         Set_Socket_Option
+           (Info.Socket, IP_Protocol_For_TCP_Level, (No_Delay, True));
 
          Outgoings.Set_Component (Partition, Info);
          Set_Online (Partition, True);
@@ -964,14 +974,12 @@ package body System.Garlic.Protocols.Xyz is
 
       --  Write length at the beginning of the data, then the header.
 
-      Count := SEC_Size;
-      First := First - Count;
-      Data (First .. First + Count - 1)
+      First := First - SEC_Size;
+      Data (First .. First + SEC_Size - 1)
         := To_Stream_Element_Array (Data'Length - Unused_Space);
 
-      Count := Banner_Size;
-      First := First - Count;
-      Data (First .. First + Count - 1) := Data_Stream;
+      First := First - Banner_Size;
+      Data (First .. First + Banner_Size - 1) := Data_Stream;
 
       pragma Debug
         (D ("Send bytes" & Stream_Element_Count'Image (Data'Last - First + 1) &
@@ -1044,7 +1052,10 @@ package body System.Garlic.Protocols.Xyz is
    procedure Set_Boot_Data
      (Protocol  : access XYZ_Protocol;
       Boot_Data : in String;
-      Error     : in out Error_Type) is
+      Error     : in out Error_Type)
+   is
+      pragma Unreferenced (Protocol);
+      pragma Unreferenced (Error);
    begin
       if not Initialized then
          pragma Debug (D ("Initialize protocol xyz"));
@@ -1083,6 +1094,8 @@ package body System.Garlic.Protocols.Xyz is
    procedure Shutdown
      (Protocol : access XYZ_Protocol)
    is
+      pragma Unreferenced (Protocol);
+
       Count   : Natural;
       Socket  : Socket_Type;
       Info    : Socket_Info;
@@ -1219,11 +1232,17 @@ package body System.Garlic.Protocols.Xyz is
       end loop;
 
       declare
-         Addr : Inet_Addr_Type := Addresses (Get_Host_By_Name (Image), 1);
+         Addr : constant Inet_Addr_Type :=
+                  Addresses (Get_Host_By_Name (Image), 1);
 
       begin
          return (Addr.Family, Addr, Any_Port);
       end;
+
+   exception when Socket_Error =>
+      --  When Image can be parsed at all, return No_Sock_Addr.
+
+      return No_Sock_Addr;
    end Value;
 
 end System.Garlic.Protocols.Xyz;

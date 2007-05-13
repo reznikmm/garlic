@@ -1,6 +1,6 @@
 # -*- makefile -*-
 #
-# $Id$
+# $Id: Makefile.zip,v 1.15 2000/01/31 18:21:43 pautet Exp $
 #
 # Makefile portion for the ZIP filter.
 #

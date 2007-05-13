@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -35,6 +33,8 @@
 
 with Ada.Streams.Stream_IO;           use Ada.Streams.Stream_IO;
 with Ada.Calendar;                    use Ada.Calendar;
+
+with GNAT.Strings;                    use GNAT.Strings;
 
 with System.Garlic.Debug;             use System.Garlic.Debug;
 with System.Garlic.Exceptions;        use System.Garlic.Exceptions;
@@ -45,16 +45,15 @@ with System.Garlic.Protocols;         use System.Garlic.Protocols;
 with System.Garlic.Streams;           use System.Garlic.Streams;
 with System.Garlic.Trace;             use System.Garlic.Trace;
 with System.Garlic.Types;             use System.Garlic.Types;
-with System.Garlic.Utils;             use System.Garlic.Utils;
 
 package body System.Garlic.Protocols.Replay is
 
    Private_Debug_Key : constant Debug_Key :=
-     Debug_Initialize ("S_GARREP", "(s-garrep): ");
+     Debug_Initialize ("S_GAPRRE", "(s-gaprre): ");
 
    procedure D
-     (Message : in String;
-      Key     : in Debug_Key := Private_Debug_Key)
+     (Message : String;
+      Key     : Debug_Key := Private_Debug_Key)
      renames Print_Debug_Info;
 
    Trace_File : File_Type;
@@ -111,7 +110,7 @@ package body System.Garlic.Protocols.Replay is
    -----------------
 
    task body Engine_Type is
-      PID   : Partition_ID;
+      PID   : Partition_ID := Null_PID;
       Code  : Any_Opcode;
       Data  : Stream_Element_Access;
       Error : Error_Type;
@@ -119,7 +118,6 @@ package body System.Garlic.Protocols.Replay is
    begin
       pragma Debug (D ("Replay engine started"));
 
-      PID         := Partition_ID'First;
       Trace_Start := Clock;
 
       while not End_Of_File (Trace_File) loop
@@ -140,6 +138,7 @@ package body System.Garlic.Protocols.Replay is
 
             pragma Debug (D ("Replay network latency" & Trace.Time'Img));
             delay until Trace_Start + Trace.Time;
+            pragma Debug (D ("Generate new packet now!"));
 
             --  Deliver message
 
@@ -174,18 +173,18 @@ package body System.Garlic.Protocols.Replay is
 
    function Get_Data
      (Protocol : access Replay_Protocol)
-     return String_Array_Access
+     return String_List_Access
    is
       pragma Unreferenced (Protocol);
 
-      Result : String_Array_Access;
+      Result : String_List_Access;
 
    begin
       if Options.Execution_Mode /= Replay_Mode then
          return null;
       end if;
 
-      Result := new String_Array (1 .. 1);
+      Result := new String_List (1 .. 1);
       Result (1) := new String'(Trace_File_Name.all);
 
       return Result;
@@ -210,8 +209,8 @@ package body System.Garlic.Protocols.Replay is
 
    procedure Initialize
      (Protocol  : access Replay_Protocol;
-      Self_Data : in String;
-      Required  : in Boolean;
+      Self_Data : String;
+      Required  : Boolean;
       Performed : out Boolean;
       Error     : in out Error_Type)
    is
@@ -244,7 +243,7 @@ package body System.Garlic.Protocols.Replay is
 
    procedure Send
      (Protocol  : access Replay_Protocol;
-      Partition : in Partition_ID;
+      Partition : Partition_ID;
       Data      : access Ada.Streams.Stream_Element_Array;
       Error     : in out Error_Type)
    is
@@ -267,7 +266,7 @@ package body System.Garlic.Protocols.Replay is
 
    procedure Set_Boot_Data
      (Protocol  : access Replay_Protocol;
-      Boot_Data : in String;
+      Boot_Data : String;
       Error     : in out Error_Type)
    is
       pragma Unreferenced (Protocol);
@@ -297,8 +296,7 @@ package body System.Garlic.Protocols.Replay is
    -- Shutdown --
    --------------
 
-   procedure Shutdown (Protocol : access Replay_Protocol)
-   is
+   procedure Shutdown (Protocol : access Replay_Protocol) is
       pragma Unreferenced (Protocol);
    begin
       if Execution_Mode = Replay_Mode
@@ -310,4 +308,3 @@ package body System.Garlic.Protocols.Replay is
    end Shutdown;
 
 end System.Garlic.Protocols.Replay;
-

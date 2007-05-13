@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -42,6 +40,7 @@ with System.Garlic.Filters;           use System.Garlic.Filters;
 with System.Garlic.Options;           use System.Garlic.Options;
 with System.Garlic.Partitions;        use System.Garlic.Partitions;
 with System.Garlic.Protocols;         use System.Garlic.Protocols;
+with System.Garlic.Storages;          use System.Garlic.Storages;
 with System.Garlic.Soft_Links;
 with System.Garlic.Streams;           use System.Garlic.Streams;
 with System.Garlic.Trace;             use System.Garlic.Trace;
@@ -60,8 +59,8 @@ package body System.Garlic.Heart is
      Debug_Initialize ("S_GARHEA", "(s-garhea): ");
 
    procedure D
-     (Message : in String;
-      Key     : in Debug_Key := Private_Debug_Key)
+     (Message : String;
+      Key     : Debug_Key := Private_Debug_Key)
      renames Print_Debug_Info;
 
    Shutdown_Policy     : Shutdown_Type     := Shutdown_On_Boot_Partition_Error;
@@ -86,16 +85,16 @@ package body System.Garlic.Heart is
    --  Call this procedure when a partition dies.
 
    procedure Handle_External
-     (Partition : in Partition_ID;
-      Opcode    : in External_Opcode;
+     (Partition : Partition_ID;
+      Opcode    : External_Opcode;
       Query     : access Params_Stream_Type;
       Reply     : access Params_Stream_Type;
       Error     : in out Error_Type);
    --  Public operations
 
    procedure Handle_Internal
-     (Partition : in Partition_ID;
-      Opcode    : in Internal_Opcode;
+     (Partition : Partition_ID;
+      Opcode    : Internal_Opcode;
       Query     : access Params_Stream_Type;
       Reply     : access Params_Stream_Type;
       Error     : in out Error_Type);
@@ -178,6 +177,8 @@ package body System.Garlic.Heart is
       --  Set connection hits back to normal.
 
       Set_Connection_Hits (Options.Def_Connection_Hits);
+      pragma Debug (D ("Activate storages shutdown"));
+      Storages.Shutdown;
       pragma Debug (D ("Activate protocols shutdown"));
       Protocols.Shutdown;
       pragma Debug (D ("Activate trace shutdown"));
@@ -195,11 +196,11 @@ package body System.Garlic.Heart is
 
    procedure Analyze_Stream
      (Partition  : in out Partition_ID;
-      Protocol   : in Protocol_Access;
+      Protocol   : Protocol_Access;
       Opcode     : out Any_Opcode;
       Unfiltered : out Stream_Element_Access;
-      Filtered   : in  Stream_Element_Access;
-      Offset     : in  Ada.Streams.Stream_Element_Offset;
+      Filtered   : Stream_Element_Access;
+      Offset     : Ada.Streams.Stream_Element_Offset;
       Error      : in out Error_Type)
    is
       PID   : Partition_ID;
@@ -293,7 +294,7 @@ package body System.Garlic.Heart is
 
    procedure Complete_Elaboration is
    begin
-      pragma Debug (D ("Complete termination"));
+      pragma Debug (D ("Complete elaboration"));
 
       Soft_Links.Update (Elaboration_Watcher);
    end Complete_Elaboration;
@@ -354,23 +355,23 @@ package body System.Garlic.Heart is
    ------------------------
 
    procedure Handle_Any_Request
-     (Partition : in Partition_ID;
-      Opcode    : in Any_Opcode;
+     (Partition : Partition_ID;
+      Opcode    : Any_Opcode;
       Query     : access Params_Stream_Type;
       Reply     : access Params_Stream_Type;
       Error     : in out Error_Type)
    is
-      procedure Reset_Stamp;
+      --  procedure Reset_Stamp;
       --  Set stamp to no stamp when current stamp differs from no
       --  stamp.
 
-      procedure Reset_Stamp is
-         Stamp : constant Stamp_Type := Soft_Links.Get_Stamp;
-      begin
-         if Stamp /= No_Stamp then
-            Soft_Links.Set_Stamp (No_Stamp);
-         end if;
-      end Reset_Stamp;
+      --       procedure Reset_Stamp is
+      --          Stamp : constant Stamp_Type := Soft_Links.Get_Stamp;
+      --       begin
+      --          if Stamp /= No_Stamp then
+      --             Soft_Links.Set_Stamp (No_Stamp);
+      --          end if;
+      --       end Reset_Stamp;
 
    begin
 
@@ -386,7 +387,7 @@ package body System.Garlic.Heart is
             Throw (Error, "Handle_Any_Request: invalid operation");
       end case;
 
-      pragma Debug (Reset_Stamp);
+      --  pragma Debug (Reset_Stamp);
    end Handle_Any_Request;
 
    ---------------------
@@ -394,8 +395,8 @@ package body System.Garlic.Heart is
    ---------------------
 
    procedure Handle_External
-     (Partition : in Partition_ID;
-      Opcode    : in External_Opcode;
+     (Partition : Partition_ID;
+      Opcode    : External_Opcode;
       Query     : access Params_Stream_Type;
       Reply     : access Params_Stream_Type;
       Error     : in out Error_Type)
@@ -425,8 +426,8 @@ package body System.Garlic.Heart is
    ---------------------
 
    procedure Handle_Internal
-     (Partition : in Partition_ID;
-      Opcode    : in Internal_Opcode;
+     (Partition : Partition_ID;
+      Opcode    : Internal_Opcode;
       Query     : access Params_Stream_Type;
       Reply     : access Params_Stream_Type;
       Error     : in out Error_Type)
@@ -461,7 +462,7 @@ package body System.Garlic.Heart is
    ----------------------------
 
    procedure Notify_Partition_Error
-     (Partition : in Partition_ID)
+     (Partition : Partition_ID)
    is
    begin
       if Shutdown_Activated then
@@ -514,9 +515,9 @@ package body System.Garlic.Heart is
    --------------------
 
    procedure Process_Stream
-     (Partition  : in Partition_ID;
-      Opcode     : in Any_Opcode;
-      Unfiltered : in Stream_Element_Access;
+     (Partition  : Partition_ID;
+      Opcode     : Any_Opcode;
+      Unfiltered : Stream_Element_Access;
       Error      : in out Error_Type)
    is
       Query : aliased Params_Stream_Type (Unfiltered.all'Length);
@@ -550,8 +551,8 @@ package body System.Garlic.Heart is
    ----------------------
 
    procedure Register_Handler
-     (Opcode  : in Any_Opcode;
-      Handler : in Request_Handler) is
+     (Opcode  : Any_Opcode;
+      Handler : Request_Handler) is
    begin
       pragma Debug (D ("Register request handler for opcode " & Opcode'Img));
 
@@ -564,7 +565,7 @@ package body System.Garlic.Heart is
    ---------------------------------
 
    procedure Register_RPC_Error_Notifier
-     (Callback : in RPC_Error_Notifier_Type) is
+     (Callback : RPC_Error_Notifier_Type) is
    begin
       Notify_Partition_RPC_Error := Callback;
    end Register_RPC_Error_Notifier;
@@ -574,8 +575,8 @@ package body System.Garlic.Heart is
    ----------
 
    procedure Send
-     (Partition : in Partition_ID;
-      Opcode    : in Any_Opcode;
+     (Partition : Partition_ID;
+      Opcode    : Any_Opcode;
       Params    : access Params_Stream_Type;
       Error     : in out Error_Type)
    is
@@ -631,7 +632,7 @@ package body System.Garlic.Heart is
 
       if Partition = Self_PID then
          declare
-            PID        : Partition_ID := Partition_ID'First;
+            PID        : Partition_ID := Null_PID;
             Code       : Any_Opcode;
             Unfiltered : Stream_Element_Access;
             Unused     : constant Stream_Element_Count := Unused_Space;
@@ -668,7 +669,7 @@ package body System.Garlic.Heart is
    ----------------------
 
    procedure Send_Boot_Server
-     (Opcode : in Any_Opcode;
+     (Opcode : Any_Opcode;
       Params : access Streams.Params_Stream_Type;
       Error  : out Error_Type)
    is

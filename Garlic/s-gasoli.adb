@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,19 +19,19 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Calendar; use Ada.Calendar;
+--  with Ada.Calendar; use Ada.Calendar;
 with Ada.Unchecked_Deallocation;
 
 with System.Garlic.Types; use System.Garlic.Types;
@@ -53,13 +51,8 @@ package body System.Garlic.Soft_Links is
    procedure Free is
      new Ada.Unchecked_Deallocation (Adv_Mutex_Type'Class, Adv_Mutex_Access);
 
-   generic
-      Name : String;
-
-      pragma Warnings (off, Name);
-
-   package Proc is
-      procedure Register (P : in Parameterless_Procedure);
+   generic package Proc is
+      procedure Register (P : Parameterless_Procedure);
       procedure Call;
       pragma Inline (Call);
    end Proc;
@@ -83,65 +76,65 @@ package body System.Garlic.Soft_Links is
       -- Register --
       --------------
 
-      procedure Register (P : in Parameterless_Procedure) is
+      procedure Register (P : Parameterless_Procedure) is
       begin
          Var := P;
       end Register;
 
    end Proc;
 
-   package P_Add_Non_Terminating_Task is new Proc ("Add_Non_Terminating_Task");
+   package P_Add_Non_Terminating_Task is new Proc;
    procedure Register_Add_Non_Terminating_Task
-     (P : in Parameterless_Procedure)
+     (P : Parameterless_Procedure)
      renames P_Add_Non_Terminating_Task.Register;
    procedure Add_Non_Terminating_Task
      renames P_Add_Non_Terminating_Task.Call;
 
-   package P_Sub_Non_Terminating_Task is new Proc ("Sub_Non_Terminating_Task");
+   package P_Sub_Non_Terminating_Task is new Proc;
    procedure Register_Sub_Non_Terminating_Task
-     (P : in Parameterless_Procedure)
+     (P : Parameterless_Procedure)
      renames P_Sub_Non_Terminating_Task.Register;
    procedure Sub_Non_Terminating_Task
      renames P_Sub_Non_Terminating_Task.Call;
 
-   package P_Activity_Detected is new Proc ("Activity_Detected");
+   package P_Activity_Detected is new Proc;
    procedure Register_Activity_Detected
-     (P : in Parameterless_Procedure)
+     (P : Parameterless_Procedure)
      renames P_Activity_Detected.Register;
    procedure Activity_Detected
      renames P_Activity_Detected.Call;
 
-   package P_Local_Termination is new Proc ("Local_Termination");
+   package P_Local_Termination is new Proc;
    procedure Register_Local_Termination
-     (P : in Parameterless_Procedure)
+     (P : Parameterless_Procedure)
      renames P_Local_Termination.Register;
    procedure Local_Termination
      renames P_Local_Termination.Call;
 
-   package P_Global_Termination is new Proc ("Global_Termination");
+   package P_Global_Termination is new Proc;
    procedure Register_Global_Termination
-     (P : in Parameterless_Procedure)
+     (P : Parameterless_Procedure)
      renames P_Global_Termination.Register;
    procedure Global_Termination
      renames P_Global_Termination.Call;
 
-   package P_Enter_Critical_Section is new Proc ("Enter_Critical_Section");
+   package P_Enter_Critical_Section is new Proc;
    procedure Register_Enter_Critical_Section
-     (P : in Parameterless_Procedure)
+     (P : Parameterless_Procedure)
      renames P_Enter_Critical_Section.Register;
    procedure Enter_Critical_Section
      renames P_Enter_Critical_Section.Call;
 
-   package P_Leave_Critical_Section is new Proc ("Leave_Critical_Section");
+   package P_Leave_Critical_Section is new Proc;
    procedure Register_Leave_Critical_Section
-     (P : in Parameterless_Procedure)
+     (P : Parameterless_Procedure)
      renames P_Leave_Critical_Section.Register;
    procedure Leave_Critical_Section
      renames P_Leave_Critical_Section.Call;
 
-   package P_RPC_Shutdown is new Proc ("RPC_Shutdown");
+   package P_RPC_Shutdown is new Proc;
    procedure Register_RPC_Shutdown
-     (P : in Parameterless_Procedure)
+     (P : Parameterless_Procedure)
      renames P_RPC_Shutdown.Register;
    procedure RPC_Shutdown
      renames P_RPC_Shutdown.Call;
@@ -152,9 +145,9 @@ package body System.Garlic.Soft_Links is
 
    Ind_Task_Count : Return_Natural_Function;
 
-   package P_List_Tasks is new Proc ("List_Tasks");
+   package P_List_Tasks is new Proc;
    procedure Register_List_Tasks
-     (P : in Parameterless_Procedure)
+     (P : Parameterless_Procedure)
      renames P_List_Tasks.Register;
    procedure List_Tasks
      renames P_List_Tasks.Call;
@@ -162,8 +155,8 @@ package body System.Garlic.Soft_Links is
    Get_Task_Priority : Return_Natural_Function;
    Set_Task_Priority : Natural_Parameter_Procedure;
 
-   Get_Task_Stamp    : Return_Float_Function;
-   Set_Task_Stamp    : Float_Parameter_Procedure;
+--    Get_Task_Stamp    : Return_Float_Function;
+--    Set_Task_Stamp    : Float_Parameter_Procedure;
 
    procedure Free is
       new Ada.Unchecked_Deallocation
@@ -206,7 +199,7 @@ package body System.Garlic.Soft_Links is
 
    procedure Create
      (W : out Watcher_Access;
-      V : in Version_Id := No_Version) is
+      V : Version_Id := No_Version) is
    begin
       W := Watcher_Create (V);
    end Create;
@@ -260,7 +253,7 @@ package body System.Garlic.Soft_Links is
    -- Differ --
    ------------
 
-   procedure Differ (W : in Watcher_Access; V : in Types.Version_Id) is
+   procedure Differ (W : Watcher_Access; V : Types.Version_Id) is
    begin
       pragma Assert (W /= null);
       Differ (W.all, V);
@@ -270,7 +263,7 @@ package body System.Garlic.Soft_Links is
    -- Enter --
    -----------
 
-   procedure Enter (M : in Mutex_Access) is
+   procedure Enter (M : Mutex_Access) is
    begin
       pragma Assert (M /= null);
       Enter (M.all);
@@ -280,7 +273,7 @@ package body System.Garlic.Soft_Links is
    -- Enter --
    -----------
 
-   procedure Enter (M : in Adv_Mutex_Access) is
+   procedure Enter (M : Adv_Mutex_Access) is
    begin
       pragma Assert (M /= null);
       Enter (M.all);
@@ -304,14 +297,14 @@ package body System.Garlic.Soft_Links is
       return Get_Task_Priority.all;
    end Get_Priority;
 
-   ---------------
-   -- Get_Stamp --
-   ---------------
+--    ---------------
+--    -- Get_Stamp --
+--    ---------------
 
-   function Get_Stamp return Float is
-   begin
-      return Get_Task_Stamp.all;
-   end Get_Stamp;
+--    function Get_Stamp return Float is
+--    begin
+--       return Get_Task_Stamp.all;
+--    end Get_Stamp;
 
    -----------------------------
    -- Independent_Task_Count --
@@ -335,7 +328,7 @@ package body System.Garlic.Soft_Links is
    -- Leave --
    -----------
 
-   procedure Leave (M : in Mutex_Access) is
+   procedure Leave (M : Mutex_Access) is
    begin
       pragma Assert (M /= null);
       Leave (M.all);
@@ -345,7 +338,7 @@ package body System.Garlic.Soft_Links is
    -- Leave --
    -----------
 
-   procedure Leave (M : in Adv_Mutex_Access) is
+   procedure Leave (M : Adv_Mutex_Access) is
    begin
       pragma Assert (M /= null);
       Leave (M.all);
@@ -355,7 +348,7 @@ package body System.Garlic.Soft_Links is
    -- Lookup --
    ------------
 
-   procedure Lookup (W : in Watcher_Access; V : out Types.Version_Id) is
+   procedure Lookup (W : Watcher_Access; V : out Types.Version_Id) is
    begin
       pragma Assert (W /= null);
       Lookup (W.all, V);
@@ -366,7 +359,7 @@ package body System.Garlic.Soft_Links is
    ----------------------------
 
    procedure Register_Abort_Handler
-     (Abort_Handler : in Abort_Handler_Access) is
+     (Abort_Handler : Abort_Handler_Access) is
    begin
       if Var_Abort_Handler /= null then
          Free (Var_Abort_Handler);
@@ -379,7 +372,7 @@ package body System.Garlic.Soft_Links is
    ------------------------------------------
 
    procedure Register_Adv_Mutex_Creation_Function
-     (F : in Adv_Mutex_Creation_Function)
+     (F : Adv_Mutex_Creation_Function)
    is
    begin
       Adv_Mutex_Create := F;
@@ -390,7 +383,7 @@ package body System.Garlic.Soft_Links is
    -----------------------------------
 
    procedure Register_Env_Task_Awake_Count
-     (F : in Return_Natural_Function) is
+     (F : Return_Natural_Function) is
    begin
       Awake_Count := F;
    end Register_Env_Task_Awake_Count;
@@ -400,28 +393,28 @@ package body System.Garlic.Soft_Links is
    ---------------------------
 
    procedure Register_Get_Priority
-     (F : in Return_Natural_Function) is
+     (F : Return_Natural_Function) is
    begin
       Get_Task_Priority := F;
    end Register_Get_Priority;
 
-   ------------------------
-   -- Register_Get_Stamp --
-   ------------------------
+--    ------------------------
+--    -- Register_Get_Stamp --
+--    ------------------------
 
-   procedure Register_Get_Stamp
-     (F : in Return_Float_Function)
-   is
-   begin
-      Get_Task_Stamp := F;
-   end Register_Get_Stamp;
+--    procedure Register_Get_Stamp
+--      (F : Return_Float_Function)
+--    is
+--    begin
+--       Get_Task_Stamp := F;
+--    end Register_Get_Stamp;
 
    -------------------------------------
    -- Register_Independent_Task_Count --
    -------------------------------------
 
    procedure Register_Independent_Task_Count
-     (F : in Return_Natural_Function) is
+     (F : Return_Natural_Function) is
    begin
       Ind_Task_Count := F;
    end Register_Independent_Task_Count;
@@ -431,7 +424,7 @@ package body System.Garlic.Soft_Links is
    ----------------------------------
 
    procedure Register_Is_Environment_Task
-     (F : in Return_Boolean_Function)
+     (F : Return_Boolean_Function)
    is
    begin
       Is_Env_Task := F;
@@ -442,7 +435,7 @@ package body System.Garlic.Soft_Links is
    --------------------------------------
 
    procedure Register_Mutex_Creation_Function
-     (F : in Mutex_Creation_Function)
+     (F : Mutex_Creation_Function)
    is
    begin
       Mutex_Create := F;
@@ -453,28 +446,28 @@ package body System.Garlic.Soft_Links is
    ---------------------------
 
    procedure Register_Set_Priority
-     (P : in Natural_Parameter_Procedure) is
+     (P : Natural_Parameter_Procedure) is
    begin
       Set_Task_Priority := P;
    end Register_Set_Priority;
 
-   ------------------------
-   -- Register_Set_Stamp --
-   ------------------------
+--    ------------------------
+--    -- Register_Set_Stamp --
+--    ------------------------
 
-   procedure Register_Set_Stamp
-     (P : in Float_Parameter_Procedure)
-   is
-   begin
-      Set_Task_Stamp := P;
-   end Register_Set_Stamp;
+--    procedure Register_Set_Stamp
+--      (P : Float_Parameter_Procedure)
+--    is
+--    begin
+--       Set_Task_Stamp := P;
+--    end Register_Set_Stamp;
 
    ----------------------------------------
    -- Register_Watcher_Creation_Function --
    ----------------------------------------
 
    procedure Register_Watcher_Creation_Function
-     (F : in Watcher_Creation_Function)
+     (F : Watcher_Creation_Function)
    is
    begin
       Watcher_Create := F;
@@ -484,54 +477,54 @@ package body System.Garlic.Soft_Links is
    -- Set_Priority --
    ------------------
 
-   procedure Set_Priority (P : in Natural) is
+   procedure Set_Priority (P : Natural) is
    begin
       Set_Task_Priority (P);
    end Set_Priority;
 
-   ---------------
-   -- Set_Stamp --
-   ---------------
+--    ---------------
+--    -- Set_Stamp --
+--    ---------------
 
-   procedure Set_Stamp (S : in Float) is
-   begin
-      Set_Task_Stamp (S);
-   end Set_Stamp;
+--    procedure Set_Stamp (S : Float) is
+--    begin
+--       Set_Task_Stamp (S);
+--    end Set_Stamp;
 
-   -----------------
-   -- Stamp_Image --
-   -----------------
+--    -----------------
+--    -- Stamp_Image --
+--    -----------------
 
-   function Stamp_Image (M : String) return String is
-      S : constant Float := Get_Stamp;
-      N : Integer;
-      A : String (1 .. 10) := (others => ' ');
-      R : String (1 .. 10) := (others => ' ');
+--    function Stamp_Image (M : String) return String is
+--       S : constant Float := Get_Stamp;
+--       N : Integer;
+--       A : String (1 .. 10) := (others => ' ');
+--       R : String (1 .. 10) := (others => ' ');
 
-   begin
-      N := Integer (S * 1_000.0);
-      for I in reverse A'Range loop
-         A (I) := Hex ((N mod 10) + 1);
-         N := N / 10;
-         exit when N = 0;
-      end loop;
-      N := Integer ((Float (Seconds (Clock)) - S) * 1_000.0);
-      if N < 0 then
-         N := 0;
-      end if;
-      for I in reverse R'Range loop
-         R (I) := Hex ((N mod 10) + 1);
-         N := N  / 10;
-         exit when N = 0;
-      end loop;
-      return A & ASCII.HT & R & "ms" & ASCII.HT & M;
-   end Stamp_Image;
+--    begin
+--       N := Integer (S * 1_000.0);
+--       for I in reverse A'Range loop
+--          A (I) := Hex ((N mod 10) + 1);
+--          N := N / 10;
+--          exit when N = 0;
+--       end loop;
+--       N := Integer ((Float (Seconds (Clock)) - S) * 1_000.0);
+--       if N < 0 then
+--          N := 0;
+--       end if;
+--       for I in reverse R'Range loop
+--          R (I) := Hex ((N mod 10) + 1);
+--          N := N  / 10;
+--          exit when N = 0;
+--       end loop;
+--       return A & ASCII.HT & R & "ms" & ASCII.HT & M;
+--    end Stamp_Image;
 
    ------------
    -- Update --
    ------------
 
-   procedure Update (W : in Watcher_Access) is
+   procedure Update (W : Watcher_Access) is
    begin
       pragma Assert (W /= null);
       Update (W.all);

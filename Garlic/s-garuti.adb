@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,37 +19,31 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Unchecked_Deallocation;
+with GNAT.Strings; use GNAT.Strings;
 
 package body System.Garlic.Utils is
 
-   procedure Free is
-     new Ada.Unchecked_Deallocation (String, String_Access);
-
-   procedure Free is
-     new Ada.Unchecked_Deallocation (String_Array, String_Array_Access);
-
    procedure Next_Separator
-     (S : in String;
+     (S : String;
       I : in out Natural;
-      C : in Character);
+      C : Character);
 
    procedure Skip_Separator
-     (S : in String;
+     (S : String;
       I : in out Natural;
-      C : in Character);
+      C : Character);
 
    ----------------------
    -- Access_To_String --
@@ -66,11 +58,11 @@ package body System.Garlic.Utils is
    -- Copy --
    ----------
 
-   function Copy (S : String_Array_Access) return String_Array_Access is
-      R : String_Array_Access;
+   function Copy (S : String_List_Access) return String_List_Access is
+      R : String_List_Access;
    begin
       if S /= null then
-         R := new String_Array'(S.all);
+         R := new String_List'(S.all);
          for I in S'Range loop
             R (I) := new String'(S (I).all);
          end loop;
@@ -93,7 +85,7 @@ package body System.Garlic.Utils is
    -- Destroy --
    -------------
 
-   procedure Destroy (S : in out String_Array_Access) is
+   procedure Destroy (S : in out String_List_Access) is
    begin
       if S /= null then
          for I in S'Range loop
@@ -108,7 +100,7 @@ package body System.Garlic.Utils is
    ------------------
 
    function Merge_String
-     (S : String_Array_Access;
+     (S : String_List_Access;
       C : Character := Location_Separator)
      return String
    is
@@ -159,7 +151,7 @@ package body System.Garlic.Utils is
 
    function Missing
      (Elt : String;
-      Set : String_Array)
+      Set : String_List)
      return Boolean
    is
    begin
@@ -178,9 +170,9 @@ package body System.Garlic.Utils is
    --------------------
 
    procedure Next_Separator
-     (S : in String;
+     (S : String;
       I : in out Natural;
-      C : in Character) is
+      C : Character) is
    begin
       while I <= S'Last
         and then S (I) /= C
@@ -204,9 +196,9 @@ package body System.Garlic.Utils is
    --------------------
 
    procedure Skip_Separator
-     (S : in String;
+     (S : String;
       I : in out Natural;
-      C : in Character) is
+      C : Character) is
    begin
       while I <= S'Last
         and then S (I) = C
@@ -222,10 +214,10 @@ package body System.Garlic.Utils is
    function Split_String
      (S : String;
       C : Character := Location_Separator)
-     return String_Array_Access
+     return String_List_Access
    is
       N : Natural := 0;
-      A : String_Array_Access;
+      A : String_List_Access;
       F : Natural;
       L : Natural;
    begin
@@ -250,7 +242,7 @@ package body System.Garlic.Utils is
 
       --  Fill each slot of array.
 
-      A := new String_Array (1 .. N);
+      A := new String_List (1 .. N);
       F := S'First;
       for I in A'Range loop
          Skip_Separator (S, F, C);

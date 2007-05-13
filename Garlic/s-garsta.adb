@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,17 +19,28 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
 ------------------------------------------------------------------------------
+
+with GNAT.Strings;                    use GNAT.Strings;
+
+with System.Interrupts;
+pragma Elaborate_All (System.Interrupts);
+pragma Warnings (Off, System.Interrupts);
+--  We need to ensure that System.Interrupts is elaborated before GARLIC
+--  creates any tasks. Note that GARLIC itself does not use interrupt
+--  handling facilities, but user code might, and we cannot express a
+--  conditional elaboration dependency "that unit, *if present*, must be
+--  elaborated before the current unit".
 
 with System.Garlic.Debug;             use System.Garlic.Debug;
 pragma Elaborate_All (System.Garlic.Debug);
@@ -98,8 +107,8 @@ package body System.Garlic.Startup is
    Private_Debug_Key : constant Debug_Key :=
      Debug_Initialize ("S_GARSTA", "(s-garsta): ");
    procedure D
-     (Message : in String;
-      Key     : in Debug_Key := Private_Debug_Key)
+     (Message : String;
+      Key     : Debug_Key := Private_Debug_Key)
      renames Print_Debug_Info;
 
    PID   : Partition_ID;
@@ -107,17 +116,17 @@ package body System.Garlic.Startup is
 
    Self_Location : Location_Type;
    Self_Protocol : Protocol_Access;
-   Self_Data     : String_Array_Access;
+   Self_Data     : String_List_Access;
 
    Boot_Location : Location_Type;
    Boot_Protocol : Protocol_Access;
-   Boot_Data     : String_Array_Access;
+   Boot_Data     : String_List_Access;
 
    N_Boot_Location : Natural := 0;
    N_Self_Location : Natural := 0;
 
-   New_Boot_Location : String_Array_Access;
-   New_Self_Location : String_Array_Access;
+   New_Boot_Location : String_List_Access;
+   New_Self_Location : String_List_Access;
 
    Performed       : Boolean;
 
@@ -260,14 +269,13 @@ begin
       Destroy (Options.Self_Location);
    end if;
 
-
    --  (8) The elaboration code of System.Garlic.Startup
    --      re-initializes Options.Boot_Locations. Size of
    --      New_Boot_Location may be to large because some
    --      locations may be duplicated. It is not a problem
    --      because null location will be ignored.
 
-   New_Boot_Location := new String_Array (1 .. N_Boot_Location);
+   New_Boot_Location := new String_List (1 .. N_Boot_Location);
    N_Boot_Location := 0;
 
    for BL in Options.Boot_Location'Range loop
@@ -280,7 +288,7 @@ begin
          if Options.Is_Boot_Server then
             Boot_Data := Get_Data (Boot_Protocol);
          else
-            Boot_Data     := new String_Array (1 .. 1);
+            Boot_Data     := new String_List (1 .. 1);
             Boot_Data (1) := new String'(Get_Data (Boot_Location));
          end if;
 
@@ -303,7 +311,7 @@ begin
    --      ignored. We have to preserve the order specified by the user.
    --      Once this is done, add all the missing locations.
 
-   New_Self_Location := new String_Array (1 .. N_Self_Location);
+   New_Self_Location := new String_List (1 .. N_Self_Location);
    N_Self_Location := 0;
 
    if Options.Self_Location /= null then
@@ -405,4 +413,3 @@ exception when others =>
    Heart.Activate_Shutdown;
    raise;
 end System.Garlic.Startup;
-

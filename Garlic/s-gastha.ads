@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -53,14 +51,14 @@ package System.Garlic.Storage_Handling is
    procedure Allocate
      (Pool                     : in out Garlic_Storage_Pool;
       Storage_Address          : out Address;
-      Size_In_Storage_Elements : in System.Storage_Elements.Storage_Count;
-      Alignment                : in System.Storage_Elements.Storage_Count);
+      Size_In_Storage_Elements : System.Storage_Elements.Storage_Count;
+      Alignment                : System.Storage_Elements.Storage_Count);
 
    procedure Deallocate
      (Pool                     : in out Garlic_Storage_Pool;
-      Storage_Address          : in Address;
-      Size_In_Storage_Elements : in System.Storage_Elements.Storage_Count;
-      Alignment                : in System.Storage_Elements.Storage_Count);
+      Storage_Address          : Address;
+      Size_In_Storage_Elements : System.Storage_Elements.Storage_Count;
+      Alignment                : System.Storage_Elements.Storage_Count);
 
    function Storage_Size (Pool : Garlic_Storage_Pool)
       return System.Storage_Elements.Storage_Count;

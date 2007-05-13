@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -44,8 +42,8 @@ package body System.Garlic.Table is
    Private_Debug_Key : constant Debug_Key :=
      Debug_Initialize ("S_GARTAB", "(s-gartab): ");
    procedure D
-     (Message : in String;
-      Key     : in Debug_Key := Private_Debug_Key)
+     (Message : String;
+      Key     : Debug_Key := Private_Debug_Key)
      renames Print_Debug_Info;
    pragma Unreferenced (D);
 
@@ -160,7 +158,7 @@ package body System.Garlic.Table is
       -- Differ --
       ------------
 
-      procedure Differ (Version : in Types.Version_Id) is
+      procedure Differ (Version : Types.Version_Id) is
       begin
          Differ (Watcher, Version);
       end Differ;
@@ -284,8 +282,8 @@ package body System.Garlic.Table is
       -------------------
 
       procedure Set_Component
-        (N : in Index_Type;
-         C : in Component_Type) is
+        (N : Index_Type;
+         C : Component_Type) is
       begin
          Enter_Critical_Section;
          Validate (N);
@@ -323,9 +321,7 @@ package body System.Garlic.Table is
 
       procedure Validate (N : Index_Type) is
          Dummy : Index_Type;
-
-         pragma Warnings (off, Dummy);
-
+         pragma Unreferenced (Dummy);
       begin
          pragma Assert (Min <= N);
          while N > Max loop
@@ -418,7 +414,7 @@ package body System.Garlic.Table is
       -- Differ --
       ------------
 
-      procedure Differ (Version : in Types.Version_Id) is
+      procedure Differ (Version : Types.Version_Id) is
       begin
          Differ (Watcher, Version);
       end Differ;
@@ -492,8 +488,8 @@ package body System.Garlic.Table is
       -------------------
 
       procedure Set_Component
-        (N : in Index_Type;
-         C : in Component_Type) is
+        (N : Index_Type;
+         C : Component_Type) is
       begin
          Enter_Critical_Section;
          Validate (N);
@@ -517,9 +513,7 @@ package body System.Garlic.Table is
 
       procedure Validate (N : Index_Type) is
          Dummy : Index_Type;
-
-         pragma Warnings (off, Dummy);
-
+         pragma Unreferenced (Dummy);
       begin
          pragma Assert (Min <= N);
          while N > Max loop

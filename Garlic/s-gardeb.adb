@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -80,14 +78,14 @@ package body System.Garlic.Debug is
       Name : String (1 .. 32);
       Last : Natural := 0;
 
-      procedure Write_PID (PID : in int := Get_PID);
+      procedure Write_PID (PID : int := Get_PID);
       --  Store PID in Name
 
       ---------------
       -- Write_PID --
       ---------------
 
-      procedure Write_PID (PID : in int := Get_PID) is
+      procedure Write_PID (PID : int := Get_PID) is
       begin
          if PID < 10 then
             Last := Last + 1;
@@ -142,8 +140,8 @@ package body System.Garlic.Debug is
       Value    : String_Access    := Getenv (Variable);
       Value_OK : constant Boolean :=
         Value'Length /= 0
-          and then (Value (Value'First) /= 't'
-                   or else Value (Value'First) /= 'T');
+          and then (Value (Value'First) = 't'
+                   or else Value (Value'First) = 'T');
    begin
       Free (Value);
       pragma Assert (Current <= Debug_Key'Last);
@@ -185,8 +183,8 @@ package body System.Garlic.Debug is
    ----------------------
 
    procedure Print_Debug_Info
-     (Message : in String;
-      Key     : in Debug_Key) is
+     (Message : String;
+      Key     : Debug_Key) is
    begin
       if Debug_Table (Key).Active then
          Enter_Critical_Section;
@@ -200,8 +198,8 @@ package body System.Garlic.Debug is
    -----------------------------
 
    procedure Print_Debug_Info_Nolock
-     (Message : in String;
-      Key     : in Debug_Key) is
+     (Message : String;
+      Key     : Debug_Key) is
    begin
       if Debug_Table (Key).Active then
          GNAT.IO.Put_Line (Debug_Table (Key).Banner.all & Message);

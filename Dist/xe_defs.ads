@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1995-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GNATDIST is  free software;  you  can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License  as published by the Free --
@@ -26,22 +24,20 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNAT.OS_Lib; use GNAT.OS_Lib;
-
 package XE_Defs is
 
-   --  This package contains constant that returns the default values for
-   --  the distributed library directories.
+   --  This package provides the definition of various GLADE parameters
 
-   function Get_GARLIC_Dir return String_Access;
-
+   procedure Initialize;
    function Get_Rsh_Command return String;
    function Get_Rsh_Options return String;
    function Get_Def_Storage_Data return String;
    function Get_Def_Storage_Name return String;
    function Get_Def_Protocol_Data return String;
    function Get_Def_Protocol_Name return String;
+   function Get_PCS_Name return String;
+   function Get_Dist_Prefix return String;
 
-   function Get_Default_Optimization return String;
+   procedure Set_PCS_Name (S : String);
 
 end XE_Defs;

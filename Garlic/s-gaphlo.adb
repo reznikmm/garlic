@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,19 +19,23 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with System.Garlic.Debug;    use System.Garlic.Debug;
+with GNAT.Strings;            use GNAT.Strings;
+
+with System.Garlic.Debug;     use System.Garlic.Debug;
+with System.Garlic.Protocols; use System.Garlic.Protocols;
+with System.Garlic.Utils;     use System.Garlic.Utils;
 
 package body System.Garlic.Physical_Location is
 
@@ -41,12 +43,10 @@ package body System.Garlic.Physical_Location is
      Debug_Initialize ("S_GAPHLO", "(s-gaphlo): ");
 
    procedure D
-     (Message : in String;
-      Key     : in Debug_Key := Private_Debug_Key)
+     (Message : String;
+      Key     : Debug_Key := Private_Debug_Key)
      renames Print_Debug_Info;
    pragma Unreferenced (D);
-
-   use System.Garlic.Protocols, System.Garlic.Utils;
 
    function Lookup_Protocol (P : String) return Protocol_Access;
    --  Return a protocol or null if no protocol with this name was found
@@ -56,10 +56,10 @@ package body System.Garlic.Physical_Location is
    --------------------------
 
    procedure Add_First_Missing_Location
-     (List     : in String_Array_Access;
+     (List     : String_List_Access;
       Current  : in out Natural;
-      Protocol : in Protocol_Access;
-      Data     : in String_Array_Access) is
+      Protocol : Protocol_Access;
+      Data     : String_List_Access) is
    begin
       if Data = null then
          return;
@@ -84,11 +84,11 @@ package body System.Garlic.Physical_Location is
    ---------------------------
 
    procedure Add_Missing_Locations
-     (List     : in String_Array_Access;
+     (List     : String_List_Access;
       Current  : in out Natural;
-      Protocol : in Protocol_Access)
+      Protocol : Protocol_Access)
    is
-      Data : String_Array_Access;
+      Data : String_List_Access;
    begin
       Data := Get_Data (Protocol);
       if Data = null then

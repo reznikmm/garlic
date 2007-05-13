@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,29 +19,28 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with GNAT.Strings;
+
 package System.Garlic.Utils is
 
    pragma Elaborate_Body;
 
-   type String_Access is access all String;
-   type String_Array is array (Natural range <>) of String_Access;
-   type String_Array_Access is access String_Array;
    Location_Separator : constant Character := ' ';
 
    function Merge_String
-     (S : String_Array_Access;
+     (S : GNAT.Strings.String_List_Access;
       C : Character := Location_Separator)
      return String;
    --  Concatenate S in a string and separate them with C.
@@ -51,7 +48,7 @@ package System.Garlic.Utils is
    function Split_String
      (S : String;
       C : Character := Location_Separator)
-     return String_Array_Access;
+     return GNAT.Strings.String_List_Access;
    --  Return an array of substrings sperated by C in S.
 
    function Quote   (S : String; C : Character := '"') return String; --  "
@@ -60,8 +57,8 @@ package System.Garlic.Utils is
 
    Null_String : constant String := "";
 
-   function String_To_Access (S : String) return String_Access;
-   function Access_To_String (S : String_Access) return String;
+   function String_To_Access (S : String) return GNAT.Strings.String_Access;
+   function Access_To_String (S : GNAT.Strings.String_Access) return String;
    --     pragma Stream_Convert (Entity => String_Access,
    --                            Read   => String_To_Access,
    --                            Write  => Access_To_String);
@@ -70,15 +67,16 @@ package System.Garlic.Utils is
    --  procedure. This access type can be transmitted accross
    --  partitions.
 
-   procedure Destroy (S : in out String_Access);
-   procedure Destroy (S : in out String_Array_Access);
+   procedure Destroy (S : in out GNAT.Strings.String_Access);
+   procedure Destroy (S : in out GNAT.Strings.String_List_Access);
 
-   function Copy  (S : String_Array_Access) return String_Array_Access;
+   function Copy (S : GNAT.Strings.String_List_Access)
+     return GNAT.Strings.String_List_Access;
    --  Duplicate array and elements
 
    function Missing
      (Elt : String;
-      Set : String_Array)
+      Set : GNAT.Strings.String_List)
      return Boolean;
    --  Is Elt missing in array Set.
 

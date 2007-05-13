@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -57,16 +55,16 @@ package System.RPC is
 
    procedure Write
      (Stream : in out Params_Stream_Type;
-      Item   : in Ada.Streams.Stream_Element_Array);
+      Item   : Ada.Streams.Stream_Element_Array);
 
    procedure Do_RPC
-     (Partition  : in Partition_ID;
+     (Partition  : Partition_ID;
       Params     : access Params_Stream_Type;
       Result     : access Params_Stream_Type);
    --  Synchronous call
 
    procedure Do_APC
-     (Partition  : in Partition_ID;
+     (Partition  : Partition_ID;
       Params     : access Params_Stream_Type);
    --  Asynchronous call
 
@@ -77,8 +75,8 @@ package System.RPC is
    --  Handled used for incoming RPC
 
    procedure Establish_RPC_Receiver (
-      Partition : in Partition_ID;
-      Receiver  : in RPC_Receiver);
+      Partition : Partition_ID;
+      Receiver  : RPC_Receiver);
 
 private
 
@@ -96,10 +94,10 @@ private
 
    procedure Allocate
      (Session   : out Session_Type;
-      Partition : in Partition_ID);
+      Partition : Partition_ID);
 
    procedure Deallocate
-     (Session   : in Session_Type);
+     (Session   : Session_Type);
 
    type RPC_Opcode is (RPC_Query,
                        RPC_Reply,
@@ -122,36 +120,35 @@ private
 
    procedure Insert_RPC_Header
      (Params : access System.Garlic.Streams.Params_Stream_Type;
-      Header : in RPC_Header);
+      Header : RPC_Header);
    --  Add a RPC_Header in front of Params
 
    procedure When_Established;
    --  Wait for partition to be established
 
    type Allocate_Task_Procedure is access procedure
-     (Partition : in System.Garlic.Types.Partition_ID;
-      Session   : in System.RPC.Session_Type;
-      Stamp     : in System.Garlic.Types.Stamp_Type;
-      Params    : in System.Garlic.Streams.Params_Stream_Access;
-      Async     : in Boolean);
+     (Partition : System.Garlic.Types.Partition_ID;
+      Session   : System.RPC.Session_Type;
+      --  Stamp     : System.Garlic.Types.Stamp_Type;
+      Params    : System.Garlic.Streams.Params_Stream_Access;
+      Async     : Boolean);
 
    type Abort_Task_Procedure is access procedure
-     (Partition : in System.Garlic.Types.Partition_ID;
-      Session   : in System.RPC.Session_Type);
+     (Partition : System.Garlic.Types.Partition_ID;
+      Session   : System.RPC.Session_Type);
 
    type Parameterless_Procedure is access procedure;
 
    procedure Register_Task_Pool
-     (Allocate_Task : in Allocate_Task_Procedure;
-      Abort_Task    : in Abort_Task_Procedure;
-      Initialize    : in Parameterless_Procedure;
-      Shutdown      : in Parameterless_Procedure);
+     (Allocate_Task : Allocate_Task_Procedure;
+      Abort_Task    : Abort_Task_Procedure;
+      Initialize    : Parameterless_Procedure;
+      Shutdown      : Parameterless_Procedure);
 
    procedure Finalize
-     (Partition : in System.Garlic.Types.Partition_ID;
-      Waiting   : in Boolean;
-      Session   : in Session_Type);
+     (Partition : System.Garlic.Types.Partition_ID;
+      Waiting   : Boolean;
+      Session   : Session_Type);
    --  Handle abortion from Do_RPC
 
 end System.RPC;
-
