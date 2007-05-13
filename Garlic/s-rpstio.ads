@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -56,8 +54,8 @@ package System.RPC.Stream_IO is
 
    procedure Open
      (Stream    : in out Partition_Stream_Type;
-      Partition : in     System.RPC.Partition_ID;
-      Mode      : in     Stream_Mode);
+      Partition : System.RPC.Partition_ID;
+      Mode      : Stream_Mode);
 
    procedure Close
      (Stream    : in out Partition_Stream_Type);
@@ -70,7 +68,7 @@ package System.RPC.Stream_IO is
 
    procedure Write
      (Stream    : in out Partition_Stream_Type;
-      Item      : in     Ada.Streams.Stream_Element_Array);
+      Item      : Ada.Streams.Stream_Element_Array);
    --  Similar to Ada.Streams.Stream_IO.Write
 
    procedure Initialize;

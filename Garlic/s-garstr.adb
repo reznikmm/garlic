@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -56,7 +54,7 @@ package body System.Garlic.Streams is
    ----------
 
    procedure Copy
-     (Source : in Params_Stream_Type;
+     (Source : Params_Stream_Type;
       Target : in out Params_Stream_Type)
    is
       TN, SN : Node_Ptr;
@@ -118,7 +116,7 @@ package body System.Garlic.Streams is
 
    procedure Dump
      (Stream : access Ada.Streams.Stream_Element_Array;
-      Key    : in System.Garlic.Debug.Debug_Key)
+      Key    : System.Garlic.Debug.Debug_Key)
    is
       Index   : Natural := 1;
       Output  : Output_Line;
@@ -226,6 +224,22 @@ package body System.Garlic.Streams is
       end if;
    end Read;
 
+   ----------
+   -- Read --
+   ----------
+
+   procedure Read
+     (S : access Ada.Streams.Root_Stream_Type'Class;
+      X : out Stream_Element_Access)
+   is
+   begin
+      if Boolean'Input (S) then
+         X := null;
+      else
+         X := new Stream_Element_Array'(Stream_Element_Array'Input (S));
+      end if;
+   end Read;
+
    ---------------------------
    -- To_Params_Stream_Type --
    ---------------------------
@@ -299,7 +313,7 @@ package body System.Garlic.Streams is
 
    procedure Write
      (Stream : in out Params_Stream_Type;
-      Item   : in Stream_Element_Array) is
+      Item   : Stream_Element_Array) is
       Length  : constant Stream_Element_Count := Item'Length;
       Current : Node_Ptr renames Stream.Current;
    begin
@@ -326,7 +340,7 @@ package body System.Garlic.Streams is
          --  packets.
 
          declare
-            Insert : Node_Ptr :=
+            Insert : constant Node_Ptr :=
              new Node (Stream_Element_Count'Max (Node_Size, Length));
          begin
             Insert.Next  := Stream.First;
@@ -358,6 +372,20 @@ package body System.Garlic.Streams is
       Current.Content (Current.Last .. Current.Last + Length - 1) :=
         Item;
       Current.Last := Current.Last + Length;
+   end Write;
+
+   -----------
+   -- Write --
+   -----------
+
+   procedure Write
+     (S : access Ada.Streams.Root_Stream_Type'Class;
+      X : Stream_Element_Access) is
+   begin
+      Boolean'Write (S, (X = null));
+      if X /= null then
+         Stream_Element_Array'Output (S, X.all);
+      end if;
    end Write;
 
 end System.Garlic.Streams;

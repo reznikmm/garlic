@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -39,7 +37,6 @@ package System.Garlic.Table is
 
    generic
       type Index_Type is range <>;
-      Null_Index     : Index_Type;
       First_Index    : Index_Type;
 
       Initial_Size   : Positive;
@@ -48,13 +45,11 @@ package System.Garlic.Table is
       type Component_Type is private;
       Null_Component : Component_Type;
 
-      pragma Warnings (off, Null_Index);
-
    package Complex is
 
       --  These procedures are atomic and cannot be aborted
 
-      procedure Differ (Version : in Types.Version_Id);
+      procedure Differ (Version : Types.Version_Id);
       --  Block until internal Version becomes different from Version.
 
       procedure Enter;
@@ -102,7 +97,6 @@ package System.Garlic.Table is
 
    generic
       type Index_Type is range <>;
-      Null_Index     : Index_Type;
       First_Index    : Index_Type;
 
       Initial_Size   : Positive;
@@ -111,13 +105,11 @@ package System.Garlic.Table is
       type Component_Type is private;
       Null_Component : Component_Type;
 
-      pragma Warnings (off, Null_Index);
-
    package Medium is
 
       --  These procedures are atomic and cannot be aborted
 
-      procedure Differ (Version : in Types.Version_Id);
+      procedure Differ (Version : Types.Version_Id);
       --  Block until internal Version becomes different from Version.
 
       procedure Enter;
@@ -151,7 +143,6 @@ package System.Garlic.Table is
 
    generic
       type Index_Type     is range <>;
-      Null_Index     : Index_Type;
       First_Index    : Index_Type;
 
       Initial_Size   : Positive;
@@ -159,8 +150,6 @@ package System.Garlic.Table is
 
       type Component_Type is private;
       Null_Component : Component_Type;
-
-      pragma Warnings (off, Null_Index);
 
    package Simple is
 

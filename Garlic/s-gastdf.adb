@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -48,9 +46,9 @@ pragma Elaborate (System.Garlic.Debug);
 with System.Garlic.Physical_Location;
 use  System.Garlic.Physical_Location;
 
+with System.Garlic.Exceptions; use System.Garlic.Exceptions;
 with System.Garlic.Options;    use System.Garlic.Options;
 with System.Garlic.Soft_Links; use System.Garlic.Soft_Links;
-with System.Garlic.Utils;      use System.Garlic.Utils;
 
 package body System.Garlic.Storages.Dfs is
 
@@ -60,8 +58,8 @@ package body System.Garlic.Storages.Dfs is
    Dfs_Storage_Name : constant String := "dfs";
 
    procedure D
-     (Message : in String;
-      Key     : in Debug_Key := Private_Debug_Key)
+     (Message : String;
+      Key     : Debug_Key := Private_Debug_Key)
      renames Print_Debug_Info;
 
    use type SIO.File_Mode;
@@ -103,7 +101,7 @@ package body System.Garlic.Storages.Dfs is
    ----------------------
 
    procedure Complete_Request
-     (Var_Data : in out DFS_Data_Type) is
+     (Var_Data : access DFS_Data_Type) is
    begin
       if Var_Data.Count > 0 then
          Var_Data.Count := Var_Data.Count - 1;
@@ -124,9 +122,11 @@ package body System.Garlic.Storages.Dfs is
 
    procedure Create_Package
      (Storage  : in out DFS_Data_Type;
-      Pkg_Name : in     String;
-      Pkg_Data : out    Shared_Data_Access)
+      Pkg_Name : String;
+      Pkg_Data : out    Shared_Data_Access;
+      Error    : in out Error_Type)
    is
+      pragma Unreferenced (Error);
       Result : DFS_Data_Access;
 
    begin
@@ -145,9 +145,11 @@ package body System.Garlic.Storages.Dfs is
 
    procedure Create_Storage
      (Master   : in out DFS_Data_Type;
-      Location : in     String;
-      Storage  : out    Shared_Data_Access)
+      Location : String;
+      Storage  : out    Shared_Data_Access;
+      Error    : in out Error_Type)
    is
+      pragma Unreferenced (Error);
       pragma Unreferenced (Master);
 
       Result   : DFS_Data_Access;
@@ -176,10 +178,12 @@ package body System.Garlic.Storages.Dfs is
 
    procedure Create_Variable
      (Pkg_Data : in out DFS_Data_Type;
-      Var_Name : in     String;
-      Var_Data : out    Shared_Data_Access)
+      Var_Name : String;
+      Var_Data : out    Shared_Data_Access;
+      Error    : in out Error_Type)
    is
-      Var : DFS_Data_Access := new DFS_Data_Type;
+      pragma Unreferenced (Error);
+      Var : constant DFS_Data_Access := new DFS_Data_Type;
 
    begin
       pragma Debug (D ("create variable file " & Var_Name &
@@ -231,8 +235,8 @@ package body System.Garlic.Storages.Dfs is
    ----------------------
 
    procedure Initiate_Request
-     (Var_Data : in out DFS_Data_Type;
-      Request  : in Request_Type;
+     (Var_Data : access DFS_Data_Type;
+      Request  : Request_Type;
       Success  : out Boolean)
    is
       Done : Boolean := True;
@@ -320,7 +324,7 @@ package body System.Garlic.Storages.Dfs is
          when Lock =>
             Var_Data.Count := Var_Data.Count + 1;
             if Var_Data.Lock = SGL.Null_Lock then
-               SGL.Create_Lock (Var_Data.Lock, Lock_Name (Var_Data));
+               SGL.Create_Lock (Var_Data.Lock, Lock_Name (Var_Data.all));
             end if;
             if Var_Data.Count = 1 then
                SGL.Acquire_Lock (Var_Data.Lock);
@@ -357,13 +361,23 @@ package body System.Garlic.Storages.Dfs is
       Last := Item'Last;
    end Read;
 
+   --------------
+   -- Shutdown --
+   --------------
+
+   procedure Shutdown (Storage : DFS_Data_Type) is
+      pragma Unreferenced (Storage);
+   begin
+      null;
+   end Shutdown;
+
    -----------
    -- Write --
    -----------
 
    procedure Write
      (Data : in out DFS_Data_Type;
-      Item : in Ada.Streams.Stream_Element_Array) is
+      Item : Ada.Streams.Stream_Element_Array) is
    begin
       pragma Debug (D ("write variable file " & Data.Name.all));
 

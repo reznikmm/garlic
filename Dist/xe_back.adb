@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1995-2007, Free Software Foundation, Inc.          --
 --                                                                          --
 -- GNATDIST is  free software;  you  can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License  as published by the Free --
@@ -21,727 +19,978 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
---                 GLADE  is maintained by ACT Europe.                      --
---                 (email: glade-report@act-europe.fr)                      --
+--                   GLADE  is maintained by AdaCore                        --
+--                      (email: sales@adacore.com)                          --
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with ALI;              use ALI;
-with ALI.Util;         use ALI.Util;
-with GNAT.OS_Lib;      use GNAT.OS_Lib;
-with Namet;            use Namet;
-with Osint;
-with Output;           use Output;
-with Types;            use Types;
-with XE;               use XE;
-with XE_Defs;          use XE_Defs;
-with XE_Utils;         use XE_Utils;
+with GNAT.HTable;
+with GNAT.OS_Lib; use GNAT.OS_Lib;
+
+with XE;       use XE;
+with XE_Flags; use XE_Flags;
+with XE_Front; use XE_Front;
+with XE_IO;    use XE_IO;
+with XE_Names; use XE_Names;
+with XE_Utils; use XE_Utils;
 
 package body XE_Back is
 
-   subtype Node_Id is XE.Node_Id;
+   -------------------------
+   -- Backend Registering --
+   -------------------------
 
-   Min_Width : constant := 11;
+   type String_Ptr is access all String;
+   type Header_Num is range 1 .. 7;
+   function Hash (S : String_Ptr) return Header_Num;
 
-   procedure Build_New_Channel
-     (Channel   : in Variable_Id);
-   --  Retrieve the two partitions and attributes previously parsed in
-   --  order to build the channel.
+   function Eq (S1, S2 : String_Ptr) return Boolean;
+   --  Test equality of designated strings
 
-   procedure Build_New_Host
-     (Subprogram : in Subprogram_Id;
-      Host_Entry : out HID_Type);
+   package All_Backends is new GNAT.HTable.Simple_HTable
+     (Header_Num => Header_Num,
+      Element    => Backend_Access,
+      No_Element => null,
+      Key        => String_Ptr,
+      Hash       => Hash,
+      Equal      => Eq);
 
-   procedure Build_New_Partition
-     (Partition : in Variable_Id);
-   --  Retrieve ada units and attributes previously parsed in order to
-   --  build the partition.
+   --------------------------------
+   --  Exported Environment Vars --
+   --------------------------------
 
-   procedure Build_New_Variable
-     (Variable : in Variable_Id);
-   --  Dispatching procedure to create entities of different types.
+   Max_Exported_Vars : constant := 15;
+   Exported_Var_Last : Natural := 0;
+   Exported_Environment_Vars : array (1 .. Max_Exported_Vars) of String_Ptr;
+   --  Contains a list of environment vars to export for the remote partitions
 
-   procedure Set_Channel_Attribute
-     (Attribute : in Attribute_Id;
-      Channel   : in CID_Type);
+   ------------------
+   -- Casing Rules --
+   ------------------
 
-   procedure Set_Partition_Attribute
-     (Attribute : in Attribute_Id;
-      Partition : in PID_Type);
+   type Casing_Rule is record
+      Size : Natural;
+      From : String_Access;
+      Into : String_Access;
+   end record;
 
-   procedure Set_Pragma_Statement
-     (Subprogram : in Subprogram_Id);
+   Rules : array (1 .. 64) of Casing_Rule;
+   Rules_Last : Natural := 0;
 
-   procedure Set_Type_Attribute
-     (Pre_Type : in Type_Id);
+   -----------
+   -- "and" --
+   -----------
 
-   procedure Show_Partition
-     (PID : in PID_Type);
-   --  Output the different attributes of a partition.
+   function "and" (N : Name_Id; S : String) return Name_Id is
+   begin
+      Get_Name_String (N);
+      Add_Char_To_Name_Buffer ('.');
+      Add_Str_To_Name_Buffer (S);
+      return Name_Find;
+   end "and";
 
-   procedure Write_Field
-     (Indent : in Natural;
-      Field  : in String;
-      Width  : in Natural := Min_Width);
-   --  Output field with at least Width characters and indent it.
+   -----------
+   -- "and" --
+   -----------
 
-   ---------------------------
-   -- Add_Channel_Partition --
-   ---------------------------
+   function "and" (L, R : Name_Id) return Name_Id is
+   begin
+      return L and Get_Name_String (R);
+   end "and";
 
-   procedure Add_Channel_Partition
-     (Partition : in Partition_Name_Type;
-      To        : in CID_Type)
+   ------------------------
+   -- Apply_Casing_Rules --
+   ------------------------
+
+   procedure Apply_Casing_Rules (S : in out String) is
+      New_Word : Boolean := True;
+      Length   : Natural := S'Length;
+      C        : String  := S;
+
+   begin
+      Capitalize (S);
+      To_Lower (C);
+      for I in S'Range loop
+         if New_Word then
+            New_Word := False;
+            for J in 1 .. Rules_Last loop
+               if Rules (J).Size <= Length
+                 and then C (I .. I + Rules (J).Size - 1) = Rules (J).From.all
+               then
+                  S (I .. I + Rules (J).Size - 1) := Rules (J).Into.all;
+               end if;
+            end loop;
+         end if;
+         if S (I) = '_' then
+            New_Word := True;
+         end if;
+         Length := Length - 1;
+      end loop;
+   end Apply_Casing_Rules;
+
+   --------
+   -- Eq --
+   --------
+
+   function Eq (S1, S2 : String_Ptr) return Boolean is
+   begin
+      if S1 = null or else S2 = null then
+         return S1 = S2;
+      end if;
+      return S1.all = S2.all;
+   end Eq;
+
+   ----------------------------
+   -- Export_Environment_Var --
+   ----------------------------
+
+   procedure Export_Environment_Var (EV : String) is
+   begin
+      Exported_Var_Last := Exported_Var_Last + 1;
+      Exported_Environment_Vars (Exported_Var_Last) := new String'(EV);
+   end Export_Environment_Var;
+
+   ------------------
+   -- Find_Backend --
+   ------------------
+
+   function Find_Backend (PCS_Name : String) return Backend_Access is
+      S : aliased String := PCS_Name;
+      Backend : Backend_Access;
+   begin
+      Backend := All_Backends.Get (S'Unchecked_Access);
+      if Backend = null then
+         Write_Line ("'" & PCS_Name & "' is not a valid PCS.");
+         raise Usage_Error;
+      end if;
+
+      return Backend;
+   end Find_Backend;
+
+   ----------------------------------
+   -- Generate_All_Stubs_And_Skels --
+   ----------------------------------
+
+   procedure Generate_All_Stubs_And_Skels
    is
-      PID  : PID_Type;
+      PID     : Partition_Id;
+      Unit    : Unit_Id;
+      Uname   : Unit_Name_Type;
+   begin
 
-      procedure Update_Channel_Partition
-        (Channel_Partition : in out Channel_Partition_Type;
-         Partition         : in PID_Type;
-         Channel           : in CID_Type);
-      --  Link Channel into the list of partition channels. The head of
-      --  this list is First_Channel (Partitions) and the tail is
-      --  Last_Channel. Next elements are Next_Channel (Channels).
+      for J in ALIs.First .. ALIs.Last loop
+         Unit := ALIs.Table (J).Last_Unit;
 
-      procedure Update_Channel_Partition
-        (Channel_Partition : in out Channel_Partition_Type;
-         Partition         : in PID_Type;
-         Channel           : in CID_Type)
-      is
-         CID : CID_Type;
+         --  Create stub files. Create skel files as well when we have
+         --  to build the partition on which this unit is mapped.
+
+         if not Units.Table (Unit).Is_Generic
+           and then (Units.Table (Unit).RCI
+                     or else Units.Table (Unit).Shared_Passive)
+         then
+            Uname := Name (Units.Table (Unit).Uname);
+            PID   := Get_Partition_Id (Uname);
+
+            if PID /= No_Partition_Id
+              and then Partitions.Table (PID).To_Build
+              and then Partitions.Table (PID).Passive /= BTrue
+            then
+               if Debug_Mode then
+                  Message ("create caller and receiver stubs for", Uname);
+               end if;
+
+               Generate_Stub (J);
+               Generate_Skel (J, PID);
+
+            else
+               if Debug_Mode then
+                  Message ("create caller stubs for", Uname);
+               end if;
+
+               Generate_Stub (J);
+            end if;
+
+         end if;
+      end loop;
+   end Generate_All_Stubs_And_Skels;
+
+   -------------------------------------
+   -- Generate_Partition_Project_File --
+   -------------------------------------
+
+   procedure Generate_Partition_Project_File
+     (D : Directory_Name_Type;
+      P : Partition_Id := No_Partition_Id)
+   is
+      Prj_Fname  : File_Name_Type;
+      Prj_File   : File_Descriptor;
+
+   begin
+      Prj_Fname := Dir (D, Part_Prj_File_Name);
+      Create_File (Prj_File, Prj_Fname);
+      Set_Output (Prj_File);
+      Write_Str  ("project Partition extends all """);
+      Write_Str  (Project_File_Name.all);
+      Write_Line (""" is");
+      Write_Line ("   for Object_Dir use ""."";");
+
+      if P /= No_Partition_Id then
+         Write_Str  ("   for Exec_Dir use """);
+         declare
+            Exec_Dir : constant String :=
+                         Get_Name_String (Partitions.Table (P).Executable_Dir);
+         begin
+            if Exec_Dir'Length = 0
+              or else not Is_Absolute_Path (Exec_Dir)
+            then
+               --  Reach up to main directory from
+               --  dsa/partitions/<cfg>/<partition>
+               Write_Str ("../../../../");
+            end if;
+            Write_Str (Exec_Dir);
+         end;
+         Write_Line (""";");
+         Write_Line ("   package Builder is");
+         Write_Str  ("      for Executable (""partition.adb"") use """);
+         Write_Name (Partitions.Table (P).Name);
+         Write_Line (""";");
+         Write_Line ("   end Builder;");
+
+      else
+         Write_Line ("   --  Pseudo-partition project for RCI calling stubs");
+      end if;
+
+      Write_Line ("end Partition;");
+      Close (Prj_File);
+      Set_Standard_Output;
+   end Generate_Partition_Project_File;
+
+   -------------------
+   -- Generate_Skel --
+   -------------------
+
+   procedure Generate_Skel (A : ALI_Id; P : Partition_Id) is
+      Obsolete       : Boolean;
+      Full_Unit_File : File_Name_Type;
+      Full_ALI_File  : File_Name_Type;
+      Skel_Object    : File_Name_Type;
+      Skel_ALI       : File_Name_Type;
+      Arguments      : Argument_List (1 .. 3);
+      Part_Prj_Fname : File_Name_Type;
+      Directory      : Directory_Name_Type
+        renames Partitions.Table (P).Partition_Dir;
+
+   begin
+      Full_Unit_File := Units.Table (ALIs.Table (A).First_Unit).Sfile;
+      Full_ALI_File  := ALIs.Table (A).Afile;
+
+      --  Determination of skel ALI file name
+
+      Skel_ALI       := Dir (Directory, Strip_Directory (Full_ALI_File));
+      Skel_Object    := To_Ofile (Skel_ALI);
+
+      --  Do we need to generate the skel files
+
+      Obsolete := False;
+      if not Is_Regular_File (Skel_Object) then
+         if Verbose_Mode then
+            Write_Missing_File (Skel_Object);
+         end if;
+         Obsolete := True;
+      end if;
+
+      if not Obsolete
+        and then not Is_Regular_File (Skel_ALI)
+      then
+         if Verbose_Mode then
+            Write_Missing_File (Skel_ALI);
+         end if;
+         Obsolete := True;
+      end if;
+
+      if not Obsolete
+        and then File_Time_Stamp (Full_ALI_File) > File_Time_Stamp (Skel_ALI)
+      then
+         if Verbose_Mode then
+            Write_Stamp_Comparison (Full_ALI_File, Skel_ALI);
+         end if;
+         Obsolete := True;
+      end if;
+
+      if Obsolete then
+         if not Quiet_Mode then
+            Message
+              ("building", ALIs.Table (A).Uname,
+               "receiver stubs from", Normalize_CWD (Full_Unit_File));
+         end if;
+
+         Arguments (1) := Skel_Flag;
+
+         if Project_File_Name = null then
+            Arguments (2) := Object_Dir_Flag;
+            Arguments (3) := new String'(Get_Name_String (Directory));
+
+         else
+            Arguments (2) := Project_File_Flag;
+            Part_Prj_Fname := Dir (Directory, Part_Prj_File_Name);
+            Get_Name_String (Part_Prj_Fname);
+            Arguments (3) := new String'(Name_Buffer (1 .. Name_Len));
+         end if;
+
+         Compile (Full_Unit_File, Arguments, Fatal => False);
+
+         Free (Arguments (3));
+
+      elsif not Quiet_Mode then
+         Message ("  ", ALIs.Table (A).Uname, "receiver stubs is up to date");
+      end if;
+   end Generate_Skel;
+
+   -------------------------
+   -- Generate_Stamp_File --
+   -------------------------
+
+   procedure Generate_Stamp_File (P : Partition_Id) is
+      File    : File_Descriptor;
+      Current : Partition_Type renames Partitions.Table (P);
+
+   begin
+      Create_File (File, Dir (Current.Partition_Dir, Build_Stamp_File));
+      Set_Output  (File);
+      Write_Line (String (File_Time_Stamp (Configuration_File_Name)));
+      Write_Line (String (File_Time_Stamp (Current.Executable_File)));
+      Write_Line (String (File_Time_Stamp (Current.Most_Recent)));
+      Close (File);
+      Set_Standard_Output;
+   end Generate_Stamp_File;
+
+   ---------------------------
+   -- Generate_Starter_File --
+   ---------------------------
+
+   procedure Generate_Starter_File (Backend : Backend_Access)
+   is
+      procedure Generate_Boot_Server_Evaluation (P : Partition_Id);
+      procedure Generate_Host_Name_Evaluation   (P : Partition_Id);
+      procedure Generate_Executable_Invocation  (P : Partition_Id);
+
+      -------------------------------------
+      -- Generate_Boot_Server_Evaluation --
+      -------------------------------------
+
+      procedure Generate_Boot_Server_Evaluation (P : Partition_Id) is
+         L : Location_Id := Partitions.Table (P).First_Network_Loc;
 
       begin
-         Channel_Partition.My_Partition := Partition;
-         Channel_Partition.Next_Channel := Null_CID;
+         if L = No_Location_Id then
+            L := Default_First_Boot_Location;
+         end if;
 
-         CID := Partitions.Table (Partition).Last_Channel;
-         if CID = Null_CID then
-            Partitions.Table (Partition).First_Channel := Channel;
-            Partitions.Table (Partition).Last_Channel  := Channel;
+         if L = No_Location_Id then
+            Write_Str ("BOOT_LOCATION=tcp://`hostname`:");
+            Write_Str ("`echo 000$$ | sed 's,^.*\(...\),5\1,'`");
+            Write_Eol;
+
          else
-            if Channels.Table (CID).Lower.My_Partition = Partition then
-               Channels.Table (CID).Lower.Next_Channel := Channel;
-            else
-               Channels.Table (CID).Upper.Next_Channel := Channel;
-            end if;
-            Partitions.Table (Partition).Last_Channel := Channel;
+            Write_Str ("BOOT_LOCATION='");
+            loop
+               Write_Name (Locations.Table (L).Major);
+               Write_Str  ("://");
+               Write_Name (Locations.Table (L).Minor);
+               L := Locations.Table (L).Next_Location;
+               exit when L = No_Location_Id;
+               Write_Char (' ');
+            end loop;
+            Write_Str ("'");
+            Write_Eol;
          end if;
-      end Update_Channel_Partition;
+      end Generate_Boot_Server_Evaluation;
 
-   begin
-      if Debug_Mode then
-         Message ("add partition", Partition,
-                  "to channel", Channels.Table (To).Name);
-      end if;
-      PID := Get_PID (Partition);
-      if Channels.Table (To).Lower = Null_Channel_Partition then
-         Update_Channel_Partition (Channels.Table (To).Lower, PID, To);
-      elsif PID > Channels.Table (To).Lower.My_Partition then
-         Update_Channel_Partition (Channels.Table (To).Upper, PID, To);
-      else
-         Channels.Table (To).Upper := Channels.Table (To).Lower;
-         Update_Channel_Partition (Channels.Table (To).Lower, PID, To);
-      end if;
-   end Add_Channel_Partition;
+      ------------------------------------
+      -- Generate_Executable_Invocation --
+      ------------------------------------
 
-   -------------------
-   -- Add_Conf_Unit --
-   -------------------
+      procedure Generate_Executable_Invocation (P : Partition_Id) is
+         Ext_Quote : constant Character := '"';  -- "
+         Int_Quote : Character := ''';  -- '
+         Current   : Partition_Type renames Partitions.Table (P);
 
-   procedure Add_Conf_Unit
-     (CU : in CUnit_Name_Type;
-      To : in PID_Type) is
-   begin
-      if Get_PID (CU) = To then
-         return;
-      end if;
+      begin
 
-      if Debug_Mode then
-         Message ("configuring unit", CU,
-                  "on partition", Partitions.Table (To).Name);
-      end if;
+         --  For the main partition, the command should be
+         --    "<pn>" --boot_location "<bl>" <cline>
+         --  For other partitions, it should be
+         --    <rshcmd> <host> <rshopts> "<Exported_Vars> '<pn>' --detach ...
+         --         ... --boot_location '<bs>' <cline> &" ...
+         --         ... < /dev/null > /dev/null 2>&1
 
-      --  Mark this configured unit as already partitioned.
-      Set_PID (CU, To);
-
-      --  The same unit can be multiply declared especially if
-      --  this unit is a normal package.
-      CUnits.Increment_Last;
-      CUnits.Table (CUnits.Last).Partition   := To;
-      CUnits.Table (CUnits.Last).CUname      := CU;
-      CUnits.Table (CUnits.Last).My_ALI      := No_ALI_Id;
-      CUnits.Table (CUnits.Last).My_Unit     := No_Unit_Id;
-      CUnits.Table (CUnits.Last).Most_Recent := No_File;
-      CUnits.Table (CUnits.Last).Next        := Null_CUID;
-
-      --  Update partition single linked list of configured units.
-      if Partitions.Table (To).First_Unit = Null_CUID then
-         Partitions.Table (To).First_Unit := CUnits.Last;
-      else
-         CUnits.Table (Partitions.Table (To).Last_Unit).Next := CUnits.Last;
-      end if;
-      Partitions.Table (To).Last_Unit := CUnits.Last;
-   end Add_Conf_Unit;
-
-   ------------------
-   -- Add_Location --
-   ------------------
-
-   procedure Add_Location
-     (First : in out LID_Type;
-      Last  : in out LID_Type;
-      Major : in Name_Id;
-      Minor : in Name_Id)
-   is
-      LID : LID_Type;
-
-   begin
-      --  Add a new element in the location table and fill it with the
-      --  protocol name (major) and the protocol data (minor).
-
-      Locations.Increment_Last;
-      LID := Locations.Last;
-      Locations.Table (LID).Major := Major;
-      Locations.Table (LID).Minor := Minor;
-      Locations.Table (LID).Next  := Null_LID;
-
-      --  Link this new location to the end of the partition location
-      --  list.
-
-      if First = Null_LID then
-         First := LID;
-      else
-         Locations.Table (Last).Next := LID;
-      end if;
-      Last := LID;
-   end Add_Location;
-
-   --------------------
-   -- Already_Loaded --
-   --------------------
-
-   function Already_Loaded (Unit : Name_Id) return Boolean is
-   begin
-      Get_Name_String (Unit);
-      Name_Len := Name_Len + 1;
-      Name_Buffer (Name_Len) := '%';
-      Name_Len := Name_Len + 1;
-      Name_Buffer (Name_Len) := 'b';
-
-      --  If this unit is already loaded then its info is set to its
-      --  unit entry.
-
-      if Get_Name_Table_Info (Name_Find) /= 0 then
-         return True;
-      end if;
-
-      --  If this unit has only a spec, check again.
-
-      Name_Buffer (Name_Len) := 's';
-      if Get_Name_Table_Info (Name_Find) /= 0 then
-         return True;
-      end if;
-      return False;
-   end Already_Loaded;
-
-   ----------
-   -- Back --
-   ----------
-
-   procedure Back is
-      Node : Node_Id;
-      HID  : HID_Type;
-
-   begin
-      First_Configuration_Declaration (Configuration_Node, Node);
-      while Node /= Null_Node loop
-         if Is_Variable (Node) then
-            Build_New_Variable (Variable_Id (Node));
-
-         elsif Is_Configuration (Node) then
-            Configuration := Get_Node_Name (Node);
-
-         elsif Is_Type (Node) then
-            Set_Type_Attribute (Type_Id (Node));
-
-         elsif Is_Statement (Node) then
-            Set_Pragma_Statement
-              (Get_Subprogram_Call (Statement_Id (Node)));
-
+         if P = Main_Partition then
+            Int_Quote := '"';  -- "
          end if;
-         Next_Configuration_Declaration (Node);
-      end loop;
 
-      for P in Partitions.First .. Partitions.Last loop
-         HID := Partitions.Table (P).Host;
-         if HID /= Null_HID
-           and then not Hosts.Table (HID).Static
-           and then Hosts.Table (HID).Import = Ada_Import then
-            Add_Conf_Unit (Hosts.Table (HID).External, P);
+         if P /= Main_Partition then
+            Write_Name (Get_Rsh_Command);
+            Write_Str  (" $");
+            Write_Name (Current.Name);
+            Write_Str  ("_HOST ");
+            Write_Name (Get_Rsh_Options);
+            Write_Char (' ');
+            Write_Char (Ext_Quote);
+
+            --  Export environment vars for remote partitions
+            Write_Str (Get_Environment_Vars_Command);
          end if;
-      end loop;
 
-      if Main_Partition = Null_PID then
-         Write_SLOC (Node_Id (Configuration_Node));
-         Write_Str  ("non-dist. app. main subprogram has not been declared");
+         Write_Name (To_Absolute_File (Current.Executable_File));
+         Write_Str  (" --boot_location ");
+         Write_Char (Int_Quote);
+         Write_Str  ("$BOOT_LOCATION");
+         Write_Char (Int_Quote);
+         Write_Name (Current.Command_Line);
+
+         if P /= Main_Partition then
+            Write_Name (Get_Detach_Flag (Backend));
+            Write_Str  (" & ");
+            Write_Char (Ext_Quote);
+            Write_Str  (" < /dev/null > /dev/null 2>&1");
+         end if;
+
          Write_Eol;
-         raise Parsing_Error;
-      end if;
-   end Back;
+      end Generate_Executable_Invocation;
 
-   -----------------------
-   -- Build_New_Channel --
-   -----------------------
+      -----------------------------------
+      -- Generate_Host_Name_Evaluation --
+      -----------------------------------
 
-   procedure Build_New_Channel
-     (Channel   : in Variable_Id)
-   is
-      Channel_Name   : Name_Id;
-      Partition_Name : Name_Id;
-      Partition_Node : Variable_Id;
-      Component_Node : Component_Id;
-      Channel_ID     : CID_Type;
+      procedure Generate_Host_Name_Evaluation (P : Partition_Id) is
+         H : Name_Id;
 
-   begin
-      Channel_Name := Get_Variable_Name (Channel);
-
-      --  Create a new entry in Channels.Table.
-
-      Create_Channel (Channel_Name, Node_Id (Channel), Channel_ID);
-
-      --  Scan Channel_Name partition pair and Channel_Name attributes.
-
-      First_Variable_Component (Channel, Component_Node);
-      while Component_Node /= Null_Component loop
-
-         --  This is a partition (upper or lower).
-
-         if Get_Attribute_Kind (Component_Node) = Attribute_Unknown then
-            if Is_Component_Initialized (Component_Node) then
-
-               --  Append this partition to the pair.
-               Partition_Node := Get_Component_Value (Component_Node);
-               Partition_Name := Get_Variable_Name (Partition_Node);
-               Add_Channel_Partition (Partition_Name, Channel_ID);
-
-            end if;
-         else
-            Set_Channel_Attribute
-              (Attribute_Id (Component_Node), Channel_ID);
-         end if;
-
-         Next_Variable_Component (Component_Node);
-
-      end loop;
-   end Build_New_Channel;
-
-   --------------------
-   -- Build_New_Host --
-   --------------------
-
-   procedure Build_New_Host
-     (Subprogram : in Subprogram_Id;
-      Host_Entry : out HID_Type)
-   is
-      Host : HID_Type;
-      Name : Name_Id;
-      Node : Node_Id;
-
-   begin
-      Node := Node_Id (Subprogram);
-      Name := Get_Node_Name (Node);
-      Host := Get_HID (Name);
-
-      if Host = Null_HID then
-         Create_Host (Name, Node, Host);
-         Hosts.Table (Host).Static      := False;
-         Hosts.Table (Host).Import      := Ada_Import;
-         Hosts.Table (Host).External    := Name;
-      end if;
-
-      Host_Entry := Host;
-   end Build_New_Host;
-
-   -------------------------
-   -- Build_New_Partition --
-   -------------------------
-
-   procedure Build_New_Partition
-     (Partition : in Variable_Id)
-   is
-      Partition_Name : Name_Id;
-      Ada_Unit_Name  : Name_Id;
-      Ada_Unit_Node  : Variable_Id;
-      Component_Node : Component_Id;
-      Partition_ID   : PID_Type;
-
-   begin
-      Partition_Name := Get_Variable_Name (Partition);
-
-      --  Create a new entry into Partitions.Table.
-
-      Create_Partition (Partition_Name, Node_Id (Partition), Partition_ID);
-
-      --  Scan Partition_Name ada unit list and Partition_Name attributes.
-
-      First_Variable_Component (Partition, Component_Node);
-      while Component_Node /= Null_Component loop
-
-         if Get_Attribute_Kind (Component_Node) = Attribute_Unknown then
-
-            --  This is a configured ada unit.
-
-            --  Append this unit to the partition list.
-            Ada_Unit_Node := Get_Component_Value (Component_Node);
-            Ada_Unit_Name := Get_Variable_Name (Ada_Unit_Node);
-            Add_Conf_Unit (Ada_Unit_Name, Partition_ID);
+      begin
+         Write_Image (H, Partitions.Table (P).Host, P);
+         if No (H) then
+            Write_Str  ("echo '");
+            Write_Name (Partitions.Table (P).Name);
+            Write_Str  (" host: '");
+            Write_Eol;
+            Write_Str  ("read ");
+            Write_Name (Partitions.Table (P).Name);
+            Write_Str  ("_HOST");
+            Write_Eol;
 
          else
-
-            --  This information is a partition attribute.
-
-            Set_Partition_Attribute
-              (Attribute_Id (Component_Node), Partition_ID);
-
+            Write_Name (Partitions.Table (P).Name);
+            Write_Str  ("_HOST=");
+            Write_Name (H);
+            Write_Eol;
          end if;
+      end Generate_Host_Name_Evaluation;
 
-         Next_Variable_Component (Component_Node);
-
-      end loop;
-   end Build_New_Partition;
-
-   ------------------------
-   -- Build_New_Variable --
-   ------------------------
-
-   procedure Build_New_Variable
-     (Variable : in Variable_Id)
-   is
-      Var_Type : Type_Id;
-      Pre_Type : Predefined_Type;
+      File      : File_Descriptor;
+      Exec_File : File_Name_Type;
+      Success   : Boolean;
 
    begin
-      Var_Type := Get_Variable_Type (Variable);
-      Pre_Type := Get_Type_Kind (Var_Type);
-      case Pre_Type is
-         when Pre_Type_Partition =>
-            Build_New_Partition (Variable);
+      --  If all the partitions are not to build then do not build the
+      --  launcher partition.
 
-         when Pre_Type_Channel   =>
-            Build_New_Channel (Variable);
-
-         when others =>
-            null;
-
-      end case;
-   end Build_New_Variable;
-
-   ----------------------
-   -- Compute_Checksum --
-   ----------------------
-
-   procedure Compute_Checksum
-     (P : in PID_Type;
-      F : in File_Name_Type)
-   is
-      S : Int;
-
-   begin
-      S := Get_Name_Table_Info (F);
-      if S = 0 then
+      if not Partitions.Table (Default_Partition_Id).To_Build then
          return;
       end if;
-      Partitions.Table (P).Global_Checksum :=
-        Partitions.Table (P).Global_Checksum
-        xor Source.Table (Source_Id (S)).Checksum;
-   end Compute_Checksum;
 
-   --------------------
-   -- Create_Channel --
-   --------------------
-
-   procedure Create_Channel
-     (Name : in  Channel_Name_Type;
-      Node : in  Node_Id;
-      CID  : out CID_Type)
-   is
-      Channel : CID_Type;
-
-   begin
-      if Debug_Mode then
-         Message ("create channel", Name);
+      if Default_Starter /= None_Import
+        and then not Quiet_Mode
+      then
+         Message ("generating starter", Main_Subprogram);
       end if;
 
-      Channels.Increment_Last;
-      Channel := Channels.Last;
-      Set_CID (Name, Channel);
-      Channels.Table (Channel).Name            := Name;
-      Channels.Table (Channel).Node            := Node;
-      Channels.Table (Channel).Lower           := Null_Channel_Partition;
-      Channels.Table (Channel).Upper           := Null_Channel_Partition;
-      Channels.Table (Channel).Filter          := No_Filter_Name;
-      CID := Channel;
-   end Create_Channel;
+      case Default_Starter is
+         when Shell_Import =>
+            Delete_File (Main_Subprogram);
+            Create_File (File, Main_Subprogram, True);
+            Set_Output  (File);
+            Write_Line  ("#! /bin/sh");
+            Write_Line  ("PATH=/usr/ucb:${PATH}");
 
-   -----------------
-   -- Create_Host --
-   -----------------
+            for J in Partitions.First + 1 .. Partitions.Last loop
+               if J /= Main_Partition then
+                  Generate_Host_Name_Evaluation (J);
+               end if;
+            end loop;
 
-   procedure Create_Host
-     (Name : in Host_Name_Type;
-      Node : in Node_Id;
-      HID  : out HID_Type)
-   is
-      Host : HID_Type;
+            Generate_Boot_Server_Evaluation (Main_Partition);
+            for J in Partitions.First + 1 .. Partitions.Last loop
+               if J /= Main_Partition then
+                  Generate_Executable_Invocation (J);
+               end if;
+            end loop;
+            Generate_Executable_Invocation (Main_Partition);
+            Close (File);
+            Set_Standard_Output;
 
-   begin
-      if Debug_Mode then
-         Message ("create host", Name);
-      end if;
+         when Ada_Import =>
+            Exec_File := Partitions.Table (Main_Partition).Executable_File;
+            Copy_File
+              (Get_Name_String (Exec_File),
+               Get_Name_String (Main_Subprogram & Exe_Suffix_Id),
+               Success,
+               Overwrite,
+               Full);
 
-      Hosts.Increment_Last;
-      Host := Hosts.Last;
-      Hosts.Table (Host).Name            := Name;
-      Hosts.Table (Host).Node            := Node;
-      Hosts.Table (Host).Static          := True;
-      Hosts.Table (Host).Import          := None_Import;
-      Hosts.Table (Host).External        := No_Name;
-      Hosts.Table (Host).Most_Recent     := No_File;
-      Set_HID (Name, Host);
-      HID := Host;
-   end Create_Host;
+         when None_Import =>
+            null;
+      end case;
+   end Generate_Starter_File;
 
-   ----------------------
-   -- Create_Partition --
-   ----------------------
+   -------------------
+   -- Generate_Stub --
+   -------------------
 
-   procedure Create_Partition
-     (Name : in Partition_Name_Type;
-      Node : in Node_Id;
-      PID  : out PID_Type)
-   is
-      Partition : PID_Type;
-
-   begin
-      if Debug_Mode then
-         Message ("create partition", Name);
-      end if;
-
-      Partitions.Increment_Last;
-      Partition := Partitions.Last;
-      Set_PID (Name, Partition);
-
-      --  Initialize through an aggregate in order to set of the
-      --  fields.
-
-      Partitions.Table (Partition) :=
-        (Name            => Name,
-         Node            => Node,
-         Host            => Null_HID,
-         Directory       => No_Directory,
-         Command_Line    => No_Command_Line,
-         Main_Subprogram => No_Name,
-         Termination     => Unknown_Termination,
-         Reconnection    => Unknown_Reconnection,
-         Task_Pool       => No_Task_Pool,
-         Priority        => No_Priority,
-         RCI_Or_RACW     => False,
-         Use_Tasking     => False,
-         Passive         => Bunknown,
-         Filter          => No_Filter_Name,
-         Executable_File => No_Name,
-         Partition_Dir   => No_Name,
-         First_Unit      => Null_CUID,
-         Last_Unit       => Null_CUID,
-         First_Channel   => Null_CID,
-         Last_Channel    => Null_CID,
-         F_Net_Location  => Null_LID,
-         L_Net_Location  => Null_LID,
-         Mem_Location    => Null_LID,
-         To_Build        => True,
-         Most_Recent     => No_File,
-         Global_Checksum => 0);
-      PID := Partition;
-   end Create_Partition;
-
-   -----------------------
-   -- Get_Absolute_Exec --
-   -----------------------
-
-   function Get_Absolute_Exec (P : PID_Type) return Name_Id is
-      S : Name_Id;
-      N : Name_Id renames Partitions.Table (P).Name;
+   procedure Generate_Stub (A : ALI_Id) is
+      Obsolete         : Boolean;
+      Full_Unit_File   : File_Name_Type;
+      Full_ALI_File    : File_Name_Type;
+      Full_ALI_Base    : File_Name_Type;
+      Stub_Object      : File_Name_Type;
+      Stub_ALI_Base    : File_Name_Type;
+      Stub_ALI         : File_Name_Type;
+      Unit             : Unit_Id := ALIs.Table (A).Last_Unit;
+      Arguments        : Argument_List (1 .. 3);
+      Part_Prj_Fname   : File_Name_Type := No_File_Name;
 
    begin
-      S := Partitions.Table (P).Directory;
-      if S = No_Directory then
-         S := Partitions.Table (Default_Partition).Directory;
+      if Units.Table (Unit).Shared_Passive then
+         Unit := ALIs.Table (A).First_Unit;
       end if;
 
-      if S = No_Directory then
+      Full_Unit_File := Units.Table (Unit).Sfile;
+      Full_ALI_File  := ALIs.Table (A).Afile;
+      Full_ALI_Base  := Strip_Directory (Full_ALI_File);
 
-         --  No storage directory means current directory.
-         return Dir (PWD_Id, N & Exe_Suffix);
+      --  Determination of stub ALI file name
 
-      else
-         Get_Name_String (S);
-         if Name_Buffer (1) /= Directory_Separator and then
-           Name_Buffer (1) /= '/' then
+      --  Note that the base name the compiler will use for the stubs ALI
+      --  and object files (which cannot be overridden) may be different from
+      --  thos of the full application  (because under some non-standard
+      --  naming convention, the base name of the spec might be different
+      --  from the base name of the body, which is also the base name of the
+      --  monolithic ALI). In that case, the output files are renamed after
+      --  compilation.
 
-            --  The storage directory is relative.
+      Stub_ALI_Base    := To_Afile (Strip_Directory (Full_Unit_File));
+      Stub_ALI         := Dir (Stub_Dir_Name, Stub_ALI_Base);
+      Stub_Object      := To_Ofile (Stub_ALI);
 
-            return Dir (PWD_Id, S, N & Exe_Suffix);
+      --  Do we need to regenerate the caller stub and its ali?
 
+      Obsolete := False;
+      if not Is_Regular_File (Stub_Object) then
+         if Verbose_Mode then
+            Write_Missing_File (Stub_Object);
+         end if;
+         Obsolete := True;
+      end if;
+
+      if not Obsolete
+        and then not Is_Regular_File (Stub_ALI)
+      then
+         if Verbose_Mode then
+            Write_Missing_File (Stub_ALI);
+         end if;
+         Obsolete := True;
+      end if;
+
+      if not Obsolete
+        and then File_Time_Stamp (Full_ALI_File) > File_Time_Stamp (Stub_ALI)
+      then
+         if Verbose_Mode then
+            Write_Stamp_Comparison (Full_ALI_File, Stub_ALI);
+         end if;
+         Obsolete := True;
+      end if;
+
+      if Obsolete then
+         if not Quiet_Mode then
+            Message
+              ("building", ALIs.Table (A).Uname,
+               "caller stubs from", Normalize_CWD (Full_Unit_File));
          end if;
 
-         --  Write the directory as is.
+         Arguments (1) := Stub_Flag;
 
-         return Dir (S, N & Exe_Suffix);
+         if Project_File_Name = null then
+            Arguments (2) := Object_Dir_Flag;
+            Arguments (3) := Stub_Dir;
 
+         else
+            Arguments (2)  := Project_File_Flag;
+            Part_Prj_Fname := Dir (Stub_Dir, Part_Prj_File_Name);
+            Get_Name_String (Part_Prj_Fname);
+            Arguments (3)  := new String'(Name_Buffer (1 .. Name_Len));
+         end if;
+
+         Compile (Full_Unit_File, Arguments, Fatal => False);
+
+         --  Now rename output files if required (see comments above)
+
+         if Full_ALI_Base /= Stub_ALI_Base then
+            declare
+               Final_ALI : constant File_Name_Type :=
+                             Dir (Stub_Dir_Name, Full_ALI_Base);
+               Final_Object : constant File_Name_Type := To_Ofile (Final_ALI);
+
+               procedure Do_Rename (Src, Target : File_Name_Type);
+               --  Call Rename_File (Src, Target), also outputting a message
+               --  if in debug mode.
+
+               procedure Do_Rename (Src, Target : File_Name_Type) is
+               begin
+                  if Debug_Mode then
+                     Message ("renaming", Src, "to", Target);
+                  end if;
+                  Delete_File (Target);
+                  Rename_File (Src, Target);
+               end Do_Rename;
+
+            begin
+               Do_Rename (Stub_ALI,    Final_ALI);
+               Do_Rename (Stub_Object, Final_Object);
+            end;
+         end if;
+
+         if Present (Part_Prj_Fname) then
+            Free (Arguments (3));
+         end if;
+
+      elsif not Quiet_Mode then
+         Message ("  ", ALIs.Table (A).Uname, "caller stubs is up to date");
       end if;
-   end Get_Absolute_Exec;
+   end Generate_Stub;
+
+   ----------------------------------
+   -- Get_Environment_Vars_Command --
+   ----------------------------------
+
+   function Get_Environment_Vars_Command return String is
+   begin
+      --  Clear the name buffer
+
+      Name_Len := 0;
+
+      for I in 1 .. Exported_Var_Last loop
+         Add_Str_To_Name_Buffer
+           (Exported_Environment_Vars (I).all
+              & "=$" & Exported_Environment_Vars (I).all & ' ');
+      end loop;
+
+      return Get_Name_String (Name_Find);
+   end Get_Environment_Vars_Command;
+
+   ----------
+   -- Hash --
+   ----------
+
+   function Hash (S : String_Ptr) return Header_Num is
+      function Hash is new GNAT.HTable.Hash (Header_Num);
+   begin
+      if S = null then
+         return Header_Num'First;
+      end if;
+      return Hash (S.all);
+   end Hash;
 
    ----------------
-   -- Get_ALI_Id --
+   -- Initialize --
    ----------------
 
-   function Get_ALI_Id (N : Name_Id) return ALI_Id is
-      Info : Int;
-
+   procedure Initialize is
    begin
-      Info := Get_Name_Table_Info (N);
-      case Info is
-         when Int (ALI_Id'First) .. Int (ALI_Id'Last) =>
-            null;
-         when others =>
-            Info := Int (No_ALI_Id);
-      end case;
-      return ALI_Id (Info);
-   end Get_ALI_Id;
+      Build_Stamp_File    := Id ("glade.sta");
+      Partition_Main_File := Id ("partition");
+      Partition_Main_Name := Id ("Partition");
+   end Initialize;
 
-   -------------
-   -- Get_CID --
-   -------------
+   -------------------------
+   -- Prepare_Directories --
+   -------------------------
 
-   function Get_CID (N : Name_Id) return CID_Type is
-      Info : Int;
-
+   procedure Prepare_Directories
+   is
+      Afile   : File_Name_Type;
+      Unit    : Unit_Id;
+      Uname   : Unit_Name_Type;
+      Current : Partition_Type;
    begin
-      Info := Get_Name_Table_Info (N);
-      if Info in Int (CID_Type'First) .. Int (CID_Type'Last) then
-         return CID_Type (Info);
-      else
-         return Null_CID;
+      if Project_File_Name /= null then
+         Generate_Partition_Project_File (Stub_Dir_Name);
       end if;
-   end Get_CID;
+
+      for J in Partitions.First + 1 .. Partitions.Last loop
+         Current := Partitions.Table (J);
+         if Current.To_Build and then Current.Passive /= BTrue then
+
+            --  Create directories in which resp skels, main partition
+            --  unit, elaboration unit and executables are stored
+
+            Create_Dir (Current.Partition_Dir);
+
+            if Present (Current.Executable_Dir) then
+               Get_Name_String (Current.Executable_Dir);
+               Set_Str_To_Name_Buffer
+                 (Normalize_Pathname (Name_Buffer (1 .. Name_Len)));
+               Current.Executable_Dir := Name_Find;
+               Create_Dir (Current.Executable_Dir);
+            end if;
+
+            if Project_File_Name /= null then
+               Generate_Partition_Project_File (Current.Partition_Dir, J);
+            end if;
+
+            for K in ALIs.First .. ALIs.Last loop
+               Afile := ALIs.Table (K).Afile;
+               Unit  := ALIs.Table (K).Last_Unit;
+               Uname := Units.Table (Unit).Uname;
+
+               --  Remove possible copies of unit object
+
+               if (not Units.Table (Unit).RCI
+                   and then not Units.Table (Unit).Shared_Passive)
+                 or else Get_Partition_Id (Uname) /= J
+               then
+                  Afile := Strip_Directory (Afile);
+                  Afile := Dir (Current.Partition_Dir, Afile);
+                  Delete_File (Afile);
+                  Delete_File (To_Ofile (Afile));
+               end if;
+            end loop;
+         end if;
+      end loop;
+   end Prepare_Directories;
+
+   -----------------------
+   -- Rebuild_Partition --
+   -----------------------
+
+   function Rebuild_Partition (P : Partition_Id) return Boolean is
+      Current     : Partition_Type renames Partitions.Table (P);
+      Executable  : File_Name_Type renames Current.Executable_File;
+      Most_Recent : File_Name_Type renames Current.Most_Recent;
+      Stamp_File  : File_Name_Type;
+
+      First  : Text_Ptr;
+      Last   : Text_Ptr;
+      Buffer : Text_Buffer_Ptr;
+
+      function Read_Time_Stamp return Time_Stamp_Type;
+
+      ---------------------
+      -- Read_Time_Stamp --
+      ---------------------
+
+      function Read_Time_Stamp return Time_Stamp_Type is
+         S : Time_Stamp_Type;
+
+      begin
+         for I in S'Range loop
+            if Buffer (First) not in '0' .. '9' then
+               return Dummy_Time_Stamp;
+            end if;
+            S (I) := Buffer (First);
+            First := First + 1;
+         end loop;
+
+         while Buffer (First) = ASCII.LF
+           or else Buffer (First) = ASCII.CR
+         loop
+            First := First + 1;
+         end loop;
+
+         return S;
+      end Read_Time_Stamp;
+
+      Old_Stamp : Time_Stamp_Type;
+      New_Stamp : Time_Stamp_Type;
+
+   begin
+      --  Check that executable exists and is up to date
+
+      if not Is_Regular_File (Executable) then
+         return True;
+      end if;
+
+      if File_Time_Stamp (Most_Recent) > File_Time_Stamp (Executable) then
+         return True;
+      end if;
+
+      --  Check that stamp file exists
+
+      Stamp_File := Dir (Partitions.Table (P).Partition_Dir, Build_Stamp_File);
+      if not Is_Regular_File (Stamp_File) then
+         return True;
+      end if;
+
+      --  Check stamps from stamp file corresponds to the current ones.
+
+      Read_File (Stamp_File, First, Last, Buffer);
+
+      --  Check Configuration File Stamp
+
+      Old_Stamp := Read_Time_Stamp;
+      New_Stamp := File_Time_Stamp (Configuration_File_Name);
+
+      if Old_Stamp /= New_Stamp then
+         return True;
+      end if;
+
+      --  Check Executable File Stamp
+
+      Old_Stamp := Read_Time_Stamp;
+      New_Stamp := File_Time_Stamp (Executable);
+
+      if Old_Stamp /= New_Stamp then
+         return True;
+      end if;
+
+      --  Check Most Recent Object File Stamp
+
+      Old_Stamp := Read_Time_Stamp;
+      New_Stamp := File_Time_Stamp (Most_Recent);
+
+      if Old_Stamp /= New_Stamp then
+         return True;
+      end if;
+
+      return False;
+   end Rebuild_Partition;
 
    ----------------------
-   -- Get_Command_Line --
+   -- Register_Backend --
    ----------------------
 
-   function Get_Command_Line (P : PID_Type) return Command_Line_Type is
-      Cmd : Command_Line_Type;
-
+   procedure Register_Backend (PCS_Name : String; The_Backend : Backend_Access)
+   is
    begin
-      Cmd := Partitions.Table (P).Command_Line;
-      if Cmd = No_Command_Line then
-         Cmd := Partitions.Table (Default_Partition).Command_Line;
-      end if;
+      All_Backends.Set (new String'(PCS_Name), The_Backend);
+   end Register_Backend;
 
-      return Cmd;
-   end Get_Command_Line;
+   --------------------------
+   -- Register_Casing_Rule --
+   --------------------------
 
-   --------------
-   -- Get_CUID --
-   --------------
-
-   function Get_CUID (N : Name_Id) return CUID_Type is
-      Info : Int;
-
+   procedure Register_Casing_Rule (S : String) is
    begin
-      Info := Get_Name_Table_Info (N);
-      if Info in Int (CUID_Type'First) .. Int (CUID_Type'Last) then
-         return CUID_Type (Info);
-      else
-         return Null_CUID;
-      end if;
-   end Get_CUID;
-
-   ---------------------
-   -- Get_Directory --
-   ---------------------
-
-   function Get_Directory (P : PID_Type) return Directory_Name_Type is
-      S : Directory_Name_Type;
-
-   begin
-      S := Partitions.Table (P).Directory;
-      if S = No_Directory then
-         S := Partitions.Table (Default_Partition).Directory;
-      end if;
-      return S;
-   end Get_Directory;
+      Rules_Last := Rules_Last + 1;
+      Rules (Rules_Last).Size := S'Length;
+      Rules (Rules_Last).Into := new String'(S);
+      Rules (Rules_Last).From := new String'(S);
+      To_Lower (Rules (Rules_Last).From.all);
+   end Register_Casing_Rule;
 
    ----------------
-   -- Get_Filter --
+   -- Write_Call --
    ----------------
 
-   function Get_Filter (C : CID_Type) return Name_Id is
-      F : Name_Id;
+   procedure Write_Call
+     (SP : Unit_Name_Type;
+      N1 : Name_Id := No_Name;
+      S1 : String  := No_Str;
+      N2 : Name_Id := No_Name;
+      S2 : String  := No_Str;
+      N3 : Name_Id := No_Name;
+      S3 : String  := No_Str)
+   is
+      Max_String_Length : constant := 64;
+      N_Params          : Integer  := 0;
+
+      procedure Write_Parameter (P : String);
+      procedure Write_Separator;
+
+      ---------------------
+      -- Write_Parameter --
+      ---------------------
+
+      procedure Write_Parameter (P : String) is
+         F : Natural := P'First;
+         L : Natural := P'Last;
+
+      begin
+         if P (F) /= '"' then --  "
+            Write_Str (P);
+            return;
+         end if;
+         F := F + 1;
+         for J in 1 .. (P'Length - 2) / Max_String_Length loop
+            L := F + Max_String_Length - 1;
+            Write_Char ('"'); --  "
+            Write_Str  (P (F .. L));
+            Write_Line (""" &");
+            Write_Indentation;
+            F := L + 1;
+         end loop;
+         Write_Char ('"'); --  "
+         Write_Str  (P (F .. P'Last));
+      end Write_Parameter;
+
+      ---------------------
+      -- Write_Separator --
+      ---------------------
+
+      procedure Write_Separator is
+      begin
+         N_Params := N_Params + 1;
+         if N_Params = 1 then
+            Write_Eol;
+            Increment_Indentation;
+            Write_Indentation (-1);
+            Write_Str ("(");
+         else
+            Write_Str (",");
+            Write_Eol;
+            Write_Indentation;
+         end if;
+      end Write_Separator;
 
    begin
-      F := Channels.Table (C).Filter;
-      if F = No_Filter_Name then
-         F := Channels.Table (Default_Channel).Filter;
+      Write_Indentation;
+      Write_Name (SP);
+      if Present (N1) then
+         Write_Separator;
+         Write_Parameter (Get_Name_String (N1));
       end if;
-      return F;
-   end Get_Filter;
+      if S1 /= No_Str then
+         Write_Separator;
+         Write_Parameter (S1);
+      end if;
+      if Present (N2) then
+         Write_Separator;
+         Write_Parameter (Get_Name_String (N2));
+      end if;
+      if S2 /= No_Str then
+         Write_Separator;
+         Write_Parameter (S2);
+      end if;
+      if Present (N3) then
+         Write_Separator;
+         Write_Parameter (Get_Name_String (N3));
+      end if;
+      if S3 /= No_Str then
+         Write_Separator;
+         Write_Parameter (S3);
+      end if;
+      if N_Params /= 0 then
+         Write_Str (")");
+         Decrement_Indentation;
+      end if;
+      Write_Str (";");
+      Write_Eol;
+   end Write_Call;
 
-   ----------------
-   -- Get_Filter --
-   ----------------
+   -----------------
+   -- Write_Image --
+   -----------------
 
-   function Get_Filter (P : PID_Type) return Name_Id is
-      F : Name_Id;
-
+   procedure Write_Image (I : out Name_Id; H : Host_Id; P : Partition_Id) is
    begin
-      F := Partitions.Table (P).Filter;
-      if F = No_Filter_Name then
-         F := Partitions.Table (Default_Partition).Filter;
-      end if;
-      return F;
-   end Get_Filter;
-
-   -------------
-   -- Get_HID --
-   -------------
-
-   function Get_HID (N : Name_Id) return HID_Type is
-      Info : Int;
-
-   begin
-      Info := Get_Name_Table_Info (N);
-      if Info in Int (HID_Type'First) .. Int (HID_Type'Last) then
-         return HID_Type (Info);
-      else
-         return Null_HID;
-      end if;
-   end Get_HID;
-
-   --------------
-   -- Get_Host --
-   --------------
-
-   function Get_Host (P : PID_Type) return Name_Id is
-      H : HID_Type;
-
-   begin
-      H := Partitions.Table (P).Host;
-      if H = Null_HID then
-         H := Partitions.Table (Default_Partition).Host;
-      end if;
-
-      if H /= Null_HID then
+      if H /= No_Host_Id then
          if not Hosts.Table (H).Static then
             if Hosts.Table (H).Import = Shell_Import then
                Name_Len := 0;
@@ -750,1414 +999,55 @@ package body XE_Back is
                Add_Char_To_Name_Buffer (' ');
                Get_Name_String_And_Append (Partitions.Table (P).Name);
                Add_Str_To_Name_Buffer ("`""");
-               return Name_Find;
+               I := Name_Find;
 
             elsif Hosts.Table (H).Import = Ada_Import then
                Get_Name_String (Hosts.Table (H).External);
                Add_Char_To_Name_Buffer ('(');
                Get_Name_String_And_Append (Partitions.Table (P).Name);
                Add_Char_To_Name_Buffer (')');
-               return Name_Find;
+               I := Name_Find;
+
+            else
+               raise Parsing_Error;
             end if;
-            raise Parsing_Error;
 
          else
             Name_Len := 0;
             Add_Char_To_Name_Buffer ('"'); -- "
             Get_Name_String_And_Append (Hosts.Table (H).Name);
             Add_Char_To_Name_Buffer ('"'); -- "
-            return Name_Find;
+            I := Name_Find;
          end if;
 
       else
-         return No_Name;
+         I := No_Name;
       end if;
-   end Get_Host;
-
-   -----------------------
-   -- Get_Internal_Dir --
-   -----------------------
-
-   function Get_Internal_Dir (P : PID_Type) return File_Name_Type is
-   begin
-      return Dir (DSA_Dir, Configuration, Partitions.Table (P).Name);
-   end Get_Internal_Dir;
-
-   ---------------------
-   -- Get_RCI_Or_RACW --
-   ---------------------
-
-   function Get_RCI_Or_RACW (P : PID_Type) return Boolean is
-   begin
-      return Partitions.Table (P).RCI_Or_RACW;
-   end Get_RCI_Or_RACW;
-
-   -------------------------
-   -- Get_Main_Subprogram --
-   -------------------------
-
-   function Get_Main_Subprogram (P : PID_Type) return Main_Subprogram_Type is
-      Main : Main_Subprogram_Type;
-
-   begin
-      Main := Partitions.Table (P).Main_Subprogram;
-      if Main = No_Main_Subprogram then
-         Main := Partitions.Table (Default_Partition).Main_Subprogram;
-      end if;
-      return Main;
-   end Get_Main_Subprogram;
-
-   ----------------
-   -- Get_Parent --
-   ----------------
-
-   function Get_Parent (N : Name_Id) return Name_Id is
-   begin
-      Get_Name_String (N);
-      pragma Assert (Name_Len > 0 and then Name_Buffer (1) /= '.');
-      for Index in reverse 1 .. Name_Len loop
-         if Name_Buffer (Index) = '.' then
-            Name_Len := Index - 1;
-            return Name_Find;
-         end if;
-      end loop;
-      return No_Name;
-   end Get_Parent;
-
-   -----------------
-   -- Get_Passive --
-   -----------------
-
-   function Get_Passive (P : PID_Type) return Boolean_Type is
-      Passive : Boolean_Type;
-
-   begin
-      Passive := Partitions.Table (P).Passive;
-      if Passive = Bunknown then
-         Passive := Partitions.Table (Default_Partition).Passive;
-      end if;
-      return Passive;
-   end Get_Passive;
-
-   -------------
-   -- Get_PID --
-   -------------
-
-   function Get_PID (N : Name_Id) return PID_Type is
-      Info : Int;
-
-   begin
-      Info := Get_Name_Table_Info (N);
-      if Info in Int (PID_Type'First) .. Int (PID_Type'Last) then
-         return PID_Type (Info);
-      else
-         return Null_PID;
-      end if;
-   end Get_PID;
-
-   ----------------------
-   -- Get_Reconnection --
-   ----------------------
-
-   function Get_Priority (P : PID_Type) return Priority_Type is
-      Priority : Priority_Type;
-
-   begin
-      Priority := Partitions.Table (P).Priority;
-      if Priority = No_Priority then
-         Priority := Partitions.Table (Default_Partition).Priority;
-      end if;
-      return Priority;
-   end Get_Priority;
-
-   ------------------
-   -- Get_Protocol --
-   ------------------
-
-   function Get_Protocol (P : PID_Type) return LID_Type is
-      L : LID_Type;
-
-   begin
-      L := Partitions.Table (P).F_Net_Location;
-      if L = Null_LID then
-         L := Partitions.Table (Default_Partition).F_Net_Location;
-      end if;
-      return L;
-   end Get_Protocol;
-
-   ----------------------
-   -- Get_Reconnection --
-   ----------------------
-
-   function Get_Reconnection (P : PID_Type) return Reconnection_Type is
-      Reconnection : Reconnection_Type;
-
-   begin
-      Reconnection := Partitions.Table (P).Reconnection;
-      if Reconnection = Unknown_Reconnection then
-         Reconnection := Partitions.Table (Default_Partition).Reconnection;
-      end if;
-      return Reconnection;
-   end Get_Reconnection;
-
-   -----------------------
-   -- Get_Relative_Exec --
-   -----------------------
-
-   function Get_Relative_Exec (P : in PID_Type) return Name_Id is
-      D : Name_Id := Partitions.Table (P).Directory;
-      N : Name_Id renames Partitions.Table (P).Name;
-
-   begin
-      if D = No_Directory then
-         D := Partitions.Table (Default_Partition).Directory;
-      end if;
-      if D = No_Directory then
-         return N & Exe_Suffix;
-      else
-         return Dir (D, N & Exe_Suffix);
-      end if;
-   end Get_Relative_Exec;
-
-   ---------------------
-   -- Get_Rsh_Command --
-   ---------------------
-
-   function Get_Rsh_Command return Types.Name_Id is
-   begin
-      if Default_Rsh_Command = No_Name then
-         return Str_To_Id (XE_Defs.Get_Rsh_Command);
-      else
-         return Default_Rsh_Command;
-      end if;
-   end Get_Rsh_Command;
-
-   ---------------------
-   -- Get_Rsh_Options --
-   ---------------------
-
-   function Get_Rsh_Options return Types.Name_Id is
-   begin
-      if Default_Rsh_Options = No_Name then
-         return Str_To_Id (XE_Defs.Get_Rsh_Options);
-      else
-         return Default_Rsh_Options;
-      end if;
-   end Get_Rsh_Options;
-
-   -----------------
-   -- Get_Storage --
-   -----------------
-
-   function Get_Storage (P : PID_Type) return LID_Type is
-      Mem_Location : LID_Type;
-
-   begin
-      Mem_Location := Partitions.Table (P).Mem_Location;
-      if Mem_Location = Null_LID then
-         Mem_Location := Partitions.Table (Default_Partition).Mem_Location;
-      end if;
-      return Mem_Location;
-   end Get_Storage;
-
-   -------------------
-   -- Get_Task_Pool --
-   -------------------
-
-   function Get_Task_Pool (P : PID_Type) return Task_Pool_Type is
-      Task_Pool : Task_Pool_Type;
-
-   begin
-      Task_Pool := Partitions.Table (P).Task_Pool;
-      if Task_Pool = No_Task_Pool then
-         Task_Pool := Partitions.Table (Default_Partition).Task_Pool;
-      end if;
-      return Task_Pool;
-   end Get_Task_Pool;
-
-   -----------------
-   -- Get_Tasking --
-   -----------------
-
-   function Get_Tasking (P : PID_Type) return Boolean is
-   begin
-      return Partitions.Table (P).Use_Tasking;
-   end Get_Tasking;
-
-   -----------------
-   -- Get_Tasking --
-   -----------------
-
-   function Get_Tasking (A : ALI_Id) return Character is
-   begin
-      return ALIs.Table (A).Task_Dispatching_Policy;
-   end Get_Tasking;
-
-   ---------------------
-   -- Get_Termination --
-   ---------------------
-
-   function Get_Termination (P : PID_Type) return Termination_Type is
-      Termination : Termination_Type;
-
-   begin
-      Termination := Partitions.Table (P).Termination;
-      if Termination = Unknown_Termination then
-         Termination := Partitions.Table (Default_Partition).Termination;
-      end if;
-      return Termination;
-   end Get_Termination;
-
-   -----------------
-   -- Get_Unit_Id --
-   -----------------
-
-   function Get_Unit_Id (N : Name_Id) return Unit_Id is
-      Info : Int;
-
-   begin
-      Info := Get_Name_Table_Info (N);
-      case Info is
-         when Int (Unit_Id'First) .. Int (Unit_Id'Last) =>
-            null;
-         when others =>
-            Info := Int (No_Unit_Id);
-      end case;
-      return Unit_Id (Info);
-   end Get_Unit_Id;
-
-   --------------------
-   -- Get_Unit_Sfile --
-   --------------------
-
-   function Get_Unit_Sfile (U : Unit_Id) return File_Name_Type is
-   begin
-      Get_Name_String (Units.Table (U).Sfile);
-      Name_Len := Name_Len - 4;
-      return Name_Find;
-   end Get_Unit_Sfile;
-
-   ----------------
-   -- Initialize --
-   ----------------
-
-   procedure Initialize is
-      P : PID_Type;
-      C : CID_Type;
-      N : Partition_Name_Type;
-      F : LID_Type := Null_LID;
-      L : LID_Type := Null_LID;
-
-   begin
-      Add_Location
-        (F, L,
-         Str_To_Id (Get_Def_Storage_Name),
-         Str_To_Id (Get_Def_Storage_Data));
-      Def_Data_Location := F;
-
-      N := Get_Node_Name (Node_Id (Partition_Type_Node));
-      Create_Partition (N, Null_Node, P);
-      Name_Len := 1;
-
-      Name_Buffer (1 .. 1) := "3";
-      No_Task_Pool (1)  := Name_Find;
-
-      Name_Buffer (1 .. 1) := "6";
-      No_Task_Pool (2)  := Name_Find;
-
-      Name_Buffer (1 .. 1) := "9";
-      No_Task_Pool (3)  := Name_Find;
-
-      Partitions.Table (P).Task_Pool := No_Task_Pool;
-
-      --  Default_Priority * Max_Global_Priority / Max_Interrupt_Priority = 120
-
-      Name_Len := 3;
-      Name_Buffer (1 .. 3) := "120";
-      No_Priority := Name_Find;
-
-      Partitions.Table (P).Priority := No_Priority;
-
-      Default_Partition := P;
-
-      Channels.Increment_Last;
-      C := Channels.Last;
-      Channels.Table (C).Name := Get_Node_Name (Node_Id (Channel_Type_Node));
-
-      Channels.Table (C).Filter := No_Filter_Name;
-      Default_Channel := C;
-
-   end Initialize;
-
-   -----------------------
-   -- Is_RCI_Or_SP_Unit --
-   -----------------------
-
-   function Is_RCI_Or_SP_Unit (U : ALI.Unit_Id) return Boolean is
-   begin
-      return Units.Table (U).RCI or else Units.Table (U).Shared_Passive;
-   end Is_RCI_Or_SP_Unit;
-
-   ------------
-   -- Is_Set --
-   ------------
-
-   function Is_Set (Partition : PID_Type) return Boolean is
-   begin
-      return Partitions.Table (Partition).Last_Unit /= Null_CUID;
-   end Is_Set;
-
-   -----------------------
-   -- Most_Recent_Stamp --
-   -----------------------
-
-   procedure Most_Recent_Stamp (P : in PID_Type; F : in File_Name_Type) is
-      Most_Recent : File_Name_Type;
-      Has_Changed : Boolean := False;
-   begin
-      Most_Recent := Partitions.Table (P).Most_Recent;
-      if Most_Recent = No_Name then
-         Partitions.Table (P).Most_Recent := F;
-         Has_Changed := True;
-      elsif Stamp (F) > Stamp (Most_Recent) then
-         Partitions.Table (P).Most_Recent := F;
-         Has_Changed := True;
-      end if;
-      if Debug_Mode and Has_Changed then
-         Osint.Write_Program_Name;
-         Write_Str  (": ");
-         Write_Name (Partitions.Table (P).Name);
-         Write_Str  ("'s most recent stamp is ");
-         Write_Str  (Stamp (Partitions.Table (P).Most_Recent));
-         Write_Eol;
-         Osint.Write_Program_Name;
-         Write_Str  (":    with file ");
-         Write_Name (Partitions.Table (P).Most_Recent);
-         Write_Eol;
-      end if;
-   end Most_Recent_Stamp;
-
-   ----------------
-   -- Set_ALI_Id --
-   ----------------
-
-   procedure Set_ALI_Id (N : Name_Id; A : ALI_Id) is
-   begin
-      Set_Name_Table_Info (N, Int (A));
-   end Set_ALI_Id;
-
-   ---------------------------
-   -- Set_Channel_Attribute --
-   ---------------------------
-
-   procedure Set_Channel_Attribute
-     (Attribute : in Attribute_Id;
-      Channel   : in CID_Type)
-   is
-      Attr_Item : Variable_Id;
-      Attr_Kind : Attribute_Type;
-   begin
-
-      --  Apply attribute to a channel.
-
-      Attr_Kind := Get_Attribute_Kind (Component_Id (Attribute));
-      Attr_Item := Get_Component_Value (Component_Id (Attribute));
-
-      --  No attribute was really assigned.
-
-      if Attr_Item = Null_Variable then
-         return;
-      end if;
-
-      case Attr_Kind is
-         when Attribute_CFilter =>
-
-            --  Only string literals are allowed here.
-
-            if Get_Variable_Type (Attr_Item) /= String_Type_Node then
-               Write_SLOC (Node_Id (Attribute));
-               Write_Name (Channels.Table (Channel).Name);
-               Write_Str ("'s filter attribute must be ");
-               Write_Str ("a string literal");
-               Write_Eol;
-               raise Parsing_Error;
-            end if;
-
-            --  Does it apply to all channels ? Therefore, check
-            --  that this has not already been done.
-
-            if Channel = Null_CID
-              and then
-              Channels.Table (Default_Channel).Filter = No_Filter_Name
-            then
-               Channels.Table (Default_Channel).Filter
-                 := Get_Variable_Name (Attr_Item);
-               To_Lower (Channels.Table (Default_Channel).Filter);
-
-            --  Apply to one channel. Check that it has not already
-            --  been done.
-
-            elsif Channel /= Null_CID
-              and then
-              Channels.Table (Channel).Filter = No_Filter_Name
-            then
-               Channels.Table (Channel).Filter
-                 := Get_Variable_Name (Attr_Item);
-               To_Lower (Channels.Table (Channel).Filter);
-
-            --  This operation has already been done !
-
-            else
-               Write_SLOC (Node_Id (Attr_Item));
-               if Channel = Null_CID then
-                  Write_Str ("predefined type Channel");
-               else
-                  Write_Name (Channels.Table (Channel).Name);
-               end if;
-               Write_Str ("'s filter attribute has been assigned twice");
-               Write_Eol;
-               raise Parsing_Error;
-            end if;
-
-         when others =>
-            raise Fatal_Error;
-
-      end case;
-
-   end Set_Channel_Attribute;
-
-   -------------
-   -- Set_CID --
-   -------------
-
-   procedure Set_CID (N : Name_Id; C : CID_Type) is
-   begin
-      Set_Name_Table_Info (N, Int (C));
-   end Set_CID;
-
-   -------------
-   -- Set_CUID --
-   -------------
-
-   procedure Set_CUID (N : Name_Id; U : CUID_Type) is
-   begin
-      Set_Name_Table_Info (N, Int (U));
-   end Set_CUID;
-
-   --------------
-   -- Set_Host --
-   --------------
-
-   procedure Set_HID (N : in Name_Id; H : in HID_Type) is
-   begin
-      Set_Name_Table_Info (N, Int (H));
-   end Set_HID;
-
-   ---------------------
-   -- Set_RCI_Or_RACW --
-   ---------------------
-
-   procedure Set_RCI_Or_RACW (P : PID_Type; B : Boolean) is
-   begin
-      Partitions.Table (P).RCI_Or_RACW := B;
-   end Set_RCI_Or_RACW;
-
-   -----------------------------
-   -- Set_Partition_Attribute --
-   -----------------------------
-
-   procedure Set_Partition_Attribute
-     (Attribute : in Attribute_Id;
-      Partition : in PID_Type)
-   is
-      Attr_Item : Variable_Id;
-      Attr_Kind : Attribute_Type;
-      Attr_Type : Type_Id;
-      Comp_Node : Component_Id;
-      PID       : PID_Type;
-      Ada_Unit  : Name_Id;
-
-      Host      : HID_Type;
-      Name      : Name_Id;
-      Data      : Name_Id;
-
-      procedure Write_Attr_Init_Error
-        (Attr_Name : in String);
-      procedure Write_Attr_Kind_Error
-        (Attr_Name : in String;
-         Attr_Kind : in String);
-
-      procedure Write_Attr_Init_Error
-        (Attr_Name : in String) is
-      begin
-         Write_SLOC (Node_Id (Attribute));
-         Write_Name (Partitions.Table (Partition).Name);
-         Write_Str ("'s ");
-         Write_Str (Attr_Name);
-         Write_Str (" attribute has been assigned twice");
-         Write_Eol;
-         raise Parsing_Error;
-      end Write_Attr_Init_Error;
-
-      procedure Write_Attr_Kind_Error
-        (Attr_Name : in String;
-         Attr_Kind : in String) is
-      begin
-         Write_SLOC (Node_Id (Attribute));
-         Write_Name (Partitions.Table (Partition).Name);
-         Write_Str ("'s ");
-         Write_Str (Attr_Name);
-         Write_Str (" attribute must be ");
-         Write_Str (Attr_Kind);
-         Write_Eol;
-         raise Parsing_Error;
-      end Write_Attr_Kind_Error;
-
-   begin
-
-      --  If this attribute applies to partition type itself, it may not
-      --  have a value. No big deal, we use defaults.
-
-      --  Apply attribute to a partition.
-
-      Attr_Kind := Get_Attribute_Kind (Component_Id (Attribute));
-      Attr_Item := Get_Component_Value (Component_Id (Attribute));
-
-      --  No attribute was really assigned.
-
-      if Attr_Item = Null_Variable then
-         return;
-      end if;
-
-      PID := Partition;
-
-      case Attr_Kind is
-         when Attribute_PFilter =>
-
-            --  Only string literals are allowed here.
-
-            if Get_Variable_Type (Attr_Item) /= String_Type_Node then
-               Write_Attr_Kind_Error ("filter", "a string literal");
-            end if;
-
-            --  Does it apply to all partitions ? Therefore, check
-            --  that this has not already been done.
-
-            if PID = Default_Partition
-              and then
-              Partitions.Table (PID).Filter = No_Filter_Name
-            then
-               Partitions.Table (PID).Filter := Get_Variable_Name (Attr_Item);
-               To_Lower (Partitions.Table (PID).Filter);
-
-            --  Apply to one partition. Check that it has not already
-            --  been done.
-
-            elsif PID /= Default_Partition then
-               Write_SLOC (Node_Id (Attribute));
-               Write_Str ("a partition filter attribute applies only to ");
-               Write_Eol;
-               Write_SLOC (Node_Id (Attribute));
-               Write_Str ("predefined type Partition");
-               Write_Eol;
-               raise Parsing_Error;
-
-            --  This operation has already been done !
-
-            else
-               Write_Attr_Init_Error ("filter");
-            end if;
-
-         when Attribute_Directory =>
-
-            --  Only strings are allowed here.
-
-            if Get_Variable_Type (Attr_Item) /= String_Type_Node then
-               Write_Attr_Kind_Error ("directory", "a string litteral");
-            end if;
-
-            --  Check that it has not already been assigned.
-
-            if Partitions.Table (PID).Directory = No_Directory then
-               Partitions.Table (PID).Directory
-                 := Get_Variable_Name (Attr_Item);
-            else
-               Write_Attr_Init_Error ("directory");
-            end if;
-
-         when Attribute_Host =>
-
-            Attr_Type := Get_Variable_Type (Attr_Item);
-            case Get_Type_Kind (Attr_Type) is
-               when Pre_Type_String =>
-                  Hosts.Increment_Last;
-                  Host := Hosts.Last;
-                  Hosts.Table (Host).Name := Get_Variable_Name (Attr_Item);
-                  Hosts.Table (Host).Static := True;
-
-               when Pre_Type_Ada_Unit =>
-                  Attr_Item := Get_Variable_Value (Attr_Item);
-                  Build_New_Host (Subprogram_Id (Attr_Item), Host);
-
-               when others =>
-                  Write_Attr_Kind_Error ("host", "of string type");
-            end case;
-
-            --  Check that it has not already been assigned.
-
-            if Partitions.Table (PID).Host = Null_HID then
-               Partitions.Table (PID).Host := Host;
-            else
-               Write_Attr_Init_Error ("host");
-            end if;
-
-         when Attribute_Main =>
-
-            --  Check that it has not already been assigned.
-
-            if Partitions.Table (PID).Main_Subprogram = No_Main_Subprogram then
-               Partitions.Table (PID).Main_Subprogram
-                 := Get_Variable_Name (Attr_Item);
-
-               --  We are not sure at this point that this unit
-               --  has been configured on partition.
-
-               Ada_Unit := Get_Variable_Name (Attr_Item);
-               Add_Conf_Unit (Ada_Unit, PID);
-
-            else
-               Write_Attr_Init_Error ("main");
-            end if;
-
-         when Attribute_Command_Line =>
-
-            --  Only strings are allowed.
-
-            if Get_Variable_Type (Attr_Item) /= String_Type_Node then
-               Write_Attr_Kind_Error ("command_line", "a string litteral");
-            end if;
-
-            --  Check that this has not already been assigned.
-
-            if Partitions.Table (PID).Command_Line = No_Command_Line then
-               Partitions.Table (PID).Command_Line
-                 := Get_Variable_Name (Attr_Item);
-            else
-               Write_Attr_Init_Error ("command_line");
-            end if;
-
-         when Attribute_Termination =>
-
-            if Get_Variable_Type (Attr_Item) /= Integer_Type_Node then
-               Write_Attr_Kind_Error ("termination", "of termination type");
-            end if;
-
-            --  Check that it has not already been assigned.
-
-            if Partitions.Table (PID).Termination = Unknown_Termination then
-               Set_Termination
-                 (PID, Termination_Type (Get_Scalar_Value (Attr_Item)));
-            else
-               Write_Attr_Init_Error ("termination");
-            end if;
-
-         when Attribute_Passive =>
-
-            if Get_Variable_Type (Attr_Item) /= Boolean_Type_Node then
-               Write_Attr_Kind_Error ("passive", "of boolean type");
-            end if;
-
-            --  Check that it has not already been assigned.
-
-            if Partitions.Table (PID).Passive = Bunknown then
-               Set_Passive
-                 (PID, Boolean_Type (Get_Scalar_Value (Attr_Item)));
-            else
-               Write_Attr_Init_Error ("passive");
-            end if;
-
-         when Attribute_Reconnection =>
-
-            if Get_Variable_Type (Attr_Item) /= Integer_Type_Node then
-               Write_Attr_Kind_Error ("reconnection", "of reconnection type");
-            end if;
-
-            --  Check that it has not already been assigned.
-
-            if Partitions.Table (PID).Reconnection = Unknown_Reconnection then
-               Set_Reconnection (PID, Convert (Get_Scalar_Value (Attr_Item)));
-            else
-               Write_Attr_Init_Error ("reconnection");
-            end if;
-
-         when Attribute_Leader =>
-
-            --  Internal attribute. Don't check anything.
-
-            if Partition /= Null_PID then
-               if Main_Partition /= Null_PID then
-                  Write_SLOC (Node_Id (Attribute));
-                  Write_Str  ("multiple definitions of ");
-                  Write_Str  ("application main subprogram not allowed");
-                  Write_Eol;
-                  raise Parsing_Error;
-               end if;
-               Main_Partition := Partition;
-            end if;
-
-         when Attribute_Task_Pool =>
-            First_Variable_Component (Attr_Item, Comp_Node);
-            for B in Partitions.Table (PID).Task_Pool'Range loop
-               Partitions.Table (PID).Task_Pool (B)
-                 := Get_Variable_Name (Get_Component_Value (Comp_Node));
-               Next_Variable_Component (Comp_Node);
-            end loop;
-
-         when Attribute_Storage =>
-            if Partitions.Table (PID).Mem_Location = Null_LID then
-               First_Variable_Component (Attr_Item, Comp_Node);
-               Name := Get_Variable_Name (Get_Component_Value (Comp_Node));
-               Next_Variable_Component (Comp_Node);
-               Data := Get_Variable_Name (Get_Component_Value (Comp_Node));
-               declare
-                  LID : LID_Type;
-               begin
-                  Locations.Increment_Last;
-                  LID := Locations.Last;
-                  Locations.Table (LID).Major := Name;
-                  Locations.Table (LID).Minor := Data;
-                  Locations.Table (LID).Next := Null_LID;
-                  Set_Storage (PID, LID);
-               end;
-
-            else
-               Write_Attr_Init_Error ("storage");
-            end if;
-
-         when Attribute_Protocol =>
-            if Partitions.Table (PID).F_Net_Location = Null_LID then
-               Attr_Type := Get_Variable_Type (Attr_Item);
-
-               case Get_Type_Kind (Attr_Type) is
-                  when Pre_Type_Location =>
-                     First_Variable_Component (Attr_Item, Comp_Node);
-                     Name
-                       := Get_Variable_Name (Get_Component_Value (Comp_Node));
-                     Next_Variable_Component (Comp_Node);
-                     Data
-                       := Get_Variable_Name (Get_Component_Value (Comp_Node));
-                     Add_Location
-                       (Partitions.Table (PID).F_Net_Location,
-                        Partitions.Table (PID).L_Net_Location,
-                        Name, Data);
-
-                  when Pre_Type_Locations =>
-                     First_Variable_Component (Attr_Item, Comp_Node);
-                     while Comp_Node /= Null_Component loop
-                        declare
-                           C : Component_Id;
-                           V : Variable_Id;
-                        begin
-                           V := Get_Component_Value (Comp_Node);
-                           First_Variable_Component (V, C);
-                           Name
-                             := Get_Variable_Name (Get_Component_Value (C));
-                           Next_Variable_Component (C);
-                           Data
-                             := Get_Variable_Name (Get_Component_Value (C));
-                           Add_Location
-                             (Partitions.Table (PID).F_Net_Location,
-                              Partitions.Table (PID).L_Net_Location,
-                              Name, Data);
-                        end;
-                        Next_Variable_Component (Comp_Node);
-                     end loop;
-
-                  when others =>
-                     raise Parsing_Error;
-               end case;
-
-            else
-               Write_Attr_Init_Error ("location");
-            end if;
-
-         when Attribute_Priority =>
-            if Get_Variable_Type (Attr_Item) /= Integer_Type_Node then
-               Write_Attr_Kind_Error ("priority", "of priority type");
-            end if;
-
-            --  Check that it has not already been assigned.
-
-            if Partitions.Table (PID).Priority = No_Priority then
-               Set_Priority (PID, Get_Variable_Name (Attr_Item));
-            else
-               Write_Attr_Init_Error ("priority");
-            end if;
-
-         when Attribute_CFilter | Attribute_Unknown =>
-            raise Fatal_Error;
-
-      end case;
-   end Set_Partition_Attribute;
-
-   -----------------
-   -- Set_Passive --
-   -----------------
-
-   procedure Set_Passive
-     (P : in PID_Type;
-      B : in XE.Boolean_Type) is
-   begin
-      Partitions.Table (P).Passive := B;
-   end Set_Passive;
-
-   -------------
-   -- Set_PID --
-   -------------
-
-   procedure Set_PID
-     (N : in Name_Id;
-      P : in PID_Type) is
-   begin
-      Set_Name_Table_Info (N, Int (P));
-   end Set_PID;
-
-   --------------------------
-   -- Set_Pragma_Statement --
-   --------------------------
-
-   procedure Set_Pragma_Statement
-     (Subprogram  : in Subprogram_Id)
-   is
-      Pragma_Kind : Pragma_Type;
-      Parameter   : Parameter_Id;
-      Method      : Import_Method_Type;
-      Value       : Variable_Id;
-      Host        : HID_Type;
-      Name        : Name_Id;
-      Data        : Name_Id;
-      Param_Type  : Type_Id;
-      Param_Kind  : Predefined_Type;
-
-   begin
-
-      --  Apply pragma statement.
-
-      Pragma_Kind := Get_Pragma_Kind (Subprogram);
-      First_Subprogram_Parameter (Subprogram, Parameter);
-
-      case Pragma_Kind is
-         when Pragma_Import =>
-            Value := Get_Parameter_Value (Parameter);
-            Method := Convert (Get_Scalar_Value (Value));
-            Next_Subprogram_Parameter (Parameter);
-            Value := Get_Parameter_Value (Parameter);
-            Value := Get_Variable_Value (Value);
-
-            --  We are not sure that this function has been already
-            --  declared as an host function.
-
-            Build_New_Host (Subprogram_Id (Value), Host);
-
-            --  Apply Import pragma ...
-
-            Hosts.Table (Host).Import := Method;
-            Next_Subprogram_Parameter (Parameter);
-            Value := Get_Parameter_Value (Parameter);
-            Hosts.Table (Host).External := Get_Variable_Name (Value);
-
-         when Pragma_Remote_Shell =>
-            Value := Get_Parameter_Value (Parameter);
-            Default_Rsh_Command := Get_Variable_Name (Value);
-
-            Next_Subprogram_Parameter (Parameter);
-
-            Value := Get_Parameter_Value (Parameter);
-            Default_Rsh_Options := Get_Variable_Name (Value);
-
-         when Pragma_Starter =>
-            Value := Get_Parameter_Value (Parameter);
-            Default_Starter := Convert (Get_Scalar_Value (Value));
-
-         when Pragma_Boot_Location =>
-            if Def_Boot_Location_First /= Null_LID then
-               Write_SLOC (Node_Id (Subprogram));
-               Write_Str  ("multiple boot location definition not allowed");
-               Write_Eol;
-               raise Parsing_Error;
-            end if;
-
-            Param_Type := Get_Parameter_Type (Parameter);
-            Param_Kind := Get_Type_Kind (Param_Type);
-            case Param_Kind is
-               when Pre_Type_String =>
-                  Value := Get_Parameter_Value (Parameter);
-                  Name  := Get_Variable_Name (Value);
-                  Next_Subprogram_Parameter (Parameter);
-                  Value := Get_Parameter_Value (Parameter);
-                  Data  := Get_Variable_Name (Value);
-                  Add_Location
-                    (Def_Boot_Location_First,
-                     Def_Boot_Location_Last,
-                     Name,
-                     Data);
-
-               when Pre_Type_Location =>
-                  declare
-                     V : Variable_Id;
-                     C : Component_Id;
-                  begin
-                     V := Get_Parameter_Value (Parameter);
-                     First_Variable_Component (V, C);
-                     Name := Get_Variable_Name (Get_Component_Value (C));
-                     Next_Variable_Component (C);
-                     Data := Get_Variable_Name (Get_Component_Value (C));
-                     Add_Location
-                       (Def_Boot_Location_First,
-                        Def_Boot_Location_Last,
-                        Name, Data);
-                  end;
-
-               when Pre_Type_Locations =>
-                  declare
-                     V1 : Variable_Id;
-                     C1 : Component_Id;
-                  begin
-                     V1 := Get_Parameter_Value (Parameter);
-                     First_Variable_Component (V1, C1);
-                     while C1 /= Null_Component loop
-                        declare
-                           V2 : Variable_Id;
-                           C2 : Component_Id;
-                        begin
-                           V2 := Get_Component_Value (C1);
-                           First_Variable_Component (V2, C2);
-                           Name
-                             := Get_Variable_Name (Get_Component_Value (C2));
-                           Next_Variable_Component (C2);
-                           Data
-                             := Get_Variable_Name (Get_Component_Value (C2));
-                           Add_Location
-                             (Def_Boot_Location_First,
-                              Def_Boot_Location_Last,
-                              Name, Data);
-                        end;
-                        Next_Variable_Component (C1);
-                     end loop;
-                  end;
-
-               when others =>
-                  raise Program_Error;
-            end case;
-
-         when Pragma_Version =>
-            Value := Get_Parameter_Value (Parameter);
-            Default_Version_Check := (Get_Scalar_Value (Value) = Int (Btrue));
-
-         when Pragma_Reg_Filter =>
-            Value := Get_Parameter_Value (Parameter);
-            Default_Registration_Filter := Get_Variable_Name (Value);
-
-         when Pragma_Priority =>
-            Value := Get_Parameter_Value (Parameter);
-            Default_Priority_Policy := Convert (Get_Scalar_Value (Value));
-
-         when Pragma_Unknown =>
-            raise Program_Error;
-
-      end case;
-   end Set_Pragma_Statement;
-
-   ------------------
-   -- Set_Priority --
-   ------------------
-
-   procedure Set_Priority
-     (P : in PID_Type;
-      X : in Priority_Type) is
-   begin
-      Partitions.Table (P).Priority := X;
-   end Set_Priority;
-
-   ----------------------
-   -- Set_Reconnection --
-   ----------------------
-
-   procedure Set_Reconnection
-     (P : in PID_Type;
-      R : in Reconnection_Type) is
-   begin
-      Partitions.Table (P).Reconnection := R;
-   end Set_Reconnection;
-
-   -----------------
-   -- Set_Storage --
-   -----------------
-
-   procedure Set_Storage
-     (P : in PID_Type;
-      L : in LID_Type) is
-   begin
-      Partitions.Table (P).Mem_Location := L;
-   end Set_Storage;
-
-   -----------------
-   -- Set_Tasking --
-   -----------------
-
-   procedure Set_Tasking
-     (P : in PID_Type;
-      B : in Boolean) is
-   begin
-      Partitions.Table (P).Use_Tasking := B;
-   end Set_Tasking;
-
-   -----------------
-   -- Set_Tasking --
-   -----------------
-
-   procedure Set_Tasking (A : ALI_Id; Tasking : Character) is
-   begin
-      ALIs.Table (A).Task_Dispatching_Policy := Tasking;
-   end Set_Tasking;
-
-   ---------------------
-   -- Set_Termination --
-   ---------------------
-
-   procedure Set_Termination
-     (P : in PID_Type;
-      T : in Termination_Type) is
-   begin
-      Partitions.Table (P).Termination := T;
-   end Set_Termination;
+   end Write_Image;
 
    ------------------------
-   -- Set_Type_Attribute --
+   -- Write_With_Clause --
    ------------------------
 
-   procedure Set_Type_Attribute (Pre_Type : in Type_Id) is
-      Component_Node : Component_Id;
-      Pre_Type_Id    : Predefined_Type;
-
+   procedure Write_With_Clause
+     (W : Name_Id;
+      U : Boolean := False;
+      E : Boolean := False) is
    begin
-      if Is_Type_Composite (Pre_Type) then
-         Pre_Type_Id := Get_Type_Kind (Pre_Type);
-         First_Type_Component (Pre_Type, Component_Node);
-         while Component_Node /= Null_Component loop
-            if Get_Attribute_Kind (Component_Node) /= Attribute_Unknown
-              and then Is_Component_Initialized (Component_Node)
-            then
-               case Pre_Type_Id is
-                  when Pre_Type_Partition =>
-                     Set_Partition_Attribute
-                       (Attribute_Id (Component_Node), Default_Partition);
-
-                  when Pre_Type_Channel   =>
-                     Set_Channel_Attribute
-                       (Attribute_Id (Component_Node), Default_Channel);
-
-                  when others =>
-                     null;
-               end case;
-            end if;
-            Next_Type_Component (Component_Node);
-         end loop;
-      end if;
-   end Set_Type_Attribute;
-
-   -----------------
-   -- Set_Unit_Id --
-   -----------------
-
-   procedure Set_Unit_Id (N : in Name_Id; U : in Unit_Id) is
-   begin
-      Set_Name_Table_Info (N, Int (U));
-   end Set_Unit_Id;
-
-   ------------------------
-   -- Show_Configuration --
-   ------------------------
-
-   procedure Show_Configuration is
-   begin
-      Write_Str (" ------------------------------");
+      Name_Len := 0;
+      Add_Str_To_Name_Buffer ("with ");
+      Get_Name_String_And_Append (W);
+      Add_Char_To_Name_Buffer (';');
+      Write_Str (Name_Buffer (1 .. Name_Len));
       Write_Eol;
-      Write_Str (" ---- Configuration report ----");
-      Write_Eol;
-      Write_Str (" ------------------------------");
-      Write_Eol;
-      Write_Str ("Configuration :");
-      Write_Eol;
-
-      Write_Field (1, "Name");
-      Write_Name  (Configuration);
-      Write_Eol;
-
-      Write_Field (1, "Main");
-      Write_Name  (Main_Subprogram);
-      Write_Eol;
-
-      Write_Field (1, "Starter");
-      case Default_Starter is
-         when Ada_Import =>
-            Write_Str ("Ada code");
-         when Shell_Import =>
-            Write_Str ("shell script");
-         when None_Import =>
-            Write_Str ("none");
-      end case;
-      Write_Eol;
-
-      if Def_Boot_Location_First /= Null_LID then
-         Write_Field (1, "Protocols");
-         declare
-            LID : LID_Type := Def_Boot_Location_First;
-            One : Boolean  := (Locations.Table (LID).Next = Null_LID);
-         begin
-            if One then
-               Write_Name (Locations.Table (LID).Major);
-               Write_Str  ("://");
-               Write_Name (Locations.Table (LID).Minor);
-
-            else
-               while LID /= Null_LID loop
-                  Write_Eol;
-                  Write_Str ("             - ");
-                  Write_Name (Locations.Table (LID).Major);
-                  Write_Str  ("://");
-                  Write_Name (Locations.Table (LID).Minor);
-                  LID := Locations.Table (LID).Next;
-               end loop;
-            end if;
-            Write_Eol;
-         end;
-      end if;
-      Write_Eol;
-
-      for P in Partitions.First + 1 .. Partitions.Last loop
-         Show_Partition (P);
-      end loop;
-
-      Write_Str (" -------------------------------");
-      Write_Eol;
-      if Channels.First + 1 <= Channels.Last then
-         Write_Eol;
-         declare
-            P : PID_Type;
-            F : Name_Id;
-         begin
-            for C in Channels.First + 1 .. Channels.Last loop
-               Write_Str  ("Channel ");
-               Write_Name (Channels.Table (C).Name);
-               Write_Eol;
-               Write_Field (1, "Partition 1");
-               P := Channels.Table (C).Lower.My_Partition;
-               Write_Name (Partitions.Table (P).Name);
-               Write_Eol;
-               Write_Field (1, "Partition 2");
-               P := Channels.Table (C).Upper.My_Partition;
-               Write_Name (Partitions.Table (P).Name);
-               Write_Eol;
-               F := Get_Filter (C);
-               if F /= No_Filter_Name then
-                  Write_Field  (1, "Filter");
-                  Write_Name (F);
-                  Write_Eol;
-               end if;
-               Write_Eol;
-            end loop;
-         end;
-         Write_Str (" -------------------------------");
+      if U then
+         Name_Buffer (1 .. 4) := "use ";
+         Write_Str (Name_Buffer (1 .. Name_Len));
          Write_Eol;
       end if;
-   end Show_Configuration;
-
-   --------------------
-   -- Show_Partition --
-   --------------------
-
-   procedure Show_Partition
-     (PID : in PID_Type)
-   is
-      M : Main_Subprogram_Type;
-      H : HID_Type;
-      S : Directory_Name_Type;
-      C : Command_Line_Type;
-      T : Task_Pool_Type;
-      U : CUID_Type;
-
-   begin
-      Write_Str  ("Partition ");
-      Write_Name (Partitions.Table (PID).Name);
-      Write_Eol;
-
-      M := Get_Main_Subprogram (PID);
-      if M /= No_Main_Subprogram then
-         Write_Field (1, "Main");
-         Write_Name (M);
-         Write_Eol;
+      if E then
+         Write_Call (Id ("pragma Elaborate_All"), W);
       end if;
-
-      H := Partitions.Table (PID).Host;
-      if H = Null_HID then
-         H := Partitions.Table (Default_Partition).Host;
-      end if;
-
-      if H /= Null_HID then
-         Write_Field (1, "Host");
-         if Hosts.Table (H).Static then
-            Write_Name (Hosts.Table (H).Name);
-         else
-            Write_Str ("function call :: ");
-            Write_Name (Hosts.Table (H).External);
-            case Hosts.Table (H).Import is
-               when None_Import =>
-                  null;
-               when Ada_Import =>
-                  Write_Str (" (ada)");
-               when Shell_Import =>
-                  Write_Str (" (shell)");
-            end case;
-         end if;
-         Write_Eol;
-      end if;
-
-      S := Get_Directory (PID);
-      if S /= No_Directory then
-         Write_Field (1, "Directory");
-         Write_Name (S);
-         Write_Eol;
-      end if;
-
-      C := Get_Command_Line (PID);
-      if C /= No_Command_Line then
-         Write_Field (1, "Command");
-         Write_Name (C);
-         Write_Eol;
-      end if;
-
-      T := Get_Task_Pool (PID);
-      if T /= No_Task_Pool then
-         Write_Field (1, "Task Pool");
-         for B in T'Range loop
-            Write_Name (T (B));
-            Write_Str (" ");
-         end loop;
-         Write_Eol;
-      end if;
-
-      if Get_Termination (PID) /= Unknown_Termination then
-         Write_Field (1, "Termination");
-         case Get_Termination (PID) is
-            when Local_Termination =>
-               Write_Str ("local");
-            when Global_Termination =>
-               Write_Str ("global");
-            when Deferred_Termination =>
-               Write_Str ("deferred");
-            when Unknown_Termination =>
-               null;
-         end case;
-         Write_Eol;
-      end if;
-
-      if Get_Protocol (PID) /= Null_LID then
-         Write_Field  (1, "Protocols");
-         Write_Eol;
-         declare
-            L : LID_Type := Get_Protocol (PID);
-         begin
-            while L /= Null_LID loop
-               Write_Str  ("             - ");
-               Write_Name (Locations.Table (L).Major);
-               if Locations.Table (L).Minor /= No_Name then
-                  Write_Str ("://");
-                  Write_Name (Locations.Table (L).Minor);
-               end if;
-               Write_Eol;
-               L := Locations.Table (L).Next;
-            end loop;
-         end;
-      end if;
-
-      if Get_Storage (PID) /= Null_LID then
-         Write_Field  (1, "Storages");
-         Write_Eol;
-         declare
-            L : LID_Type := Get_Storage (PID);
-         begin
-            while L /= Null_LID loop
-               Write_Str  ("             - ");
-               Write_Name (Locations.Table (L).Major);
-               if Locations.Table (L).Minor /= No_Name then
-                  Write_Str ("://");
-                  Write_Name (Locations.Table (L).Minor);
-               end if;
-               Write_Eol;
-               L := Locations.Table (L).Next;
-            end loop;
-         end;
-      end if;
-
-      if Partitions.Table (PID).First_Unit /= Null_CUID then
-         Write_Field (1, "Units");
-         Write_Eol;
-
-         U := Partitions.Table (PID).First_Unit;
-         while U /= Null_CUID loop
-            Write_Str ("             - ");
-            Write_Name (CUnits.Table (U).CUname);
-            if Units.Table (CUnits.Table (U).My_Unit).RCI then
-               Write_Str (" (rci)");
-            elsif Units.Table (CUnits.Table (U).My_Unit).Remote_Types then
-               Write_Str (" (rt)");
-            elsif Units.Table (CUnits.Table (U).My_Unit).Shared_Passive then
-               Write_Str (" (sp)");
-            else
-               Write_Str (" (normal)");
-            end if;
-            Write_Eol;
-            U := CUnits.Table (U).Next;
-         end loop;
-         Write_Eol;
-      end if;
-   end Show_Partition;
-
-   --------------
-   -- To_Build --
-   --------------
-
-   function To_Build (U : CUID_Type) return Boolean is
-   begin
-      return Partitions.Table (CUnits.Table (U).Partition).To_Build;
-   end To_Build;
-
-   -----------------
-   -- Write_Field --
-   -----------------
-
-   procedure Write_Field
-     (Indent : in Natural;
-      Field  : in String;
-      Width  : in Natural := Min_Width)
-   is
-      W : Natural := Width;
-
-   begin
-      for I in 1 .. Indent loop
-         Write_Str ("   ");
-      end loop;
-      if Field'Length > W then
-         W := Field'Length;
-      end if;
-      declare
-         L : String (1 .. W) := (others => ' ');
-      begin
-         L (1 .. Field'Length) := Field;
-         Write_Str (L);
-      end;
-      Write_Str (" : ");
-   end Write_Field;
+   end Write_With_Clause;
 
 end XE_Back;

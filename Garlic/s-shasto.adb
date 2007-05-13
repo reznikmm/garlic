@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,19 +19,20 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with System.Garlic.Storages; use System.Garlic.Storages;
+with System.Garlic.Exceptions; use System.Garlic.Exceptions;
+with System.Garlic.Storages;   use System.Garlic.Storages;
 
 package body System.Shared_Storage is
 
@@ -47,35 +46,43 @@ package body System.Shared_Storage is
 
    begin
       VS := Shared_Data_Access (Var);
-      Complete_Request (VS.all);
+      Complete_Request (VS);
    end Shared_Var_Close;
 
    ---------------------
    -- Shared_Var_Lock --
    ---------------------
 
-   procedure Shared_Var_Lock (Var : in String)
+   procedure Shared_Var_Lock (Var : String)
    is
       VS : Shared_Data_Access;
       Ok : Boolean;
+      E  : aliased Error_Type;
 
    begin
-      VS := Lookup_Variable (Var);
-      Initiate_Request (VS.all, Lock, Ok);
+      Lookup_Variable (Var, VS, E);
+      if Found (E) then
+         Raise_Communication_Error (Content (E'Access));
+      end if;
+      Initiate_Request (VS, Lock, Ok);
    end Shared_Var_Lock;
 
    ----------------------
    -- Shared_Var_ROpen --
    ----------------------
 
-   function Shared_Var_ROpen (Var : in String) return SIO.Stream_Access
+   function Shared_Var_ROpen (Var : String) return SIO.Stream_Access
    is
       VS : Shared_Data_Access;
       Ok : Boolean;
+      E  : aliased Error_Type;
 
    begin
-      VS := Lookup_Variable (Var);
-      Initiate_Request (VS.all, Read, Ok);
+      Lookup_Variable (Var, VS, E);
+      if Found (E) then
+         Raise_Communication_Error (Content (E'Access));
+      end if;
+      Initiate_Request (VS, Read, Ok);
       if Ok then
          return SIO.Stream_Access (VS);
       else
@@ -87,27 +94,35 @@ package body System.Shared_Storage is
    -- Shared_Var_Unlock --
    -----------------------
 
-   procedure Shared_Var_Unlock (Var : in String)
+   procedure Shared_Var_Unlock (Var : String)
    is
       VS : Shared_Data_Access;
+      E  : aliased Error_Type;
 
    begin
-      VS := Lookup_Variable (Var);
-      Complete_Request (VS.all);
+      Lookup_Variable (Var, VS, E);
+      if Found (E) then
+         Raise_Communication_Error (Content (E'Access));
+      end if;
+      Complete_Request (VS);
    end Shared_Var_Unlock;
 
    ----------------------
    -- Shared_Var_WOpen --
    ----------------------
 
-   function Shared_Var_WOpen (Var : in String) return SIO.Stream_Access
+   function Shared_Var_WOpen (Var : String) return SIO.Stream_Access
    is
       VS : Shared_Data_Access;
       Ok : Boolean;
+      E  : aliased Error_Type;
 
    begin
-      VS := Lookup_Variable (Var);
-      Initiate_Request (VS.all, Write, Ok);
+      Lookup_Variable (Var, VS, E);
+      if Found (E) then
+         Raise_Communication_Error (Content (E'Access));
+      end if;
+      Initiate_Request (VS, Write, Ok);
       return SIO.Stream_Access (VS);
    end Shared_Var_WOpen;
 

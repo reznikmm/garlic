@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,20 +19,21 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with GNAT.Strings;
+
 with System.Garlic.Protocols;
-with System.Garlic.Utils;
 
 package System.Garlic.Physical_Location is
 
@@ -50,18 +49,18 @@ package System.Garlic.Physical_Location is
    No_Such_Location, Malformed_Location : exception;
 
    procedure Add_First_Missing_Location
-     (List     : in Utils.String_Array_Access;
+     (List     : GNAT.Strings.String_List_Access;
       Current  : in out Natural;
-      Protocol : in Protocols.Protocol_Access;
-      Data     : in Utils.String_Array_Access);
+      Protocol : Protocols.Protocol_Access;
+      Data     : GNAT.Strings.String_List_Access);
    --  Add in List the first missing location. Current indicates the
    --  last used slot in List. We may have to call several times
    --  this procedure to include all the location of a given protocol.
 
    procedure Add_Missing_Locations
-     (List     : in Utils.String_Array_Access;
+     (List     : GNAT.Strings.String_List_Access;
       Current  : in out Natural;
-      Protocol : in Protocols.Protocol_Access);
+      Protocol : Protocols.Protocol_Access);
    --  Add in List all the missing location declared by
    --  Protocol. Current indicates the last used slot in List.
 

@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -44,8 +42,8 @@ package System.Garlic.Debug is
    --    Private_Debug_Key : constant Debug_Key :=
    --      Debug_Initialize ("GARLIC", "(s-garlic): ");
    --    procedure D
-   --      (Message : in String;
-   --       Key     : in Debug_Key := Private_Debug_Key)
+   --      (Message : String;
+   --       Key     : Debug_Key := Private_Debug_Key)
    --      renames Print_Debug_Info;
    --
    --  Then, later in the code, you can do:
@@ -74,21 +72,21 @@ package System.Garlic.Debug is
    --  Force debugging for every module
 
    procedure Print_Debug_Info
-     (Message : in String;
-      Key     : in Debug_Key);
+     (Message : String;
+      Key     : Debug_Key);
    pragma Inline (Print_Debug_Info);
    --  This procedure prints debugging information if the given flag was
    --  set in the right environment variable.
 
    procedure Print_Debug_Info_Nolock
-     (Message : in String;
-      Key     : in Debug_Key);
+     (Message : String;
+      Key     : Debug_Key);
    pragma Inline (Print_Debug_Info_Nolock);
    --  This procedure has the same effect but do not use the global lock. It
    --  is used to debug the global lock itself.
 
    function Debug_Mode
-     (Key     : Debug_Key)
+     (Key : Debug_Key)
       return Boolean;
    pragma Inline (Debug_Mode);
    --  Return true if this level is active

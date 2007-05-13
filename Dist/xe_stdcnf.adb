@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1995-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GNATDIST is  free software;  you  can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License  as published by the Free --
@@ -26,7 +24,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Types;     use Types;
+with XE_Types;     use XE_Types;
 with XE;        use XE;
 with XE_Parse;  use XE_Parse;
 with XE_Scan;   use XE_Scan;
@@ -53,12 +51,12 @@ package body XE_Stdcnf is
       --  As a naming convention, we use the reserved keyword "private"
       --  for the standard configuration name.
 
-      Create_Configuration (Configuration_Node, Str_To_Id ("private"));
+      Create_Configuration (Configuration_Node, Id ("private"));
 
       --  type Boolean_Type is (False, True, Infinite);
 
       Declare_Type
-        (Type_Name    => Str_To_Id ("boolean"),
+        (Type_Name    => Id ("boolean"),
          Type_Kind    => Pre_Type_Boolean,
          Composite    => False,
          Comp_Type    => Null_Type,
@@ -67,36 +65,36 @@ package body XE_Stdcnf is
          Type_Node    => Boolean_Type_Node);
 
       Declare_Variable
-        (Str_To_Id ("true"),
+        (Id ("true"),
          Boolean_Type_Node,
          Null_Location,
          Variable_Node);
 
       --  To easily retrieve the enumeration literal.
-      Set_Scalar_Value (Variable_Node, Int (Btrue));
+      Set_Scalar_Value (Variable_Node, Int (BTrue));
 
       Declare_Variable
-        (Str_To_Id ("false"),
+        (Id ("false"),
          Boolean_Type_Node,
          Null_Location,
          Variable_Node);
 
       --  To easily retrieve the enumeration literal.
-      Set_Scalar_Value (Variable_Node, Int (Bfalse));
+      Set_Scalar_Value (Variable_Node, Int (BFalse));
 
       Declare_Variable
-        (Str_To_Id ("unknown boolean"),
+        (Id ("unknown boolean"),
          Boolean_Type_Node,
          Null_Location,
          Variable_Node);
 
       --  To easily retrieve the enumeration literal.
-      Set_Scalar_Value (Variable_Node, Int (Bunknown));
+      Set_Scalar_Value (Variable_Node, Int (BMaybe));
 
       --  type string (standard)
 
       Declare_Type
-        (Type_Name    => Str_To_Id ("string"),
+        (Type_Name    => Id ("string"),
          Type_Kind    => Pre_Type_String,
          Composite    => False,
          Comp_Type    => Null_Type,
@@ -107,7 +105,7 @@ package body XE_Stdcnf is
       --  type integer (standard)
 
       Declare_Type
-        (Type_Name    => Str_To_Id ("integer"),
+        (Type_Name    => Id ("integer"),
          Type_Kind    => Pre_Type_Integer,
          Composite    => False,
          Comp_Type    => Null_Type,
@@ -165,14 +163,14 @@ package body XE_Stdcnf is
 
       Declare_Type_Component
         (Type_Node        => Host_Function_Type_Node,
-         Component_Name   => Str_To_Id ("partition_name"),
+         Component_Name   => Id ("partition_name"),
          Comp_Type_Node   => String_Type_Node,
          Component_Sloc   => Null_Location,
          Component_Node   => Component_Node);
 
       Declare_Type_Component
         (Type_Node        => Host_Function_Type_Node,
-         Component_Name   => Str_To_Id ("return parameter"),
+         Component_Name   => Id ("return parameter"),
          Comp_Type_Node   => String_Type_Node,
          Component_Sloc   => Null_Location,
          Component_Node   => Component_Node);
@@ -203,7 +201,7 @@ package body XE_Stdcnf is
       --  type Partition (standard)
 
       Declare_Type
-        (Type_Name    => Str_To_Id ("partition"),
+        (Type_Name    => Id ("partition"),
          Type_Kind    => Pre_Type_Partition,
          Composite    => True,
          Comp_Type    => Ada_Unit_Type_Node,
@@ -224,21 +222,21 @@ package body XE_Stdcnf is
 
       Declare_Type_Component
         (Type_Node        => Task_Pool_Type_Node,
-         Component_Name   => Str_To_Id ("low_mark"),
+         Component_Name   => Id ("low_mark"),
          Comp_Type_Node   => Integer_Type_Node,
          Component_Sloc   => Null_Location,
          Component_Node   => Component_Node);
 
       Declare_Type_Component
         (Type_Node        => Task_Pool_Type_Node,
-         Component_Name   => Str_To_Id ("high_mark"),
+         Component_Name   => Id ("high_mark"),
          Comp_Type_Node   => Integer_Type_Node,
          Component_Sloc   => Null_Location,
          Component_Node   => Component_Node);
 
       Declare_Type_Component
         (Type_Node        => Task_Pool_Type_Node,
-         Component_Name   => Str_To_Id ("max_mark"),
+         Component_Name   => Id ("max_mark"),
          Comp_Type_Node   => Integer_Type_Node,
          Component_Sloc   => Null_Location,
          Component_Node   => Component_Node);
@@ -256,14 +254,14 @@ package body XE_Stdcnf is
 
       Declare_Type_Component
         (Type_Node        => Location_Type_Node,
-         Component_Name   => Str_To_Id ("support_name"),
+         Component_Name   => Id ("support_name"),
          Comp_Type_Node   => String_Type_Node,
          Component_Sloc   => Null_Location,
          Component_Node   => Component_Node);
 
       Declare_Type_Component
         (Type_Node        => Location_Type_Node,
-         Component_Name   => Str_To_Id ("support_data"),
+         Component_Name   => Id ("support_data"),
          Comp_Type_Node   => String_Type_Node,
          Component_Sloc   => Null_Location,
          Component_Node   => Component_Node);
@@ -283,7 +281,7 @@ package body XE_Stdcnf is
 
       Declare_Type_Attribute
         (Type_Node      => Partition_Type_Node,
-         Attribute_Name => Str_To_Id ("main"),
+         Attribute_Name => Id ("main"),
          Attr_Type_Node => Main_Procedure_Type_Node,
          Attribute_Kind => Attribute_Main,
          Attribute_Sloc => Null_Location,
@@ -291,7 +289,7 @@ package body XE_Stdcnf is
 
       Declare_Type_Attribute
         (Type_Node      => Partition_Type_Node,
-         Attribute_Name => Str_To_Id ("host"),
+         Attribute_Name => Id ("host"),
          Attr_Type_Node => String_Type_Node,
          Attribute_Kind => Attribute_Host,
          Attribute_Sloc => Null_Location,
@@ -299,7 +297,7 @@ package body XE_Stdcnf is
 
       Declare_Type_Attribute
         (Type_Node      => Partition_Type_Node,
-         Attribute_Name => Str_To_Id ("storage_dir"),
+         Attribute_Name => Id ("storage_dir"),
          Attr_Type_Node => String_Type_Node,
          Attribute_Kind => Attribute_Directory,
          Attribute_Sloc => Null_Location,
@@ -307,7 +305,7 @@ package body XE_Stdcnf is
 
       Declare_Type_Attribute
         (Type_Node      => Partition_Type_Node,
-         Attribute_Name => Str_To_Id ("directory"),
+         Attribute_Name => Id ("directory"),
          Attr_Type_Node => String_Type_Node,
          Attribute_Kind => Attribute_Directory,
          Attribute_Sloc => Null_Location,
@@ -315,7 +313,7 @@ package body XE_Stdcnf is
 
       Declare_Type_Attribute
         (Type_Node      => Partition_Type_Node,
-         Attribute_Name => Str_To_Id ("reconnection"),
+         Attribute_Name => Id ("reconnection"),
          Attr_Type_Node => Integer_Type_Node,
          Attribute_Kind => Attribute_Reconnection,
          Attribute_Sloc => Null_Location,
@@ -323,7 +321,7 @@ package body XE_Stdcnf is
 
       Declare_Type_Attribute
         (Type_Node      => Partition_Type_Node,
-         Attribute_Name => Str_To_Id ("command_line"),
+         Attribute_Name => Id ("command_line"),
          Attr_Type_Node => String_Type_Node,
          Attribute_Kind => Attribute_Command_Line,
          Attribute_Sloc => Null_Location,
@@ -331,7 +329,7 @@ package body XE_Stdcnf is
 
       Declare_Type_Attribute
         (Type_Node      => Partition_Type_Node,
-         Attribute_Name => Str_To_Id ("termination"),
+         Attribute_Name => Id ("termination"),
          Attr_Type_Node => Integer_Type_Node,
          Attribute_Kind => Attribute_Termination,
          Attribute_Sloc => Null_Location,
@@ -339,7 +337,7 @@ package body XE_Stdcnf is
 
       Declare_Type_Attribute
         (Type_Node      => Partition_Type_Node,
-         Attribute_Name => Str_To_Id ("priority"),
+         Attribute_Name => Id ("priority"),
          Attr_Type_Node => Integer_Type_Node,
          Attribute_Kind => Attribute_Priority,
          Attribute_Sloc => Null_Location,
@@ -347,7 +345,7 @@ package body XE_Stdcnf is
 
       Declare_Type_Attribute
         (Type_Node        => Partition_Type_Node,
-         Attribute_Name   => Str_To_Id ("filter"),
+         Attribute_Name   => Id ("filter"),
          Attr_Type_Node   => String_Type_Node,
          Attribute_Kind   => Attribute_PFilter,
          Attribute_Sloc   => Null_Location,
@@ -355,7 +353,7 @@ package body XE_Stdcnf is
 
       Declare_Type_Attribute
         (Type_Node        => Partition_Type_Node,
-         Attribute_Name   => Str_To_Id ("task_pool"),
+         Attribute_Name   => Id ("task_pool"),
          Attr_Type_Node   => Task_Pool_Type_Node,
          Attribute_Kind   => Attribute_Task_Pool,
          Attribute_Sloc   => Null_Location,
@@ -363,7 +361,7 @@ package body XE_Stdcnf is
 
       Declare_Type_Attribute
         (Type_Node        => Partition_Type_Node,
-         Attribute_Name   => Str_To_Id ("self_location"),
+         Attribute_Name   => Id ("self_location"),
          Attr_Type_Node   => Locations_Type_Node,
          Attribute_Kind   => Attribute_Protocol,
          Attribute_Sloc   => Null_Location,
@@ -371,7 +369,7 @@ package body XE_Stdcnf is
 
       Declare_Type_Attribute
         (Type_Node        => Partition_Type_Node,
-         Attribute_Name   => Str_To_Id ("self_location"),
+         Attribute_Name   => Id ("self_location"),
          Attr_Type_Node   => Location_Type_Node,
          Attribute_Kind   => Attribute_Protocol,
          Attribute_Sloc   => Null_Location,
@@ -379,7 +377,7 @@ package body XE_Stdcnf is
 
       Declare_Type_Attribute
         (Type_Node        => Partition_Type_Node,
-         Attribute_Name   => Str_To_Id ("data_location"),
+         Attribute_Name   => Id ("data_location"),
          Attr_Type_Node   => Location_Type_Node,
          Attribute_Kind   => Attribute_Storage,
          Attribute_Sloc   => Null_Location,
@@ -387,7 +385,7 @@ package body XE_Stdcnf is
 
       Declare_Type_Attribute
         (Type_Node      => Partition_Type_Node,
-         Attribute_Name => Str_To_Id ("is boot partition"),
+         Attribute_Name => Id ("is boot partition"),
          Attr_Type_Node => Boolean_Type_Node,
          Attribute_Kind => Attribute_Leader,
          Attribute_Sloc => Null_Location,
@@ -395,16 +393,24 @@ package body XE_Stdcnf is
 
       Declare_Type_Attribute
         (Type_Node      => Partition_Type_Node,
-         Attribute_Name => Str_To_Id ("passive"),
+         Attribute_Name => Id ("passive"),
          Attr_Type_Node => Boolean_Type_Node,
          Attribute_Kind => Attribute_Passive,
+         Attribute_Sloc => Null_Location,
+         Attribute_Node => Attribute_Node);
+
+      Declare_Type_Attribute
+        (Type_Node      => Partition_Type_Node,
+         Attribute_Name => Id ("allow_light_pcs"),
+         Attr_Type_Node => Boolean_Type_Node,
+         Attribute_Kind => Attribute_Allow_Light_PCS,
          Attribute_Sloc => Null_Location,
          Attribute_Node => Attribute_Node);
 
       --  type Channel (standard)
 
       Declare_Type
-        (Type_Name    => Str_To_Id ("channel"),
+        (Type_Name    => Id ("channel"),
          Type_Kind    => Pre_Type_Channel,
          Composite    => True,
          Comp_Type    => Null_Type,
@@ -414,21 +420,21 @@ package body XE_Stdcnf is
 
       Declare_Type_Component
         (Type_Node        => Channel_Type_Node,
-         Component_Name   => Str_To_Id ("partition_1"),
+         Component_Name   => Id ("partition_1"),
          Comp_Type_Node   => Partition_Type_Node,
          Component_Sloc   => Null_Location,
          Component_Node   => Component_Node);
 
       Declare_Type_Component
         (Type_Node        => Channel_Type_Node,
-         Component_Name   => Str_To_Id ("partition_2"),
+         Component_Name   => Id ("partition_2"),
          Comp_Type_Node   => Partition_Type_Node,
          Component_Sloc   => Null_Location,
          Component_Node   => Component_Node);
 
       Declare_Type_Attribute
         (Type_Node        => Channel_Type_Node,
-         Attribute_Name   => Str_To_Id ("filter"),
+         Attribute_Name   => Id ("filter"),
          Attr_Type_Node   => String_Type_Node,
          Attribute_Kind   => Attribute_CFilter,
          Attribute_Sloc   => Null_Location,
@@ -446,7 +452,7 @@ package body XE_Stdcnf is
          Type_Node    => Convention_Type_Node);
 
       Declare_Variable
-        (Str_To_Id ("ada"),
+        (Id ("ada"),
          Convention_Type_Node,
          Null_Location,
          Variable_Node);
@@ -455,7 +461,7 @@ package body XE_Stdcnf is
       Set_Scalar_Value (Variable_Node, Convert (Ada_Import));
 
       Declare_Variable
-        (Str_To_Id ("shell"),
+        (Id ("shell"),
          Convention_Type_Node,
          Null_Location,
          Variable_Node);
@@ -464,7 +470,7 @@ package body XE_Stdcnf is
       Set_Scalar_Value (Variable_Node, Convert (Shell_Import));
 
       Declare_Variable
-        (Str_To_Id ("none"),
+        (Id ("none"),
          Convention_Type_Node,
          Null_Location,
          Variable_Node);
@@ -484,7 +490,7 @@ package body XE_Stdcnf is
          Pragma_Starter_Node);
 
       Declare_Subprogram_Parameter
-        (Str_To_Id ("convention"),
+        (Id ("convention"),
          Convention_Type_Node,
          Pragma_Starter_Node,
          Null_Location,
@@ -502,7 +508,7 @@ package body XE_Stdcnf is
          Pragma_Priority_Node);
 
       Declare_Subprogram_Parameter
-        (Str_To_Id ("policy"),
+        (Id ("policy"),
          Integer_Type_Node,
          Pragma_Priority_Node,
          Null_Location,
@@ -522,21 +528,21 @@ package body XE_Stdcnf is
          Pragma_Import_Node);
 
       Declare_Subprogram_Parameter
-        (Str_To_Id ("convention"),
+        (Id ("convention"),
          Convention_Type_Node,
          Pragma_Import_Node,
          Null_Location,
          Parameter_Node);
 
       Declare_Subprogram_Parameter
-        (Str_To_Id ("entity"),
+        (Id ("entity"),
          Ada_Unit_Type_Node,
          Pragma_Import_Node,
          Null_Location,
          Parameter_Node);
 
       Declare_Subprogram_Parameter
-        (Str_To_Id ("external_name"),
+        (Id ("external_name"),
          String_Type_Node,
          Pragma_Import_Node,
          Null_Location,
@@ -555,14 +561,14 @@ package body XE_Stdcnf is
          Pragma_Boot_Location_Node);
 
       Declare_Subprogram_Parameter
-        (Str_To_Id ("protocol_name"),
+        (Id ("protocol_name"),
          String_Type_Node,
          Pragma_Boot_Location_Node,
          Null_Location,
          Parameter_Node);
 
       Declare_Subprogram_Parameter
-        (Str_To_Id ("protocol_data"),
+        (Id ("protocol_data"),
          String_Type_Node,
          Pragma_Boot_Location_Node,
          Null_Location,
@@ -580,7 +586,7 @@ package body XE_Stdcnf is
          Pragma_Boot_Location_Node);
 
       Declare_Subprogram_Parameter
-        (Str_To_Id ("location"),
+        (Id ("location"),
          Location_Type_Node,
          Pragma_Boot_Location_Node,
          Null_Location,
@@ -598,7 +604,7 @@ package body XE_Stdcnf is
          Pragma_Boot_Location_Node);
 
       Declare_Subprogram_Parameter
-        (Str_To_Id ("locations"),
+        (Id ("locations"),
          Locations_Type_Node,
          Pragma_Boot_Location_Node,
          Null_Location,
@@ -617,14 +623,14 @@ package body XE_Stdcnf is
          Pragma_Boot_Location_Node);
 
       Declare_Subprogram_Parameter
-        (Str_To_Id ("protocol_name"),
+        (Id ("protocol_name"),
          String_Type_Node,
          Pragma_Boot_Location_Node,
          Null_Location,
          Parameter_Node);
 
       Declare_Subprogram_Parameter
-        (Str_To_Id ("protocol_data"),
+        (Id ("protocol_data"),
          String_Type_Node,
          Pragma_Boot_Location_Node,
          Null_Location,
@@ -642,7 +648,7 @@ package body XE_Stdcnf is
          Pragma_Boot_Location_Node);
 
       Declare_Subprogram_Parameter
-        (Str_To_Id ("location"),
+        (Id ("location"),
          Location_Type_Node,
          Pragma_Boot_Location_Node,
          Null_Location,
@@ -660,7 +666,7 @@ package body XE_Stdcnf is
          Pragma_Boot_Location_Node);
 
       Declare_Subprogram_Parameter
-        (Str_To_Id ("locations"),
+        (Id ("locations"),
          Locations_Type_Node,
          Pragma_Boot_Location_Node,
          Null_Location,
@@ -678,7 +684,7 @@ package body XE_Stdcnf is
          Pragma_Version_Node);
 
       Declare_Subprogram_Parameter
-        (Str_To_Id ("check"),
+        (Id ("check"),
          Boolean_Type_Node,
          Pragma_Version_Node,
          Null_Location,
@@ -696,7 +702,7 @@ package body XE_Stdcnf is
          Pragma_Reg_Filter_Node);
 
       Declare_Subprogram_Parameter
-        (Str_To_Id ("filter"),
+        (Id ("filter"),
          String_Type_Node,
          Pragma_Reg_Filter_Node,
          Null_Location,
@@ -715,14 +721,14 @@ package body XE_Stdcnf is
          Pragma_Remote_Shell_Node);
 
       Declare_Subprogram_Parameter
-        (Str_To_Id ("command"),
+        (Id ("command"),
          String_Type_Node,
          Pragma_Remote_Shell_Node,
          Null_Location,
          Parameter_Node);
 
       Declare_Subprogram_Parameter
-        (Str_To_Id ("options"),
+        (Id ("options"),
          String_Type_Node,
          Pragma_Remote_Shell_Node,
          Null_Location,

@@ -4,8 +4,6 @@
 --                                                                          --
 --                       I N S T A L L _ G U I D E                          --
 --                                                                          --
---                            $Revision$                              --
---                                                                          --
 -- GLADE is  free software;  you  can  redistribute  it  and/or  modify  it --
 -- under terms of the  GNU General Public License  as published by the Free --
 -- Software  Foundation;  either version 2,  or  (at your option) any later --
@@ -42,7 +40,7 @@ in separate directories:
      individual partitions are to execute on.
 
   3. Ada
-     A subset of GNAT 3.15p  sources necessary to build GLADE.
+     A subset of GNAT 2007 sources necessary to build GLADE.
 
   4. Examples
      A set of examples to demonstrate GLADE capabilities. Each example
@@ -86,7 +84,7 @@ Building GLADE with  a non standard GNAT distrib
 ------------------------------------------------
 
 We do not guarantee that this release will work with any other version
-than the official GNAT 3.15p  binary release.  However, if you
+than the official GNAT 2007 binary release.  However, if you
 are using another version of GNAT and want to try, you must have
 GNAT's sources around. Assuming that you do, you must directly link
 (using "ln -s" for instance) the directory "ada" that you received in

@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006, Free Software Foundation, Inc.          --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,19 +19,22 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
 ------------------------------------------------------------------------------
 
 with System.Garlic.Types;
+
+with System.Tasking.Stages;
+pragma Warnings (Off, System.Tasking.Stages);
 
 package System.Garlic.Soft_Links is
 
@@ -57,23 +58,23 @@ package System.Garlic.Soft_Links is
    --  Comments relative to these subprograms are located in s-garter.ads
 
    procedure Register_Add_Non_Terminating_Task
-     (P : in Parameterless_Procedure);
+     (P : Parameterless_Procedure);
    procedure Add_Non_Terminating_Task;
 
    procedure Register_Sub_Non_Terminating_Task
-     (P : in Parameterless_Procedure);
+     (P : Parameterless_Procedure);
    procedure Sub_Non_Terminating_Task;
 
    procedure Register_Activity_Detected
-     (P : in Parameterless_Procedure);
+     (P : Parameterless_Procedure);
    procedure Activity_Detected;
 
    procedure Register_Local_Termination
-     (P : in Parameterless_Procedure);
+     (P : Parameterless_Procedure);
    procedure Local_Termination;
 
    procedure Register_Global_Termination
-     (P : in Parameterless_Procedure);
+     (P : Parameterless_Procedure);
    procedure Global_Termination;
 
    -------------------------------
@@ -81,11 +82,11 @@ package System.Garlic.Soft_Links is
    -------------------------------
 
    procedure Register_Enter_Critical_Section
-     (P : in Parameterless_Procedure);
+     (P : Parameterless_Procedure);
    procedure Enter_Critical_Section;
 
    procedure Register_Leave_Critical_Section
-     (P : in Parameterless_Procedure);
+     (P : Parameterless_Procedure);
    procedure Leave_Critical_Section;
 
    -----------
@@ -94,11 +95,11 @@ package System.Garlic.Soft_Links is
 
    type Mutex_Type is abstract tagged null record;
 
-   procedure Enter (M : in Mutex_Type) is abstract;
+   procedure Enter (M : Mutex_Type) is abstract;
 
    procedure Destroy (M : in out Mutex_Type) is abstract;
 
-   procedure Leave (M : in Mutex_Type) is abstract;
+   procedure Leave (M : Mutex_Type) is abstract;
 
    type Mutex_Access is access all Mutex_Type'Class;
 
@@ -106,18 +107,18 @@ package System.Garlic.Soft_Links is
      access function return Mutex_Access;
 
    procedure Register_Mutex_Creation_Function
-     (F : in Mutex_Creation_Function);
+     (F : Mutex_Creation_Function);
 
    procedure Create (M : out Mutex_Access);
    pragma Inline (Create);
 
-   procedure Enter (M : in Mutex_Access);
+   procedure Enter (M : Mutex_Access);
    pragma Inline (Enter);
 
    procedure Destroy (M : in out Mutex_Access);
    pragma Inline (Destroy);
 
-   procedure Leave (M : in Mutex_Access);
+   procedure Leave (M : Mutex_Access);
    pragma Inline (Leave);
 
    -------------
@@ -130,11 +131,11 @@ package System.Garlic.Soft_Links is
 
    procedure Differ
      (W : in out Watcher_Type;
-      V : in Types.Version_Id) is abstract;
+      V : Types.Version_Id) is abstract;
    --  Await until W version differs from V
 
    procedure Lookup
-     (W : in Watcher_Type;
+     (W : Watcher_Type;
       V : out Types.Version_Id) is abstract;
    --  Fetch W version
 
@@ -144,28 +145,28 @@ package System.Garlic.Soft_Links is
    type Watcher_Access is access all Watcher_Type'Class;
 
    type Watcher_Creation_Function is
-     access function (V : in Types.Version_Id) return Watcher_Access;
+     access function (V : Types.Version_Id) return Watcher_Access;
 
    procedure Register_Watcher_Creation_Function
-     (F : in Watcher_Creation_Function);
+     (F : Watcher_Creation_Function);
 
    procedure Create
      (W : out Watcher_Access;
-      V : in  Types.Version_Id := Types.No_Version);
+      V : Types.Version_Id := Types.No_Version);
    pragma Inline (Create);
 
    procedure Destroy (W : in out Watcher_Access);
    pragma Inline (Destroy);
 
-   procedure Differ (W : in Watcher_Access; V : in Types.Version_Id);
+   procedure Differ (W : Watcher_Access; V : Types.Version_Id);
    pragma Inline (Differ);
    --  Await until W version differs from V
 
-   procedure Lookup (W : in Watcher_Access; V : out Types.Version_Id);
+   procedure Lookup (W : Watcher_Access; V : out Types.Version_Id);
    pragma Inline (Lookup);
    --  Fetch W version
 
-   procedure Update (W : in Watcher_Access);
+   procedure Update (W : Watcher_Access);
    pragma Inline (Update);
    --  Increment W version
 
@@ -192,18 +193,18 @@ package System.Garlic.Soft_Links is
      access function return Adv_Mutex_Access;
 
    procedure Register_Adv_Mutex_Creation_Function
-     (F : in Adv_Mutex_Creation_Function);
+     (F : Adv_Mutex_Creation_Function);
 
    procedure Create (M : out Adv_Mutex_Access);
    pragma Inline (Create);
 
-   procedure Enter (M : in Adv_Mutex_Access);
+   procedure Enter (M : Adv_Mutex_Access);
    pragma Inline (Enter);
 
    procedure Destroy (M : in out Adv_Mutex_Access);
    pragma Inline (Destroy);
 
-   procedure Leave (M : in Adv_Mutex_Access);
+   procedure Leave (M : Adv_Mutex_Access);
    pragma Inline (Leave);
 
    -------------------------
@@ -211,7 +212,7 @@ package System.Garlic.Soft_Links is
    -------------------------
 
    procedure Register_RPC_Shutdown
-     (P : in Parameterless_Procedure);
+     (P : Parameterless_Procedure);
    procedure RPC_Shutdown;
 
    -----------------------
@@ -221,31 +222,31 @@ package System.Garlic.Soft_Links is
    type Return_Boolean_Function is access function return Boolean;
 
    procedure Register_Is_Environment_Task
-     (F : in Return_Boolean_Function);
+     (F : Return_Boolean_Function);
    function Is_Environment_Task return Boolean;
 
    type Return_Natural_Function is access function return Natural;
 
    procedure Register_Env_Task_Awake_Count
-     (F : in Return_Natural_Function);
+     (F : Return_Natural_Function);
    function Env_Task_Awake_Count return Natural;
 
    procedure Register_Independent_Task_Count
-     (F : in Return_Natural_Function);
+     (F : Return_Natural_Function);
    function Independent_Task_Count return Natural;
 
    procedure Register_List_Tasks
-     (P : in Parameterless_Procedure);
+     (P : Parameterless_Procedure);
    procedure List_Tasks;
 
    procedure Register_Get_Priority
-     (F : in Return_Natural_Function);
+     (F : Return_Natural_Function);
    function Get_Priority return Natural;
 
-   type Natural_Parameter_Procedure is access procedure (N : in Natural);
+   type Natural_Parameter_Procedure is access procedure (N : Natural);
    procedure Register_Set_Priority
-     (P : in Natural_Parameter_Procedure);
-   procedure Set_Priority (P : in Natural);
+     (P : Natural_Parameter_Procedure);
+   procedure Set_Priority (P : Natural);
 
    type Abort_Handler_Type is tagged
       record
@@ -259,28 +260,27 @@ package System.Garlic.Soft_Links is
    type Abort_Handler_Access is access all Abort_Handler_Type'Class;
 
    procedure Register_Abort_Handler
-     (Abort_Handler : in Abort_Handler_Access);
+     (Abort_Handler : Abort_Handler_Access);
 
    function Abort_Handler return Abort_Handler_Type'Class;
 
+   type Float_Parameter_Procedure is access procedure (F : Float);
 
-   type Float_Parameter_Procedure is access procedure (F : in Float);
+--   procedure Register_Set_Stamp (P : Float_Parameter_Procedure);
 
-   procedure Register_Set_Stamp (P : in Float_Parameter_Procedure);
-
-   procedure Set_Stamp (S : in Float);
-   --  Set task stamp to S except if task stamp and S are set no
-   --  stamp. In this case, initialize task stamp with clock.
+--    procedure Set_Stamp (S : Float);
+--    --  Set task stamp to S except if task stamp and S are set no
+--    --  stamp. In this case, initialize task stamp with clock.
 
    type Return_Float_Function is access function return Float;
 
-   procedure Register_Get_Stamp (F : Return_Float_Function);
+--    procedure Register_Get_Stamp (F : Return_Float_Function);
 
-   function Get_Stamp return Float;
-   --  Return absolute stamp
+--    function Get_Stamp return Float;
+--    --  Return absolute stamp
 
-   function Stamp_Image (M : String) return String;
-   --  Return a string with the absolute stamp, the relative stamp and
-   --  then the message M.
+--    function Stamp_Image (M : String) return String;
+--    --  Return a string with the absolute stamp, the relative stamp and
+--    --  then the message M.
 
 end System.Garlic.Soft_Links;

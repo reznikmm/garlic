@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,21 +19,21 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Calendar;
+--  with Ada.Calendar;
 with Ada.Dynamic_Priorities;
-with Ada.Task_Attributes;
+--  with Ada.Task_Attributes;
 
 with System;                     use System;
 with System.Garlic.Debug;        use System.Garlic.Debug;
@@ -53,20 +51,18 @@ package body System.Garlic.Tasking is
    Private_Debug_Key : constant Debug_Key :=
      Debug_Initialize ("S_GARTAS", "(s-gartas): ");
    procedure D
-     (Message : in String;
-      Key     : in Debug_Key := Private_Debug_Key)
+     (Message : String;
+      Key     : Debug_Key := Private_Debug_Key)
      renames Print_Debug_Info_Nolock;
 
    use Ada.Task_Identification;
-   use type System.Tasking.Task_ID;
+   use type System.Tasking.Task_Id;
 
-   No_Stamp : constant Stamp_Type := 0.0;
+--    package Stamp_Task_Attributes is
+--       new Ada.Task_Attributes (Stamp_Type, No_Stamp);
+--    use Stamp_Task_Attributes;
 
-   package Stamp_Task_Attributes is
-      new Ada.Task_Attributes (Stamp_Type, No_Stamp);
-   use Stamp_Task_Attributes;
-
-   Environment_Task : constant System.Tasking.Task_ID := System.Tasking.Self;
+   Environment_Task : constant System.Tasking.Task_Id := System.Tasking.Self;
    --  The environment task. Self will be set to it at elaboration time.
 
    type Protected_Mutex_Access is access all Protected_Mutex_Type;
@@ -132,7 +128,7 @@ package body System.Garlic.Tasking is
    -- Create --
    ------------
 
-   function Create (V : in Version_Id) return Watcher_Access is
+   function Create (V : Version_Id) return Watcher_Access is
       W : constant Protected_Watcher_Access := new Protected_Watcher_Type;
    begin
       W.P.Init (V);
@@ -196,7 +192,7 @@ package body System.Garlic.Tasking is
    -- Differ --
    ------------
 
-   procedure Differ (W : in out Protected_Watcher_Type; V : in Version_Id)
+   procedure Differ (W : in out Protected_Watcher_Type; V : Version_Id)
    is
    begin
       W.P.Differ (V);
@@ -206,7 +202,7 @@ package body System.Garlic.Tasking is
    -- Enter --
    -----------
 
-   procedure Enter (M : in Protected_Mutex_Type) is
+   procedure Enter (M : Protected_Mutex_Type) is
    begin
       pragma Assert (M.X /= null);
       M.X.Enter;
@@ -248,14 +244,14 @@ package body System.Garlic.Tasking is
       return Natural (Ada.Dynamic_Priorities.Get_Priority);
    end Get_Priority;
 
-   --------------------
-   -- Get_Task_Stamp --
-   --------------------
+--    --------------------
+--    -- Get_Task_Stamp --
+--    --------------------
 
-   function Get_Task_Stamp return Stamp_Type is
-   begin
-      return Value;
-   end Get_Task_Stamp;
+--    function Get_Task_Stamp return Stamp_Type is
+--    begin
+--       return Value;
+--    end Get_Task_Stamp;
 
    ----------------------------
    -- Independent_Task_Count --
@@ -284,8 +280,8 @@ package body System.Garlic.Tasking is
       Register_List_Tasks (List_Tasks'Access);
       Register_Get_Priority (Get_Priority'Access);
       Register_Set_Priority (Set_Priority'Access);
-      Register_Get_Stamp (Get_Task_Stamp'Access);
-      Register_Set_Stamp (Set_Task_Stamp'Access);
+--       Register_Get_Stamp (Get_Task_Stamp'Access);
+--       Register_Set_Stamp (Set_Task_Stamp'Access);
    end Initialize;
 
    -------------------------
@@ -294,7 +290,7 @@ package body System.Garlic.Tasking is
 
    function Is_Environment_Task return Boolean
    is
-      Self : constant System.Tasking.Task_ID := System.Tasking.Self;
+      Self : constant System.Tasking.Task_Id := System.Tasking.Self;
    begin
       return Self = Environment_Task;
    end Is_Environment_Task;
@@ -312,7 +308,7 @@ package body System.Garlic.Tasking is
    -- Leave --
    -----------
 
-   procedure Leave (M : in Protected_Mutex_Type) is
+   procedure Leave (M : Protected_Mutex_Type) is
    begin
       M.X.Leave;
    end Leave;
@@ -339,7 +335,7 @@ package body System.Garlic.Tasking is
    -- Lookup --
    ------------
 
-   procedure Lookup (W : in Protected_Watcher_Type; V : out Version_Id) is
+   procedure Lookup (W : Protected_Watcher_Type; V : out Version_Id) is
    begin
       V := W.P.Lookup;
    end Lookup;
@@ -384,23 +380,23 @@ package body System.Garlic.Tasking is
    -- Set_Priority --
    ------------------
 
-   procedure Set_Priority (P : in Natural) is
+   procedure Set_Priority (P : Natural) is
    begin
       Ada.Dynamic_Priorities.Set_Priority (Any_Priority (P));
    end Set_Priority;
 
-   --------------------
-   -- Set_Task_Stamp --
-   --------------------
+--    --------------------
+--    -- Set_Task_Stamp --
+--    --------------------
 
-   procedure Set_Task_Stamp (S : in Float) is
-      X : Stamp_Type := S;
-   begin
-      if S = No_Stamp and then Value = No_Stamp then
-         X := Stamp_Type (Ada.Calendar.Seconds (Ada.Calendar.Clock));
-      end if;
-      Set_Value (X);
-   end Set_Task_Stamp;
+--    procedure Set_Task_Stamp (S : Float) is
+--       X : Stamp_Type := S;
+--    begin
+--       if S = No_Stamp and then Value = No_Stamp then
+--          X := Stamp_Type (Ada.Calendar.Seconds (Ada.Calendar.Clock));
+--       end if;
+--       Set_Value (X);
+--    end Set_Task_Stamp;
 
    ------------
    -- Update --
@@ -421,7 +417,7 @@ package body System.Garlic.Tasking is
       -- Differ --
       ------------
 
-      entry Differ (From : in Version_Id) when not Updated is
+      entry Differ (From : Version_Id) when not Updated is
       begin
          if From = Value then
             requeue Wait_For_Update with abort;
@@ -432,7 +428,7 @@ package body System.Garlic.Tasking is
       -- Init --
       ----------
 
-      procedure Init (Initial_Value : in Version_Id) is
+      procedure Init (Initial_Value : Version_Id) is
       begin
          Value := Initial_Value;
       end Init;
@@ -462,7 +458,7 @@ package body System.Garlic.Tasking is
       -- Wait_For_Update --
       ---------------------
 
-      entry Wait_For_Update (From : in Version_Id) when Updated is
+      entry Wait_For_Update (From : Version_Id) when Updated is
       begin
          if Wait_For_Update'Count = 0 then
             Updated := False;

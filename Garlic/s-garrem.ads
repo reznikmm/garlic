@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -43,8 +41,8 @@ package System.Garlic.Remote is
    --  descriptors.
 
    procedure Full_Launch
-     (Host        : in String;
-      Command     : in String);
+     (Host    : String;
+      Command : String);
    --  Launch the given partition with the correct parameters on the
    --  command line.
 
@@ -52,9 +50,9 @@ package System.Garlic.Remote is
    --  Ask a host name for a partition and return it
 
    procedure Register_Partition_To_Launch
-     (Name_Is_Host : in Boolean;
-      General_Name : in String;
-      Command_Line : in String);
+     (Name_Is_Host : Boolean;
+      General_Name : String;
+      Command_Line : String);
    --  General_Name represents the name of the machine or the name of
    --  the partition (depending on the value of
    --  Name_Is_Host). Command_Line holds the extra options that will

@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -46,16 +44,15 @@ package body System.Garlic.Exceptions is
      Debug_Initialize ("S_GAREXC", "(s-garexc): ");
 
    procedure D
-     (Message : in String;
-      Key     : in Debug_Key := Private_Debug_Key)
+     (Message : String;
+      Key     : Debug_Key := Private_Debug_Key)
      renames Print_Debug_Info;
 
    -----------
    -- Catch --
    -----------
 
-   procedure Catch (Error : in out Error_Type)
-   is
+   procedure Catch (Error : in out Error_Type) is
    begin
       if Error /= null then
          pragma Debug (D ("*** Catch *** " & Error.all));
@@ -93,41 +90,38 @@ package body System.Garlic.Exceptions is
       Error_Message : constant String := Error.all;
    begin
       Free (Error);
-      Ada.Exceptions.Raise_Exception
-        (Communication_Error'Identity, Error_Message);
+      Raise_Exception (Communication_Error'Identity, Error_Message);
    end Raise_Communication_Error;
 
    -------------------------------
    -- Raise_Communication_Error --
    -------------------------------
 
-   pragma Warnings (off, Raise_Communication_Error);
-
-   procedure Raise_Communication_Error (Msg : in String := "") is
+   procedure Raise_Communication_Error (Msg : String := "") is
    begin
       if Msg'Length = 0 then
          Raise_With_Errno (Communication_Error'Identity);
       else
          Raise_Exception (Communication_Error'Identity, Msg);
       end if;
-      Raise_Communication_Error;  -- Keep the compiler happy
    end Raise_Communication_Error;
 
    ----------------------
    -- Raise_With_Errno --
    ----------------------
 
-   procedure Raise_With_Errno (Id : in Exception_Id) is
+   procedure Raise_With_Errno (Id : Exception_Id) is
    begin
       Raise_Exception (Id, "Error" & Integer'Image (Errno));
+      --  Next line will never be called, just to avoid GNAT warnings
+      Raise_With_Errno (Id);
    end Raise_With_Errno;
 
    -----------
    -- Throw --
    -----------
 
-   procedure Throw (Error : in out Error_Type; Message : in String)
-   is
+   procedure Throw (Error : in out Error_Type; Message : String) is
    begin
       if Error /= null then
          pragma Debug (D ("*** Abort *** " & Error.all));

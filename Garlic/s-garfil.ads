@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -45,16 +43,16 @@ package System.Garlic.Filters is
    pragma Elaborate_Body;
 
    procedure Filter_Incoming
-      (Partition : in Types.Partition_ID;
-       Opcode    : in System.Garlic.Heart.Any_Opcode;
-       Stream    : in Streams.Stream_Element_Access;
-       Offset    : in Ada.Streams.Stream_Element_Offset;
+      (Partition : Types.Partition_ID;
+       Opcode    : System.Garlic.Heart.Any_Opcode;
+       Stream    : Streams.Stream_Element_Access;
+       Offset    : Ada.Streams.Stream_Element_Offset;
        Result    : out Streams.Stream_Element_Access;
        Error     : in out Exceptions.Error_Type);
 
    procedure Filter_Outgoing
-      (Partition : in     Types.Partition_ID;
-       Opcode    : in     System.Garlic.Heart.Any_Opcode;
+      (Partition : Types.Partition_ID;
+       Opcode    : System.Garlic.Heart.Any_Opcode;
        Stream    : access Streams.Params_Stream_Type;
        Result    : out    Streams.Stream_Element_Access;
        Error     : in out Exceptions.Error_Type);
@@ -62,15 +60,15 @@ package System.Garlic.Filters is
    procedure Initialize;
    --  Elaboration code
 
-   procedure Set_Channel_Filter (Partition, Filter : in String);
+   procedure Set_Channel_Filter (Partition, Filter : String);
    --  The current partition uses Filter to communication with any
    --  partition of name Partition.
 
-   procedure Set_Default_Filter (Filter : in String);
+   procedure Set_Default_Filter (Filter : String);
    --  When a partition has no communication filter yet, the default
    --  filter Filter is used.
 
-   procedure Set_Registration_Filter (Filter : in String);
+   procedure Set_Registration_Filter (Filter : String);
    --  During the first data exchange between two partitions, a
    --  registration filter is used to filter this first communication.
 
@@ -83,15 +81,15 @@ private
    type Filter_Params_Access is access all Filter_Params_Type'Class;
 
    function Filter_Incoming
-      (Filter : in Filter_Type;
-       Params : in Filter_Params_Access;
-       Stream : in Streams.Stream_Element_Access;
-       Offset : in Ada.Streams.Stream_Element_Offset)
+      (Filter : Filter_Type;
+       Params : Filter_Params_Access;
+       Stream : Streams.Stream_Element_Access;
+       Offset : Ada.Streams.Stream_Element_Offset)
       return Streams.Stream_Element_Access is abstract;
 
    function Filter_Outgoing
-      (Filter : in     Filter_Type;
-       Params : in     Filter_Params_Access;
+      (Filter : Filter_Type;
+       Params : Filter_Params_Access;
        Stream : access Streams.Params_Stream_Type)
       return Streams.Stream_Element_Access is abstract;
 
@@ -109,13 +107,13 @@ private
      (Filter_Params_Type'Class, Filter_Params_Access);
 
    procedure Generate_Params
-      (Filter          : in  Filter_Type;
+      (Filter          : Filter_Type;
        Public_Params   : out Filter_Params_Access;
        Private_Params  : out Filter_Params_Access;
        Exchange_Params : out Boolean) is abstract;
 
    procedure Register_Filter
-     (Filter : in Filter_Access;
-      Name   : in String);
+     (Filter : Filter_Access;
+      Name   : String);
 
 end System.Garlic.Filters;
