@@ -1,0 +1,140 @@
+------------------------------------------------------------------------------
+--                                                                          --
+--                   GNAT DISTRIBUTED SYSTEMS ANNEX DOCUMENTS               --
+--                                                                          --
+--                              I N S T A L L                               --
+--                                                                          --
+-- GLADE is  free software;  you  can  redistribute  it  and/or  modify  it --
+-- under terms of the  GNU General Public License  as published by the Free --
+-- Software  Foundation;  either version 2,  or  (at your option) any later --
+-- version. GLADE is distributed in the  hope that  it will  be useful, but --
+-- WITHOUT ANY WARRANTY;  without even the implied warranty of MERCHANTABI- --
+-- LITY or FITNESS  FOR A PARTICULAR PURPOSE.  See the  GNU General  Public --
+-- License  for more details.  You should  have received a copy of the  GNU --
+-- General  Public  License distributed with  GLADE; see  file COPYING.  If --
+-- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
+-- Boston, MA 02111-1307, USA.                                              --
+--                                                                          --
+--                GLADE is maintained by ACT Europe.                        --
+--                  (email:glade-report@gnat.com).                          --
+--                                                                          --
+------------------------------------------------------------------------------
+
+NOTE: THIS FILE APPLIES ONLY TO GLADE 2007. IF YOU HAVE ANY
+      OTHER VERSION OF GLADE, PLEASE GET THE APPROPRIATE INSTALL FILE.
+
+INSTALL for GLADE
+-----------------
+
+You can find general information about GLADE in README and in
+Doc/user_guide.txt. Here are simple steps for building GLADE
+easily. More details about installation and configuration can be found
+in Doc/install_guide.txt.
+
+
+1. Check your environment
+   - verify that GNAT 2007 has been installed and is on your path
+   - verify that GLADE has been ported to your system (see README)
+   - GLADE is usually built with GNU make. It may or may not be built 
+     with other versions of make. If you have problems building GLADE
+     with your local make tool, switch to GNU make.
+   - verify that you will be able to run distributed applications
+      (on Unix, your .rhosts file must contain the machine from which
+       you will start the distributed application).
+   - if you are building GLADE for a Linux platform, make sure that you use
+     the native threads library, not the FSU one.
+
+2. Configure GLADE
+   GLADE uses standard the GNU configuration method. Run 
+           ./configure  [configuration parameters]
+
+   Configuration parameters can be used to define the
+   build/host/target machines, installation locations and other
+   customizations (see Doc/install_guide.txt for details). By default,
+   when no parameters are specified, the build machine is used as host
+   and target and installation is done in /usr/local. It is advised to
+   install GLADE first in a private directory for testing purposes.
+   This can be done by using the --prefix parameter, for instance:
+
+      ./configure --prefix=$HOME/glade
+
+   See the section "Building GLADE under Windows NT" for NT specific
+   information.
+
+3. Build & install GLADE
+      this can be achieved simply by doing 
+         make install
+      in the main GLADE directory. Be careful, you usually need root
+      privileges to install software in /usr/local.
+
+4. Test your installation by running the Examples
+   Go in the Example directory and run simply 'make'. Then, go in each
+   example directory and start the applications. Check also the README
+   in each example directory.
+
+5.  Example of complete build (assuming csh syntax):
+
+% cd                             <--- go into your HOME directory
+% gunzip glade-2007.tar.gz     <--- uncompress the distribution
+% tar xf glade-2007.tar        <--- explode the distribution
+% cd glade-2007                <--- go into the distribution dir.
+% ./configure --prefix=`pwd`     <--- configure the Makefiles using the current
+                                      directory to install the binaries
+% make install                   <--- compile files and install them
+% set path=(`pwd`/bin $path)     <--- add this directory in your PATH
+% cd Examples                    <--- go in the Example directory
+% make                           <--- build all the examples
+% cd Eratho/absolute             <--- go in the first example directory
+% ./mainloop                     <--- run the distributed application
+
+
+Building GLADE under Windows NT
+-------------------------------
+
+1) To build GLADE under NT you must have some NT replacement for the
+   followings UNIX tools :
+
+	bash.exe
+	cat.exe
+	chmod.exe
+	cmp.exe
+	cp.exe
+	echo.exe
+	expr.exe
+	false
+	grep.exe
+	install.exe
+	ls.exe
+	mkdir.exe
+	mv.exe
+	rm.exe
+	sed.exe
+	sleep.exe
+	uname.exe
+
+   All these tools can be found in the Cygwin or MSYS environment.
+
+   Some others tools are needed but they are provided with the GNAT for NT
+   distribution :
+
+	ar.exe
+	make.exe
+	ranlib.exe
+
+2) If using the Cygwin environment you also need to specify the host/target
+   triplet when configuring GLADE.
+
+      $ ./configure --prefix=/opt/gnatpro/5.03a1 --build=i686-pc-mingw32
+
+   Special care must be done for the --prefix argument. The directory
+   specified here must be accessible from Cygwin and Windows and point to the
+   same directory. With a default Cygwin installation /opt will probably be
+   looked for into c:\cygwin\opt as / is mapped to c:\cygwin (Cygwin
+   root). The solution is to mount /opt to point to c:\opt in this case.
+
+      $ mount -b c:\opt /opt
+
+   This way c:\opt (on Windows, PATH used by the native build of GLADE) and
+   /opt on Cygwin side are referencing the same directory.
+
+   This is very important to have a proper GLADE installation.
