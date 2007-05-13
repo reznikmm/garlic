@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2002 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -38,6 +36,7 @@ with Ada.Unchecked_Deallocation;
 
 with GNAT.IO;
 with GNAT.Sockets;                    use GNAT.Sockets;
+with GNAT.Strings;                    use GNAT.Strings;
 
 with Interfaces.C;                    use Interfaces.C;
 
@@ -49,15 +48,12 @@ with System.Garlic.Utils;             use System.Garlic.Utils;
 
 package body System.Garlic.Remote is
 
-   package C renames Interfaces.C;
-   --  Shortcuts
-
    Private_Debug_Key : constant Debug_Key :=
      Debug_Initialize ("S_GARREM", "(s-garrem): ");
 
    procedure D
-     (Message : in String;
-      Key     : in Debug_Key := Private_Debug_Key)
+     (Message : String;
+      Key     : Debug_Key := Private_Debug_Key)
      renames Print_Debug_Info;
 
    function Is_Local_Host (Host : String) return Boolean;
@@ -82,7 +78,6 @@ package body System.Garlic.Remote is
 
    List : Partition_List;
 
-
    ------------
    -- Detach --
    ------------
@@ -100,8 +95,8 @@ package body System.Garlic.Remote is
    -----------------
 
    procedure Full_Launch
-     (Host        : String;
-      Command     : String)
+     (Host    : String;
+      Command : String)
    is
       Argument : constant String := Get_Boot_Locations;
    begin
@@ -142,7 +137,7 @@ package body System.Garlic.Remote is
 
    function Get_Host
      (Partition : String)
-     return String
+      return String
    is
       Buffer : String (1 .. 64);
       Last   : Natural;
@@ -158,7 +153,7 @@ package body System.Garlic.Remote is
 
    function Is_Local_Host
      (Host : String)
-     return Boolean
+      return Boolean
    is
       Name_Of_Host : constant String
         := Official_Name (Get_Host_By_Name (Host));
@@ -172,10 +167,8 @@ package body System.Garlic.Remote is
    -- Launch_Registered_Partitions --
    ----------------------------------
 
-   procedure Launch_Registered_Partitions
-   is
+   procedure Launch_Registered_Partitions is
       P : Partition_List;
-
    begin
       if Options.Nolaunch then
          return;
@@ -205,7 +198,6 @@ package body System.Garlic.Remote is
       Command_Line : String)
    is
       P : Partition_List;
-
    begin
       P := new Partition_Info;
       P.Command_Line := new String'(Command_Line);

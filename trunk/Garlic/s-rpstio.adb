@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -55,8 +53,8 @@ package body System.RPC.Stream_IO is
    Private_Debug_Key : constant Debug_Key :=
      Debug_Initialize ("S_RPSTIO", "(s-rpstio): ");
    procedure D
-     (Message : in String;
-      Key     : in Debug_Key := Private_Debug_Key)
+     (Message : String;
+      Key     : Debug_Key := Private_Debug_Key)
      renames Print_Debug_Info;
 
    Msgcode : constant Any_Opcode := User_Message;
@@ -78,7 +76,6 @@ package body System.RPC.Stream_IO is
       new System.Garlic.Table.Medium
         (Partition_ID,
          Any_Partition,
-         Any_Partition,
          Types.Partition_ID_Increment,
          Types.Partition_ID_Increment,
          Partition_Stream_Access,
@@ -87,12 +84,12 @@ package body System.RPC.Stream_IO is
    Any : Partition_Stream_Access;
 
    function Fetch
-     (Partition : in Partition_ID)
+     (Partition : Partition_ID)
      return Partition_Stream_Access;
 
    procedure Handle_Request
-     (Partition : in Types.Partition_ID;
-      Opcode    : in External_Opcode;
+     (Partition : Types.Partition_ID;
+      Opcode    : External_Opcode;
       Query     : access Garlic.Streams.Params_Stream_Type;
       Reply     : access Garlic.Streams.Params_Stream_Type;
       Error     : in out Error_Type);
@@ -128,7 +125,6 @@ package body System.RPC.Stream_IO is
                Err);
       end if;
 
-
       pragma Debug (D ("Close - Unlock stream" & Stream.PID'Img));
       Stream.Open := False;
       System.Garlic.Soft_Links.Leave (Str.Available);
@@ -148,8 +144,8 @@ package body System.RPC.Stream_IO is
    -----------
 
    function Fetch
-     (Partition : in Partition_ID)
-     return Partition_Stream_Access
+     (Partition : Partition_ID)
+      return Partition_Stream_Access
    is
       Stream : Partition_Stream_Access := Streams.Get_Component (Partition);
    begin
@@ -174,8 +170,8 @@ package body System.RPC.Stream_IO is
    --------------------
 
    procedure Handle_Request
-     (Partition : in Types.Partition_ID;
-      Opcode    : in External_Opcode;
+     (Partition : Types.Partition_ID;
+      Opcode    : External_Opcode;
       Query     : access Garlic.Streams.Params_Stream_Type;
       Reply     : access Garlic.Streams.Params_Stream_Type;
       Error     : in out Error_Type)
@@ -186,7 +182,8 @@ package body System.RPC.Stream_IO is
 
       SEA : Stream_Element_Array (1 .. Query.Count);
       Len : Stream_Element_Offset;
-      Str : Partition_Stream_Access := Fetch (Partition_ID (Partition));
+      Str : constant Partition_Stream_Access :=
+        Fetch (Partition_ID (Partition));
    begin
       pragma Debug (D ("Receive new message"));
       pragma Debug (D ("Receive - Lock stream" & Partition'Img));
@@ -227,8 +224,8 @@ package body System.RPC.Stream_IO is
 
    procedure Open
      (Stream    : in out Partition_Stream_Type;
-      Partition : in     Partition_ID;
-      Mode      : in     Stream_Mode)
+      Partition : Partition_ID;
+      Mode      : Stream_Mode)
    is
       Str : Partition_Stream_Access;
    begin
@@ -356,7 +353,8 @@ package body System.RPC.Stream_IO is
 
    procedure Write
      (Stream : in out Partition_Stream_Type;
-      Item   : in     Ada.Streams.Stream_Element_Array) is
+      Item   : Ada.Streams.Stream_Element_Array)
+   is
       Str : Partition_Stream_Access;
    begin
       if not Stream.Open then

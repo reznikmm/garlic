@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1995-2005 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GNATDIST is  free software;  you  can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License  as published by the Free --
@@ -26,15 +24,27 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with XE;             use XE;
-with Osint;          use Osint;
-with Output;         use Output;
+with XE_IO;    use XE_IO;
+with XE_Defs.Defaults;
+with XE_Flags; use XE_Flags;
 
 procedure XE_Usage is
+   Version : constant String := "2007";
+   Length  : Positive := Version'First;
+
 begin
    if Verbose_Mode then
-      Write_Str ("GNATDIST 3.15p  / GNAT 3.15p ");
-      Write_Str (" Copyright 1996-2001 Free Software Foundation, Inc.");
+      while Length < Version'Last and then Version (Length + 1) /= ' ' loop
+         Length := Length + 1;
+      end loop;
+      Write_Eol;
+      Write_Str ("GNATDIST ");
+      Write_Str (Version (Version'First .. Length));
+      Write_Str (" / ");
+      Write_Str (Version (Version'First .. Length));
+      Write_Eol;
+      Write_Str ("Copyright 1996-2005 Free Software Foundation, Inc.");
+      Write_Eol;
       Write_Eol;
    end if;
 
@@ -53,17 +63,16 @@ begin
    Write_Str ("gnatdist switches:");
    Write_Eol;
 
-   Write_Str ("  -a   Consider all files, even readonly ali files");
+   Write_Str ("  -a        Consider all files, even readonly ali files");
    Write_Eol;
-   Write_Str ("  -f   Force recompilations");
+   Write_Str ("  -f        Force recompilations");
    Write_Eol;
-   Write_Str ("  -M   Output commands to build application manually");
+   Write_Str ("  -q        Be quiet, do not display partitioning operations");
    Write_Eol;
-   Write_Str ("  -n   No file stamp consistency check");
+   Write_Str ("  -v        Motivate all executed commands");
    Write_Eol;
-   Write_Str ("  -q   Be quiet, do not display partitioning operations");
-   Write_Eol;
-   Write_Str ("  -v   Motivate all executed commands");
+   Write_Str ("  --PCS=... Select PCS variant (default: "
+     & XE_Defs.Defaults.Default_PCS_Name & ")");
    Write_Eol;
    Write_Eol;
 
@@ -76,9 +85,6 @@ begin
    Write_Eol;
 
    Write_Str ("  -aLdir  Skip missing library sources if ali in dir");
-   Write_Eol;
-
-   Write_Str ("  -Adir   like -aLdir -aIdir");
    Write_Eol;
 
    Write_Str ("  -aOdir  Specify library/object files search path");
@@ -110,6 +116,4 @@ begin
 
    Write_Str ("  -largs opts   opts are passed to the linker");
    Write_Eol;
-
-   Exit_Program (E_Fatal);
 end XE_Usage;

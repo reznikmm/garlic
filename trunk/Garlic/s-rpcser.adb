@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -41,11 +39,14 @@ with Ada.Unchecked_Deallocation;
 
 with Interfaces;
 
+with System.Partition_Interface;
+
 with System.Garlic;              use System.Garlic;
 with System.Garlic.Debug;        use System.Garlic.Debug;
 with System.Garlic.Exceptions;   use System.Garlic.Exceptions;
 with System.Garlic.Heart;        use System.Garlic.Heart;
 with System.Garlic.Options;
+with System.Garlic.Platform_Specific;
 with System.Garlic.Priorities;
 with System.Garlic.Priorities.Mapping;
 with System.Garlic.Soft_Links;
@@ -66,8 +67,8 @@ package body System.RPC.Server is
      Debug_Initialize ("S_RPCSER", "(s-rpcser): ");
 
    procedure D
-     (Message : in String;
-      Key     : in Debug_Key := Private_Debug_Key)
+     (Message : String;
+      Key     : Debug_Key := Private_Debug_Key)
      renames Print_Debug_Info;
 
    type Inner_Abort_Handler_Type is
@@ -82,30 +83,36 @@ package body System.RPC.Server is
          Inner : Inner_Abort_Handler_Type;
       end record;
 
-   procedure Finalize
-     (Handler : in out Inner_Abort_Handler_Type);
+   procedure Finalize (Handler : in out Inner_Abort_Handler_Type);
 
-   procedure Adjust
-     (Self : in out Outer_Abort_Handler_Type);
+   procedure Adjust (Self : in out Outer_Abort_Handler_Type);
 
    function Convert is
-      new Ada.Unchecked_Conversion (System.Address, Streams.RPC_Receiver);
+      new Ada.Unchecked_Conversion
+        (System.Address, System.Partition_Interface.RPC_Receiver);
 
    --  This package handles a pool of anonymous tasks which will be used
    --  by System.RPC to handle incoming calls.
 
    procedure Allocate_Task
-     (Partition : in System.Garlic.Types.Partition_ID;
-      Session   : in System.RPC.Session_Type;
-      Stamp     : in System.Garlic.Types.Stamp_Type;
-      Params    : in System.Garlic.Streams.Params_Stream_Access;
-      Async     : in Boolean);
+     (Partition : System.Garlic.Types.Partition_ID;
+      Session   : System.RPC.Session_Type;
+      --  Stamp     : System.Garlic.Types.Stamp_Type;
+      Params    : System.Garlic.Streams.Params_Stream_Access;
+      Async     : Boolean);
    --  Start a new anonymous task to handle the request
 
    procedure Abort_Task
-     (Partition : in System.Garlic.Types.Partition_ID;
-      Session   : in System.RPC.Session_Type);
+     (Partition : System.Garlic.Types.Partition_ID;
+      Session   : System.RPC.Session_Type);
    --  Abort a running task
+
+   procedure Execute_Remote_Subprogram
+     (Params : Streams.Params_Stream_Access;
+      Result : Streams.Params_Stream_Access);
+   --  Extract access to subprogram from Params and execute it
+   --  locally. Parameters for this subprogram are also marshalled in
+   --  Params. The returned parameters are marshalled in Result.
 
    procedure Initialize;
    --  Initialize this package
@@ -116,14 +123,13 @@ package body System.RPC.Server is
    type Task_Identifier;
    type Task_Identifier_Access is access Task_Identifier;
 
-   function Create_RPC_Handler
-     return Task_Identifier_Access;
+   function Create_RPC_Handler return Task_Identifier_Access;
 
    procedure Destroy_RPC_Handler
      (Identifier : in out Task_Identifier_Access);
 
    task type RPC_Handler is
-      entry  Initialize (Identifier : in Task_Identifier_Access);
+      entry  Initialize (Identifier : Task_Identifier_Access);
       entry  Execute;
       entry  Shutdown;
       pragma Priority (System.Priority'Last);
@@ -139,7 +145,7 @@ package body System.RPC.Server is
       Partition : Types.Partition_ID;
       Stop      : System.Garlic.Tasking.Mutex_PO_Access;
       Params    : Streams.Params_Stream_Access;
-      Stamp     : System.Garlic.Types.Stamp_Type;
+      --  Stamp     : System.Garlic.Types.Stamp_Type;
       Async     : Boolean;
       Next      : Task_Identifier_Access;
       Prev      : Task_Identifier_Access;
@@ -174,8 +180,8 @@ package body System.RPC.Server is
    ----------------
 
    procedure Abort_Task
-     (Partition : in Types.Partition_ID;
-      Session   : in Session_Type)
+     (Partition : Types.Partition_ID;
+      Session   : Session_Type)
    is
       Identifier : Task_Identifier_Access;
    begin
@@ -197,8 +203,7 @@ package body System.RPC.Server is
    -- Adjust --
    ------------
 
-   procedure Adjust
-     (Self : in out Outer_Abort_Handler_Type) is
+   procedure Adjust (Self : in out Outer_Abort_Handler_Type) is
    begin
       Self.Inner.Outer.Partition     := Self.Partition;
       Self.Inner.Outer.Waiting    := Self.Waiting;
@@ -210,11 +215,11 @@ package body System.RPC.Server is
    -------------------
 
    procedure Allocate_Task
-     (Partition : in Types.Partition_ID;
-      Session   : in Session_Type;
-      Stamp     : in System.Garlic.Types.Stamp_Type;
-      Params    : in Streams.Params_Stream_Access;
-      Async     : in Boolean)
+     (Partition : Types.Partition_ID;
+      Session   : Session_Type;
+      --  Stamp     : System.Garlic.Types.Stamp_Type;
+      Params    : Streams.Params_Stream_Access;
+      Async     : Boolean)
    is
       Identifier : Task_Identifier_Access;
       Version    : System.Garlic.Types.Version_Id;
@@ -249,7 +254,7 @@ package body System.RPC.Server is
             Identifier.Session   := Session;
             Identifier.Partition := Partition;
             Identifier.Params    := Params;
-            Identifier.Stamp     := Stamp;
+            --  Identifier.Stamp     := Stamp;
             Identifier.Async     := Async;
 
             Identifier.Handler.Execute;
@@ -274,7 +279,6 @@ package body System.RPC.Server is
 
    task body RPC_Handler is
       Callee    : Types.Partition_ID;
-      Receiver  : Streams.RPC_Receiver;
       Result    : Streams.Params_Stream_Access;
       Cancelled : Boolean;
       Priority  : Priorities.Global_Priority;
@@ -288,7 +292,7 @@ package body System.RPC.Server is
    begin
       pragma Debug (D ("Anonymous task starting"));
       select
-         accept Initialize (Identifier : in Task_Identifier_Access) do
+         accept Initialize (Identifier : Task_Identifier_Access) do
             Self := Identifier;
          end Initialize;
       or
@@ -308,7 +312,7 @@ package body System.RPC.Server is
             terminate;
          end select;
 
-         Soft_Links.Set_Stamp (Self.Stamp);
+         --  Soft_Links.Set_Stamp (Self.Stamp);
 
          exit when Aborted;
 
@@ -334,39 +338,38 @@ package body System.RPC.Server is
          end if;
          When_Established;
 
-         select
-            Self.Stop.Enter;
+         if Self.Async
+           or else not System.Garlic.Platform_Specific.Support_RPC_Abortion
+         then
+            Execute_Remote_Subprogram (Self.Params, Result);
 
-            --  This RPC is aborted. Send an abortion reply to recycle
-            --  properly Session_Type.
+         else
+            select
+               Self.Stop.Enter;
 
-            declare
-               Empty  : aliased Streams.Params_Stream_Type (0);
-               Header : constant RPC_Header := (Abortion_Reply, Self.Session);
-               Error  : aliased Error_Type;
-            begin
-               pragma Debug (D ("Abortion queried by caller"));
-               Insert_RPC_Header (Empty'Access, Header);
-               Send (Self.Partition, Remote_Call, Empty'Access, Error);
-               if Found (Error) then
-                  Raise_Exception (Communication_Error'Identity,
-                                   Content (Error'Access));
-               end if;
-               Cancelled := True;
-            end;
+               --  This RPC is aborted. Send an abortion reply to recycle
+               --  properly Session_Type.
 
-         then abort
-            pragma Debug (D ("Job to achieve"));
+               declare
+                  Empty  : aliased Streams.Params_Stream_Type (0);
+                  Header : constant RPC_Header
+                         := (Abortion_Reply, Self.Session);
+                  Error  : aliased Error_Type;
+               begin
+                  pragma Debug (D ("Abortion queried by caller"));
+                  Insert_RPC_Header (Empty'Access, Header);
+                  Send (Self.Partition, Remote_Call, Empty'Access, Error);
+                  if Found (Error) then
+                     Raise_Exception (Communication_Error'Identity,
+                                      Content (Error'Access));
+                  end if;
+                  Cancelled := True;
+               end;
 
-            --  Execute locally remote procedure call. Extract RPC_Receiver
-            --  of the package and then dereference it.
-
-            Receiver := Convert
-              (System.Address (Interfaces.Unsigned_64'Input (Self.Params)));
-            Receiver (Self.Params, Result);
-
-            pragma Debug (D ("Job achieved without abortion"));
-         end select;
+            then abort
+               Execute_Remote_Subprogram (Self.Params, Result);
+            end select;
+         end if;
 
          declare
             Copy : Streams.Params_Stream_Access := Self.Params;
@@ -398,7 +401,7 @@ package body System.RPC.Server is
 
          pragma Debug (D ("Job finished, queuing"));
 
-         pragma Debug (Soft_Links.Set_Stamp (Types.No_Stamp));
+         --  pragma Debug (Soft_Links.Set_Stamp (Types.No_Stamp));
 
          --  Set RPC handler back to its initial priority.
 
@@ -467,12 +470,34 @@ package body System.RPC.Server is
       Free (Identifier);
    end Destroy_RPC_Handler;
 
+   -------------------------------
+   -- Execute_Remote_Subprogram --
+   -------------------------------
+
+   procedure Execute_Remote_Subprogram
+     (Params   : Streams.Params_Stream_Access;
+      Result   : Streams.Params_Stream_Access)
+   is
+      Receiver : System.Partition_Interface.RPC_Receiver;
+   begin
+      pragma Debug (D ("Job to achieve"));
+
+      --  Execute locally remote procedure call. Extract RPC_Receiver
+      --  of the package and then dereference it.
+
+      Receiver := Convert
+        (System.Address (Interfaces.Unsigned_64'Input (Params)));
+      Receiver (System.Partition_Interface.Request_Access'(
+                  Params => Params.all'Access, Result => Result.all'Access));
+
+      pragma Debug (D ("Job achieved without abortion"));
+   end Execute_Remote_Subprogram;
+
    --------------
    -- Finalize --
    --------------
 
-   procedure Finalize
-     (Handler : in out Inner_Abort_Handler_Type) is
+   procedure Finalize (Handler : in out Inner_Abort_Handler_Type) is
    begin
       Finalize
         (Handler.Outer.Partition,
@@ -486,7 +511,7 @@ package body System.RPC.Server is
 
    procedure Initialize is
       Identifier : Task_Identifier_Access;
-      Handler    : System.Garlic.Soft_Links.Abort_Handler_Access
+      Handler    : constant System.Garlic.Soft_Links.Abort_Handler_Access
         := new Outer_Abort_Handler_Type;
 
    begin

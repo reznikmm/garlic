@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -45,25 +43,25 @@ package body System.Garlic.Filters.Zip is
    Private_Debug_Key : constant Debug_Key :=
      Debug_Initialize ("S_GAFIZI", "(s-gafizi): ");
    procedure D
-     (Message : in String;
-      Key     : in Debug_Key := Private_Debug_Key)
+     (Message : String;
+      Key     : Debug_Key := Private_Debug_Key)
      renames Print_Debug_Info;
    pragma Unreferenced (D);
 
    package C renames Interfaces.C;
    use C;
 
-   function Compress (dest     : in System.Address;
-                      dest_len : in System.Address;
-                      src      : in System.Address;
-                      src_len  : in C.long)
+   function Compress (dest     : System.Address;
+                      dest_len : System.Address;
+                      src      : System.Address;
+                      src_len  : C.long)
                       return C.int;
    pragma Import (C, Compress,   "compress");
 
-   function Decompress (dest     : in System.Address;
-                        dest_len : in System.Address;
-                        src      : in System.Address;
-                        src_len  : in C.long)
+   function Decompress (dest     : System.Address;
+                        dest_len : System.Address;
+                        src      : System.Address;
+                        src_len  : C.long)
                         return C.int;
    pragma Import (C, Decompress, "uncompress");
 
@@ -74,10 +72,10 @@ package body System.Garlic.Filters.Zip is
    ---------------------
 
    function Filter_Incoming
-      (Filter : in Compress_Filter_Type;
-       Params : in Filter_Params_Access;
-       Stream : in Streams.Stream_Element_Access;
-       Offset : in Ada.Streams.Stream_Element_Offset)
+      (Filter : Compress_Filter_Type;
+       Params : Filter_Params_Access;
+       Stream : Streams.Stream_Element_Access;
+       Offset : Ada.Streams.Stream_Element_Offset)
      return Stream_Element_Access
    is
       pragma Unreferenced (Filter);
@@ -88,8 +86,7 @@ package body System.Garlic.Filters.Zip is
       target_bytes  : C.long;
       source_bytes  : C.long;
       result        : C.int;
-
-      pragma Warnings (off, result);
+      pragma Unreferenced (result);
 
       F : constant Stream_Element_Offset := Stream'First + Offset;
       L : constant Stream_Element_Offset := Stream'Last;
@@ -102,6 +99,7 @@ package body System.Garlic.Filters.Zip is
       Target_Buffer := new Stream_Element_Array (1 .. Target_Length);
       if Target_Length > 0 then
          source_bytes := C.long (L - F - 3);
+         --  ??? Is it really OK to ignore the result below
          result := Decompress
            (Target_Buffer (Target_Buffer'First)'Address, target_bytes'Address,
             Stream (F + 4)'Address, source_bytes);
@@ -114,8 +112,8 @@ package body System.Garlic.Filters.Zip is
    ---------------------
 
    function Filter_Outgoing
-      (Filter : in     Compress_Filter_Type;
-       Params : in     Filter_Params_Access;
+      (Filter : Compress_Filter_Type;
+       Params : Filter_Params_Access;
        Stream : access Streams.Params_Stream_Type)
      return Stream_Element_Access
    is
@@ -129,9 +127,8 @@ package body System.Garlic.Filters.Zip is
       Source_Buffer : Stream_Element_Access;
       Target_Buffer : Stream_Element_Access;
       result        : C.int;
+      pragma Unreferenced (result);
       Result_Buffer : Stream_Element_Access;
-
-      pragma Warnings (off, result);
 
    begin
       Source_Buffer := To_Stream_Element_Access (Stream);
@@ -145,6 +142,7 @@ package body System.Garlic.Filters.Zip is
       if source_bytes = 0 then
          target_bytes := 0;
       else
+         --  ??? Is it really OK to ignore the result below
          result := Compress
            (Target_Buffer (5)'Address, target_bytes'Address,
             Source_Buffer (Source_Buffer'First)'Address, source_bytes);
@@ -196,7 +194,7 @@ package body System.Garlic.Filters.Zip is
    ---------------------
 
    procedure Generate_Params
-      (Filter          : in  Compress_Filter_Type;
+      (Filter          : Compress_Filter_Type;
        Public_Params   : out Filter_Params_Access;
        Private_Params  : out Filter_Params_Access;
        Exchange_Params : out Boolean)

@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,31 +19,32 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
 ------------------------------------------------------------------------------
+
+with GNAT.Strings;
 
 with System.Garlic.Debug;
 with System.Garlic.Exceptions;
 with System.Garlic.Physical_Location;
 with System.Garlic.Protocols;
 with System.Garlic.Streams;
-with System.Garlic.Utils;
 with System.Garlic.Types;
 
 package System.Garlic.Partitions is
 
    procedure Allocate_PID
      (Partition : out Types.Partition_ID;
-      Name      : in String := "";
+      Name      : String := "";
       Error     : in out Exceptions.Error_Type);
    --  Allocate a new partition ID. This can need the agreement of the
    --  boot mirrors group. When Name is empty string, the partition is
@@ -53,39 +52,45 @@ package System.Garlic.Partitions is
 
    procedure Register_Passive_Partition
      (Partition      : out Types.Partition_ID;
-      Partition_Name : in String;
-      Mem_Locations  : in String;
+      Partition_Name : String;
+      Mem_Locations  : String;
       Error          : in out Exceptions.Error_Type);
 
    function Get_Boot_Locations return String;
    --  This function returns all the coordinates of the boot server
 
    procedure Get_Boot_Partition
-     (Partition      : in Types.Partition_ID;
+     (Partition      : Types.Partition_ID;
       Boot_Partition : out Types.Partition_ID;
       Error          : in out Exceptions.Error_Type);
-   --  Return the pid of the partition used to boot Partition.
+   --  Return the pid of the partition used to boot Partition
 
-   procedure Get_Net_Location
-     (Partition : in Types.Partition_ID;
-      Location  : out Physical_Location.Location_Type;
+   procedure Get_Is_Active_Partition
+     (Partition : Types.Partition_ID;
+      Active    : out Boolean;
       Error     : in out Exceptions.Error_Type);
-   --  Return the location of a partition
+   --  Return whether a partition is active or not
 
    procedure Get_Mem_Location
-     (Partition : in Types.Partition_ID;
-      Location  : out Utils.String_Access;
+     (Partition : Types.Partition_ID;
+      Location  : out GNAT.Strings.String_Access;
       Error     : in out Exceptions.Error_Type);
-   --  Return the location of a partition
+   --  Return the memory location of a partition
+
+   procedure Get_Net_Location
+     (Partition : Types.Partition_ID;
+      Location  : out Physical_Location.Location_Type;
+      Error     : in out Exceptions.Error_Type);
+   --  Return the network location of a partition
 
    procedure Get_Name
-     (Partition : in Types.Partition_ID;
-      Name      : out Utils.String_Access;
+     (Partition : Types.Partition_ID;
+      Name      : out GNAT.Strings.String_Access;
       Error     : in out Exceptions.Error_Type);
    --  Return the name of a partition in its coded or plaintext form
 
    procedure Get_Protocol
-     (Partition : in Types.Partition_ID;
+     (Partition : Types.Partition_ID;
       Protocol  : out Protocols.Protocol_Access;
       Error     : in out Exceptions.Error_Type);
    pragma Inline (Get_Protocol);
@@ -93,7 +98,7 @@ package System.Garlic.Partitions is
    --  boot server option.
 
    procedure Get_Reconnection_Policy
-     (Partition    : in Types.Partition_ID;
+     (Partition    : Types.Partition_ID;
       Reconnection : out Types.Reconnection_Type;
       Error        : in out Exceptions.Error_Type);
    --  Return policy to use when reconnecting to Partition
@@ -115,7 +120,7 @@ package System.Garlic.Partitions is
    --  Return True if partition has a local termination
 
    procedure Handle_Partition_Request
-     (Partition : in Types.Partition_ID;
+     (Partition : Types.Partition_ID;
       Query     : access Streams.Params_Stream_Type;
       Reply     : access Streams.Params_Stream_Type;
       Error     : in out Exceptions.Error_Type);
@@ -124,7 +129,7 @@ package System.Garlic.Partitions is
    procedure Initialize;
 
    procedure Invalidate_Partition
-     (Partition : in Types.Partition_ID);
+     (Partition : Types.Partition_ID);
    --  Invalidate a partition. If this partition was the boot server, then
    --  choose as boot server the first boot mirror. If we choose the
    --  current partition, then reset options to have a valid boot server
@@ -139,15 +144,15 @@ package System.Garlic.Partitions is
    --  Null_PID.
 
    procedure Send_Partition_Definition
-     (Partition      : in Types.Partition_ID;
-      Partition_Name : in Utils.String_Access;
-      Is_Active_Part : in Boolean;
-      Net_Locations  : in Utils.String_Access;
-      Mem_Locations  : in Utils.String_Access;
-      Termination    : in Types.Termination_Type;
-      Reconnection   : in Types.Reconnection_Type;
-      Is_Pure_Client : in Boolean;
-      Is_Boot_Mirror : in Boolean;
+     (Partition      : Types.Partition_ID;
+      Partition_Name : GNAT.Strings.String_Access;
+      Is_Active_Part : Boolean;
+      Net_Locations  : GNAT.Strings.String_Access;
+      Mem_Locations  : GNAT.Strings.String_Access;
+      Termination    : Types.Termination_Type;
+      Reconnection   : Types.Reconnection_Type;
+      Is_Pure_Client : Boolean;
+      Is_Boot_Mirror : Boolean;
       Error          : in out Exceptions.Error_Type);
    --  Send a boot registration to boot server.  We will send a
    --  Define_New_Partition request to the boot partition. This is step
@@ -165,18 +170,18 @@ package System.Garlic.Partitions is
    --  info request will be broadcast. This is step 8.
 
    procedure Set_Boot_Location
-     (Location  : in Physical_Location.Location_Type);
+     (Location  : Physical_Location.Location_Type);
    --  Set effective boot server coordinates
 
    procedure Set_Online
-     (Partition : in Types.Partition_ID;
-      Online    : in Boolean);
+     (Partition : Types.Partition_ID;
+      Online    : Boolean);
    --  Indicates whether a communication link has been initialized
    --  with this partition.
 
    procedure Set_Used_Protocol
-     (Partition : in Types.Partition_ID;
-      Protocol  : in Protocols.Protocol_Access);
+     (Partition : Types.Partition_ID;
+      Protocol  : Protocols.Protocol_Access);
    --  Define the protocol to use to contact a partition when there is
    --  already info on this.
 
@@ -185,7 +190,7 @@ package System.Garlic.Partitions is
    --  ensure shutdown.
 
    procedure Dump_Partition_Table
-     (Key : in Debug.Debug_Key := Debug.Always);
+     (Key : Debug.Debug_Key := Debug.Always);
    --  Dump partition table on standard output for debugging purpose
 
 end System.Garlic.Partitions;

@@ -4,8 +4,6 @@
 --                                                                          --
 --                                R E A D M E                               --
 --                                                                          --
---                            $Revision$                              --
---                                                                          --
 -- GLADE is  free software;  you  can  redistribute  it  and/or  modify  it --
 -- under terms of the  GNU General Public License  as published by the Free --
 -- Software  Foundation;  either version 2,  or  (at your option) any later --
@@ -22,8 +20,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-This is release 3.15p  of the Ada 95 distributed systems annex
-for GNAT 3.15p . New features are described in file NEWS.
+This is release 2007 of the Ada 95 distributed systems annex
+for GNAT 2007. New features are described in file NEWS.
 
 Contents.
 ---------
@@ -130,13 +128,6 @@ Bug reports related to the implementation of the distribution annex
 should be sent to:
 
 		   glade-report@gnat.com
-
-To participate to general discussions on GLADE, subscribe to the
-mailing list 
-                   glade-chat@act-europe.fr
-
-To subscribe, send a mail to  glade-chat-request@act-europe.fr with no
-subject and a body containing exactly and only the word "subscribe". 
 
 Bug reports and technical queries regarding GNAT itself should be
 addressed to "report@gnat.com" following the usual reporting

@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -51,21 +49,21 @@ package body System.Garlic.Group is
    Private_Debug_Key : constant Debug_Key :=
      Debug_Initialize ("S_GARGRO", "(s-gargro): ");
    procedure D
-     (Message : in String;
-      Key     : in Debug_Key := Private_Debug_Key)
+     (Message : String;
+      Key     : Debug_Key := Private_Debug_Key)
      renames Print_Debug_Info;
 
    Group_Mutex : Soft_Links.Mutex_Access;
 
    procedure Handle_Request
-     (Partition : in Partition_ID;
-      Opcode    : in External_Opcode;
+     (Partition : Partition_ID;
+      Opcode    : External_Opcode;
       Query     : access Params_Stream_Type;
       Reply     : access Params_Stream_Type;
       Error     : in out Error_Type);
 
    procedure Send_Next_Mirror
-     (Opcode : in Any_Opcode;
+     (Opcode : Any_Opcode;
       Params : access Streams.Params_Stream_Type);
 
    ---------------
@@ -73,7 +71,7 @@ package body System.Garlic.Group is
    ---------------
 
    procedure Broadcast
-     (Opcode : in Any_Opcode;
+     (Opcode : Any_Opcode;
       Params : access Streams.Params_Stream_Type)
    is
    begin
@@ -90,8 +88,8 @@ package body System.Garlic.Group is
    --------------------
 
    procedure Handle_Request
-     (Partition : in Types.Partition_ID;
-      Opcode    : in External_Opcode;
+     (Partition : Types.Partition_ID;
+      Opcode    : External_Opcode;
       Query     : access Streams.Params_Stream_Type;
       Reply     : access Streams.Params_Stream_Type;
       Error     : in out Error_Type)
@@ -174,7 +172,7 @@ package body System.Garlic.Group is
    ----------------------
 
    procedure Send_Next_Mirror
-     (Opcode : in Any_Opcode;
+     (Opcode : Any_Opcode;
       Params : access Streams.Params_Stream_Type)
    is
       Error  : Error_Type;

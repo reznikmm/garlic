@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -73,7 +71,7 @@ package System.Garlic.Streams is
 
    procedure Write
      (Stream : in out Params_Stream_Type;
-      Item   : in Ada.Streams.Stream_Element_Array);
+      Item   : Ada.Streams.Stream_Element_Array);
 
    pragma Inline (Read);
    pragma Inline (Write);
@@ -91,8 +89,19 @@ package System.Garlic.Streams is
    type Stream_Element_Access is access Ada.Streams.Stream_Element_Array;
    for Stream_Element_Access'Storage_Pool use Streams_Pool;
 
+   procedure Read
+     (S : access Ada.Streams.Root_Stream_Type'Class;
+      X : out Stream_Element_Access);
+
+   procedure Write
+     (S : access Ada.Streams.Root_Stream_Type'Class;
+      X : Stream_Element_Access);
+
+   for Stream_Element_Access'Read  use Read;
+   for Stream_Element_Access'Write use Write;
+
    procedure Copy
-     (Source : in Params_Stream_Type;
+     (Source : Params_Stream_Type;
       Target : in out Params_Stream_Type);
    pragma Inline (Copy);
    --  Assign an exact copy of Source to Target
@@ -115,7 +124,7 @@ package System.Garlic.Streams is
 
    procedure Dump
      (Stream : access Ada.Streams.Stream_Element_Array;
-      Key    : in System.Garlic.Debug.Debug_Key);
+      Key    : System.Garlic.Debug.Debug_Key);
    --  Same as Print_Debug_info except that this procedure prints
    --  Stream content.
 
@@ -152,10 +161,5 @@ package System.Garlic.Streams is
    procedure Free is
      new Ada.Unchecked_Deallocation
      (Params_Stream_Type, Params_Stream_Access);
-
-   type RPC_Receiver is
-      access procedure (Params : access Streams.Params_Stream_Type;
-                        Result : access Streams.Params_Stream_Type);
-   --  Similar to System.RPC.RPC_Receiver
 
 end System.Garlic.Streams;

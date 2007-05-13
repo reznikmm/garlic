@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1995-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GNATDIST is  free software;  you  can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License  as published by the Free --
@@ -26,18 +24,15 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Namet;         use Namet;
-with Osint;         use Osint;
-with Output;        use Output;
-with Types;         use Types;
-with XE;            use XE;
+with XE_IO;         use XE_IO;
+with XE_Names;      use XE_Names;
 with XE_Utils;      use XE_Utils;
 
 package body XE_Scan is
 
    Location : Location_Type;
-   Buffer   : Source_Buffer_Ptr;
-   Scan_Ptr : Source_Ptr;
+   Buffer   : Text_Buffer_Ptr;
+   Scan_Ptr : Text_Ptr;
 
    procedure New_Line;
    --  Update SLOC
@@ -132,16 +127,18 @@ package body XE_Scan is
    -- Load_File --
    ---------------
 
-   procedure Load_File (File : in File_Name_Type) is
-      Dummy : Source_Ptr;
+   procedure Load_File (File : File_Name_Type) is
+      First, Last : Text_Ptr;
+
    begin
-      Read_Source_File (File, First_Source_Ptr, Dummy, Buffer);
+      Read_File (File, First, Last, Buffer);
+
       if Buffer = null then
          Message ("cannot open file", File);
          raise Fatal_Error;
-      else
-         Scan_Ptr := Buffer.all'First;
       end if;
+
+      Scan_Ptr       := First;
       Location.Line  := 1;
       Location.First := Scan_Ptr;
       Location.Last  := Scan_Ptr;
@@ -152,7 +149,7 @@ package body XE_Scan is
    --------------------
 
    procedure Location_To_XY
-     (Where : in  Location_Type;
+     (Where : Location_Type;
       Loc_X : out Int;
       Loc_Y : out Int) is
    begin
@@ -416,7 +413,7 @@ package body XE_Scan is
    ------------------------
 
    procedure Set_Token_Location
-     (Where : in Location_Type) is
+     (Where : Location_Type) is
    begin
       Location := Where;
       Scan_Ptr := Where.Last;
@@ -427,12 +424,12 @@ package body XE_Scan is
    --------------------
 
    procedure Write_Location
-     (Where   : in Location_Type) is
+     (Where   : Location_Type) is
 
       use ASCII;
 
    begin
-      Write_Name (Configuration_File);
+      Write_Name (Configuration_File_Name);
       Write_Str (":");
       Write_Int (Where.Line);
       Write_Str (":");
@@ -444,7 +441,7 @@ package body XE_Scan is
    -- Write_Token --
    -----------------
 
-   procedure Write_Token (T : in Token_Type) is
+   procedure Write_Token (T : Token_Type) is
    begin
       case T is
          when Tok_String_Literal =>

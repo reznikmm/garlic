@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,18 +19,19 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.IO_Exceptions;
 with Ada.Streams;              use Ada.Streams;
 with Ada.Unchecked_Conversion;
 
@@ -43,8 +42,9 @@ package body System.Stream_Attributes is
 
    use UST;
 
-   Data_Error : exception;
-   --  Exception raised if insufficient data read.
+   Data_Error : exception renames Ada.IO_Exceptions.End_Error;
+   --  Exception raised if insufficient data read (End_Error is
+   --  mandated by AI95-00132).
 
    SU : constant := System.Storage_Unit;
    --  XXXXX pragma Assert (SU = 8);
@@ -76,7 +76,6 @@ package body System.Stream_Attributes is
          F_Bytes      : SEO;     --  N. of fraction bytes completly used
          F_Bits       : Integer; --  N. of bits used on first fraction word
       end record;
-
 
    type Precision is (Single, Double, Extended);
    Fields : constant array (Precision) of Field_Type
@@ -242,7 +241,6 @@ package body System.Stream_Attributes is
    function To_XDR_SA is new UC (System.Address, XDR_SA);
    function To_XDR_SA is new UC (XDR_SA, System.Address);
 
-
    --  Enumerations have the same representation as signed integers.
    --  Enumerations are handy for describing subsets of the integers.
 
@@ -299,7 +297,7 @@ package body System.Stream_Attributes is
    -- I_AD --
    ----------
 
-   function I_AD (Stream : access RST) return Fat_Pointer is
+   function I_AD (Stream : not null access RST) return Fat_Pointer is
       FP : Fat_Pointer;
 
    begin
@@ -313,7 +311,7 @@ package body System.Stream_Attributes is
    -- I_AS --
    ----------
 
-   function I_AS (Stream : access RST) return Thin_Pointer is
+   function I_AS (Stream : not null access RST) return Thin_Pointer is
       S : XDR_S_TM;
       L : SEO;
       U : XDR_TM := 0;
@@ -336,7 +334,7 @@ package body System.Stream_Attributes is
    -- I_B --
    ---------
 
-   function I_B (Stream : access RST) return Boolean is
+   function I_B (Stream : not null access RST) return Boolean is
    begin
       case I_SSU (Stream) is
          when 0      => return False;
@@ -349,7 +347,7 @@ package body System.Stream_Attributes is
    -- I_C --
    ---------
 
-   function I_C (Stream : access RST) return Character is
+   function I_C (Stream : not null access RST) return Character is
       S : XDR_S_C;
       L : SEO;
 
@@ -369,7 +367,7 @@ package body System.Stream_Attributes is
    -- I_F --
    ---------
 
-   function I_F (Stream : access RST) return Float is
+   function I_F (Stream : not null access RST) return Float is
       I       : constant Precision := Single;
       E_Size  : Integer  renames Fields (I).E_Size;
       E_Bias  : Integer  renames Fields (I).E_Bias;
@@ -461,7 +459,7 @@ package body System.Stream_Attributes is
    -- I_I --
    ---------
 
-   function I_I (Stream : access RST) return Integer is
+   function I_I (Stream : not null access RST) return Integer is
       S : XDR_S_I;
       L : SEO;
       U : XDR_U := 0;
@@ -491,7 +489,7 @@ package body System.Stream_Attributes is
    -- I_LF --
    ----------
 
-   function I_LF (Stream : access RST) return Long_Float is
+   function I_LF (Stream : not null access RST) return Long_Float is
       I       : constant Precision := Double;
       E_Size  : Integer  renames Fields (I).E_Size;
       E_Bias  : Integer  renames Fields (I).E_Bias;
@@ -583,7 +581,7 @@ package body System.Stream_Attributes is
    -- I_LI --
    ----------
 
-   function I_LI (Stream : access RST) return Long_Integer is
+   function I_LI (Stream : not null access RST) return Long_Integer is
       S : XDR_S_LI;
       L : SEO;
       U : Unsigned := 0;
@@ -625,7 +623,7 @@ package body System.Stream_Attributes is
    -- I_LLF --
    -----------
 
-   function I_LLF (Stream : access RST) return Long_Long_Float is
+   function I_LLF (Stream : not null access RST) return Long_Long_Float is
       I       : constant Precision := Extended;
       E_Size  : Integer  renames Fields (I).E_Size;
       E_Bias  : Integer  renames Fields (I).E_Bias;
@@ -717,7 +715,7 @@ package body System.Stream_Attributes is
    -- I_LLI --
    -----------
 
-   function I_LLI (Stream : access RST) return Long_Long_Integer is
+   function I_LLI (Stream : not null access RST) return Long_Long_Integer is
       S : XDR_S_LLI;
       L : SEO;
       U : Unsigned := 0;
@@ -758,7 +756,7 @@ package body System.Stream_Attributes is
    -- I_LLU --
    -----------
 
-   function I_LLU (Stream : access RST) return Long_Long_Unsigned is
+   function I_LLU (Stream : not null access RST) return Long_Long_Unsigned is
       S : XDR_S_LLU;
       L : SEO;
       U : Unsigned := 0;
@@ -794,7 +792,7 @@ package body System.Stream_Attributes is
    -- I_LU --
    ----------
 
-   function I_LU (Stream : access RST) return Long_Unsigned is
+   function I_LU (Stream : not null access RST) return Long_Unsigned is
       S : XDR_S_LU;
       L : SEO;
       U : Unsigned := 0;
@@ -830,7 +828,7 @@ package body System.Stream_Attributes is
    -- I_SF --
    ----------
 
-   function I_SF (Stream : access RST) return Short_Float is
+   function I_SF (Stream : not null access RST) return Short_Float is
       I       : constant Precision := Single;
       E_Size  : Integer  renames Fields (I).E_Size;
       E_Bias  : Integer  renames Fields (I).E_Bias;
@@ -922,7 +920,7 @@ package body System.Stream_Attributes is
    -- I_SI --
    ----------
 
-   function I_SI (Stream : access RST) return Short_Integer is
+   function I_SI (Stream : not null access RST) return Short_Integer is
       S : XDR_S_SI;
       L : SEO;
       U : XDR_SU := 0;
@@ -952,7 +950,7 @@ package body System.Stream_Attributes is
    -- I_SSI --
    -----------
 
-   function I_SSI (Stream : access RST) return Short_Short_Integer is
+   function I_SSI (Stream : not null access RST) return Short_Short_Integer is
       S : XDR_S_SSI;
       L : SEO;
       U : XDR_SSU;
@@ -983,7 +981,7 @@ package body System.Stream_Attributes is
    -- I_SSU --
    -----------
 
-   function I_SSU (Stream : access RST) return Short_Short_Unsigned is
+   function I_SSU (Stream : not null access RST) return Short_Short_Unsigned is
       S : XDR_S_SSU;
       L : SEO;
       U : XDR_SSU := 0;
@@ -1007,7 +1005,7 @@ package body System.Stream_Attributes is
    -- I_SU --
    ----------
 
-   function I_SU (Stream : access RST) return Short_Unsigned is
+   function I_SU (Stream : not null access RST) return Short_Unsigned is
       S : XDR_S_SU;
       L : SEO;
       U : XDR_SU := 0;
@@ -1032,7 +1030,7 @@ package body System.Stream_Attributes is
    -- I_U --
    ---------
 
-   function I_U (Stream : access RST) return Unsigned is
+   function I_U (Stream : not null access RST) return Unsigned is
       S : XDR_S_U;
       L : SEO;
       U : XDR_U := 0;
@@ -1057,7 +1055,7 @@ package body System.Stream_Attributes is
    -- I_WC --
    ----------
 
-   function I_WC (Stream : access RST) return Wide_Character is
+   function I_WC (Stream : not null access RST) return Wide_Character is
       S : XDR_S_WC;
       L : SEO;
       U : XDR_WC := 0;
@@ -1129,7 +1127,7 @@ package body System.Stream_Attributes is
    -- W_AD --
    ----------
 
-   procedure W_AD (Stream : access RST; Item : in Fat_Pointer) is
+   procedure W_AD (Stream : not null access RST; Item : Fat_Pointer) is
       S : XDR_S_TM;
       U : XDR_TM;
 
@@ -1159,7 +1157,7 @@ package body System.Stream_Attributes is
    -- W_AS --
    ----------
 
-   procedure W_AS (Stream : access RST; Item : in Thin_Pointer) is
+   procedure W_AS (Stream : not null access RST; Item : Thin_Pointer) is
       S : XDR_S_TM;
       U : XDR_TM := XDR_TM (To_XDR_SA (Item.P1));
 
@@ -1180,7 +1178,7 @@ package body System.Stream_Attributes is
    -- W_B --
    ---------
 
-   procedure W_B (Stream : access RST; Item : in Boolean) is
+   procedure W_B (Stream : not null access RST; Item : Boolean) is
    begin
       if Item then
          W_SSU (Stream, 1);
@@ -1193,7 +1191,7 @@ package body System.Stream_Attributes is
    -- W_C --
    ---------
 
-   procedure W_C (Stream : access RST; Item : in Character) is
+   procedure W_C (Stream : not null access RST; Item : Character) is
       S : XDR_S_C;
 
       pragma Assert (C_L = 1);
@@ -1210,7 +1208,7 @@ package body System.Stream_Attributes is
    -- W_F --
    ---------
 
-   procedure W_F (Stream : access RST; Item : in Float) is
+   procedure W_F (Stream : not null access RST; Item : Float) is
       I       : constant Precision := Single;
       E_Size  : Integer  renames Fields (I).E_Size;
       E_Bias  : Integer  renames Fields (I).E_Bias;
@@ -1325,7 +1323,7 @@ package body System.Stream_Attributes is
    -- W_I --
    ---------
 
-   procedure W_I (Stream : access RST; Item : in Integer) is
+   procedure W_I (Stream : not null access RST; Item : Integer) is
       S : XDR_S_I;
       U : XDR_U;
 
@@ -1357,7 +1355,7 @@ package body System.Stream_Attributes is
    -- W_LF --
    ----------
 
-   procedure W_LF (Stream : access RST; Item : in Long_Float) is
+   procedure W_LF (Stream : not null access RST; Item : Long_Float) is
       I       : constant Precision := Double;
       E_Size  : Integer  renames Fields (I).E_Size;
       E_Bias  : Integer  renames Fields (I).E_Bias;
@@ -1472,7 +1470,7 @@ package body System.Stream_Attributes is
    -- W_LI --
    ----------
 
-   procedure W_LI (Stream : access RST; Item : in Long_Integer) is
+   procedure W_LI (Stream : not null access RST; Item : Long_Integer) is
       S : XDR_S_LI;
       U : Unsigned;
       X : Long_Unsigned;
@@ -1515,7 +1513,7 @@ package body System.Stream_Attributes is
    -- W_LLF --
    -----------
 
-   procedure W_LLF (Stream : access RST; Item : in Long_Long_Float) is
+   procedure W_LLF (Stream : not null access RST; Item : Long_Long_Float) is
       I       : constant Precision := Extended;
       E_Size  : Integer  renames Fields (I).E_Size;
       E_Bias  : Integer  renames Fields (I).E_Bias;
@@ -1630,7 +1628,9 @@ package body System.Stream_Attributes is
    -- W_LLI --
    -----------
 
-   procedure W_LLI (Stream : access RST; Item : in Long_Long_Integer) is
+   procedure W_LLI
+     (Stream : not null access RST; Item : Long_Long_Integer)
+   is
       S : XDR_S_LLI;
       U : Unsigned;
       X : Long_Long_Unsigned;
@@ -1673,7 +1673,9 @@ package body System.Stream_Attributes is
    -- W_LLU --
    -----------
 
-   procedure W_LLU (Stream : access RST; Item : in Long_Long_Unsigned) is
+   procedure W_LLU
+     (Stream : not null access RST; Item : Long_Long_Unsigned)
+   is
       S : XDR_S_LLU;
       U : Unsigned;
       X : Long_Long_Unsigned := Item;
@@ -1709,7 +1711,7 @@ package body System.Stream_Attributes is
    -- W_LU --
    ----------
 
-   procedure W_LU (Stream : access RST; Item : in Long_Unsigned) is
+   procedure W_LU (Stream : not null access RST; Item : Long_Unsigned) is
       S : XDR_S_LU;
       U : Unsigned;
       X : Long_Unsigned := Item;
@@ -1744,7 +1746,7 @@ package body System.Stream_Attributes is
    -- W_SF --
    ----------
 
-   procedure W_SF (Stream : access RST; Item : in Short_Float) is
+   procedure W_SF (Stream : not null access RST; Item : Short_Float) is
       I       : constant Precision := Single;
       E_Size  : Integer  renames Fields (I).E_Size;
       E_Bias  : Integer  renames Fields (I).E_Bias;
@@ -1859,7 +1861,7 @@ package body System.Stream_Attributes is
    -- W_SI --
    ----------
 
-   procedure W_SI (Stream : access RST; Item : in Short_Integer) is
+   procedure W_SI (Stream : not null access RST; Item : Short_Integer) is
       S : XDR_S_SI;
       U : XDR_SU;
 
@@ -1891,7 +1893,9 @@ package body System.Stream_Attributes is
    -- W_SSI --
    -----------
 
-   procedure W_SSI (Stream : access RST; Item : in Short_Short_Integer) is
+   procedure W_SSI
+     (Stream : not null access RST; Item : Short_Short_Integer)
+   is
       S : XDR_S_SSI;
       U : XDR_SSU;
 
@@ -1916,7 +1920,9 @@ package body System.Stream_Attributes is
    -- W_SSU --
    -----------
 
-   procedure W_SSU (Stream : access RST; Item : in Short_Short_Unsigned) is
+   procedure W_SSU
+     (Stream : not null access RST; Item : Short_Short_Unsigned)
+   is
       S : XDR_S_SSU;
       U : constant XDR_SSU := XDR_SSU (Item);
 
@@ -1938,7 +1944,7 @@ package body System.Stream_Attributes is
    -- W_SU --
    ----------
 
-   procedure W_SU (Stream : access RST; Item : in Short_Unsigned) is
+   procedure W_SU (Stream : not null access RST; Item : Short_Unsigned) is
       S : XDR_S_SU;
       U : XDR_SU := XDR_SU (Item);
 
@@ -1963,7 +1969,7 @@ package body System.Stream_Attributes is
    -- W_U --
    ---------
 
-   procedure W_U (Stream : access RST; Item : in Unsigned) is
+   procedure W_U (Stream : not null access RST; Item : Unsigned) is
       S : XDR_S_U;
       U : XDR_U := XDR_U (Item);
 
@@ -1988,7 +1994,7 @@ package body System.Stream_Attributes is
    -- W_WC --
    ----------
 
-   procedure W_WC (Stream : access RST; Item : in Wide_Character) is
+   procedure W_WC (Stream : not null access RST; Item : Wide_Character) is
       S : XDR_S_WC;
       U : XDR_WC;
 
@@ -2010,5 +2016,3 @@ package body System.Stream_Attributes is
    end W_WC;
 
 end System.Stream_Attributes;
-
-

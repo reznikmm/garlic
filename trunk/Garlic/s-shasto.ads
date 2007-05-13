@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -192,13 +190,13 @@ package System.Shared_Storage is
    --  write the new value. The file is created by this call if it does not
    --  already exist.
 
-   procedure Shared_Var_Lock (Var : in String);
+   procedure Shared_Var_Lock (Var : String);
    --  This procedure claims the global shared memory lock. It is used for
    --  protected types in shared passive packages. A call to this locking
    --  routine is generated as the first operation in the code for the body
    --  of a protected subprogram, and it busy waits if the lock is busy.
 
-   procedure Shared_Var_Unlock (Var : in String);
+   procedure Shared_Var_Unlock (Var : String);
    --  This procedure releases the lock obtaind by a prior call to the
    --  Shared_Mem_Lock procedure, and is to be generated as the last
    --  operation in the body of a protected subprogram.

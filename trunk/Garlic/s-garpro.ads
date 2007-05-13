@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,21 +19,23 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
 ------------------------------------------------------------------------------
 
 with Ada.Streams;
+
+with GNAT.Strings;
+
 with System.Garlic.Exceptions;
-with System.Garlic.Utils;
 with System.Garlic.Types;
 
 package System.Garlic.Protocols is
@@ -73,11 +73,10 @@ package System.Garlic.Protocols is
 
    procedure Initialize
      (Protocol  : access Protocol_Type;
-      Self_Data : in String;
-      Required  : in Boolean;
+      Self_Data : String;
+      Required  : Boolean;
       Performed : out Boolean;
-      Error     : in out Exceptions.Error_Type)
-     is abstract;
+      Error     : in out Exceptions.Error_Type) is abstract;
    --  Initialize protocol. When Self_Data is non-null, use this
    --  location to receive messages. Required means that this
    --  initialization must be done. When Required is false, this
@@ -88,34 +87,36 @@ package System.Garlic.Protocols is
    --  needed to contact other partitions. Incomplete data have to be
    --  completed once initialized.
 
-   Forever : constant Duration := Duration'Last;
    Polling : constant Duration := 0.2;
+   Forever : constant Duration := Duration (Integer'Last) * 1.0;
+   --  WARNING : Forever must match GNAT.Sockets.Forever. We do not
+   --  use GNAT.Sockets.Forever in order not to depend on GNAT.Sockets
+   --  since the protocols used may not depend on it.
 
    function Receive
-     (Protocol  : access Protocol_Type;
-      Timeout   : Duration)
-     return Boolean is abstract;
+     (Protocol : access Protocol_Type;
+      Timeout  : Duration)
+      return Boolean is abstract;
    --  Try to receive any incoming stream, analyze and process
    --  it. Return False if Timeout expired.
 
    procedure Set_Boot_Data
      (Protocol  : access Protocol_Type;
-      Boot_Data : in String;
-      Error     : in out Exceptions.Error_Type)
-     is abstract;
+      Boot_Data : String;
+      Error     : in out Exceptions.Error_Type) is abstract;
    --  When Boot_Data is non-null, use this location to contact boot
    --  partition.
 
    function Get_Data
      (Protocol : access Protocol_Type)
-     return Utils.String_Array_Access;
+      return GNAT.Strings.String_List_Access;
    --  Return a string array which holds all the physical locations to
    --  be used by another partition to contact us.
 
    procedure Receive_From_All_Protocols;
    --  Receive from all protocols.
 
-   procedure Register (Protocol : in Protocol_Access);
+   procedure Register (Protocol : Protocol_Access);
    --  Register the protocol as a present protocol
 
    Unused_Space : constant Ada.Streams.Stream_Element_Count := 32;
@@ -125,7 +126,7 @@ package System.Garlic.Protocols is
 
    procedure Send
      (Protocol  : access Protocol_Type;
-      Partition : in Types.Partition_ID;
+      Partition : Types.Partition_ID;
       Data      : access Ada.Streams.Stream_Element_Array;
       Error     : in out Exceptions.Error_Type) is abstract;
    --  Send data to a remote partition. See comment about Unused_Space
@@ -139,4 +140,3 @@ package System.Garlic.Protocols is
    --  Shutdown every protocol
 
 end System.Garlic.Protocols;
-

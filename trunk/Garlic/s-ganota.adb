@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -45,7 +43,7 @@ package body System.Garlic.No_Tasking is
    -- Create --
    ------------
 
-   function Create (V : in Version_Id) return Watcher_Access is
+   function Create (V : Version_Id) return Watcher_Access is
       W : constant Unprotected_Watcher_Access := new Unprotected_Watcher_Type;
    begin
       W.Version := V;
@@ -109,7 +107,7 @@ package body System.Garlic.No_Tasking is
 
    procedure Differ
      (W : in out Unprotected_Watcher_Type;
-      V : in Version_Id)
+      V : Version_Id)
    is
       pragma Unreferenced (W);
       pragma Unreferenced (V);
@@ -121,7 +119,7 @@ package body System.Garlic.No_Tasking is
    -- Enter --
    -----------
 
-   procedure Enter (M : in Unprotected_Mutex_Type)
+   procedure Enter (M : Unprotected_Mutex_Type)
    is
       pragma Unreferenced (M);
    begin
@@ -166,14 +164,14 @@ package body System.Garlic.No_Tasking is
       return Natural (System.Default_Priority);
    end Get_Priority;
 
-   --------------------
-   -- Get_Task_Stamp --
-   --------------------
+--    --------------------
+--    -- Get_Task_Stamp --
+--    --------------------
 
-   function Get_Task_Stamp return Stamp_Type is
-   begin
-      return No_Stamp;
-   end Get_Task_Stamp;
+--    function Get_Task_Stamp return Stamp_Type is
+--    begin
+--       return No_Stamp;
+--    end Get_Task_Stamp;
 
    ----------------------------
    -- Independent_Task_Count --
@@ -200,8 +198,8 @@ package body System.Garlic.No_Tasking is
       Register_Independent_Task_Count (Independent_Task_Count'Access);
       Register_Get_Priority (Get_Priority'Access);
       Register_Set_Priority (Set_Priority'Access);
-      Register_Get_Stamp (Get_Task_Stamp'Access);
-      Register_Set_Stamp (Set_Task_Stamp'Access);
+--       Register_Get_Stamp (Get_Task_Stamp'Access);
+--       Register_Set_Stamp (Set_Task_Stamp'Access);
    end Initialize;
 
    -------------------------
@@ -228,7 +226,7 @@ package body System.Garlic.No_Tasking is
    -- Leave --
    -----------
 
-   procedure Leave (M : in Unprotected_Mutex_Type)
+   procedure Leave (M : Unprotected_Mutex_Type)
    is
       pragma Unreferenced (M);
    begin
@@ -248,7 +246,7 @@ package body System.Garlic.No_Tasking is
    -- Lookup --
    ------------
 
-   procedure Lookup (W : in Unprotected_Watcher_Type; V : out Version_Id)
+   procedure Lookup (W : Unprotected_Watcher_Type; V : out Version_Id)
      is
    begin
       V := W.Version;
@@ -258,23 +256,23 @@ package body System.Garlic.No_Tasking is
    -- Set_Priority --
    ------------------
 
-   procedure Set_Priority (P : in Natural)
+   procedure Set_Priority (P : Natural)
    is
       pragma Unreferenced (P);
    begin
       null;
    end Set_Priority;
 
-   --------------------
-   -- Set_Task_Stamp --
-   --------------------
+--    --------------------
+--    -- Set_Task_Stamp --
+--    --------------------
 
-   procedure Set_Task_Stamp (S : in Float)
-   is
-      pragma Unreferenced (S);
-   begin
-      null;
-   end Set_Task_Stamp;
+--    procedure Set_Task_Stamp (S : Float)
+--    is
+--       pragma Unreferenced (S);
+--    begin
+--       null;
+--    end Set_Task_Stamp;
 
    ------------
    -- Update --

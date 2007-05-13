@@ -4,8 +4,6 @@
 --                                                                          --
 --                              I N S T A L L                               --
 --                                                                          --
---                            $Revision$                              --
---                                                                          --
 -- GLADE is  free software;  you  can  redistribute  it  and/or  modify  it --
 -- under terms of the  GNU General Public License  as published by the Free --
 -- Software  Foundation;  either version 2,  or  (at your option) any later --
@@ -22,7 +20,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-NOTE: THIS FILE APPLIES ONLY TO GLADE 3.15p . IF YOU HAVE ANY
+NOTE: THIS FILE APPLIES ONLY TO GLADE 2007. IF YOU HAVE ANY
       OTHER VERSION OF GLADE, PLEASE GET THE APPROPRIATE INSTALL FILE.
 
 INSTALL for GLADE
@@ -35,7 +33,7 @@ in Doc/install_guide.txt.
 
 
 1. Check your environment
-   - verify that GNAT 3.15p  has been installed and is on your path
+   - verify that GNAT 2007 has been installed and is on your path
    - verify that GLADE has been ported to your system (see README)
    - GLADE is usually built with GNU make. It may or may not be built 
      with other versions of make. If you have problems building GLADE
@@ -77,9 +75,9 @@ in Doc/install_guide.txt.
 5.  Example of complete build (assuming csh syntax):
 
 % cd                             <--- go into your HOME directory
-% gunzip glade-3.15p .tar.gz     <--- uncompress the distribution
-% tar xf glade-3.15p .tar        <--- explode the distribution
-% cd glade-3.15p                 <--- go into the distribution dir.
+% gunzip glade-2007.tar.gz     <--- uncompress the distribution
+% tar xf glade-2007.tar        <--- explode the distribution
+% cd glade-2007                <--- go into the distribution dir.
 % ./configure --prefix=`pwd`     <--- configure the Makefiles using the current
                                       directory to install the binaries
 % make install                   <--- compile files and install them
@@ -88,6 +86,7 @@ in Doc/install_guide.txt.
 % make                           <--- build all the examples
 % cd Eratho/absolute             <--- go in the first example directory
 % ./mainloop                     <--- run the distributed application
+
 
 Building GLADE under Windows NT
 -------------------------------
@@ -113,8 +112,7 @@ Building GLADE under Windows NT
 	sleep.exe
 	uname.exe
 
-   All these tools can be found in the User's Tools Kit (usertools.exe) from
-   CYGNUS.
+   All these tools can be found in the Cygwin or MSYS environment.
 
    Some others tools are needed but they are provided with the GNAT for NT
    distribution :
@@ -123,14 +121,20 @@ Building GLADE under Windows NT
 	make.exe
 	ranlib.exe
 
-2) You must add cpp.exe (C preprocessor) in your path environment variable.
+2) If using the Cygwin environment you also need to specify the host/target
+   triplet when configuring GLADE.
 
-   cpp.exe is under <gnat_dir>/lib/gcc-lib/pentium-mingw32msv/2.8.1
+      $ ./configure --prefix=/opt/gnatpro/5.03a1 --build=i686-pc-mingw32
 
-3) If you want to build GLADE using a wavefront compiler you must copy the
-   mingw32 GNAT release directory into your wavefront compiler directory.
+   Special care must be done for the --prefix argument. The directory
+   specified here must be accessible from Cygwin and Windows and point to the
+   same directory. With a default Cygwin installation /opt will probably be
+   looked for into c:\cygwin\opt as / is mapped to c:\cygwin (Cygwin
+   root). The solution is to mount /opt to point to c:\opt in this case.
 
-   The mingw32 directory is <gnat_dir>/mingw32.
+      $ mount -b c:\opt /opt
 
-   This is required because GLADE need to build the libz library which is
-   written in C.
+   This way c:\opt (on Windows, PATH used by the native build of GLADE) and
+   /opt on Cygwin side are referencing the same directory.
+
+   This is very important to have a proper GLADE installation.

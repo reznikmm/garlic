@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,20 +19,22 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
 ------------------------------------------------------------------------------
 
 with Ada.Streams;              use Ada.Streams;
-with Ada.Unchecked_Deallocation;
+
+with GNAT.Strings;             use GNAT.Strings;
+
 with System.Garlic.Debug;      use System.Garlic.Debug;
 with System.Garlic.Exceptions; use System.Garlic.Exceptions;
 with System.Garlic.Heart;      use System.Garlic.Heart;
@@ -50,8 +50,8 @@ package body System.Garlic.Filters is
    Private_Debug_Key : constant Debug_Key :=
      Debug_Initialize ("S_GARFIL", "(s-garfil): ");
    procedure D
-     (Message : in String;
-      Key     : in Debug_Key := Private_Debug_Key)
+     (Message : String;
+      Key     : Debug_Key := Private_Debug_Key)
      renames Print_Debug_Info;
 
    --  This unit can be elaborated and used while its children (filters)
@@ -74,7 +74,6 @@ package body System.Garlic.Filters is
    Filter_ID_Increment : constant := 10;
 
    type Filter_Id is new Natural;
-   Null_Filter    : constant Filter_Id := 0;
    First_Filter   : constant Filter_Id := 1_000;
 
    --  In an half channel is stored local params to use locally to filter
@@ -136,7 +135,6 @@ package body System.Garlic.Filters is
 
    package Filters is new System.Garlic.Table.Complex
      (Index_Type     => Filter_Id,
-      Null_Index     => Null_Filter,
       First_Index    => First_Filter,
       Initial_Size   => Filter_ID_Increment,
       Increment_Size => Filter_ID_Increment,
@@ -145,7 +143,6 @@ package body System.Garlic.Filters is
 
    package Channels is new System.Garlic.Table.Complex
      (Index_Type     => Partition_ID,
-      Null_Index     => Types.Null_PID,
       First_Index    => Types.First_PID,
       Initial_Size   => Natural (Partition_ID_Increment),
       Increment_Size => Natural (Partition_ID_Increment),
@@ -153,21 +150,20 @@ package body System.Garlic.Filters is
       Null_Component => Null_Channel);
 
    procedure Get_Params_For_Incoming
-     (Partition : in Partition_ID;
-      Request   : in Request_Type;
+     (Partition : Partition_ID;
+      Request   : Request_Type;
       Error     : in out Error_Type);
    --  This procedure initializes and extracts the half incoming channel.
 
    procedure Get_Params_For_Outgoing
-     (Partition : in Partition_ID;
-      Request   : in Request_Type;
+     (Partition : Partition_ID;
+      Request   : Request_Type;
       Error     : in out Error_Type);
    --  This procedure initializes and extracts the half outgoing channel.
 
-
    procedure Handle_Request
-     (Partition : in Partition_ID;
-      Opcode    : in External_Opcode;
+     (Partition : Partition_ID;
+      Opcode    : External_Opcode;
       Query     : access Params_Stream_Type;
       Reply     : access Params_Stream_Type;
       Error     : in out Error_Type);
@@ -175,7 +171,7 @@ package body System.Garlic.Filters is
    --  registration filter.
 
    procedure Install_Channel
-     (Partition : in Partition_ID;
+     (Partition : Partition_ID;
       Error     : in out Error_Type);
    --  Find which filter to use and install it (but do not install the
    --  local and remote data for incoming and outgoing). Retrieve the
@@ -186,16 +182,16 @@ package body System.Garlic.Filters is
    function Name (P : Partition_ID) return String;
 
    procedure Send
-     (Partition : in Partition_ID;
-      Request   : in Request_Id;
-      Channel   : in Channel_Type;
+     (Partition : Partition_ID;
+      Request   : Request_Id;
+      Channel   : Channel_Type;
       Error     : in out Error_Type);
    --  Send a remote request Get_Params and Set_Params. When needed, use
    --  registration filter.
 
    procedure Set_Params_For_Outgoing
-     (Partition : in Partition_ID;
-      Request   : in Request_Type;
+     (Partition : Partition_ID;
+      Request   : Request_Type;
       Error     : in out Error_Type);
    --  This procedure initializes the half outgoing channel.
 
@@ -204,10 +200,10 @@ package body System.Garlic.Filters is
    ---------------------
 
    procedure Filter_Incoming
-      (Partition : in Partition_ID;
-       Opcode    : in Any_Opcode;
-       Stream    : in Stream_Element_Access;
-       Offset    : in Stream_Element_Offset;
+      (Partition : Partition_ID;
+       Opcode    : Any_Opcode;
+       Stream    : Stream_Element_Access;
+       Offset    : Stream_Element_Offset;
        Result    : out Stream_Element_Access;
        Error     : in out Error_Type)
    is
@@ -257,8 +253,8 @@ package body System.Garlic.Filters is
    ---------------------
 
    procedure Filter_Outgoing
-      (Partition : in     Partition_ID;
-       Opcode    : in     Any_Opcode;
+      (Partition : Partition_ID;
+       Opcode    : Any_Opcode;
        Stream    : access Params_Stream_Type;
        Result    : out    Stream_Element_Access;
        Error     : in out Error_Type)
@@ -307,8 +303,8 @@ package body System.Garlic.Filters is
    -----------------------------
 
    procedure Get_Params_For_Incoming
-     (Partition : in Partition_ID;
-      Request   : in Request_Type;
+     (Partition : Partition_ID;
+      Request   : Request_Type;
       Error     : in out Error_Type)
    is
       pragma Unreferenced (Request);
@@ -359,21 +355,17 @@ package body System.Garlic.Filters is
    -----------------------------
 
    procedure Get_Params_For_Outgoing
-     (Partition : in Partition_ID;
-      Request   : in Request_Type;
+     (Partition : Partition_ID;
+      Request   : Request_Type;
       Error     : in out Error_Type)
    is
       pragma Unreferenced (Request);
 
       Channel : Channel_Type;
       Version : Version_Id;
-      Waiting : Boolean;
-
-      pragma Warnings (off, Waiting);
 
    begin
       loop
-         Waiting := False;
 
          loop
             Channels.Enter;
@@ -447,8 +439,8 @@ package body System.Garlic.Filters is
    --------------------
 
    procedure Handle_Request
-     (Partition : in Partition_ID;
-      Opcode    : in External_Opcode;
+     (Partition : Partition_ID;
+      Opcode    : External_Opcode;
       Query     : access Params_Stream_Type;
       Reply     : access Params_Stream_Type;
       Error     : in out Error_Type)
@@ -609,7 +601,7 @@ package body System.Garlic.Filters is
    ---------------------
 
    procedure Install_Channel
-     (Partition : in Partition_ID;
+     (Partition : Partition_ID;
       Error     : in out Error_Type)
    is
       PName   : String_Access;
@@ -683,8 +675,8 @@ package body System.Garlic.Filters is
    ---------------------
 
    procedure Register_Filter
-     (Filter : in Filter_Access;
-      Name   : in String)
+     (Filter : Filter_Access;
+      Name   : String)
    is
       F : Registered_Filter_Access;
    begin
@@ -711,9 +703,9 @@ package body System.Garlic.Filters is
    ----------
 
    procedure Send
-     (Partition : in Partition_ID;
-      Request   : in Request_Id;
-      Channel   : in Channel_Type;
+     (Partition : Partition_ID;
+      Request   : Request_Id;
+      Channel   : Channel_Type;
       Error     : in out Error_Type)
    is
       Stream : aliased Params_Stream_Type (0);
@@ -747,7 +739,7 @@ package body System.Garlic.Filters is
    -- Set_Channel_Filter --
    ------------------------
 
-   procedure Set_Channel_Filter (Partition, Filter : in String) is
+   procedure Set_Channel_Filter (Partition, Filter : String) is
    begin
       Set_Info (Get (Partition & Filter_Attribute_Name),
                 To_Natural (Get (Filter)));
@@ -757,7 +749,7 @@ package body System.Garlic.Filters is
    -- Set_Default_Filter --
    ------------------------
 
-   procedure Set_Default_Filter (Filter : in String) is
+   procedure Set_Default_Filter (Filter : String) is
    begin
       Set_Info (Get (Default_Filter_Name), To_Natural (Get (Filter)));
    end Set_Default_Filter;
@@ -767,8 +759,8 @@ package body System.Garlic.Filters is
    -----------------------------
 
    procedure Set_Params_For_Outgoing
-     (Partition : in Partition_ID;
-      Request   : in Request_Type;
+     (Partition : Partition_ID;
+      Request   : Request_Type;
       Error     : in out Error_Type)
    is
       Channel : Channel_Type;
@@ -812,7 +804,7 @@ package body System.Garlic.Filters is
    -- Set_Registration_Filter --
    -----------------------------
 
-   procedure Set_Registration_Filter (Filter : in String) is
+   procedure Set_Registration_Filter (Filter : String) is
    begin
       Set_Info (Get (Registration_Filter_Name), To_Natural (Get (Filter)));
    end Set_Registration_Filter;

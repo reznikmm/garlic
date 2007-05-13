@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,20 +19,21 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with GNAT.Strings;
+
 with System.Garlic.Types;
-with System.Garlic.Utils;
 
 package System.Garlic.Options is
 
@@ -52,9 +51,9 @@ package System.Garlic.Options is
 
    Has_A_Light_PCS  : Boolean;
    Mirror_Expected  : Boolean;
-   Self_Location    : Utils.String_Array_Access;
-   Boot_Location    : Utils.String_Array_Access;
-   Data_Location    : Utils.String_Array_Access;
+   Self_Location    : GNAT.Strings.String_List_Access;
+   Boot_Location    : GNAT.Strings.String_List_Access;
+   Data_Location    : GNAT.Strings.String_List_Access;
    Is_Boot_Mirror   : Boolean;
    Is_Boot_Server   : Boolean;
    Is_Pure_Client   : Boolean;
@@ -64,56 +63,55 @@ package System.Garlic.Options is
    Nolaunch         : Boolean;
    Reconnection     : Types.Reconnection_Type;
    Termination      : Types.Termination_Type;
-   Partition_Name   : Utils.String_Access;
-   Rsh_Command      : Utils.String_Access;
-   Rsh_Options      : Utils.String_Access;
+   Partition_Name   : GNAT.Strings.String_Access;
+   Rsh_Command      : GNAT.Strings.String_Access;
+   Rsh_Options      : GNAT.Strings.String_Access;
    Execution_Mode   : Types.Execution_Mode_Type;
-   Trace_File_Name  : Utils.String_Access;
+   Trace_File_Name  : GNAT.Strings.String_Access;
    Checksum         : Types.Word;
 
    procedure Initialize_Default_Options;
 
    procedure Initialize_User_Options;
 
-   procedure Set_Boot_Mirror (Default : in Boolean);
+   procedure Set_Boot_Mirror (Default : Boolean);
 
-   procedure Set_Boot_Location (Default : in String);
+   procedure Set_Boot_Location (Default : String);
 
-   procedure Set_Data_Location (Default : in String);
+   procedure Set_Data_Location (Default : String);
 
-   procedure Set_Connection_Hits (Default : in Natural);
+   procedure Set_Connection_Hits (Default : Natural);
 
-   procedure Set_Detach   (Default : in Boolean);
+   procedure Set_Detach   (Default : Boolean);
 
-   procedure Set_Execution_Mode (Default : in Types.Execution_Mode_Type);
+   procedure Set_Execution_Mode (Default : Types.Execution_Mode_Type);
 
-   procedure Set_Light_PCS (Default : in Boolean);
+   procedure Set_Light_PCS (Default : Boolean);
 
-   procedure Set_Local_Launch (Default : in Boolean);
+   procedure Set_Local_Launch (Default : Boolean);
 
-   procedure Set_Nolaunch (Default : in Boolean);
+   procedure Set_Nolaunch (Default : Boolean);
 
-   procedure Set_Partition_Name (Name : in String);
+   procedure Set_Partition_Name (Name : String);
 
-   procedure Set_Pure_Client (Default : in Boolean);
+   procedure Set_Pure_Client (Default : Boolean);
 
-   procedure Set_Reconnection (Default : in Types.Reconnection_Type);
+   procedure Set_Reconnection (Default : Types.Reconnection_Type);
 
-   procedure Set_Rsh_Command (Default : in String);
+   procedure Set_Rsh_Command (Default : String);
 
-   procedure Set_Rsh_Options (Default : in String);
+   procedure Set_Rsh_Options (Default : String);
 
-   procedure Set_Self_Location (Default : in String);
+   procedure Set_Self_Location (Default : String);
 
-   procedure Set_Slave (Default : in Boolean);
+   procedure Set_Slave (Default : Boolean);
 
-   procedure Set_Task_Pool_Bounds (Low, High, Max : in Positive);
+   procedure Set_Task_Pool_Bounds (Low, High, Max : Positive);
 
-   procedure Set_Termination (Default : in Types.Termination_Type);
+   procedure Set_Termination (Default : Types.Termination_Type);
 
-   procedure Set_Trace_File_Name (Name : in String);
+   procedure Set_Trace_File_Name (Name : String);
 
-   procedure Set_Mirror_Expected (Default : in Boolean);
+   procedure Set_Mirror_Expected (Default : Boolean);
 
 end System.Garlic.Options;
-

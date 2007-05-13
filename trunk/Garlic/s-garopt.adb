@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -35,10 +33,12 @@
 
 with Ada.Command_Line;                use Ada.Command_Line;
 with Ada.Exceptions;                  use Ada.Exceptions;
-with System.Garlic.Platform_Specific; use System.Garlic.Platform_Specific;
-with System.Garlic.Types;             use System.Garlic.Types;
-with System.Garlic.Utils;             use System.Garlic.Utils;
+
 with GNAT.OS_Lib;
+with GNAT.Strings;                    use GNAT.Strings;
+
+with System.Garlic.Platform_Specific; use System.Garlic.Platform_Specific;
+with System.Garlic.Utils;             use System.Garlic.Utils;
 
 package body System.Garlic.Options is
 
@@ -286,17 +286,20 @@ package body System.Garlic.Options is
          end if;
       end if;
 
-      pragma Warnings (off, Default_Protocol_Name);
-
       if Boot_Location = null then
-         if (Is_Boot_Server and then not Nolaunch)
-           or else Default_Protocol_Name'Length = 0
-         then
-            Set_Boot_Location ("tcp");
-         else
-            Set_Boot_Location (Default_Protocol_Name & "://" &
-                               Default_Protocol_Data);
-         end if;
+         declare
+            No_Default_Protocol_Name : constant Boolean :=
+                                         Default_Protocol_Name'Length = 0;
+         begin
+            if (Is_Boot_Server and then not Nolaunch)
+              or else No_Default_Protocol_Name
+            then
+               Set_Boot_Location ("tcp");
+            else
+               Set_Boot_Location (Default_Protocol_Name & "://" &
+                                  Default_Protocol_Data);
+            end if;
+         end;
       end if;
 
       if Self_Location = null then
@@ -304,20 +307,16 @@ package body System.Garlic.Options is
             Self_Location := Copy (Boot_Location);
          else
             Self_Location
-              := new String_Array'(1 .. 1 =>
+              := new String_List'(1 .. 1 =>
                                      new String'(Default_Protocol_Name));
          end if;
       end if;
 
       if Data_Location = null then
          Data_Location
-           := new String_Array'(1 .. 1 =>
+           := new String_List'(1 .. 1 =>
                                   new String'(Default_Storage_Name & "://" &
                                               Default_Storage_Data));
-      end if;
-
-      if Is_Boot_Server then
-         Is_Boot_Mirror := True;
       end if;
    end Initialize_User_Options;
 
@@ -339,7 +338,7 @@ package body System.Garlic.Options is
    -- Set_Boot_Location --
    -----------------------
 
-   procedure Set_Boot_Location (Default : in String) is
+   procedure Set_Boot_Location (Default : String) is
    begin
       Destroy (Boot_Location);
       Boot_Location := Split_String (Default);
@@ -349,7 +348,7 @@ package body System.Garlic.Options is
    -- Set_Boot_Mirror --
    ---------------------
 
-   procedure Set_Boot_Mirror (Default : in Boolean) is
+   procedure Set_Boot_Mirror (Default : Boolean) is
    begin
       if Is_Boot_Mirror
         and then not Default
@@ -372,7 +371,7 @@ package body System.Garlic.Options is
    -- Set_Connection_Hits --
    -------------------------
 
-   procedure Set_Connection_Hits (Default : in Natural) is
+   procedure Set_Connection_Hits (Default : Natural) is
    begin
       Connection_Hits := Default;
    end Set_Connection_Hits;
@@ -381,7 +380,7 @@ package body System.Garlic.Options is
    -- Set_Data_Location --
    -----------------------
 
-   procedure Set_Data_Location (Default : in String) is
+   procedure Set_Data_Location (Default : String) is
    begin
       Destroy (Data_Location);
       Data_Location := Split_String (Default);
@@ -391,7 +390,7 @@ package body System.Garlic.Options is
    -- Set_Detach --
    ----------------
 
-   procedure Set_Detach (Default : in Boolean) is
+   procedure Set_Detach (Default : Boolean) is
    begin
       Detach := Default;
    end Set_Detach;
@@ -400,7 +399,7 @@ package body System.Garlic.Options is
    -- Set_Execution_Mode --
    ------------------------
 
-   procedure Set_Execution_Mode (Default : in Execution_Mode_Type) is
+   procedure Set_Execution_Mode (Default : Execution_Mode_Type) is
    begin
       Execution_Mode := Default;
    end Set_Execution_Mode;
@@ -409,7 +408,7 @@ package body System.Garlic.Options is
    -- Set_Light_PCS --
    -------------------
 
-   procedure Set_Light_PCS (Default : in Boolean) is
+   procedure Set_Light_PCS (Default : Boolean) is
    begin
       if Has_A_Light_PCS
         and then not Default
@@ -437,7 +436,7 @@ package body System.Garlic.Options is
    -- Set_Local_Launch --
    ----------------------
 
-   procedure Set_Local_Launch (Default : in Boolean) is
+   procedure Set_Local_Launch (Default : Boolean) is
    begin
       Local_Launch := Default;
    end Set_Local_Launch;
@@ -446,7 +445,7 @@ package body System.Garlic.Options is
    -- Set_Mirror_Expected --
    -------------------------
 
-   procedure Set_Mirror_Expected (Default : in Boolean) is
+   procedure Set_Mirror_Expected (Default : Boolean) is
    begin
       Mirror_Expected := Default;
    end Set_Mirror_Expected;
@@ -455,7 +454,7 @@ package body System.Garlic.Options is
    -- Set_Nolaunch --
    ------------------
 
-   procedure Set_Nolaunch (Default : in Boolean) is
+   procedure Set_Nolaunch (Default : Boolean) is
    begin
       Nolaunch := Default;
    end Set_Nolaunch;
@@ -464,7 +463,7 @@ package body System.Garlic.Options is
    -- Set_Partition_Name --
    ------------------------
 
-   procedure Set_Partition_Name (Name : in String) is
+   procedure Set_Partition_Name (Name : String) is
    begin
       if Partition_Name /= null then
          Destroy (Partition_Name);
@@ -477,7 +476,7 @@ package body System.Garlic.Options is
    -- Set_Pure_Client --
    ---------------------
 
-   procedure Set_Pure_Client (Default : in Boolean) is
+   procedure Set_Pure_Client (Default : Boolean) is
    begin
       if Is_Pure_Client
         and then not Default
@@ -500,7 +499,7 @@ package body System.Garlic.Options is
    -- Set_Reconnection --
    ----------------------
 
-   procedure Set_Reconnection (Default : in Reconnection_Type) is
+   procedure Set_Reconnection (Default : Reconnection_Type) is
    begin
       Reconnection := Default;
    end Set_Reconnection;
@@ -509,7 +508,7 @@ package body System.Garlic.Options is
    -- Set_Rsh_Command --
    ---------------------
 
-   procedure Set_Rsh_Command (Default : in String) is
+   procedure Set_Rsh_Command (Default : String) is
    begin
       if Rsh_Command /= null then
          Destroy (Rsh_Command);
@@ -521,7 +520,7 @@ package body System.Garlic.Options is
    -- Set_Rsh_Options --
    ---------------------
 
-   procedure Set_Rsh_Options (Default : in String) is
+   procedure Set_Rsh_Options (Default : String) is
    begin
       if Rsh_Options /= null then
          Destroy (Rsh_Options);
@@ -533,7 +532,7 @@ package body System.Garlic.Options is
    -- Set_Self_Location --
    -----------------------
 
-   procedure Set_Self_Location (Default : in String) is
+   procedure Set_Self_Location (Default : String) is
    begin
       Destroy (Self_Location);
       Self_Location := Split_String (Default);
@@ -543,7 +542,7 @@ package body System.Garlic.Options is
    -- Set_Slave --
    ---------------
 
-   procedure Set_Slave (Default : in Boolean) is
+   procedure Set_Slave (Default : Boolean) is
    begin
       Is_Boot_Server := not Default;
    end Set_Slave;
@@ -552,7 +551,7 @@ package body System.Garlic.Options is
    -- Set_Task_Pool_Bounds --
    --------------------------
 
-   procedure Set_Task_Pool_Bounds (Low, High, Max : in Positive) is
+   procedure Set_Task_Pool_Bounds (Low, High, Max : Positive) is
    begin
       Task_Pool_Low_Bound  := Low;
       Task_Pool_High_Bound := High;
@@ -563,7 +562,7 @@ package body System.Garlic.Options is
    -- Set_Termination --
    ---------------------
 
-   procedure Set_Termination (Default : in Termination_Type) is
+   procedure Set_Termination (Default : Termination_Type) is
    begin
       if Has_A_Light_PCS
         and then Default /= Local_Termination
@@ -579,7 +578,7 @@ package body System.Garlic.Options is
    -- Set_Trace_File_Name --
    -------------------------
 
-   procedure Set_Trace_File_Name (Name : in String) is
+   procedure Set_Trace_File_Name (Name : String) is
    begin
       if Trace_File_Name /= null then
          Destroy (Trace_File_Name);

@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,17 +19,19 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
 ------------------------------------------------------------------------------
+
+with GNAT.Strings;             use GNAT.Strings;
 
 with System.Garlic.Debug;      use System.Garlic.Debug;
 with System.Garlic.Soft_Links; use System.Garlic.Soft_Links;
@@ -43,8 +43,8 @@ package body System.Garlic.Name_Table is
    Private_Debug_Key : constant Debug_Key :=
      Debug_Initialize ("S_GANATA", "(s-ganata): ");
    procedure D
-     (Message : in String;
-      Key     : in Debug_Key := Private_Debug_Key)
+     (Message : String;
+      Key     : Debug_Key := Private_Debug_Key)
      renames Print_Debug_Info;
    pragma Unreferenced (D);
 
@@ -98,7 +98,6 @@ package body System.Garlic.Name_Table is
 
    package Nodes is new System.Garlic.Table.Simple
      (Index_Type     => Name_Id,
-      Null_Index     => Null_Name,
       First_Index    => First_Name,
       Initial_Size   => Natural (Hash_Max),
       Increment_Size => Natural (Hash_Max),
@@ -270,7 +269,7 @@ package body System.Garlic.Name_Table is
    -- Write --
    -----------
 
-   procedure Write (S : access Root_Stream_Type'Class; N : in Name_Id) is
+   procedure Write (S : access Root_Stream_Type'Class; N : Name_Id) is
    begin
       String'Output (S, Get (N));
    end Write;

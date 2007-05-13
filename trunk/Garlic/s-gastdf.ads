@@ -6,9 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                            $Revision$
---                                                                          --
---         Copyright (C) 1996-2001 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -21,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
--- As a special exception,  if other files  instantiate  generics from this --
--- unit, or you link  this unit with other files  to produce an executable, --
--- this  unit  does not  by itself cause  the resulting  executable  to  be --
--- covered  by the  GNU  General  Public  License.  This exception does not --
--- however invalidate  any other reasons why  the executable file  might be --
--- covered by the  GNU Public License.                                      --
---                                                                          --
+--
+--
+--
+--
+--
+--
+--
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -39,6 +37,7 @@ with Ada.Streams.Stream_IO;
 with GNAT.OS_Lib;
 
 with System.Global_Locks;
+with System.Garlic.Exceptions;
 with System.Garlic.Soft_Links;
 
 package System.Garlic.Storages.Dfs is
@@ -56,28 +55,33 @@ package System.Garlic.Storages.Dfs is
 
    procedure Create_Storage
      (Master   : in out DFS_Data_Type;
-      Location : in  String;
-      Storage  : out Shared_Data_Access);
+      Location : String;
+      Storage  : out Shared_Data_Access;
+      Error    : in out Exceptions.Error_Type);
 
    procedure Create_Package
      (Storage  : in out DFS_Data_Type;
-      Pkg_Name : in     String;
-      Pkg_Data : out    Shared_Data_Access);
+      Pkg_Name : String;
+      Pkg_Data : out    Shared_Data_Access;
+      Error    : in out Exceptions.Error_Type);
 
    procedure Create_Variable
      (Pkg_Data : in out DFS_Data_Type;
-      Var_Name : in     String;
-      Var_Data : out    Shared_Data_Access);
+      Var_Name : String;
+      Var_Data : out    Shared_Data_Access;
+      Error    : in out Exceptions.Error_Type);
 
    procedure Initialize;
 
    procedure Initiate_Request
-     (Var_Data : in out DFS_Data_Type;
-      Request  : in     Request_Type;
+     (Var_Data : access DFS_Data_Type;
+      Request  : Request_Type;
       Success  : out    Boolean);
 
    procedure Complete_Request
-     (Var_Data : in out DFS_Data_Type);
+     (Var_Data : access DFS_Data_Type);
+
+   procedure Shutdown (Storage : DFS_Data_Type);
 
    procedure Read
      (Data : in out DFS_Data_Type;
@@ -86,7 +90,7 @@ package System.Garlic.Storages.Dfs is
 
    procedure Write
      (Data : in out DFS_Data_Type;
-      Item : in Ada.Streams.Stream_Element_Array);
+      Item : Ada.Streams.Stream_Element_Array);
 
 private
 
