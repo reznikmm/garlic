@@ -1,0 +1,222 @@
+body {
+margin: 0px;
+background: #7990a3;
+font-family: "Trebuchet MS",helvetica,sans-serif;
+font-size: 95%;
+} 
+
+#container {
+margin: 2em 2em 2em 2em;
+}
+
+#upperoutside {
+background-color: #354463;
+border: 1px solid #000000;
+}
+
+#upperinside {
+background-color: #354463;
+border: 1px solid #f3dcb0;
+}
+
+#logo {
+color: #e9e9e9;
+font-size: 1.5em;
+text-align: center;
+}
+
+#logo a {
+color: #e9e9e9;
+}
+
+#logo a:hover {
+color: #f3dcb0;
+text-decoration: underline;
+}
+
+#actionsoutside {
+background-color: #354463;
+border: 1px solid #000000;
+}
+
+#actionsinside {
+background-color: #354463;
+border: 1px solid #f3dcb0;
+}
+
+#pageactions {
+text-align: left;
+color: #e9e9e9;
+font-size: 85%;
+}
+
+#pageactions a {
+color: #e9e9e9;
+}
+
+#pageactions a:hover {
+color: #f3dcb0;
+text-decoration: underline;
+}
+
+#search {
+text-align: right;
+color: #e9e9e9;
+font-size: 85%;
+}
+
+#search a {
+color: #e9e9e9;
+}
+
+#search a:hover {
+color: #f3dcb0;
+text-decoration: underline;
+}
+
+#middleoutside {
+background-color: #354463;
+border: 1px solid #000000;
+}
+
+#middleinside {
+background-color: #354463;
+border: 1px solid #f3dcb0;
+}
+
+#menu {
+padding: 5px 5px 5px 5px;
+color: #151b28;
+background-color: #dcdcdc;
+border: 1px solid #000000;
+font-size: 90%;
+overflow: hidden;
+}
+
+#spacer {
+background: #354463;
+width: 0.1em;
+}
+
+#pagecontent {
+width: 75%;
+padding: 5px 5px 5px 5px;
+color: #151b28;
+background-color: #e6e6e6;
+border: 1px solid #000000;
+font-size: 90%;
+}
+
+#loweroutside {
+background-color: #354463;
+border: 1px solid #000000;
+}
+
+#lowerinside {
+background-color: #354463;
+border: 1px solid #f3dcb0;
+}
+
+#lastmod {
+width: 50%;
+text-align: left;
+color: #e9e9e9;
+font-size: 85%;
+}
+
+#lastmod a {
+color: #e9e9e9;
+}
+
+#lastmod a:hover {
+color: #f3dcb0;
+text-decoration: underline;
+}
+
+#links {
+width: 50%;
+text-align: right;
+color: #e9e9e9;
+font-size: 85%;
+}
+
+#links a {
+color: #e9e9e9;
+}
+
+#links a:hover {
+color: #f3dcb0;
+text-decoration: underline;
+}
+
+#wikiedit textarea {
+width:100%;
+}
+
+a {
+text-decoration: none;
+color: #000064;
+}
+
+a:hover {
+text-decoration: underline;
+color: #0000dc;
+}
+
+a:visited {
+text-decoration: none;
+font-weight: normal;
+color: #ac00c8;
+}
+
+a.createlinktext {
+color: #0d00ff;
+border-bottom: none;
+}
+
+hr {
+height: 1px;
+background-color: #354463;
+}
+
+h1,h2,h3,h4,h5,h6 {
+line-height: 10px;
+}
+
+h1 {
+font-size: 20px;
+}
+
+h2 {
+font-size: 18px;
+}
+
+h3 {
+font-size: 16px;
+}
+
+h4 {
+font-size: 14px;
+}
+h5 {
+font-size: 12px;
+}
+
+h6 {
+font-size: 10px;
+}
+
+code {
+font-size: 105%;
+overflow: auto;
+}
+
+pre {
+background-color: #d2d2d2;
+font-size: 105%;
+overflow: auto;
+}
+
+ul {
+list-style-type: square;
+}

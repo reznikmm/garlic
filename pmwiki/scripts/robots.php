@@ -14,7 +14,7 @@
     The $MetaRobots variable controls generation of the 
     <meta name='robots' ... /> tag in the head of the HTML document.
     By default $MetaRobots is set so that robots do not index pages in
-    the Site and PmWiki groups.
+    the Site, SiteAdmin, and PmWiki groups.
 
     The $RobotPattern variable is used to determine if the user agent
     accessing the site is a robot, and $IsRobotAgent is set accordingly.  
@@ -37,7 +37,7 @@
 ## $MetaRobots provides the value for the <meta name='robots' ...> tag.
 SDV($MetaRobots,
       ($action!='browse' || !PageExists($pagename)
-        || preg_match('#^PmWiki[./](?!PmWiki$)|^Site[./]#', $pagename))
+        || preg_match('#^PmWiki[./](?!PmWiki$)|^Site(Admin)?[./]#', $pagename))
       ? 'noindex,nofollow' : 'index,follow');
 if ($MetaRobots)
   $HTMLHeaderFmt['robots'] =

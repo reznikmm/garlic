@@ -11,7 +11,7 @@
         $EnableBlocklist = 1;
 
     With $EnableBlocklist set to 1, this module will search through
-    the Site.Blocklist page, as well as any other pages given by
+    the SiteAdmin.Blocklist page, as well as any other pages given by
     the $Blocklist pages variable, looking for lines of the
     form "block:some phrase" or "block:/regex/", with "some phrase" 
     and "/regex/" indicating things to be excluded from any 
@@ -58,10 +58,10 @@ if (IsEnabled($EnableBlocklistImmediate, 1)) {
 ##   If $EnableBlocklist is set to 10 or higher, then arrange to 
 ##   periodically download the "chongqed" and "moinmaster" blacklists.
 if ($EnableBlocklist >= 10) {
-  SDVA($BlocklistDownload['Site.Blocklist-Chongqed'], array(
+  SDVA($BlocklistDownload['SiteAdmin.Blocklist-Chongqed'], array(
     'url' => 'http://blacklist.chongqed.org/',
     'format' => 'regex'));
-  SDVA($BlocklistDownload['Site.Blocklist-MoinMaster'], array(
+  SDVA($BlocklistDownload['SiteAdmin.Blocklist-MoinMaster'], array(
     'url' => 'http://moinmaster.wikiwikiweb.de/BadContent?action=raw',
     'format' => 'regex'));
 }
@@ -72,8 +72,10 @@ if ($EnableBlocklist >= 10) {
 ##   "update a page cycle"
 array_unshift($EditFunctions, 'CheckBlocklist');
 function CheckBlocklist($pagename, &$page, &$new) { 
+  StopWatch("CheckBlocklist: begin $pagename");
   $ptext = implode('', @$_POST);
   if (@$ptext) Blocklist($pagename, $ptext); 
+  StopWatch("CheckBlocklist: end $pagename");
 }
 
 
@@ -89,9 +91,12 @@ function Blocklist($pagename, $text) {
     $BlocklistDownloadRefresh, $Now, $EnablePost, $WhyBlockedFmt,
     $MessagesFmt, $BlocklistMessageFmt, $EnableWhyBlocked, $IsBlocked;
 
+  StopWatch("Blocklist: begin $pagename");
+
   $BlocklistDownload = (array)@$BlocklistDownload;
   SDV($BlocklistPages, 
-    array_merge(array('{$SiteGroup}.Blocklist', '{$SiteGroup}.Blocklist-Farm'),
+    array_merge(array('$SiteAdminGroup.Blocklist', 
+                      '$SiteAdminGroup.Blocklist-Farm'),
                 array_keys($BlocklistDownload)));
   SDV($BlocklistMessageFmt, "<h3 class='wikimessage'>$[This post has been blocked by the administrator]</h3>");
   SDVA($BlockedMessagesFmt, array(
@@ -155,10 +160,12 @@ function Blocklist($pagename, $text) {
 
   ##  okay, we've loaded all of the terms, now subtract any 'unblock'
   ##  terms from the block set.
+  StopWatch("Blocklist: diff unblock");
   $blockterms = array_diff((array)@$terms['block'], (array)@$terms['unblock']);
 
   ##  go through each of the remaining blockterms and see if it matches the
   ##  text -- if so, disable posting and add a message to $WhyBlockedFmt.
+  StopWatch('Blocklist: blockterms (count='.count($blockterms).')');
   $itext = strtolower($text);
   foreach($blockterms as $b) {
     if ($b{0} == '/') {
@@ -168,6 +175,7 @@ function Blocklist($pagename, $text) {
     $IsBlocked = 1;
     $WhyBlockedFmt[] = $BlockedMessagesFmt['text'] . $b;
   }
+  StopWatch('Blocklist: blockterms done');
 
   ##  If we came across any reasons to block, let's provide a message
   ##  to the author that it was blocked.  If $EnableWhyBlocked is set,
@@ -178,6 +186,7 @@ function Blocklist($pagename, $text) {
       foreach((array)$WhyBlockedFmt as $why) 
         $MessagesFmt[] = "<pre class='blocklistmessage'>$why</pre>\n";
   }
+  StopWatch("Blocklist: end $pagename");
 }
 
 
@@ -209,8 +218,10 @@ function BlocklistDownload($pagename, $dir = '') {
 
   ##  if we didn't get it, and we don't already have text, save a
   ##  note in the page so we know what happened
-  if (!$blocklistdata && !@$page['text']) 
-    $blocklistdata = '#### Unable to download blocklist';
+  if (!$blocklistdata && !@$page['text']) {
+    $auf = ini_get('allow_url_fopen');
+    $blocklistdata = "#### Unable to download blocklist (allow_url_fopen=$auf)";
+  }
 
   ##  if we have some new text to save, let's format it and save it
   if ($blocklistdata) {

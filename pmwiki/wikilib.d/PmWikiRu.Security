@@ -1,0 +1,12 @@
+version=pmwiki-2.1.5 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1
+author=Holo
+csum=fix
+ctime=1144154471
+host=195.98.173.2
+name=PmWikiRu.Security
+rev=2
+targets=PmWikiRu.Passwords,PmWikiRu.PasswordsAdmin,PmWikiRu.UrlApprovals
+text=(:title Безопасность:)%0a%0aСтраницы в дистрибутиве:%0a*[[Passwords|+]] -- Общее использование паролей%0a*[[PasswordsAdmin|+]] -- Дополнительные опции паролей для администраторов%0a*[[UrlApprovals|+]] -- Требование утверждения внешних%0a%0aСтраницы Рецептурника:%0a* Смотри также [[Cookbook:Cookbook#Security | Cookbook index: Безопасность]]%0a*[[Cookbook:Blocklist2]] Блокировка редактирования по спискам IP адресов и ключевых фраз%0a*[[Cookbook:MTBlackList]] Movable Type чёрный список спама%0a*[[Cookbook:WebServerSecurity]] Повышение безопасности сервера с помощью .htaccess%0a*[[Cookbook:FarmSecurity]] Безопасная установка Ферм%0a*[[Cookbook:EProtect]] Сокрытие e-mail адресов%0a*[[Cookbook:AuditImages]] Отслеживание изображений загруженых на вашу вики.%0a
+time=1144909965
+title=Безопасность

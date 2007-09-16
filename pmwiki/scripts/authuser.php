@@ -40,11 +40,12 @@ function AuthUserId($pagename, $id, $pw=NULL) {
   global $AuthUser, $AuthUserPageFmt, $AuthUserFunctions, 
     $AuthId, $MessagesFmt;
 
+  $auth = array();
   foreach((array)$AuthUser as $k=>$v) $auth[$k] = (array)$v;
   $authid = '';
 
-  # load information from Site.AuthUser (or page in $AuthUserPageFmt)
-  SDV($AuthUserPageFmt, '$SiteGroup.AuthUser');
+  # load information from SiteAdmin.AuthUser (or page in $AuthUserPageFmt)
+  SDV($AuthUserPageFmt, '$SiteAdminGroup.AuthUser');
   SDVA($AuthUserFunctions, array(
     'htpasswd' => 'AuthUserHtPasswd',
     'ldap' => 'AuthUserLDAP',
@@ -128,7 +129,8 @@ function AuthUserHtGroup($pagename, $id, $pw, $pwlist) {
 function AuthUserLDAP($pagename, $id, $pw, $pwlist) {
   global $AuthLDAPBindDN, $AuthLDAPBindPassword;
   if (!$pw) return false;
-  if (!function_exists('ldap_connect')) return false;
+  if (!function_exists('ldap_connect')) 
+    Abort('authuser: LDAP authentication requires ldap functions', 'ldapfn');
   foreach ((array)$pwlist as $ldap) {
     if (!preg_match('!(ldaps?://[^/]+)/(.*)$!', $ldap, $match))
       continue;

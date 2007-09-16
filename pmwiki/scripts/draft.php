@@ -6,31 +6,58 @@
     (at your option) any later version.  See pmwiki.php for full details.
 */
 
-array_unshift($EditFunctions, 'EditDraft');
 SDV($DraftSuffix, '-Draft');
-if ($DraftSuffix) $SearchPatterns['normal'][] = "!$DraftSuffix\$!";
+if ($DraftSuffix) 
+  SDV($SearchPatterns['normal']['draft'], "!$DraftSuffix\$!");
 
-if ($action == 'edit') 
-  SDVA($InputTags['e_savedraftbutton'], array(
+##  set up a 'publish' authorization level, defaulting to 'edit' authorization
+SDV($DefaultPasswords['publish'], '');
+SDV($AuthCascade['publish'], 'edit');
+SDV($FmtPV['$PasswdPublish'], 'PasswdVar($pn, "publish")');
+if ($AuthCascade['attr'] == 'edit') $AuthCascade['attr'] = 'publish';
+
+## Add a 'publish' page attribute if desired
+if (IsEnabled($EnablePublishAttr, 0))
+  SDV($PageAttributes['passwdpublish'], '$[Set new publish password:]');
+
+##  with drafts enabled, the 'post' operation requires 'publish' permissions
+if ($action == 'edit' && $_POST['post'] && $HandleAuth['edit'] == 'edit')
+  $HandleAuth['edit'] = 'publish';
+
+$basename = preg_replace("/$DraftSuffix\$/", '', $pagename);
+##  if no -Draft page, switch to $basename
+if (!PageExists($pagename) && PageExists($basename)) $pagename = $basename;
+
+##  set edit form button labels to reflect draft prompts
+SDVA($InputTags['e_savebutton'], array('value' => ' '.XL('Publish').' '));
+SDVA($InputTags['e_saveeditbutton'], array('value' => ' '.XL('Save draft and edit').' '));
+SDVA($InputTags['e_savedraftbutton'], array(
     ':html' => "<input type='submit' \$InputFormArgs />",
-    'name' => 'postdraft', 'value' => ' '.XL('Save as draft').' ',
+    'name' => 'postdraft', 'value' => ' '.XL('Save draft').' ',
     'accesskey' => XL('ak_savedraft')));
 
+##  disable the 'publish' button if not authorized to publish
+if (!CondAuth($basename, 'publish')) 
+  SDVA($InputTags['e_savebutton'], array('disabled' => 'disabled'));
+
+##  add the draft handler into $EditFunctions
+if ($action == 'edit') array_unshift($EditFunctions, 'EditDraft');
 function EditDraft(&$pagename, &$page, &$new) {
-  global $WikiDir, $DraftSuffix, $DeleteKeyPattern;
+  global $WikiDir, $DraftSuffix, $DeleteKeyPattern, 
+    $DraftRecentChangesFmt, $RecentChangesFmt;
   SDV($DeleteKeyPattern, "^\\s*delete\\s*$");
   $basename = preg_replace("/$DraftSuffix\$/", '', $pagename);
   $draftname = $basename . $DraftSuffix;
-  if ($_POST['postdraft']) 
-    { $pagename = $draftname; return; }
-  if ($_POST['post'] && !preg_match("/$DeleteKeyPattern/", $new['text'])) { 
+  if ($_POST['postdraft'] || $_POST['postedit']) $pagename = $draftname; 
+  else if ($_POST['post'] && !preg_match("/$DeleteKeyPattern/", $new['text'])) { 
     $pagename = $basename; 
     $page = ReadPage($basename);
     $WikiDir->delete($draftname);
-    return; 
   }
-  if (PageExists($draftname) && $pagename != $draftname)
+  else if (PageExists($draftname) && $pagename != $draftname)
     { Redirect($draftname, '$PageUrl?action=edit'); exit(); }
+  if ($pagename == $draftname && isset($DraftRecentChangesFmt))
+    $RecentChangesFmt = $DraftRecentChangesFmt;
 }
 
 

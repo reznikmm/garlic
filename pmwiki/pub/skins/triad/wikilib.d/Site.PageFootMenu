@@ -1,0 +1,10 @@
+version=pmwiki-2.2.0-beta35 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-GB; rv:1.8.1.2) Gecko/20070219 Firefox/2.0.0.2
+author=Hans
+csum=
+host=127.0.0.1
+name=Site.PageFootMenu
+rev=0
+targets=Site.PageFootMenu,Site.Search,Site.GroupAttributes
+text=*%25rel=nofollow%25[[{*$FullName}?action=edit | $[Edit] ]]%0a*%25rel=nofollow%25[[{*$FullName}?action=diff | $[Page History] ]]%0a*%25newwin rel=nofollow accesskey=$[ak_source]%25[[{*$FullName}?action=source | $[Source] ]]%0a*%25rel=nofollow accesskey=$[ak_upload]%25[[{*$FullName}?action=upload | $[Attach File] ]]%0a*%25rel=nofollow%25[[Site.Search?q=link={*$FullName} | $[Backlinks] ]]%0a*%25rel=nofollow%25[[Site.Search?q={*$Group}/ | $[List Group] ]]%0a(:if auth admin:)%0a*%25rel=nofollow%25[[{*$FullName}?action=attr| $[Attributes] ]]%0a*%25rel=nofollow%25[[{*$Group}.GroupAttributes| $[Group Attributes] ]]%0a(:ifend:)%0a[[%3c%3c]]%0a->''$[Page last modified on] {*$LastModified}''
+time=1174174590

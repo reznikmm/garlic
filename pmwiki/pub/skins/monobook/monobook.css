@@ -78,6 +78,9 @@ body {
   border-color: #fabd23;
   border-bottom: 1px solid white;
 }
+#tabs .vspace {
+  display: none;
+}
 
 #pageleft {
   position: absolute;
@@ -363,4 +366,7 @@ a.createlink:visited {
   width: 100%;
 }
 
-#stopwatch pre { font: 8pt/1 monospace; }
+#stopwatch pre { 
+  margin-left: 14em;
+  font: 8pt/1 monospace;
+}

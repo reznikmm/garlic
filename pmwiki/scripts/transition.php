@@ -14,6 +14,10 @@
 
     Transitions defined in this script:
 
+      $Transition['wspre']              - leading spaces are pre text
+
+      $Transition['version'] < 2001941  - all transitions listed above
+
       $Transition['wikiwords']          - 2.1-style WikiWord processing
 
       $Transition['version'] < 2001924  - all transitions listed above
@@ -57,6 +61,12 @@
 
 ## if ?trans=0 is specified, then we don't do any fixups.
 if (@$_REQUEST['trans']==='0') return;
+
+## Transitions from 2.2.0-beta41
+if (@$Transition['version'] < 2001941)
+  SDVA($Transition, array('wspre' => 1));
+
+if (@$Transition['wspre']) SDV($EnableWSPre, 1);
 
 ## Transitions from 2.2.0-beta24
 if (@$Transition['version'] < 2001924)

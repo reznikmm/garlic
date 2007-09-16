@@ -1,0 +1,11 @@
+version=pmwiki-2.1.beta38 ordered=1 urlencoded=1
+agent=Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 2.0.50727)
+author=M
+csum=
+ctime=1142097262
+host=83.226.154.205
+name=PmWikiSv.Sök
+rev=1
+targets=Profiles.Bengibollen
+text=(:searchbox:)%0a%0a(:searchresults:)%0a%0aSkriv texten du vill söka efter i rutan ovanför. På resultatsidan kommer sedan alla sidor som innehåller alla ord du matade in visas. Omslut hela uttrycket med citationstecken för sökning efter hela uttryck. %0a%0aFör att begränsa sökningen till en enda grupp; skriv gruppnamnet, ett snedstreck och dina sökord (t.ex. "[=PmWiki/=]" eller "Main/"). För att få en lista över alla sidor, skriv bara ett snedstreck.%0a%0a!!!Exempel%0a  %0a||border='0' cellspacing='0' width='100%25' cellpadding='0' %0a||'''Inmatning'''    ||'''för att hitta sidor som innehåller''' ||%0a||tre grisar      ||både 'tre' och 'grisar' ||%0a||"tre grisar"    ||uttrycket 'tre grisar' ||%0a||pmwiki/gris   ||'gris' i [=PmWiki=] gruppen ||%0a||"pmwiki/gris" ||uttrycket 'pmwiki/gris' i alla grupper ||%0a||tre -grisar     ||'tre', utelämna de sidor som innehåller 'grisar' ||%0a||varg -"tre grisar" ||'varg', utelämna de sidor som innehåller uttrycket 'tre grisar' ||%0a||tre "-grisar"   ||orden 'tre' och '-grisar' ||%0a||tre - grisar    ||'tre', '-', och 'grisar' ||%0a%0a!!!Kommentar%0aEn direkt översättning från engelska söksidans "apple pie" är inte så bra exempel översatt till svenska eftersom det blir ihopskrivet (äppelpaj). I brist på bättre fantasi valde jag "tre grisar" istället. Det är fritt att hitta på något bättre. Jag ska själv fundera över saken en stund. \\%0a[[~bengibollen]] 2005-06-02 06:16
+time=1142097262

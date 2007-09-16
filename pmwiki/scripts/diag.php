@@ -40,7 +40,11 @@ function HandleRuleset($pagename) {
 function StopWatchHTML($pagename, $print = 0) {
   global $StopWatch;
   StopWatch('now');
-  $out = '<pre>'.implode("\n", (array)$StopWatch)."\n</pre>";
+  $l = strlen(count($StopWatch));
+  $out = '<pre>';
+  foreach((array)$StopWatch as $i => $x)
+    $out .= sprintf("%{$l}d: %s\n", $i, $x);
+  $out .= '</pre>';
   if (is_array($StopWatch)) array_pop($StopWatch);
   if ($print) print $out;
   return $out;

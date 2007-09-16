@@ -1,0 +1,12 @@
+version=pmwiki-2.1.3 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1
+author=Holo
+csum=translated
+ctime=1142594807
+host=195.98.173.2
+name=PmWikiRu.GroupHeaders
+rev=2
+targets=PmWikiRu.WikiGroup,PmWikiRu.WikiStyles,PmWikiRu.PageDirectives,PmWikiRu.WikiAdministrator,PmWikiRu.IncludeOtherPages,PmWikiRu.DocumentationIndex
+text=(:title Заголовок Группы:)%0a%0a%25audience%25 авторам (средний)%0a%0aВ любой [[Wiki Group|группе]] могут быть страницы `GroupHeader и `GroupFooter, которые содержат разметку вставляемую в начало и конец каждой страницы группы соответственно. Это свойство полезно для:%0a%0a* добавление оговорок или заглавий на все страницы группы;%0a* определение собственных [[WikiStyles|ВикиСтилей]] которые могут использоваться на всех страницах группы;%0a* замена стандартных заголовков или подписей для всех страниц в группе (пользуясь директивами [@(:noheader:)@] и [@(:nofooter:)@] -- смотри [[PageDirectives|+]]).%0a%0aДля создания заголовка группа просто сделайте в вашей группе новую страницу с именем [@GroupHeader@]. Заголовки групп позволяют авторам делать группы с собственными заголовками и подписями без согласования с [[wiki administrator|администратором]].%0a%0aПользуясь директивами [@(:nogroupheader:)@] и [@(:nogroupfooter:)@] на отдельных страницах(вроде домашней) вставку Заголовка и Подписи группы можно запретить.%0a%0aС помощью директивы вставки общий заголовок одной группы может быть легко использован в заголовке другой: %0a[@(:include Site.GroupHeader:)@]. Смотри: [[IncludeOtherPages|+]].%0a%0a%25audience%25 администраторам (средний)%0aДля установки одного Заголовка для всех групп добавьте в config.php подобную строку:%0a%0a[@$GroupHeaderFmt .= "Глобальный заголовок";@]%0a%0a%0a%25trail%25%3c%3c|[[Documentation Index|+]]|>>
+time=1142869739
+title=Заголовок Группы

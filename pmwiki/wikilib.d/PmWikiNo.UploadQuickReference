@@ -1,0 +1,11 @@
+version=pmwiki-2.1.beta20 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; nb-NO; rv:1.7.8) Gecko/20050511
+author=erikh
+ctime=1138351223
+host=195.204.19.164
+name=PmWikiNo.UploadQuickReference
+rev=1
+targets=PmWiki.Uploads,PmWikiNo.UploadQuickReference
+text=>>class='quickref' bgcolor=#f9f9f9 font-family=Arial font-size=12px padding=2px border='1px solid #cccccc'%3c%3c%0a'''%25newwin%25[[PmWiki/Uploads | Opplastinger]]'''(:title Fil-opplasting:)\\\%0a1. Bruk "Bla gjennom..."-knappen over for å finne fila du vil laste opp fra egen maskin.%0a%0a2. I feltet "Navngi vedlegg som:" setter du inn det navnet du ønsker fila skal ha etter opplasting. Dette kan sjølsagt godt være det samme som opprinnelig filnavn ''eller noe annet'', men pass på å få korrekt fil-etternavn (de 3 tegnene etter punktet).%0a%0a3. Klikk "$[Upload]" for å laste opp fila.%0a%0a4. For å lenke til et vedlegg i denne gruppa ({$Group}), så skriver du @@[=Attach:=]''filnavn.ext''@@ i sideteksten.%0a%0a5. Etter opplasting kan du %0a**[[{$Name} | Se på {$Name}]] -sida, eller%0a** [[{$Name}?action=edit | Endre {$Name}]] -sida, eller%0a**Rulle ned for å vise lista over filer som er opplasta/vedlagt til denne gruppa ({$Group}).%0a>>%3c%3c%0a%0a----%0a%0a!!Eksisterende vedlegg%0a%0a(:attachlist:)
+time=1138351223
+title=Fil-opplasting

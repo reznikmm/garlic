@@ -68,6 +68,7 @@ function SetSkin($pagename, $skin) {
     LoadPageTemplate($pagename, "$SkinDir/skin.tmpl");
   else if (($dh = opendir($SkinDir))) {
     while (($fname = readdir($dh)) !== false) {
+      if ($fname[0] == '.') continue;
       if (substr($fname, -5) != '.tmpl') continue;
       if ($IsTemplateLoaded) 
         Abort("?unable to find unique template in $SkinDir");
@@ -84,10 +85,12 @@ function LoadPageTemplate($pagename,$tfilefmt) {
   global $PageStartFmt, $PageEndFmt, 
     $EnableSkinDiag, $HTMLHeaderFmt, $HTMLFooterFmt,
     $IsTemplateLoaded, $TmplFmt, $TmplDisplay,
-    $PageTextStartFmt, $PageTextEndFmt;
+    $PageTextStartFmt, $PageTextEndFmt, $SkinDirectivesPattern;
 
   SDV($PageTextStartFmt, "\n<div id='wikitext'>\n");
   SDV($PageTextEndFmt, "</div>\n");
+  SDV($SkinDirectivesPattern, 
+      "[[<]!--((?:wiki|file|function|markup):.*?)--[]>]");
 
   $sddef = array('PageEditFmt' => 0);
   $k = implode('', file(FmtPageName($tfilefmt, $pagename)));
@@ -103,13 +106,13 @@ function LoadPageTemplate($pagename,$tfilefmt) {
     '#[[<]!--(/?(?:Page[A-Za-z]+Fmt|(?:HT|X)ML(?:Head|Foot)er|HeaderText|PageText).*?)--[]>]#',
     $k, 0, PREG_SPLIT_DELIM_CAPTURE);
   $TmplFmt['Start'] = array_merge(array('headers:'),
-    preg_split('/[[<]!--((?:wiki|file|function|markup):.*?)--[]>]/s',
+    preg_split("/$SkinDirectivesPattern/s",
       array_shift($sect),0,PREG_SPLIT_DELIM_CAPTURE));
   $TmplFmt['End'] = array($PageTextEndFmt);
   $ps = 'Start';
   while (count($sect)>0) {
     $k = array_shift($sect);
-    $v = preg_split('/[[<]!--((?:wiki|file|function|markup):.*?)--[]>]/s',
+    $v = preg_split("/$SkinDirectivesPattern/s",
       array_shift($sect),0,PREG_SPLIT_DELIM_CAPTURE);
     $TmplFmt[$ps][] = "<!--$k-->";
     if ($k{0} == '/') 

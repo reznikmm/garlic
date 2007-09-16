@@ -1,0 +1,12 @@
+version=pmwiki-2.1.beta38 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1
+author=CarlosAB
+csum=
+ctime=1136397947
+host=201.10.18.127
+name=PmWikiPtBr.AjudaTraducao
+rev=10
+targets=
+text=(:title Ajuda para Tradução:)%0a%0aEste texto é uma compilação de links e textos, para ajudar na tradução da documentação do projeto PmWiki:%0a%0a*[[http://br.tldp.org/ferramentas/guia_estilo/guia_estilo.html | LDP-BR Projeto Brasileiro de Documentação do Linux - Guia de Estilo de Tradução]]%0a%0a*[[http://br.tldp.org/ferramentas/vp/vp.html| LDP-BR Projeto Brasileiro de Documentação do Linux - Vocabulário padrão]]%0a%0aPalavras traduzidas do português para inglês e algumas regras para fazer uma melhor tradução:%0a%0a:indent:recuo%0a:outdent:avanço%0a:features:características%0a:download:baixa%0a:upload:%0a:edit:%0a:superscript:%0a:subscript:%0a:site:saite%0a:markup:Marcação%0a:display:exibir ou vídeo%0a:port:portar,porta%0a:link:vínculo, escolha link por ser comumente usado em português.%0a%0aCaso você encontre erros aqui, não se sinta intimidado em corrigir.%0a%0aJust do it. :)
+time=1142194793
+title=Ajuda para Tradução

@@ -1,0 +1,138 @@
+body{
+	font:11px Verdana, Arial, Helvetica, sans-serif;
+	padding:0;
+	color: #FFFFFF;
+	/*background-color: #5A5A5A;*/
+	margin:0px;
+	background-image: url(../images/background.gif);
+	/*background-attachment: fixed;
+	background-repeat: repeat-x;*/
+}
+
+th,td,p{font:11px Verdana,Arial,Helvetica,sans-serif}
+/*p{margin-top:2px;margin-bottom:3px}*/
+
+#wikiedit form { margin:0px; }
+#wikiedit textarea { width:98%; }
+
+/* General page style */
+a:link,a:active,a:visited,a.postlink{color: #9b9975;text-decoration:none}
+a:hover{color:#767676}
+
+.pn-title:link,.pn-title:active,.pn-title:visited,.pn-title.postlink{ font-weight: bold; font-size: 11px; color: #ffffff }
+.pn-title:hover{color:#9b9975}
+input{
+	font:11px Verdana, Arial, Helvetica, sans-serif;
+	color:#000000;
+}
+
+.quickref {
+background-color:#333333
+}
+
+select{
+	color:#000000;
+	font:11px Verdana, Arial, Helvetica, sans-serif;
+}
+
+/* Gets rid of the need for border="0" on hyperlinked images */
+img{border:0 solid}
+
+input.button { font-size:11px;color:#000000;
+border:1px solid; border-color:#707070 #000000 #000000 #707070 } 
+
+/* General font families for common tags */
+font { font:11px Verdana, Arial, Helvetica, sans-serif} 
+.pn-logo, .pn-title, .pn-pagetitle	{ font-weight: bold; font-size: 11px; color: #ffffff }
+.pn-normal { font-size: 11px; color: #ffffff }
+textarea{
+	color:#000000;
+	font:11px Verdana, Arial, Helvetica, sans-serif;
+	background-color: #ffffff;
+}
+textarea.pn-normal{
+	color:#000000;
+	font:11px Verdana, Arial, Helvetica, sans-serif;
+	background-color: #ffffff;
+}
+select.pn-normal{
+	color:#000000;
+	font:11px Verdana, Arial, Helvetica, sans-serif;
+	background-color: #ffffff;
+}
+input.pn-normal{
+	color:#000000;
+	font:11px Verdana, Arial, Helvetica, sans-serif;
+}.summ1 {
+	padding-top:20px;
+	background-image: url(../images/PTQ4_30.jpeg);
+}
+.summ1 a:link {color: #FFFFFF;/*#000000;*/font-weight:bold;}
+.summ1 a:active {color: #FFFFFF;/*#000000;*/font-weight:bold;}
+.summ1 a:visited {color: #FFFFFF;/*#000000;*/font-weight:bold;}
+.summ1 a:hover {color:#c6d00f;font-weight:bold;}
+.summ2 {
+	background-image: url(../images/PTQ4_33.jpeg);
+}
+.summ3 {
+	background-image: url(../images/PTQ4_34.jpeg);
+	padding:5px;
+}
+.summ4 {
+	background-image: url(../images/PTQ4_35.jpeg);
+}
+.summ5 {
+	background-image: url(../images/PTQ4_37.jpeg);
+}
+.left1 {
+	background-image: url(../images/PTQ4_08.jpeg);
+	font-weight:bold;
+	padding-bottom: 5px;
+      color: #FFFFFF;/*#000000;*/
+}
+.left2 {
+	background-image: url(../images/PTQ4_16.jpeg);
+}
+.left3 {
+	background-image: url(../images/PTQ4_34.jpeg);
+	padding:5px;
+}
+.left4 {
+	background-image: url(../images/PTQ4_18.jpeg);
+}
+.left5 {
+	background-image: url(../images/PTQ4_23.jpg);
+}
+.center1 {
+	background-image: url(../images/PTQ4_12.jpeg);
+	padding-top: 20px;
+	/*padding-bottom: 5px; */
+	font-weight:bold;
+	color: #FFFFFF;/*#000000;*/
+}
+.center2 {
+	background-image: url(../images/PTQ4_19.jpeg);
+}
+.center3 {
+	background-image: url(../images/PTQ4_34.jpeg);
+	padding:5px;
+}
+.center4 {
+	background-image: url(../images/PTQ4_21.jpeg);
+}
+.center5 {
+	background-image: url(../images/PTQ4_26.jpeg);
+}
+.main1 {
+	background-image: url(../images/PTQ4_05.jpeg);
+}
+.main2 {
+	background-image: url(../images/bckgrd.jpg);
+}
+.main3 {
+	background-image: url(../images/PTQ4_15.jpeg);
+}
+.mainarea {padding: 5px;}
+.footer {background-image:url(../images/PTQ4_42a.jpeg);}
+.headerleft {	background-image: url(../images/PTQ4header_02.jpeg);}
+.headerright {	background-image: url(../images/PTQ4header_04.jpeg);}

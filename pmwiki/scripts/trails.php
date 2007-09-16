@@ -39,16 +39,28 @@ SDVA($SaveAttrPatterns, array(
    '/<\\|([^|]+|\\[\\[(.+?)\\]\\])\\|>/' => '$1',
    '/\\^\\|([^|]+|\\[\\[(.+?)\\]\\])\\|\\^/' => '$1'));
 
-function ReadTrail($pagename,$trailname) {
-  global $SuffixPattern,$GroupPattern,$WikiWordPattern,$LinkWikiWords;
+$Conditions['ontrail'] = 'CondOnTrail($pagename, $condparm)';
+
+function CondOnTrail($pagename, $condparm) {
+  @list($trailname, $pn) = preg_split('/\\s+/', $condparm, 2);
+  $trail = ReadTrail($pagename, $trailname);
+  if (!$trail) return false;
+  $pn = ($pn > '') ? MakePageName($pagename, $pn) : $pagename;
+  foreach($trail as $t)
+    if ($t['pagename'] == $pn) return true;
+  return false;
+}
+
+function ReadTrail($pagename, $trailname) {
+  global $RASPageName, $SuffixPattern, $GroupPattern, $WikiWordPattern,
+    $LinkWikiWords;
   if (preg_match('/^\\[\\[(.+?)(-&gt;|\\|)(.+?)\\]\\]$/', $trailname, $m)) 
     $trailname = ($m[2] == '|') ? $m[1] : $m[3];
-  $trailname = MakePageName($pagename,$trailname);
-  $trailpage = ReadPage($trailname, READPAGE_CURRENT);
-  if (!$trailpage) return false;
+  $trailtext = RetrieveAuthSection($pagename, $trailname);
+  $trailname = $RASPageName;
   $t = array();
   $n = 0;
-  foreach(explode("\n", htmlspecialchars(@$trailpage['text'], ENT_NOQUOTES)) 
+  foreach(explode("\n", htmlspecialchars(@$trailtext, ENT_NOQUOTES)) 
           as $x) {
     $x = preg_replace("/\\[\\[([^\\]]*)->([^\\]]*)\\]\\]/",'[[$2|$1]]',$x);
     if (!preg_match("/^([#*:]+) \\s* 

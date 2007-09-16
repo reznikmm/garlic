@@ -188,7 +188,7 @@ function HandleFeed($pagename, $auth = 'read') {
     PCache($pagename, $page); 
     $pagelist = array($pagename); 
   }
-  if (!$pagelist) {
+  if (!@$pagelist) {
     $opt = array_merge($opt, @$_REQUEST);
     $pagelist = MakePageList($pagename, $opt, 0);
   }

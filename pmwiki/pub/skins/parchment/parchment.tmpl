@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="content-type" content="text/html; charset=ISO-8859-1" />
+<title>$WikiTitle | {$Group} / {$Title} $ActionTitle</title>
+<link rel='stylesheet' href='$SkinDirUrl/parchment.css' type='text/css' />
+<!--HTMLHeader-->
+</head>
+<body>
+<div id="topcontent">
+<!--PageActionFmt-->
+<div id="pageactions">
+<a rel="nofollow" href="$PageUrl">$[View]</a>&nbsp; 
+<a rel="nofollow" href='{$PageUrl}?action=edit'>$[Edit]</a>&nbsp; 
+<a rel="nofollow" href='{$PageUrl}?action=attr'>$[Attributes]</a>&nbsp; 
+<a rel="nofollow" href='{$PageUrl}?action=diff'>$[History]</a>&nbsp; 
+<a rel="nofollow" href='{$PageUrl}?action=upload'>$[Attach]</a>&nbsp; 
+<a rel="nofollow" href='{$PageUrl}?action=print' target='_blank'>$[Print]</a>&nbsp; 
+<a href='{$ScriptUrl}/$[{$SiteGroup}/Search]'>$[Search]</a>
+</div>
+</div>
+<div id="header">
+<!--PageHeaderFmt-->
+<a href='{$ScriptUrl}'><img src='$PageLogoUrl' alt='$WikiTitle' border='0' /></a>
+</div>
+<!--/PageHeaderFmt-->
+<div id="body">
+<!--PageTitleFmt-->
+<div id="pagetitle">
+<a href='{$ScriptUrl}/{$Group}'>{$Group}</a> / {$Title}
+</div>
+<div id="pagetext">
+<br />
+<!--PageText-->
+<div id="footer">
+<a rel="nofollow" href="$PageUrl">$[View]</a>&nbsp; 
+<a rel="nofollow" href='{$PageUrl}?action=edit'>$[Edit]</a>&nbsp; 
+<a rel="nofollow" href='{$PageUrl}?action=diff'>$[History]</a>&nbsp; 
+<a rel="nofollow" href='{$PageUrl}?action=upload'>$[Attach]</a>&nbsp; 
+<a rel="nofollow" href='{$PageUrl}?action=print' target='_blank'>$[Print]</a>&nbsp; 
+<a href='{$ScriptUrl}/$[{$SiteGroup}/Search]'>$[Search]</a>
+&nbsp; &nbsp; 
+$[Page last modified on {$LastModified}]
+</div>
+</div>
+<!--PageLeftFmt-->
+<div id="menu">
+<b>Navigation</b>
+<!--wiki:{$Group}.SideBar {$SiteGroup}.SideBar-->
+<!--/PageLeftFmt-->
+</div>
+</div>
+<!--PageFooterFmt-->
+<!--HTMLFooter-->
+</body>
+</html>

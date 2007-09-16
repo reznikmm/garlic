@@ -51,6 +51,14 @@ $WikiTitle = 'PmWiki';
 ##  (http://www.wikicreole.org/), include it here:
 # include_once('scripts/creole.php');
 
+##  Some sites may want leading spaces on markup lines to indicate
+##  "preformatted text blocks", set $EnableWSPre=1 if you want to do
+##  this.  Setting it to a higher number increases the number of
+##  space characters required on a line to count as "preformatted text".
+# $EnableWSPre = 0;                        # PmWiki 2.2.0 default (disabled)
+# $EnableWSPre = 1;                        # lines beginning with space are preformatted
+# $EnableWSPre = 4;                        # lines with 4 spaces are preformatted
+
 ##  If you want uploads enabled on your system, set $EnableUpload=1.
 ##  You'll also need to set a default upload password, or else set
 ##  passwords on individual groups and pages.  For more information

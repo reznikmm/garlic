@@ -18,19 +18,35 @@ $LastModTime = @filemtime($LastModFile);
 foreach(get_included_files() as $f) 
   { $v = @filemtime($f); if ($v > $LastModTime) $LastModTime = $v; }
 
-if (@$EnableIMSCaching && in_array($action, (array)$CacheActions)) {
-  $HTTPLastMod = gmdate('D, d M Y H:i:s \G\M\T',$LastModTime);
-  $HTTPHeaders[] = "Cache-Control: no-cache";
-  $HTTPHeaders[] = "Last-Modified: $HTTPLastMod";
-  if (@$_SERVER['HTTP_IF_MODIFIED_SINCE']==$HTTPLastMod)
-    { header("HTTP/1.0 304 Not Modified"); exit(); }
+if (@$EnableIMSCaching) {
+  SDV($IMSCookie, $CookiePrefix.'imstime');
+  SDV($IMSCookieExpires, $Now + 60*60*24*30);
+  SDV($IMSInvalidators, array('authpw', 'author'));
+  $LogoutCookies[] = $IMSCookie;
+
+  if ($IMSCookie) {
+    $IMSTime = @$_COOKIE[$IMSCookie];
+    if ($IMSTime < $LastModTime
+        || array_intersect($IMSInvalidators, array_keys($_POST))) {
+      $IMSTime = $Now; 
+      setcookie($IMSCookie, $IMSTime, $IMSCookieExpires, '/');
+    }
+  } else $IMSTime = $LastModTime;
+
+  if (in_array($action, (array)$CacheActions)) {
+    $HTTPLastMod = gmdate('D, d M Y H:i:s \G\M\T',$IMSTime);
+    $HTTPHeaders[] = "Cache-Control: no-cache";
+    $HTTPHeaders[] = "Last-Modified: $HTTPLastMod";
+    if (@$_SERVER['HTTP_IF_MODIFIED_SINCE']==$HTTPLastMod)
+      { header("HTTP/1.0 304 Not Modified"); exit(); }
+  }
 }
 
 if ($NoHTMLCache 
     || !@$PageCacheDir
     || count($_POST) > 0
     || count($_GET) > 2
-    || (count($_GET) == 1 && !$_GET['n'])) { $NoHTMLCache |= 1; return; }
+    || (count($_GET) == 1 && !@$_GET['n'])) { $NoHTMLCache |= 1; return; }
 
 mkdirp($PageCacheDir);
 if (!file_exists("$PageCacheDir/.htaccess") 

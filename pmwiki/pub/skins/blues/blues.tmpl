@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>$WikiTitle | {$Group} / {$Title} $ActionTitle</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<link href="$SkinDirUrl/blues.css" type="text/css" rel="stylesheet" />
+<!--HTMLHeader-->
+</head>
+<body>
+<div id="container">
+<table width="100%"><tr>
+<td id="upperoutside" valign="top">
+<div id="upperinside">
+<table width="100%"><tr><td>
+<table width="100%"><tr>
+<td id="logo" valign="top">
+<!--PageHeaderFmt-->
+<!-- <a href='{$ScriptUrl}'><img src='$PageLogoUrl' alt='$WikiTitle' border='0' /></a> -->
+<!-- if you want a graphic logo instead of text, uncomment the above line and comment the below line -->
+PmWiki
+<!--/PageHeaderFmt-->
+</td></tr></table>
+</td></tr></table>
+</div>
+</td>
+</tr></table>
+<table width="100%"><tr>
+<td id="actionsoutside" valign="top">
+<div id="actionsinside">
+<table width="100%"><tr><td>
+<table width="100%"><tr>
+<!--PageActionFmt-->
+<td id="pageactions" valign="middle">
+<a rel="nofollow" href="$PageUrl">$[View]</a>&nbsp; 
+<a rel="nofollow" href='{$PageUrl}?action=edit'>$[Edit]</a>&nbsp; 
+<a rel="nofollow" href='{$PageUrl}?action=attr'>$[Attributes]</a>&nbsp; 
+<a rel="nofollow" href='{$PageUrl}?action=diff'>$[History]</a>&nbsp; 
+<a rel="nofollow" href='{$PageUrl}?action=upload'>$[Attach]</a>&nbsp; 
+<a rel="nofollow" href='{$PageUrl}?action=print' target='_blank'>$[Print]</a>&nbsp; 
+</td>
+<td id="search" valign="top">
+<form action='{$ScriptUrl}'>
+<input type='hidden' name='n' value='{$FullName}' />
+<input type='hidden' name='action' value='search' />
+<a href='{$ScriptUrl}/$[{$SiteGroup}/Search]'>$[Search]</a>:
+<input type='text' name='q' value='' class='inputbox searchbox' />
+<input type='submit' class='inputbutton searchbutton' value='$[Submit]' />
+</form>
+</td></tr></table>
+</td></tr></table>
+</div>
+</td>
+</tr></table>
+<table width="100%"><tr>
+<td id="middleoutside" valign="top">
+<div id="middleinside">
+<table width="100%"><tr>
+<!--PageLeftFmt-->
+<td id="menu" valign="top">
+<!--wiki:{$Group}.SideBar {$SiteGroup}.SideBar-->
+<!--/PageLeftFmt-->
+</td>
+<td id="spacer" valign="top">
+</td>
+<td id="pagecontent" valign="top">
+<!--PageTitleFmt-->
+<h3><a href='{$ScriptUrl}/{$Group}'>{$Group}</a> / {$Title}</h3><hr />
+<!--PageText-->
+</td></tr></table>
+</div>
+</td>
+</tr></table>
+<table width="100%"><tr>
+<td id="loweroutside" valign="top">
+<div id="lowerinside">
+<table width="100%"><tr><td>
+<table width="100%"><tr>
+<td id="lastmod" valign="top">
+$[Page last modified on {$LastModified}]
+</td>
+<td id="links" valign="top">
+<a rel="nofollow" href="$PageUrl">$[View]</a>&nbsp; 
+<a rel="nofollow" href='{$PageUrl}?action=edit'>$[Edit]</a>&nbsp; 
+<a rel="nofollow" href='{$PageUrl}?action=diff'>$[History]</a>&nbsp; 
+<a rel="nofollow" href='{$PageUrl}?action=upload'>$[Attach]</a>&nbsp; 
+<a rel="nofollow" href='{$PageUrl}?action=print' target='_blank'>$[Print]</a>&nbsp; 
+</td></tr></table>
+</td></tr></table>
+</div>
+</td>
+</tr></table>
+</div>
+<!--PageFooterFmt-->
+<!--HTMLFooter-->
+</body>
+</html>

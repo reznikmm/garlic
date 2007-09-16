@@ -1,4 +1,4 @@
-<?php /*>*/ if (!defined('PmWiki')) exit();
+<?php if (!defined('PmWiki')) exit();
 #
 # monobook/monobook.php
 #
@@ -27,13 +27,20 @@
 #
 # See http://www.pmwiki.org/wiki/Cookbook/MonobookSkin for info.
 #
-define(MONOBOOK_VERSION, '2006-04-28');
+$RecipeInfo['MonobookSkin']['Version'] = '20070125';
 
 # Skin Parts handling
 global $SkinPartFmt, $WikiTitle;
 SDVA($SkinPartFmt, array(
 'wikititle' => "$WikiTitle - {\$Titlespaced}",
 'title' => '{$Titlespaced}',
+'footer' => '
+%lastmod%$[Page last modified on {$LastModified}]
+* %item rel=nofollow% %navbox% [[&#9650; $[Top] &#9650; -> {$FullName}#monobook_topofpage]]
+* %item rel=nofollow% [[$[Search] -> $[{$SiteGroup}/Search]]]
+* %item rel=nofollow% [[$[Recent Changes] -> $[{$Group}/RecentChanges]]]
+* %item rel=nofollow% [[$[All Recent Changes] -> $[{$SiteGroup}/AllRecentChanges]]]
+',
 'pageactions' => '
 * %item rel=nofollow% [[$[View] -> {$FullName}?action=browse]] %comment%[[{$Groupspaced}/&hellip; -> {$Group}]]%%
 * %item rel=nofollow% [[$[Edit Page] -> {$FullName}?action=edit]]
@@ -64,19 +71,19 @@ function RenderStyle($pagename, $params) {
   print ($m[1] ? ! $bool : $bool) ? "<style type='text/css'>$style</style>" : '';
 }
 
-function RenderMarkupText($pagename, $part, $fmt) {
+function RenderPart($pagename, $part, $strip = '') {
   global $SkinPartFmt, $PCache;
   $n = "skin_$part";
-  if(!isset($PCache[$pagename][$n]))
-    $PCache[$pagename][$n] = preg_replace($fmt, '', MarkupToHTML($pagename, $SkinPartFmt[$part]));
+  if(!isset($PCache[$pagename][$n])) {
+    $t = htmlspecialchars($SkinPartFmt[$part], ENT_NOQUOTES);
+    $t = MarkupToHTML($pagename, "<:block>$t", array('escape' => 0));
+    $PCache[$pagename][$n] = $strip ? preg_replace($strip, '', $t) : $t;
+  }
   print $PCache[$pagename][$n];
 }
 
 function RenderTitle($pagename) {
-  RenderMarkupText($pagename, 'wikititle', "/(<[^>]+>|\r\n?|\n\r?)/");
-}
-function RenderPart($pagename, $part) {
-  RenderMarkupText($pagename, $part, "/<\/?p>/");
+  RenderPart($pagename, 'wikititle', "/(<[^>]+>|\r\n?|\n\r?)/");
 }
 
 function RetrievePageMarkup($pagelist) {
@@ -95,8 +102,9 @@ function RenderActions($pagename, $actionslist) {
   $pagelist = preg_split('/\s+/', $actionslist, -1, PREG_SPLIT_NO_EMPTY);
   $text = RetrievePageMarkup($pagelist);
   SDV($text, preg_replace("/(\r\n|\n?\r)/", "\n", $SkinPartFmt['pageactions']));
-  $ls = explode("\n", MarkupToHTML($pagename, $text));
-  $lRe = "|(.*?)<a.*?href='(.*?)'.*?>(.*?)</a>(.*)|i";
+  preg_match('/(<([uo])l>(?:.*)<\\/\\2l>)/si', MarkupToHTML($pagename, $text), $m);
+  $ls = explode("</li>", str_replace("\n", "", $m[1]));
+  $lRe = "/(.*?)<a.*?href='(.*?)'.*?>(.*?)<\\/a>(.*)/i";
   foreach($ls as $i => $l) {
     if(preg_match($lRe, $l, $l1)) {
       $laction = preg_match("/action=(.*)/i", $l1[2], $a) ? $a[1] : 'browse';
@@ -109,7 +117,7 @@ function RenderActions($pagename, $actionslist) {
       }
     }
   }
-  print implode("\n", $ls);
+  print implode("\n</li>", $ls);
 }
 
 function RenderDivPart($pagename, $params) {
@@ -153,18 +161,25 @@ if(IsEnabled($EnableSkinLinkDecoration, 1)) {
   $intermap = $SkinPartFmt['attachalias'];
 
   $IMapLinkFmt['Attach:'] = "<a class='attachlink' href='\$LinkUrl' rel='nofollow'>\$LinkText</a>";
-  $IMapLinkFmt[$intermap] = "<a class='attachlink' href='\$LinkUrl' rel='nofollow'>\$LinkText</a><a class='createlink' href='\$LinkUpload'><img src='$SkinDirUrl/attachment.png' /></a>";
+  $IMapLinkFmt[$intermap] = "<a class='attachlink' href='\$LinkUrl' rel='nofollow'>\$LinkText</a><a class='createlink' href='\$LinkUpload'><img src='$SkinDirUrl/attachment.png' alt='' /></a>";
   $LinkFunctions[$intermap] = 'LinkUpload';
   $IMap[$intermap] = '$1';
 
   $LinkPageCreateFmt = "<a class='createlinktext' href='\$PageUrl?action=edit'>\$LinkText</a>";
-  $LinkUploadCreateFmt = "<a class='createlinktext' href='\$LinkUpload'>\$LinkText</a><a class='createlink' href='\$LinkUpload'><img src='$SkinDirUrl/attachnew.png' /></a>";
+  $LinkUploadCreateFmt = "<a class='createlinktext' href='\$LinkUpload'>\$LinkText</a><a class='createlink' href='\$LinkUpload'><img src='$SkinDirUrl/attachnew.png' alt='' /></a>";
 #  $UrlLinkFmt =  "<span class='urllink'><a class='urllink' href='\$LinkUrl' rel='nofollow'>\$LinkText</a></span>";
 }
 
 # $StopWatch handling
-global $EnableDiag, $FmtP;
-if(!$EnableDiag) $FmtP['/\\$StopWatch/e'] = '';
+function RenderStopWatch($pagename) {
+  global $EnableStopWatch;
+
+  if(function_exists('StopWatchHTML'))
+    StopWatchHTML($pagename, $EnableStopWatch);
+  else
+    if($EnableStopWatch && function_exists('DisplayStopWatch'))
+      print DisplayStopWatch();
+}
 
 # Right bar handling -- WARNING: this is un-maintained code
 if($SkinPartFmt['rightbardisabled'])
@@ -195,7 +210,6 @@ else
   $RightBarClass = isset($PageRightBarList[$rb]) ? $PageRightBarList[$rb] : $PageRightBarList[$DefaultRightBar];
 
   global $action;
-  SetTmplDisplay('PageRightFmt', 0);
   Markup('noright', 'directives', '/\\(:noright:\\)/e',
     "SetTmplDisplay('PageRightFmt', 0)");
   Markup('showright', 'directives', '/\\(:showright:\\)/e',

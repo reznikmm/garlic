@@ -1,0 +1,12 @@
+version=pmwiki-2.1.5 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1
+author=Holo
+csum=titled
+ctime=1143733565
+host=195.98.173.2
+name=PmWikiRu.Download
+rev=3
+targets=PmWikiRu.Installation,PmWikiRu.Upgrades,PmWikiRu.Subversion
+text=(:title Загрузка:)%0aТекущая и предыдущие версии [=PmWiki=] можно скачать по адресу at http://www.pmwiki.org/pub/pmwiki/ .%0a%0a!! [-Прямые ссылки-]%0aПоследний выпуск ({$Version}):%0a* [[(http://www.pmwiki.org/pub/pmwiki/)pmwiki-latest.tgz]]%0a* [[(http://www.pmwiki.org/pub/pmwiki/)pmwiki-latest.zip]]%0a%0aМеждународный пакет языков:%0a* [[(http://www.pmwiki.org/pub/pmwiki/)i18n.tgz ]]%0a* [[(http://www.pmwiki.org/pub/pmwiki/)i18n.zip ]]%0a%0a!! [-Связаные с данной темой страницы-]%0a* [[Installation]] - Установка PmWiki.%0a* [[Upgrades]] - Обновление PmWiki.%0a* [[Subversion]] - Простая установка / обновление пользуясь "экспортом" из системы контроля версий.%0a* [[Cookbook:Standalone]] - Модуль для запуска PmWiki без вебсервера.%0a
+time=1143802556
+title=Загрузка

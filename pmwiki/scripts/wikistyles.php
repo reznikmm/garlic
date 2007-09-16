@@ -68,6 +68,8 @@ if (IsEnabled($EnableStdWikiStyles,1)) {
   SDV($WikiStyle['cframe'], array(
     'class' => 'frame', 'margin-left' => 'auto', 'margin-right' => 'auto',
     'width' => '200px', 'apply' => 'block', 'text-align' => 'center'));
+  ##  preformatted text sections
+  SDV($WikiStyle['pre'], array('apply' => 'block', 'white-space' => 'pre'));
   SDV($WikiStyle['sidehead'], array('apply' => 'block', 'class' => 'sidehead'));
 }
 
@@ -97,6 +99,8 @@ function ApplyStyles($x) {
     $WikiStyleAttr, $WikiStyleCSS, $WikiStyleApply, $BlockPattern,
     $WikiStyleTag, $imgTag, $aTag, $spanTag, $WikiStyleAttrPrefix;
   $wt = @$WikiStyleTag; $ns = $WikiStyleAttrPrefix; $ws = '';
+  $x = preg_replace("/\\b(href|src)=(['\"]?)[^$UrlExcludeChars]+\\2/e", 
+                    "Keep(PSS('$0'))", $x);
   $x = preg_replace("/\\bhttps?:[^$UrlExcludeChars]+/e", "Keep('$0')", $x);
   $parts = preg_split("/($WikiStylePattern)/",$x,-1,PREG_SPLIT_DELIM_CAPTURE);
   $parts[] = NULL;

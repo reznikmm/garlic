@@ -33,7 +33,9 @@ SDV($InputTags['end'][':html'], '</form>');
 
 # (:input textarea:)
 SDVA($InputTags['textarea'], array(
-  ':html' => "<textarea \$InputFormArgs></textarea>"));
+  ':content' => array('value'),
+  ':attr' => array_diff($InputAttrs, array('value')),
+  ':html' => "<textarea \$InputFormArgs>\$InputFormContent</textarea>"));
 
 # (:input image:)
 SDV($InputTags['image'][':args'], array('name', 'src', 'alt'));
@@ -49,31 +51,37 @@ SDVA($InputTags['select'], array(
   'class' => 'inputbox',
   ':html' => "<select \$InputSelectArgs>\$InputSelectOptions</select>"));
 
-##  (:input default:) needs to occur before all other input markups.
+# (:input defaults?:)
+SDVA($InputTags['default'], array(':fn' => 'InputDefault'));
+SDVA($InputTags['defaults'], array(':fn' => 'InputDefault'));
+
+##  (:input ...:) directives
 Markup('input', 'directives',
-  '/\\(:input\\s+(default)\\b(.*?):\\)/ei',
-  "InputDefault(\$pagename, '$1', PSS('$2'))");
-
-##  (:input select:) has its own markup processing
-Markup('input-select', 'input',
-  '/\\(:input\\s+select\\s.*?:\\)(?:\\s*\\(:input\\s+select\\s.*?:\\))*/ei',
-  "InputSelect(\$pagename, 'select', PSS('$0'))");
-
-##  (:input ...:) goes after all other input markups
-Markup('input-type', '>input', 
   '/\\(:input\\s+(\\w+)(.*?):\\)/ei',
   "InputMarkup(\$pagename, '$1', PSS('$2'))");
+
+##  (:input select:) has its own markup processing
+Markup('input-select', '<input',
+  '/\\(:input\\s+select\\s.*?:\\)(?:\\s*\\(:input\\s+select\\s.*?:\\))*/ei',
+  "InputSelect(\$pagename, 'select', PSS('$0'))");
 
 ##  The 'input+sp' rule combines multiple (:input select ... :)
 ##  into a single markup line (to avoid split line effects)
 Markup('input+sp', '<split', 
   '/(\\(:input\\s+select\\s(?>.*?:\\)))\\s+(?=\\(:input\\s)/', '$1');
 
+SDV($InputFocusFmt, 
+  "<script language='javascript' type='text/javascript'><!--
+   document.getElementById('\$InputFocusId').focus();//--></script>");
+
+##  InputToHTML performs standard processing on (:input ...:) arguments,
+##  and returns the formatted HTML string.
 function InputToHTML($pagename, $type, $args, &$opt) {
-  global $InputTags, $InputAttrs, $InputValues, $FmtV;
+  global $InputTags, $InputAttrs, $InputValues, $FmtV,
+    $InputFocusLevel, $InputFocusId, $InputFocusFmt, $HTMLFooterFmt;
   if (!@$InputTags[$type]) return "(:input $type $args:)";
   ##  get input arguments
-  $args = ParseArgs($args);
+  if (!is_array($args)) $args = ParseArgs($args);
   ##  convert any positional arguments to named arguments
   $posnames = @$InputTags[$type][':args'];
   if (!$posnames) $posnames = array('name', 'value');
@@ -86,16 +94,40 @@ function InputToHTML($pagename, $type, $args, &$opt) {
   ##  convert any remaining positional args to flags
   foreach ((array)@$opt[''] as $a) 
     { $a = strtolower($a); if (!isset($opt[$a])) $opt[$a] = $a; }
-  $name = @$opt['name'];
-  ##  set control values from $InputValues array
-  ##  radio, checkbox, select, etc. require a flag of some sort,
-  ##  others just set 'value'
-  if (isset($InputValues[$name])) {
-    $checked = @$opt[':checked'];
-    if ($checked) {
-      $opt[$checked] = in_array(@$opt['value'], (array)$InputValues[$name])
-                       ? $checked : false;
-    } else if (!isset($opt['value'])) $opt['value'] = $InputValues[$name];
+  if (isset($opt['name'])) {
+    $opt['name'] = preg_replace('/^\\$:/', 'ptv_', @$opt['name']);
+    $name = $opt['name'];
+    ##  set control values from $InputValues array
+    ##  radio, checkbox, select, etc. require a flag of some sort,
+    ##  others just set 'value'
+    if (isset($InputValues[$name])) {
+      $checked = @$opt[':checked'];
+      if ($checked) {
+        $opt[$checked] = in_array(@$opt['value'], (array)$InputValues[$name])
+                         ? $checked : false;
+      } else if (!isset($opt['value'])) $opt['value'] = $InputValues[$name];
+    }
+  }
+  ##  build $InputFormContent
+  $FmtV['$InputFormContent'] = '';
+  foreach((array)@$opt[':content'] as $a)
+    if (isset($opt[$a])) { $FmtV['$InputFormContent'] = $opt[$a]; break; }
+  ##  hash and store any "secure" values
+  if (@$opt['secure'] == '#') $opt['secure'] = rand();
+  if (@$opt['secure'] > '') {
+    $md5 = md5($opt['secure'] . $opt['value']);
+    @session_start(); 
+    $_SESSION['forms'][$md5] = $opt['value'];
+    $opt['value'] = $md5;
+  }
+  ##  handle focus=# option
+  $focus = @$opt['focus'];
+  if (isset($focus)
+      && (!isset($InputFocusLevel) || $focus < $InputFocusLevel)) {
+    if (!isset($opt['id'])) $opt['id'] = "wikifocus$focus";
+    $InputFocusLevel = $focus;
+    $InputFocusId = $opt['id'];
+    $HTMLFooterFmt['inputfocus'] = $InputFocusFmt;
   }
   ##  build $InputFormArgs from $opt
   $attrlist = (isset($opt[':attr'])) ? $opt[':attr'] : $InputAttrs;
@@ -105,28 +137,55 @@ function InputToHTML($pagename, $type, $args, &$opt) {
     $attr[] = "$a='".str_replace("'", '&#39;', $opt[$a])."'";
   }
   $FmtV['$InputFormArgs'] = implode(' ', $attr);
-  $FmtV['$InputFormContent'] = '';
-  foreach((array)@$opt[':content'] as $a)
-    if (isset($opt[$a])) { $FmtV['$InputFormContent'] = $opt[$a]; break; }
   return FmtPageName($opt[':html'], $pagename);
 }
 
 
-function InputDefault($pagename, $type, $args) {
-  global $InputValues;
-  $args = ParseArgs($args);
-  $args[''] = (array)@$args[''];
-  if (!isset($args['name'])) $args['name'] = array_shift($args['']);
-  if (!isset($args['value'])) $args['value'] = array_shift($args['']);
-  if (!isset($InputValues[$args['name']])) 
-    $InputValues[$args['name']] = $args['value'];
-  return '';
-}
-
+##  InputMarkup handles the (:input ...:) directive.  It either
+##  calls any function given by the :fn element of the corresponding
+##  tag, or else just returns the result of InputToHTML().
 function InputMarkup($pagename, $type, $args) {
+  global $InputTags;
+  $fn = @$InputTags[$type][':fn'];
+  if ($fn) return $fn($pagename, $type, $args);
   return Keep(InputToHTML($pagename, $type, $args, $opt));
 }
 
+
+##  (:input default:) directive.
+function InputDefault($pagename, $type, $args) {
+  global $InputValues, $PageTextVarPatterns;
+  $args = ParseArgs($args);
+  $args[''] = (array)@$args[''];
+  $name = (isset($args['name'])) ? $args['name'] : array_shift($args['']);
+  $name = preg_replace('/^\\$:/', 'ptv_', $name);
+  $value = (isset($args['value'])) ? $args['value'] : array_shift($args['']);
+  if (!isset($InputValues[$name])) $InputValues[$name] = $value;
+  if (@$args['request']) {
+    $req = array_merge($_GET, $_POST);
+    foreach($req as $k => $v) 
+      if (!isset($InputValues[$k])) 
+        $InputValues[$k] = htmlspecialchars(stripmagic($v), ENT_NOQUOTES);
+  }
+  $source = @$args['source'];
+  if ($source) {
+    $source = MakePageName($pagename, $source);
+    $page = RetrieveAuthPage($source, 'read', false, READPAGE_CURRENT);
+    if ($page) {
+      foreach((array)$PageTextVarPatterns as $pat)
+        if (preg_match_all($pat, $page['text'], $match, PREG_SET_ORDER))
+          foreach($match as $m)
+            if (!isset($InputValues['ptv_'.$m[1]]))
+              $InputValues['ptv_'.$m[2]] = 
+                htmlspecialchars(Qualify($source, $m[3]), ENT_NOQUOTES);
+    }
+  }
+  return '';
+}
+
+
+##  (:input select ...:) is special, because we need to process a bunch of
+##  them as a single unit.
 function InputSelect($pagename, $type, $markup) {
   global $InputTags, $InputAttrs, $FmtV;
   preg_match_all('/\\(:input\\s+\\S+\\s+(.*?):\\)/', $markup, $match);
@@ -147,6 +206,30 @@ function InputSelect($pagename, $type, $markup) {
   $FmtV['$InputSelectArgs'] = implode(' ', $attr);
   $FmtV['$InputSelectOptions'] = $optionshtml;
   return Keep(FmtPageName($selectopt[':html'], $pagename));
+}
+
+
+function InputActionForm($pagename, $type, $args) {
+  global $InputAttrs;
+  $args = ParseArgs($args);
+  if (@$args['pagename']) $pagename = $args['pagename'];
+  $opt = NULL;
+  $html = InputToHTML($pagename, $type, $args, $opt);
+  foreach(preg_grep('/^[\\w$]/', array_keys($args)) as $k) {
+    if (is_array($args[$k]) || in_array($k, $InputAttrs)) continue;
+    if ($k == 'n' || $k == 'pagename') continue;
+    $html .= "<input type='hidden' name='$k' value='{$args[$k]}' />";
+  }
+  return Keep($html);
+}
+
+
+## RequestArgs is used to extract values from controls (typically
+## in $_GET and $_POST).
+function RequestArgs($req = NULL) {
+  if (is_null($req)) $req = array_merge($_GET, $_POST);
+  foreach ($req as $k => $v) $req[$k] = stripmagic($req[$k]);
+  return $req;
 }
 
 
@@ -196,10 +279,11 @@ Markup('e_guibuttons', 'directives', '/\\(:e_guibuttons:\\)/', '');
 SDV($SaveAttrPatterns['/\\(:e_(preview|guibuttons):\\)/'], ' ');
 
 SDVA($InputTags['e_form'], array(
-  ':html' => "<form action='{\$PageUrl}?action=edit' method='post'><input 
-    type='hidden' name='action' value='edit' /><input 
-    type='hidden' name='n' value='{\$FullName}' /><input 
-    type='hidden' name='basetime' value='\$EditBaseTime' />"));
+  ':html' => "<form action='{\$PageUrl}?action=edit' method='post'
+    \$InputFormArgs><input type='hidden' name='action' value='edit' 
+    /><input type='hidden' name='n' value='{\$FullName}' 
+    /><input type='hidden' name='basetime' value='\$EditBaseTime' 
+    />"));
 SDVA($InputTags['e_textarea'], array(
   ':html' => "<textarea \$InputFormArgs 
     onkeydown='if (event.keyCode==27) event.returnValue=false;' 

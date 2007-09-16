@@ -1,0 +1,11 @@
+version=pmwiki-2.1.5 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.3) Gecko/20060426 Firefox/1.5.0.3
+author=Holo
+csum=translated
+ctime=1146931351
+host=195.98.173.2
+name=PmWikiRu.Subversion
+rev=2
+targets=PmWikiRu.DocumentationIndex
+text=!! Получение PmWiki через Subversion (svn)%0a%0aДругой способ получить копию PmWiki -- через [[http://subversion.tigris.org/|subversion]].  Первое, что вам надо -- это особого рода [[http://subversion.tigris.org/project_links.html#clients|клиентская программа для subversion]] дающая доступ к репозиторию.  Здесь мы будем пользоваться клиентом для командной строки "svn".%0a%0aПоследний выпуск PmWiki доступен с @@svn://pmwiki.org/pmwiki/tags/latest@@ .  Воспользуйтесь "svn" для получения копии последнего выпуска.  Выполните такую команду:%0a%0a    svn export svn://pmwiki.org/pmwiki/tags/latest pmwiki --force%0a%0aОна извлечёт из ропозитория последний выпуск и поместит его в папку "pmwiki" в вашей текушей директории.  Когда выходит новый выпуск и вы хотите обновиться, то просто повторите эту команду.%0a%0aЕсли вы хотите получить наипоследнейшую рабочую версию, которая может содержать ещё не выпущеные функции, то выполните команду "svn export svn://pmwiki.org/pmwiki/trunk pmwiki --force".%0a%0aПредыдущие версии PmWiki также доступны в папке ''tags/''.  Так что, если вы обновились до последней версии и решили что вам надо откатиться до предыдущей, то сделайте:%0a%0a   svn export svn://pmwiki.org/pmwiki/tags/pmwiki-2.1.4 pmwiki --force%0a%0aдля того, чтобы текущая стала такой же как и выпуск 2.1.4.  Для возврата к последнему выпуску просто используйте версию из ''.../tags/latest'' упоминавшуюся ранее.%0a%0a%25trail%25 %3c%3c|[[DocumentationIndex|+]]|>>
+time=1146931391
