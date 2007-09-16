@@ -181,14 +181,20 @@ $HTMLHeaderFmt['verify-v1'] = '
     ';
 
 $PageSkinList = array (
-   'pmwiki' => 'pmwiki',
-   'dropdown' => 'dropdown',
-   'monobook' => 'monobook');
+   'pmwiki'     => 'pmwiki',
+   'dropdown'   => 'dropdown',
+   'monobook'   => 'monobook'
+   'blues'      => 'blues',
+   'bs-001'     => 'bs-001',   
+   'parchment'  => 'parchment',
+   'triad'      => 'triad');
 
+$EnableBlocklist = 10;
+$EnableWhyBlocked = 1;
+$BlocklistDownload["$SiteAdminGroup.Blocklist-PmWiki"] = array('format' => 'pmwiki');
 
 include_once('cookbook/sourceforge.php');
 include_once('scripts/xlpage-utf-8.php');
 include_once('local/skinchange.php');
-if ($action=='edit') include_once('cookbook/blocklist2.php');
 
 ?>
