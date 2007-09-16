@@ -1,15 +1,21 @@
-version=pmwiki-2.1.11 ordered=1 urlencoded=1
-agent=Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.8.1) Gecko/20060601 Firefox/2.0 (Ubuntu-edgy)
-author=rcl
-csum=type fix
-host=66.92.232.102
+version=pmwiki-2.2.0-beta35 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (compatible; Konqueror/3.5; de, en_GB, en_US) KHTML/3.5.7 (like Gecko) SUSE
+author=Martin Krischik
+csum=Nice joke - but no!
+host=84.73.230.248
 name=Main.HomePage
-rev=164
+rev=167
 targets=
-text=(:title Welcome to Annex E for GNAT:)%0a%0aThis Project is dedicated to provide an up to date Annex E interface for the current GNAT, which for some unknown reason is called GLADE and has nothing to do with the interface builder of the same name.%0a%0a!! How to get GLADE%0a%0aGLADE works very closely with the compiler and a single GLADE compile is only guaranteed to work with the compiler it was created with.%0a%0a!!! Get a Compiler%0a%0aFirst, if you have not compiled you own compiler yet, you should do so. Read the [[http://ada.krischik.com/index.php/Articles/CompileGNAT|instructions]].%0a%0a!!! Get GLADE%0a%0aBest is to download GLADE from cvs Archive. See [[https://sourceforge.net/cvs/?group_id=105524]] how to do that.%0a%0a!!! Compile GLADE%0a%0aIn order to create a working GLADE. you have to copy some of the files from the original compiler sources to the @@./gnat@@ directory within GLADE. You need to set ''GNATSRC'' to the gnat sources and then use @@make gnat@@ to%0acopy.%0a%0aAfter that just say @@make install@@. The GLADE library will be installed to @@/opt/ada/install/asis@@ and the GLADE tools to @@/opt/ada/bin@@.%0a
-time=1165717505
+text=(:title Welcome to Annex E for GNAT:)%0a%0aThis Project is dedicated to provide an up to date Annex E interface for the current GNAT, which for some unknown reason is called GLADE and has nothing to do with the interface builder of the same name or any of the hundreds of people with the same last name.%0a%0a!! How to get GLADE%0a%0aGLADE works very closely with the compiler and a single GLADE compile is only guaranteed to work with the compiler it was created with.%0a%0a!!! Get a Compiler%0a%0aFirst, if you have not compiled you own compiler yet, you should do so. Read the [[http://ada.krischik.com/index.php/Articles/CompileGNAT|instructions]].%0a%0a!!! Get GLADE%0a%0aBest is to download GLADE from cvs Archive. See [[https://sourceforge.net/cvs/?group_id=105524]] how to do that.%0a%0a!!! Compile GLADE%0a%0aIn order to create a working GLADE. you have to copy some of the files from the original compiler sources to the @@./gnat@@ directory within GLADE. You need to set ''GNATSRC'' to the gnat sources and then use @@make gnat@@ to%0acopy.%0a%0aAfter that just say @@make install@@. The GLADE library will be installed to @@/opt/ada/install/asis@@ and the GLADE tools to @@/opt/ada/bin@@.%0a
+time=1184349070
 title=Welcome to Annex E for GNAT
-author:1165717505=rcl
-csum:1165717505=type fix
-diff:1165717505:1129284524:minor=19c19%0a%3c In order to create a working GLADE. you have to copy some of the files from the original compiler sources to the @@./gnat@@ directory within GLADE. You need to set ''GNATSRC'' to the gnat sources and then use @@make gnat@@ to%0a---%0a> In order to create a working GLADE. you have to copy some of the files from them original compiler sources to the @@./gnat@@ directory within GLADE. You need to set ''GNATSRC'' to the gnat sources and then use @@make gnat@@ to%0a
-host:1165717505=66.92.232.102
+author:1184349070=Martin Krischik
+csum:1184349070=Nice joke - but no!
+diff:1184349070:1183927396:=5,6c5,6%0a%3c !! How to get GLADE%0a%3c %0a---%0a> !! How to get GLADEified%0a> %0a
+host:1184349070=84.73.230.248
+author:1183927396=
+diff:1183927396:1183927311:=5,6c5,6%0a%3c !! How to get GLADEified%0a%3c %0a---%0a> !! How to get GLADE%0a> %0a
+host:1183927396=82.117.200.245
+author:1183927311=
+diff:1183927311:1165717505:=3,4c3,4%0a%3c This Project is dedicated to provide an up to date Annex E interface for the current GNAT, which for some unknown reason is called GLADE and has nothing to do with the interface builder of the same name or any of the hundreds of people with the same last name.%0a%3c %0a---%0a> This Project is dedicated to provide an up to date Annex E interface for the current GNAT, which for some unknown reason is called GLADE and has nothing to do with the interface builder of the same name.%0a> %0a
+host:1183927311=82.117.200.245

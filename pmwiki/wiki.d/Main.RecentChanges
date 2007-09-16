@@ -1,13 +1,13 @@
-version=pmwiki-2.1.11 ordered=1 urlencoded=1
-agent=Opera/9.02 (X11; Linux x86_64; U; de)
+version=pmwiki-2.2.0-beta35 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (compatible; Konqueror/3.5; de, en_GB, en_US) KHTML/3.5.7 (like Gecko) SUSE
 author=Martin Krischik
 csum=WikiSPAM
-host=80.218.118.14
+host=84.73.230.248
 name=Main.RecentChanges
-rev=64
+rev=67
 targets=Main.RecentChanges,Profiles.MartinKrischik,Main.Blocklist,Main.SideBar,Main.TOC,Main.Sitemap,Main.GroupFooter,Main.HomePage,Main.RSSFeeds,Main.MenuBar,Main.BottomBar,Main.Skin
-text=* [[Main/Blocklist]]  . . . December 18, 2006, at 07:34 AM by [[~Martin Krischik]]: [=Martin Krischik=]%0a* [[Main/HomePage]]  . . . December 09, 2006, at 06:25 PM by [[~rcl]]: [=type fix=]%0a* [[Main/RecentChanges]]  . . . July 19, 2006, at 10:37 PM by [[~Martin Krischik]]: [=WikiSPAM=]%0a* [[Main/SideBar]]  . . . June 26, 2006, at 04:22 AM by [[~Martin Krischik]]: [=ada answers link and logo=]%0a* [[Main/TOC]]  . . . June 26, 2006, at 04:01 AM by [[~Martin Krischik]]: [=pages every side should have=]%0a* [[Main/Sitemap]]  . . . June 26, 2006, at 03:58 AM by [[~Martin Krischik]]: [=Important Groups=]%0a* [[Main/GroupFooter]]  . . . June 26, 2006, at 03:48 AM by [[~Martin Krischik]]: [=Make shure that "Ada programming" is mentioned on every page.=]%0a* [[Main/RSSFeeds]]  . . . August 07, 2005, at 04:20 AM by [[~Martin Krischik]]: [=Interesting RSS Feeds=]%0a* [[Main/MenuBar]]  . . . July 30, 2005, at 12:37 AM by [[~Martin Krischik]]: [==]%0a* [[Main/BottomBar]]  . . . July 30, 2005, at 12:30 AM by [[~Martin Krischik]]: [==]%0a* [[Main/Skin]]  . . . July 28, 2005, at 10:11 AM by [[~Martin Krischik]]: [=new=]%0a
-time=1166456056
+text=* [[Main/HomePage]]  . . . July 13, 2007, at 10:51 AM by [[~Martin Krischik]]: [=Nice joke - but no!=]%0a* [[Main/Blocklist]]  . . . December 18, 2006, at 07:34 AM by [[~Martin Krischik]]: [=Martin Krischik=]%0a* [[Main/RecentChanges]]  . . . July 19, 2006, at 10:37 PM by [[~Martin Krischik]]: [=WikiSPAM=]%0a* [[Main/SideBar]]  . . . June 26, 2006, at 04:22 AM by [[~Martin Krischik]]: [=ada answers link and logo=]%0a* [[Main/TOC]]  . . . June 26, 2006, at 04:01 AM by [[~Martin Krischik]]: [=pages every side should have=]%0a* [[Main/Sitemap]]  . . . June 26, 2006, at 03:58 AM by [[~Martin Krischik]]: [=Important Groups=]%0a* [[Main/GroupFooter]]  . . . June 26, 2006, at 03:48 AM by [[~Martin Krischik]]: [=Make shure that "Ada programming" is mentioned on every page.=]%0a* [[Main/RSSFeeds]]  . . . August 07, 2005, at 04:20 AM by [[~Martin Krischik]]: [=Interesting RSS Feeds=]%0a* [[Main/MenuBar]]  . . . July 30, 2005, at 12:37 AM by [[~Martin Krischik]]: [==]%0a* [[Main/BottomBar]]  . . . July 30, 2005, at 12:30 AM by [[~Martin Krischik]]: [==]%0a* [[Main/Skin]]  . . . July 28, 2005, at 10:11 AM by [[~Martin Krischik]]: [=new=]%0a
+time=1184349070
 author:1153373851=Martin Krischik
 csum:1153373851=WikiSPAM
 diff:1153373851:1153373805:=11a12%0a> [http://dvd.1golod.org/pioneer-dvd-burner---software.html] pioneer dvd burner   software%0a

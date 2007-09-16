@@ -8,3 +8,5 @@ ErrorDocument 401 http://gnat-glade.sourceforge.net/pmwiki.php?n=Error.401
 Order Deny,Allow
 Allow from all
 Options -Indexes
+# vim: textwidth=0 nowrap tabstop=8 shiftwidth=4 softtabstop=4 expandtab
+# vim: filetype=apache encoding=utf-8 fileformat=unix foldmethod=marker nospell

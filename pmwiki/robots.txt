@@ -1,4 +1,10 @@
 User-agent: *
-Disallow: /cgi-bin/
-Disallow: *?action=edit
 Disallow: *?action=approvesites
+Disallow: *?action=attr
+Disallow: *?action=diff
+Disallow: *?action=edit
+Disallow: *?action=print
+Disallow: *?action=upload
+Disallow: /cgi-bin/
+#vim: set nowrap tabstop=8 shiftwidth=4 softtabstop=4 expandtab :
+#vim: set textwidth=0 filetype=robots foldmethod=marker nospell :
