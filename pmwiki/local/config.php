@@ -47,7 +47,7 @@ $Skin = 'monobook';
 ## and PmWiki.PasswordsAdmin.
 
 $DefaultPasswords['admin']  = '$1$.HWpOj1B$XuhpxFURi8khZnXGg2HG80';
-#$DefaultPasswords['edit']   = '$1$.HWpOj1B$XuhpxFURi8khZnXGg2HG80';
+$DefaultPasswords['edit']   = '$1$.HWpOj1B$XuhpxFURi8khZnXGg2HG80';
 $DefaultPasswords['attr']   = '$1$.HWpOj1B$XuhpxFURi8khZnXGg2HG80';
 $DefaultPasswords['upload'] = '$1$.HWpOj1B$XuhpxFURi8khZnXGg2HG80';
 
