@@ -1,15 +1,19 @@
 version=pmwiki-2.2.0-beta63 ordered=1 urlencoded=1
-agent=Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)
-author=
+agent=Opera/9.23 (X11; Linux x86_64; U; de)
+author=Martin Krischik
 charset=UTF-8
-csum=
-host=170.211.155.162
+csum=Vandalism
+host=84.73.230.44
 name=Main.HomePage
-rev=171
+rev=172
 targets=
-text=baslaelrol%0aoudomdo%0a(:title Welcome to Annex E for GNAT:)%0a%0aThis Project is dedicated to provide an up to date Annex E interface for the current GNAT, which for some unknown reason is called GLADE and has nothing to do with the interface builder of the same name or any of the hundreds of people with the same last name.%0a%0a!! How to get GLADE%0a%0aGLADE works very closely with the compiler and a single GLADE compile is only guaranteed to work with the compiler it was created with.%0a%0a!!! Get a Compiler%0a%0aFirst, if you have not compiled you own compiler yet, you should do so. Read the [[http://ada.krischik.com/index.php/Articles/CompileGNAT|instructions]].%0a%0a!!! Get GLADE%0a%0aBest is to download GLADE from cvs Archive. See [[https://sourceforge.net/cvs/?group_id=105524]] how to do that.%0a%0a!!! Compile GLADE%0a%0aIn order to create a working GLADE. you have to copy some of the files from the original compiler sources to the @@./gnat@@ directory within GLADE. You need to set ''GNATSRC'' to the gnat sources and then use @@make gnat@@ to%0acopy.%0a%0aAfter that just say @@make install@@. The GLADE library will be installed to @@/opt/ada/install/asis@@ and the GLADE tools to @@/opt/ada/bin@@.%0a
-time=1192116895
+text=(:title Welcome to Annex E for GNAT:)%0a%0aThis Project is dedicated to provide an up to date Annex E interface for the current GNAT, which for some unknown reason is called GLADE and has nothing to do with the interface builder of the same name or any of the hundreds of people with the same last name.%0a%0a!! How to get GLADE%0a%0aGLADE works very closely with the compiler and a single GLADE compile is only guaranteed to work with the compiler it was created with.%0a%0a!!! Get a Compiler%0a%0aFirst, if you have not compiled you own compiler yet, you should do so. Read the [[http://ada.krischik.com/index.php/Articles/CompileGNAT|instructions]].%0a%0a!!! Get GLADE%0a%0aBest is to download GLADE from cvs Archive. See [[https://sourceforge.net/cvs/?group_id=105524]] how to do that.%0a%0a!!! Compile GLADE%0a%0aIn order to create a working GLADE. you have to copy some of the files from the original compiler sources to the @@./gnat@@ directory within GLADE. You need to set ''GNATSRC'' to the gnat sources and then use @@make gnat@@ to%0acopy.%0a%0aAfter that just say @@make install@@. The GLADE library will be installed to @@/opt/ada/install/asis@@ and the GLADE tools to @@/opt/ada/bin@@.%0a
+time=1192129445
 title=Welcome to Annex E for GNAT
+author:1192129445=Martin Krischik
+csum:1192129445=Vandalism
+diff:1192129445:1192116895:=0a1,2%0a> baslaelrol%0a> oudomdo%0a
+host:1192129445=84.73.230.44
 author:1192116895=
 diff:1192116895:1192114258:minor=
 host:1192116895=170.211.155.162

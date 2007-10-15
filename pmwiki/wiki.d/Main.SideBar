@@ -1,14 +1,18 @@
 version=pmwiki-2.2.0-beta63 ordered=1 urlencoded=1
-agent=Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)
-author=
+agent=Opera/9.23 (X11; Linux x86_64; U; de)
+author=Martin Krischik
 charset=UTF-8
-csum=
-host=85.17.186.161
+csum=WikiVandalism
+host=84.73.230.44
 name=Main.SideBar
-rev=62
+rev=63
 targets=Main.SideBar
-text=dronalt%0a(:include Main.TOC:)%0a(:include Guestbook.TOC:)%0a-----%0a%25width=150px%25[[http://www.adacore.com/home/ada_answers|http://www.adacore.com/images/header_answers.gif]]%0a(:sflogo small white ada 105524:)%0a-----%0a||cellpadding=1 cellspacing=1 border=0 width=100%25%0a|| [-[[{$Group}.SideBar?action=edit | Edit Sidebar]]-]||
-time=1192113411
+text=(:include Main.TOC:)%0a(:include Guestbook.TOC:)%0a-----%0a%25width=150px%25[[http://www.adacore.com/home/ada_answers|http://www.adacore.com/images/header_answers.gif]]%0a(:sflogo small white ada 105524:)%0a-----%0a||cellpadding=1 cellspacing=1 border=0 width=100%25%0a|| [-[[{$Group}.SideBar?action=edit | Edit Sidebar]]-]||
+time=1192186698
+author:1192186698=Martin Krischik
+csum:1192186698=WikiVandalism
+diff:1192186698:1192113411:=0a1%0a> dronalt%0a
+host:1192186698=84.73.230.44
 author:1192113411=
 diff:1192113411:1151320938:minor=1d0%0a%3c dronalt%0a
 host:1192113411=85.17.186.161

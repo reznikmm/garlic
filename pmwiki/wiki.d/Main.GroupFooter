@@ -1,14 +1,18 @@
 version=pmwiki-2.2.0-beta63 ordered=1 urlencoded=1
-agent=Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)
-author=
+agent=Opera/9.23 (X11; Linux x86_64; U; de)
+author=Martin Krischik
 charset=UTF-8
-csum=
-host=85.17.186.161
+csum=WikiVandalism
+host=84.73.230.44
 name=Main.GroupFooter
-rev=3
+rev=4
 targets=Profiles.HomePage
-text=zelrelace%0a----%0a[-Ada programming, Â© 2005,2006 [[Profiles/HomePage|the Authors]], Content is available under [[http://www.gnu.org/copyleft/fdl.html|GNU Free Documentation License]].-]%0a
-time=1192113338
+text=----%0a[-Ada programming, © 2005,2006 [[Profiles/HomePage|the Authors]], Content is available under [[http://www.gnu.org/copyleft/fdl.html|GNU Free Documentation License]].-]%0a
+time=1192186666
+author:1192186666=Martin Krischik
+csum:1192186666=WikiVandalism
+diff:1192186666:1192113338:=0a1%0a> zelrelace%0a2c3%0a%3c [-Ada programming, © 2005,2006 [[Profiles/HomePage|the Authors]], Content is available under [[http://www.gnu.org/copyleft/fdl.html|GNU Free Documentation License]].-]%0a---%0a> [-Ada programming, Â© 2005,2006 [[Profiles/HomePage|the Authors]], Content is available under [[http://www.gnu.org/copyleft/fdl.html|GNU Free Documentation License]].-]%0a
+host:1192186666=84.73.230.44
 author:1192113338=
 diff:1192113338:1151318886:minor=1d0%0a%3c zelrelace%0a3c2%0a%3c [-Ada programming, Â© 2005,2006 [[Profiles/HomePage|the Authors]], Content is available under [[http://www.gnu.org/copyleft/fdl.html|GNU Free Documentation License]].-]%0a---%0a> [-Ada programming, © 2005,2006 [[Profiles/HomePage|the Authors]], Content is available under [[http://www.gnu.org/copyleft/fdl.html|GNU Free Documentation License]].-]%0a
 host:1192113338=85.17.186.161
