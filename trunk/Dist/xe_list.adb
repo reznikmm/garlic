@@ -365,7 +365,7 @@ package body XE_List is
          Img : String_Access renames Image (T);
 
       begin
-         if T in T_No_ALI .. T_Flags then
+         if T <= T_Flags then
             for J in 1 .. N loop
                Write_Str ("   ");
             end loop;
@@ -378,10 +378,10 @@ package body XE_List is
 
             Write_Str ("=>");
 
-            if T in T_No_ALI .. T_With then
+            if T <= T_With then
                null;
 
-            elsif T in T_Source .. T_Name then
+            elsif T <= T_Name then
                Write_Char (' ');
             end if;
 

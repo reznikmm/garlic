@@ -527,6 +527,8 @@ package body XE_IO is
       File := Open_Read (Name_Buffer'Address, Binary);
       if File = Invalid_FD then
          Buffer := null;
+         First  := 0;
+         Last   := 0;
          return;
       end if;
 

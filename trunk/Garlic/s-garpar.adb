@@ -1305,6 +1305,7 @@ package body System.Garlic.Partitions is
 
          Allocate_PID (PID, Partition_Name, Error);
          if Found (Error) then
+            Partition := Null_PID;
             return;
          end if;
 

@@ -4,12 +4,12 @@ setopt Extended_Glob;
 setopt CSH_Null_Glob;
 
 pushd $(dirname ${0})/..
-    for I in (#i)./**/*~(configure*|*.bash|*.btm|*.cmd|*.sh|*.zsh|*.rexx)*~(*/.svn/*)(.);  do
+for I in (#i)./**/*~(gen*file|configure*|*.bash|*.btm|*.cmd|*.sh|*.zsh|*.rexx)*~(*/.svn/*)(.);  do
 	chmod -x "${I}";
 	svn propdel svn:executable "${I}";
     done; unset I;
 
-    for I in (#i)./**/(configure*|*.bash|*.btm|*.cmd|*.sh|*.zsh|*.rexx)~(*/.svn/*)(.); do
+    for I in (#i)./**/(gen*file|configure*|*.bash|*.btm|*.cmd|*.sh|*.zsh|*.rexx)~(*/.svn/*)(.); do
 	chmod +x "${I}";
 	svn propset svn:executable "*" "${I}";
     done; unset I
