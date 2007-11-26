@@ -1,7 +1,3 @@
-*.Err
-*.New
-*.Backup
-*.o
-*.d
-*.ali
 Makefile
+bank_client
+bank_server

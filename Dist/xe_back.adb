@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---         Copyright (C) 1995-2007, Free Software Foundation, Inc.          --
+--         Copyright (C) 1995-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GNATDIST is  free software;  you  can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License  as published by the Free --
@@ -229,11 +229,10 @@ package body XE_Back is
       Prj_Fname := Dir (D, Part_Prj_File_Name);
       Create_File (Prj_File, Prj_Fname);
       Set_Output (Prj_File);
-      Write_Str  ("project Partition extends all """);
+      Write_Str  ("project Partition extends """);
       Write_Str  (Project_File_Name.all);
       Write_Line (""" is");
       Write_Line ("   for Object_Dir use ""."";");
-
       if P /= No_Partition_Id then
          Write_Str  ("   for Exec_Dir use """);
          declare
@@ -243,9 +242,7 @@ package body XE_Back is
             if Exec_Dir'Length = 0
               or else not Is_Absolute_Path (Exec_Dir)
             then
-               --  Reach up to main directory from
-               --  dsa/partitions/<cfg>/<partition>
-               Write_Str ("../../../../");
+               Write_Str ("../../../");
             end if;
             Write_Str (Exec_Dir);
          end;
@@ -255,11 +252,7 @@ package body XE_Back is
          Write_Name (Partitions.Table (P).Name);
          Write_Line (""";");
          Write_Line ("   end Builder;");
-
-      else
-         Write_Line ("   --  Pseudo-partition project for RCI calling stubs");
       end if;
-
       Write_Line ("end Partition;");
       Close (Prj_File);
       Set_Standard_Output;
@@ -283,10 +276,8 @@ package body XE_Back is
    begin
       Full_Unit_File := Units.Table (ALIs.Table (A).First_Unit).Sfile;
       Full_ALI_File  := ALIs.Table (A).Afile;
-
-      --  Determination of skel ALI file name
-
-      Skel_ALI       := Dir (Directory, Strip_Directory (Full_ALI_File));
+      Skel_ALI       := To_Afile (Strip_Directory (Full_Unit_File));
+      Skel_ALI       := Dir (Directory, Skel_ALI);
       Skel_Object    := To_Ofile (Skel_ALI);
 
       --  Do we need to generate the skel files
@@ -337,10 +328,9 @@ package body XE_Back is
             Arguments (3) := new String'(Name_Buffer (1 .. Name_Len));
          end if;
 
-         Compile (Full_Unit_File, Arguments, Fatal => False);
+         Compile (Full_Unit_File, Arguments, Fatal => False, Silent => True);
 
          Free (Arguments (3));
-
       elsif not Quiet_Mode then
          Message ("  ", ALIs.Table (A).Uname, "receiver stubs is up to date");
       end if;
@@ -546,16 +536,14 @@ package body XE_Back is
    -------------------
 
    procedure Generate_Stub (A : ALI_Id) is
-      Obsolete         : Boolean;
-      Full_Unit_File   : File_Name_Type;
-      Full_ALI_File    : File_Name_Type;
-      Full_ALI_Base    : File_Name_Type;
-      Stub_Object      : File_Name_Type;
-      Stub_ALI_Base    : File_Name_Type;
-      Stub_ALI         : File_Name_Type;
-      Unit             : Unit_Id := ALIs.Table (A).Last_Unit;
-      Arguments        : Argument_List (1 .. 3);
-      Part_Prj_Fname   : File_Name_Type := No_File_Name;
+      Obsolete       : Boolean;
+      Full_Unit_File : File_Name_Type;
+      Full_ALI_File  : File_Name_Type;
+      Stub_Object    : File_Name_Type;
+      Stub_ALI       : File_Name_Type;
+      Unit           : Unit_Id := ALIs.Table (A).Last_Unit;
+      Arguments      : Argument_List (1 .. 3);
+      Part_Prj_Fname : File_Name_Type := No_File_Name;
 
    begin
       if Units.Table (Unit).Shared_Passive then
@@ -564,23 +552,11 @@ package body XE_Back is
 
       Full_Unit_File := Units.Table (Unit).Sfile;
       Full_ALI_File  := ALIs.Table (A).Afile;
-      Full_ALI_Base  := Strip_Directory (Full_ALI_File);
+      Stub_ALI       := To_Afile (Strip_Directory (Full_Unit_File));
+      Stub_ALI       := Dir (Stub_Dir_Name, Stub_ALI);
+      Stub_Object    := To_Ofile (Stub_ALI);
 
-      --  Determination of stub ALI file name
-
-      --  Note that the base name the compiler will use for the stubs ALI
-      --  and object files (which cannot be overridden) may be different from
-      --  thos of the full application  (because under some non-standard
-      --  naming convention, the base name of the spec might be different
-      --  from the base name of the body, which is also the base name of the
-      --  monolithic ALI). In that case, the output files are renamed after
-      --  compilation.
-
-      Stub_ALI_Base    := To_Afile (Strip_Directory (Full_Unit_File));
-      Stub_ALI         := Dir (Stub_Dir_Name, Stub_ALI_Base);
-      Stub_Object      := To_Ofile (Stub_ALI);
-
-      --  Do we need to regenerate the caller stub and its ali?
+      --  Do we need to regenerate the caller stub and its ali
 
       Obsolete := False;
       if not Is_Regular_File (Stub_Object) then
@@ -628,34 +604,7 @@ package body XE_Back is
             Arguments (3)  := new String'(Name_Buffer (1 .. Name_Len));
          end if;
 
-         Compile (Full_Unit_File, Arguments, Fatal => False);
-
-         --  Now rename output files if required (see comments above)
-
-         if Full_ALI_Base /= Stub_ALI_Base then
-            declare
-               Final_ALI : constant File_Name_Type :=
-                             Dir (Stub_Dir_Name, Full_ALI_Base);
-               Final_Object : constant File_Name_Type := To_Ofile (Final_ALI);
-
-               procedure Do_Rename (Src, Target : File_Name_Type);
-               --  Call Rename_File (Src, Target), also outputting a message
-               --  if in debug mode.
-
-               procedure Do_Rename (Src, Target : File_Name_Type) is
-               begin
-                  if Debug_Mode then
-                     Message ("renaming", Src, "to", Target);
-                  end if;
-                  Delete_File (Target);
-                  Rename_File (Src, Target);
-               end Do_Rename;
-
-            begin
-               Do_Rename (Stub_ALI,    Final_ALI);
-               Do_Rename (Stub_Object, Final_Object);
-            end;
-         end if;
+         Compile (Full_Unit_File, Arguments, Fatal => False, Silent => True);
 
          if Present (Part_Prj_Fname) then
             Free (Arguments (3));

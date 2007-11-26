@@ -1,7 +1,4 @@
-*.Err
-*.New
-*.Backup
-*.o
-*.d
-*.ali
 Makefile
+partition1
+partition2
+partition3

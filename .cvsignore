@@ -1,12 +1,8 @@
-*.Err
-*.New
-*.Backup
-*.o
-*.d
 *.ali
+*.o
 Makefile
-make-check-stamp
-config.status
-config.log
+b_*.c
 config.cache
-autom4te.cache
+config.log
+config.status
+make-check-stamp

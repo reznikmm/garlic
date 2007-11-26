@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---         Copyright (C) 1995-2007, Free Software Foundation, Inc.          --
+--         Copyright (C) 1995-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GNATDIST is  free software;  you  can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License  as published by the Free --
@@ -255,7 +255,7 @@ package body XE_Sem is
       end loop;
 
       if Debug_Mode then
-         Message ("detect malformed locations");
+         Message ("detect mal formed locations");
       end if;
 
       for J in Locations.First .. Locations.Last loop
@@ -354,7 +354,7 @@ package body XE_Sem is
 
    begin
       Current.Partition_Dir := Dir (Configuration, Current.Name);
-      Current.Partition_Dir := Dir (Part_Dir_Name, Current.Partition_Dir);
+      Current.Partition_Dir := Dir (Id (Root), Current.Partition_Dir);
 
       if No (Current.Command_Line) then
          Current.Command_Line := Default.Command_Line;
