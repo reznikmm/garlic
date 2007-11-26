@@ -1,0 +1,4 @@
+#!/bin/bash
+
+scp -p -r -C . krischik@gnat-glade.sourceforge.net:/home/groups/g/gn/gnat-glade/htdocs/
+ 
