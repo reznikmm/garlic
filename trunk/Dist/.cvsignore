@@ -1,13 +1,11 @@
-*.Err
-*.New
-*.Backup
-*.o
-*.d
-*.ali
-Makefile
-xe_sysdep.adb
-xe_defs.adb
-sdefault.adb
-b~xe_build.ads
+*.o *.ali b_*.c Makefile gnatdist
 b~xe_build.adb
-gnatdist
+b~xe_build.ads
+dist1
+distmake
+gnatmake
+sdefault.adb
+xe-gcc
+xe-gcc-filter
+xe_defs.adb
+xe_sysdep.adb

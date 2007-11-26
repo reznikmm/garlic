@@ -11,11 +11,11 @@
 
 @title GLADE User's Guide
 @subtitle GLADE, GNAT Library for Ada Distributed Environment
-@subtitle GLADE Version 2007
+@subtitle GLADE Version glade-5.05w
 @author Laurent Pautet, Samuel Tardieu
 
-@subtitle Document revision level $Revision: 1.56 $
-@subtitle Date:  $Date: 2007/01/09 16:22:44 $
+@subtitle Document revision level $Revision: 1.54.4.2 $
+@subtitle Date:  $Date: 2007/01/09 16:23:57 $
 
 @page
 @vskip 0pt plus 1filll
@@ -43,11 +43,11 @@ GLADE is the GNAT implementation of the Ada95 Distributed Systems Annex.
 
 @noindent
 GLADE, GNAT Library for Ada Distributed Environment@*
-GLADE Version glade-2007
+GLADE Version glade-5.04a
 
 @noindent
-Document revision level $Revision: 1.56 $@*
-Date:  $Date: 2007/01/09 16:22:44 $
+Document revision level $Revision: 1.54.4.2 $@*
+Date:  $Date: 2007/01/09 16:23:57 $
 
 Copyright @copyright{} 1997-2006, Free Software Foundation
 

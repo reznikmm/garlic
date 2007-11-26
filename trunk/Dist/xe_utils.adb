@@ -166,18 +166,25 @@ package body XE_Utils is
    procedure Build
      (Library    : File_Name_Type;
       Arguments  : Argument_List;
-      Fatal      : Boolean := True)
+      Fatal      : Boolean := True;
+      Silent     : Boolean := True)
    is
-      Length            : constant Positive :=
-                            Arguments'Length + 4
-                            + Make_Switches.Last
-                            - Make_Switches.First;
-      Flags             : Argument_List (1 .. Length);
-      N_Flags           : Natural := 0;
-      Library_Name_Flag : Natural;
-      Success           : Boolean;
-      Has_Prj           : Boolean := False;
-      Index             : Natural;
+      Length : constant Positive :=
+        Arguments'Length + 4
+        + Make_Switches.Last
+        - Make_Switches.First;
+      Flags   : Argument_List (1 .. Length);
+      N_Flags : Natural := 0;
+      Success : Boolean;
+      Has_Prj : Boolean := False;
+      Index   : Natural;
+
+      --  Files to deal with error messages
+
+      File           : File_Descriptor;
+      Output         : File_Name_Type := No_File_Name;
+      Saved_Standout : File_Descriptor;
+      Saved_Standerr : File_Descriptor;
 
    begin
       --  gnat make
@@ -185,26 +192,16 @@ package body XE_Utils is
       N_Flags := N_Flags + 1;
       Flags (N_Flags) := Build_Command;
 
-      if Quiet_Mode then
-         --  Pass -q to gnatmake
-
-         N_Flags := N_Flags + 1;
-         Flags (N_Flags) := Quiet_Flag;
-
-      elsif Verbose_Mode then
-         --  Pass -v to gnatmake
-
-         N_Flags := N_Flags + 1;
-         Flags (N_Flags) := Verbose_Flag;
-      end if;
-
-      --  Library file name (free'd at exit of Compile, must record position
-      --  in Flags array).
+      --  library filename
 
       N_Flags := N_Flags + 1;
       Get_Name_String (Library);
       Flags (N_Flags) := new String'(Name_Buffer (1 .. Name_Len));
-      Library_Name_Flag := N_Flags;
+
+      --  -q (because gnatmake is verbose instead of gcc)
+
+      N_Flags := N_Flags + 1;
+      Flags (N_Flags) := Quiet_Flag;
 
       for I in Arguments'Range loop
          N_Flags := N_Flags + 1;
@@ -236,13 +233,29 @@ package body XE_Utils is
          Index := Index + 1;
       end loop;
 
+      if not Verbose_Mode and then Silent then
+         Register_Temp_File (File, Output);
+         Saved_Standout := Dup (Standout);
+         Saved_Standerr := Dup (Standerr);
+         Dup2 (File, Standout);
+         Dup2 (File, Standerr);
+      end if;
+
       --  Call gnat make
 
       Execute (GNAT_Driver, Flags (1 .. N_Flags), Success);
 
-      --  Free library file name argument
+      if Present (Output) then
+         Dup2 (Saved_Standout, Standout);
+         Dup2 (Saved_Standerr, Standerr);
+         Close (Saved_Standout);
+         Close (Saved_Standerr);
+         Remove_Temp_File (Output);
+      end if;
 
-      Free (Flags (Library_Name_Flag));
+      --  Free library filename argument
+
+      Free (Flags (2));
 
       if not Success and then Fatal then
          raise Compilation_Error;
@@ -305,7 +318,8 @@ package body XE_Utils is
    procedure Compile
      (Source    : File_Name_Type;
       Arguments : Argument_List;
-      Fatal     : Boolean := True)
+      Fatal     : Boolean := True;
+      Silent    : Boolean := True)
    is
       Length  : constant Natural :=
         Arguments'Length + 5
@@ -317,14 +331,20 @@ package body XE_Utils is
       Has_Prj : Boolean := False;
       Index   : Natural;
 
+      --  Files to deal with error messages
+
+      File           : File_Descriptor;
+      Output         : File_Name_Type := No_File_Name;
+      Saved_Standout : File_Descriptor;
+      Saved_Standerr : File_Descriptor;
+
    begin
       --  gnat compile
 
       N_Flags := N_Flags + 1;
       Flags (N_Flags) := Compile_Command;
 
-      --  Source file name (free'd at exit of Compile, must be at constant
-      --  position in Flags array).
+      --  source filename
 
       N_Flags := N_Flags + 1;
       Get_Name_String (Source);
@@ -344,18 +364,10 @@ package body XE_Utils is
          Flags (N_Flags) := Readonly_Flag;
       end if;
 
-      if Quiet_Mode then
-         --  Pass -q to gnatmake
+      --  -q (because gnatmake is verbose instead of gcc)
 
-         N_Flags := N_Flags + 1;
-         Flags (N_Flags) := Quiet_Flag;
-
-      elsif Verbose_Mode then
-         --  Pass -v to gnatmake
-
-         N_Flags := N_Flags + 1;
-         Flags (N_Flags) := Verbose_Flag;
-      end if;
+      N_Flags := N_Flags + 1;
+      Flags (N_Flags) := Quiet_Flag;
 
       for I in Arguments'Range loop
          N_Flags := N_Flags + 1;
@@ -387,9 +399,25 @@ package body XE_Utils is
          Index := Index + 1;
       end loop;
 
+      if not Verbose_Mode and then Silent then
+         Register_Temp_File (File, Output);
+         Saved_Standout := Dup (Standout);
+         Saved_Standerr := Dup (Standerr);
+         Dup2 (File, Standout);
+         Dup2 (File, Standerr);
+      end if;
+
       Execute (GNAT_Driver, Flags (1 .. N_Flags), Success);
 
-      --  Free source file name argument
+      if Present (Output) then
+         Dup2 (Saved_Standout, Standout);
+         Dup2 (Saved_Standerr, Standerr);
+         Close (Saved_Standout);
+         Close (Saved_Standerr);
+         Remove_Temp_File (Output);
+      end if;
+
+      --  Free source filename argument
 
       Free (Flags (2));
 
@@ -405,11 +433,9 @@ package body XE_Utils is
    procedure Execute
      (Command   : String_Access;
       Arguments : Argument_List;
-      Success   : out Boolean)
-   is
+      Success   : out Boolean) is
    begin
       if Verbose_Mode then
-         Set_Standard_Error;
          Write_Str (Command.all);
          for J in Arguments'Range loop
             if Arguments (J) /= null then
@@ -418,7 +444,6 @@ package body XE_Utils is
             end if;
          end loop;
          Write_Eol;
-         Set_Standard_Output;
       end if;
 
       Spawn (Command.all, Arguments, Success);
@@ -486,8 +511,8 @@ package body XE_Utils is
       ALI_Suffix_Id  := Id (ALI_Suffix);
       ADB_Suffix_Id  := Id (ADB_Suffix);
       ADS_Suffix_Id  := Id (ADS_Suffix);
-      Part_Dir_Name  := Dir (Id (Root), Id ("partitions"));
-      Stub_Dir_Name  := Dir (Id (Root), Id ("stubs"));
+      Stub_Dir_Name  := Dir (Id (Root), Id ("private"));
+      Stub_Dir_Name  := Dir (Stub_Dir_Name, Id ("stub"));
       Stub_Dir       := new String'(Name_Buffer (1 .. Name_Len));
       PWD_Id         := Dir (Id ("`pwd`"), No_File_Name);
       I_Current_Dir  := new String'("-I.");
@@ -524,7 +549,6 @@ package body XE_Utils is
       Install_Int_Handler (Sigint_Intercepted'Access);
 
       Create_Dir (Stub_Dir_Name);
-      Create_Dir (Part_Dir_Name);
 
       GNAT_Driver := Locate ("gnat");
    end Initialize;
@@ -554,6 +578,7 @@ package body XE_Utils is
       Predef  : Boolean := False;
 
       Saved_Standout : File_Descriptor;
+      Saved_Standerr : File_Descriptor;
 
    begin
       --  gnat list
@@ -561,8 +586,7 @@ package body XE_Utils is
       N_Flags := N_Flags + 1;
       Flags (N_Flags) := List_Command;
 
-      --  Source file names (free'd at exit of List, must be at constant
-      --  position in Flags array).
+      --  source filenames
 
       for J in Sources'Range loop
          N_Flags := N_Flags + 1;
@@ -612,14 +636,29 @@ package body XE_Utils is
          Index := Index + 1;
       end loop;
 
+      if Verbose_Mode then
+         Write_Str (GNAT_Driver.all);
+         for J in Flags'Range loop
+            if Flags (J) /= null then
+               Write_Str (" ");
+               Write_Str (Flags (J).all);
+            end if;
+         end loop;
+         Write_Eol;
+      end if;
+
       Register_Temp_File (File, Result);
       Saved_Standout := Dup (Standout);
+      Saved_Standerr := Dup (Standerr);
       Dup2 (File, Standout);
+      Dup2 (File, Standerr);
 
-      Execute (GNAT_Driver, Flags (1 .. N_Flags), Success);
+      Spawn (GNAT_Driver.all, Flags (1 .. N_Flags), Success);
 
       Dup2 (Saved_Standout, Standout);
+      Dup2 (Saved_Standerr, Standerr);
       Close (Saved_Standout);
+      Close (Saved_Standerr);
 
       if not Success then
          if Fatal then
@@ -628,7 +667,7 @@ package body XE_Utils is
          Remove_Temp_File (Result);
       end if;
 
-      --  Free source filename arguments
+      --  Free source filename argument
 
       N_Flags := 1;
       for J in Sources'Range loop

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---         Copyright (C) 1995-2007, Free Software Foundation, Inc.          --
+--         Copyright (C) 1995-2005 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GNATDIST is  free software;  you  can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License  as published by the Free --
@@ -495,7 +495,7 @@ package body XE_Back.GARLIC is
    procedure Generate_Executable_File (P : Partition_Id) is
       Current    : Partition_Type renames Partitions.Table (P);
       Executable : File_Name_Type;
-      Part_Dir   : Directory_Name_Type;
+      Directory  : Directory_Name_Type;
       I_Part_Dir : String_Access;
       Comp_Args  : String_List (1 .. 8);
       Make_Args  : String_List (1 .. 8);
@@ -505,12 +505,12 @@ package body XE_Back.GARLIC is
 
    begin
       Executable := Current.Executable_File;
-      Part_Dir   := Current.Partition_Dir;
+      Directory  := Current.Partition_Dir;
 
       Name_Len := 2;
       Name_Buffer (1) := '-';
       Name_Buffer (2) := 'I';
-      Get_Name_String_And_Append (Part_Dir);
+      Get_Name_String_And_Append (Directory);
       I_Part_Dir := new String'(Name_Buffer (1 .. Name_Len));
 
       --  Give the priority to partition and stub directory against
@@ -526,11 +526,11 @@ package body XE_Back.GARLIC is
 
       if Project_File_Name = null then
          Comp_Args (5) := Object_Dir_Flag;
-         Comp_Args (6) := new String'(Get_Name_String (Part_Dir));
+         Comp_Args (6) := new String'(Get_Name_String (Directory));
 
       else
          Comp_Args (5) := Project_File_Flag;
-         Prj_Fname     := Dir (Part_Dir, Part_Prj_File_Name);
+         Prj_Fname     := Dir (Directory, Part_Prj_File_Name);
          Comp_Args (6) := new String'(Get_Name_String (Prj_Fname));
       end if;
 
@@ -538,16 +538,16 @@ package body XE_Back.GARLIC is
 
       Sfile := Elaboration_File & ADB_Suffix_Id;
       if Project_File_Name = null then
-         Sfile := Dir (Part_Dir, Sfile);
+         Sfile := Dir (Directory, Sfile);
       end if;
       Compile (Sfile, Comp_Args (1 .. Length));
 
       --  Compile protocol configuration file if any
 
       Sfile := Protocol_Config_File & ADB_Suffix_Id;
-      if Is_Regular_File (Dir (Part_Dir, Sfile)) then
+      if Is_Regular_File (Dir (Directory, Sfile)) then
          if Project_File_Name = null then
-            Sfile := Dir (Part_Dir, Sfile);
+            Sfile := Dir (Directory, Sfile);
          end if;
          Compile (Sfile, Comp_Args (1 .. Length));
       end if;
@@ -555,9 +555,9 @@ package body XE_Back.GARLIC is
       --  Compile storage support configuration file if any
 
       Sfile := Storage_Config_File & ADB_Suffix_Id;
-      if Is_Regular_File (Dir (Part_Dir, Sfile)) then
+      if Is_Regular_File (Dir (Directory, Sfile)) then
          if Project_File_Name = null then
-            Sfile := Dir (Part_Dir, Sfile);
+            Sfile := Dir (Directory, Sfile);
          end if;
          Compile (Sfile, Comp_Args (1 .. Length));
       end if;
@@ -573,12 +573,12 @@ package body XE_Back.GARLIC is
 
       Sfile := Partition_Main_File & ADB_Suffix_Id;
       if Project_File_Name = null then
-         Sfile := Dir (Part_Dir, Sfile);
+         Sfile := Dir (Directory, Sfile);
          Comp_Args (7) := Compile_Only_Flag;
          Comp_Args (8) := Keep_Going_Flag;
          Length := 8;
       end if;
-      Build (Sfile, Comp_Args (1 .. Length), Fatal => False);
+      Build (Sfile, Comp_Args (1 .. Length), Fatal => False, Silent => True);
 
       Free (Comp_Args (6));
 
@@ -598,11 +598,11 @@ package body XE_Back.GARLIC is
 
       else
          Make_Args (7) := Project_File_Flag;
-         Prj_Fname := Dir (Part_Dir, Part_Prj_File_Name);
+         Prj_Fname := Dir (Directory, Part_Prj_File_Name);
          Make_Args (8) := new String'(Get_Name_String (Prj_Fname));
       end if;
 
-      Build (Sfile, Make_Args, Fatal => True);
+      Build (Sfile, Make_Args, Fatal => True, Silent => False);
 
       Free (Make_Args (2));
       Free (Make_Args (8));

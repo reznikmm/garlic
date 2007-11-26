@@ -19,13 +19,13 @@
 -- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
 -- Boston, MA 02111-1307, USA.                                              --
 --                                                                          --
---
---
---
---
---
---
---
+-- As a special exception,  if other files  instantiate  generics from this --
+-- unit, or you link  this unit with other files  to produce an executable, --
+-- this  unit  does not  by itself cause  the resulting  executable  to  be --
+-- covered  by the  GNU  General  Public  License.  This exception does not --
+-- however invalidate  any other reasons why  the executable file  might be --
+-- covered by the  GNU Public License.                                      --
+--                                                                          --
 --               GLADE  is maintained by ACT Europe.                        --
 --               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
@@ -42,6 +42,7 @@ with System.Garlic.Heart;                 use System.Garlic.Heart;
 with System.Garlic.Options;
 with System.Garlic.Partitions;            use System.Garlic.Partitions;
 with System.Garlic.Physical_Location;     use System.Garlic.Physical_Location;
+with System.Garlic.Platform_Specific;
 with System.Garlic.Protocols;             use System.Garlic.Protocols;
 with System.Garlic.Soft_Links;
 with System.Garlic.Streams;               use System.Garlic.Streams;
@@ -428,7 +429,7 @@ package body System.Garlic.Protocols.Tcp is
    begin
       pragma Debug (D ("Initialize protocol tcp"));
       Outgoings.Initialize;
-      GNAT.Sockets.Initialize;
+      GNAT.Sockets.Initialize (Platform_Specific.Process_Blocking_IO);
       Create_Selector (No_Tasking_Receive_Selector);
       Initialized := True;
    end Initialize;

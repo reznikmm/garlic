@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---         Copyright (C) 1995-2007, Free Software Foundation, Inc.          --
+--         Copyright (C) 1995-2006 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GNATDIST is  free software;  you  can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License  as published by the Free --
@@ -531,17 +531,11 @@ package body XE_List is
       File : File_Descriptor;
 
    begin
-      --  Create main body for monolithic application as a temporary file
-
       Register_Temp_File (File, Part_Main_Src_Name);
-      Set_Output (File);
-      Write_Line ("pragma Warnings (Off);");
-
-      --  Record the associated object and ALI files as temporary files to
-      --  be cleaned up eventually.
-
       Register_Temp_File (Part_Main_ALI_Name);
       Register_Temp_File (Part_Main_Obj_Name);
+      Set_Output (File);
+      Write_Line ("pragma Warnings (Off);");
    end Initialize;
 
    ---------------
@@ -863,7 +857,6 @@ package body XE_List is
          List_Flags : Argument_List
            renames List_Args (1 .. List_Args_Length);
       begin
-         --  Finish up main library procedure with a dummy body
 
          Write_Line ("procedure Partition is");
          Write_Line ("begin");
@@ -876,7 +869,7 @@ package body XE_List is
 
          Sfile := Part_Main_Src_Name;
          Afile := To_Afile (Sfile);
-         Build (Sfile, Make_Flags, Fatal => False);
+         Build (Sfile, Make_Flags, Fatal => False, Silent => False);
          List ((1 => Afile), List_Flags, Output);
          Load_ALIs (Output);
          ALI := Get_ALI_Id (Afile);
@@ -944,18 +937,22 @@ package body XE_List is
                   Afile := Afiles (J);
                   ALI   := Get_ALI_Id (Afile);
 
-                  --  The ALI file does not exist. It may come from a missing
-                  --  body file although the spec file is available (the main
-                  --  subprogram is compiled with the -k (keep going) flag).
-                  --  Therefore compile the spec file with the -gnatc
-                  --  (semantics only) flag in order to obtain an ALI file
-                  --  anyway. Then check, this operation was successul, i.e.
-                  --  that the unit is an RCI. The missing body file is not an
-                  --  issue as long as the unit is not assigned to a partition
-                  --  to build.
+                  --  The ALI file does not exist. It may come from a
+                  --  missing body file although the spec file is
+                  --  available (we compiled the main subprogram with
+                  --  keep-going flag). So compile the spec file with
+                  --  semantic only flag in order to obtain the ALI file
+                  --  anyway. Then check this operation was correctly
+                  --  performed which means that the unit was RCI. The
+                  --  missing body file is not an issue as long as the
+                  --  unit is not assigned to a partition to build.
 
                   if ALI = No_ALI_Id then
-                     Compile (Sfile, Comp_Flags, Fatal => False);
+                     Compile (Sfile,
+                              Comp_Flags,
+                              Fatal => False,
+                              Silent => True);
+
                      List ((1 => Afile), List_Flags, Output);
                      Load_ALIs (Output);
 
