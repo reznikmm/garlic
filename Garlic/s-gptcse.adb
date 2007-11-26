@@ -208,6 +208,7 @@ package body System.Garlic.Protocols.Tcp.Server is
 
    procedure Enqueue_Connector
      (Connector : in out Connect_Access) is
+      pragma Warnings (off, Connector);
    begin
       pragma Debug (D ("Queue an old connection handler"));
       Enter_Critical_Section;

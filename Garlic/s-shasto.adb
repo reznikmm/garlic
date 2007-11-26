@@ -43,7 +43,7 @@ package body System.Shared_Storage is
    procedure Shared_Var_Close (Var : in out SIO.Stream_Access)
    is
       VS : Shared_Data_Access;
-
+      pragma Warnings (Off, Var);
    begin
       VS := Shared_Data_Access (Var);
       Complete_Request (VS);

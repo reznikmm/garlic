@@ -261,6 +261,7 @@ package body System.Garlic.Heart is
       then
          Allocate_PID (PID, Null_String, Error);
          if Found (Error) then
+            Opcode := No_Operation;
             return;
          end if;
       end if;
