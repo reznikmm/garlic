@@ -1,7 +1,19 @@
-version=pmwiki-2.1.11 ordered=1 urlencoded=1
-agent=Opera/9.02 (X11; Linux x86_64; U; de)
-host=80.218.118.14
+version=pmwiki-2.2.0-beta63 ordered=1 urlencoded=1
+agent=Opera/9.23 (X11; Linux x86_64; U; de)
+author=Martin Krischik
+charset=UTF-8
+csum=SPAM - still?
+host=84.75.167.107
 name=Guestbook.RecentChanges
-rev=17
-text=* [[Guestbook/HomePage]]  . . . January 18, 2007, at 08:11 AM by [[~Martin Krischik]]: [=WikiSPAM=]%0a* [[Guestbook/SideBar]]  . . . November 26, 2006, at 01:33 AM by [[~Martin Krischik]]: [=typo=]%0a* [[Guestbook/TOC]]  . . . March 19, 2006, at 02:21 AM by [[~Martin Krischik]]: [=WikiSPAM=]%0a
-time=1169136691
+passwdedit=$1$BugjXp4k$HoxvPmxHr4V5z2AobE2y2/
+rev=26
+targets=Guestbook.RecentChanges,Guestbook.GroupAttributes,Guestbook.HomePage,Profiles.MartinKrischik,Guestbook.SideBar,Guestbook.TOC
+text=* [[Guestbook/GroupAttributes]]  . . . November 04, 2007, at 01:22 AM by [[~Martin Krischik]]: [=SPAM - still?=]%0a* [[Guestbook/RecentChanges]]  . . . November 04, 2007, at 01:21 AM by [[~Martin Krischik]]: [=SPAM - still?=]%0a* [[Guestbook/HomePage]]  . . . January 18, 2007, at 08:11 AM by [[~Martin Krischik]]: [=WikiSPAM=]%0a* [[Guestbook/SideBar]]  . . . November 26, 2006, at 01:33 AM by [[~Martin Krischik]]: [=typo=]%0a* [[Guestbook/TOC]]  . . . March 19, 2006, at 02:21 AM by [[~Martin Krischik]]: [=WikiSPAM=]%0a
+time=1194168137
+author:1194168080=Martin Krischik
+csum:1194168080=SPAM - still?
+diff:1194168080:1194162948:=0a1%0a> letobasorr%0a
+host:1194168080=84.75.167.107
+author:1194162948=
+diff:1194162948:1194162505:=1d0%0a%3c letobasorr%0a
+host:1194162948=196.20.65.210

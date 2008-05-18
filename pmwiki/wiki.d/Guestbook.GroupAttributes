@@ -1,8 +1,25 @@
-version=pmwiki-2.0.beta54 ordered=1
-newline=ÀŠ
-agent=Opera/8.0 (X11; Linux x86_64; U; de)
-host=84.72.114.216
+version=pmwiki-2.2.0-beta63 ordered=1 urlencoded=1
+agent=Opera/9.23 (X11; Linux x86_64; U; de)
+author=Martin Krischik
+charset=UTF-8
+csum=SPAM - still?
+host=84.75.167.107
 name=Guestbook.GroupAttributes
-passwdedit=$1$VyOqLYyC$F.ETaAJR4zC3KJDb1mrim.
-rev=1
-time=1124729917
+rev=7
+targets=
+text=Guestbook is closed down and locked by Password - it was only missused for WikiSPAM. In the end we had to clean SPAM and SPAM-bot testing twice a day. %0a%0aIt is a sad truth that the Spammers will mercieless destroy everything what is good about the Internet. Even as it is a complete waste of time as all external links need aproval and maked "nofollow". But SPAMmers are by far to stupid to understand those finer part of the Web.%0a%0aPS: If you are a true Ada lover you might be able to guess the password.%0a%0a-----%0a(:pagelist group=Guestbook:)
+time=1194168197
+author:1194168137=Martin Krischik
+csum:1194168137=SPAM - still?
+diff:1194168137:1194162505:=0a1%0a> chielract%0a
+host:1194168137=84.75.167.107
+author:1194162505=
+diff:1194162505:1193336037:=1d0%0a%3c chielract%0a
+host:1194162505=207.163.116.20
+author:1193336037=Martin Krischik
+csum:1193336037=Make shure Guestbook is password protected
+diff:1193336037:1193335780:=
+host:1193336037=84.75.167.107
+author:1193335780=Martin Krischik
+diff:1193335780:1124729917:=1,8d0%0a%3c Guestbook is closed down and locked by Password - it was only missused for WikiSPAM. In the end we had to clean SPAM and SPAM-bot testing twice a day. %0a%3c %0a%3c It is a sad truth that the Spammers will mercieless destroy everything what is good about the Internet. Even as it is a complete waste of time as all external links need aproval and maked "nofollow". But SPAMmers are by far to stupid to understand those finer part of the Web.%0a%3c %0a%3c PS: If you are a true Ada lover you might be able to guess the password.%0a%3c %0a%3c -----%0a%3c (:pagelist group=Guestbook:)%0a\ No newline at end of file%0a
+host:1193335780=84.75.167.107
