@@ -1,0 +1,22 @@
+version=pmwiki-2.2.0-beta63 ordered=1 urlencoded=1
+agent=Opera/9.23 (X11; Linux x86_64; U; de)
+author=Martin Krischik
+charset=UTF-8
+csum=WikiVandalism
+ctime=1191987402
+host=84.75.160.149
+name=Profiles.SteveAgl
+rev=3
+targets=
+text=
+time=1192638838
+author:1192638838=Martin Krischik
+csum:1192638838=WikiVandalism
+diff:1192638838:1192008513:=0a1%0a> relououa%0a
+host:1192638838=84.75.160.149
+author:1192008513=
+diff:1192008513:1191987402:=
+host:1192008513=170.211.210.30
+author:1191987402=
+diff:1191987402:1191987402:=1d0%0a%3c relououa%0a
+host:1191987402=87.101.244.9

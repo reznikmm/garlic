@@ -1,0 +1,19 @@
+version=pmwiki-2.2.0-beta63 ordered=1 urlencoded=1
+agent=Opera/9.23 (X11; Linux x86_64; U; de)
+author=Martin Krischik
+charset=UTF-8
+csum=WikiVandalism
+ctime=1191996153
+host=84.73.230.44
+name=Profiles.Pseudogaetan
+rev=2
+targets=
+text=
+time=1192186980
+author:1192186980=Martin Krischik
+csum:1192186980=WikiVandalism
+diff:1192186980:1191996153:=0a1%0a> ordelololi%0a
+host:1192186980=84.73.230.44
+author:1191996153=
+diff:1191996153:1191996153:minor=1d0%0a%3c ordelololi%0a
+host:1191996153=72.232.181.202

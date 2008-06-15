@@ -1,0 +1,17 @@
+version=pmwiki-2.2.0-beta63 ordered=1 urlencoded=1
+agent=Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.2; SV1; .NET CLR 1.1.4322; .NET CLR 2.0.50727)
+author=
+charset=UTF-8
+csum=
+host=203.69.39.251
+name=Main.WikiSandbox
+rev=5
+targets=PmWiki.TextFormattingRules
+text=laacel%0abasroal%0aFeel free to use this page to experiment with the [[PmWiki/Text Formatting Rules]].  Just click the "Edit Page" link at the bottom of the page.%0a----%0a
+time=1192016034
+author:1192016034=
+diff:1192016034:1192006180:=1d0%0a%3c laacel%0a
+host:1192016034=203.69.39.251
+author:1192006180=
+diff:1192006180:1093548433:=1d0%0a%3c basroal%0a
+host:1192006180=203.69.39.251

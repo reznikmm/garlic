@@ -1,0 +1,18 @@
+version=pmwiki-2.2.0-beta63 ordered=1 urlencoded=1
+agent=Opera/9.23 (X11; Linux x86_64; U; de)
+author=Martin Krischik
+charset=UTF-8
+csum=WikiVandalism
+host=84.73.230.44
+name=Main.SearchWiki
+rev=13
+targets=
+text=(:searchbox:)%0a%0a(:searchresults:)%0a%0aEnter the text you would like to search for above.  The results page will give you all pages that contain all of the words you enter.  To search for phrases, enclose the entire phrase in quotation marks.%0a%0aTo limit the search to a single group, enter the group name followed by%0aa slash at the beginning of the search string (e.g., "[=PmWiki/=]" or "Main/").  To list all pages, enter a slash for the search.%0a%0a!!!Search examples%0a  %0a||border='0' cellspacing='0' width='100%25' cellpadding='0' %0a||'''Enter'''    ||'''To find pages containing''' ||%0a||apple pie      ||both 'apple' and 'pie' ||%0a||"apple pie"    ||the phrase 'apple pie' ||%0a||pmwiki/apple   ||'apple' in the [=PmWiki=] group ||%0a||"pmwiki/apple" ||the phrase 'pmwiki/apple' in all groups ||%0a||apple -pie     ||'apple', omitting those containing 'pie' ||%0a||ninja -"apple pie" ||'ninja', omitting those containing 'apple pie' ||%0a||apple "-pie"   ||the words 'apple' and '-pie' ||%0a||apple - pie    ||'apple', '-', and 'pie' || %0a
+time=1192464092
+author:1192464092=Martin Krischik
+csum:1192464092=WikiVandalism
+diff:1192464092:1192016118:=0a1%0a> passitgetc%0a
+host:1192464092=84.73.230.44
+author:1192016118=
+diff:1192016118:1113425197:minor=1d0%0a%3c passitgetc%0a
+host:1192016118=87.101.244.8

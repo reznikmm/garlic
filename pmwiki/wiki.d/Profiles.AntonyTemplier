@@ -1,0 +1,19 @@
+version=pmwiki-2.2.0-beta63 ordered=1 urlencoded=1
+agent=Opera/9.23 (X11; Linux x86_64; U; de)
+author=Martin Krischik
+charset=UTF-8
+csum=WikiVandalism
+ctime=1191996248
+host=84.75.160.149
+name=Profiles.AntonyTemplier
+rev=2
+targets=
+text=
+time=1192638844
+author:1192638844=Martin Krischik
+csum:1192638844=WikiVandalism
+diff:1192638844:1191996248:=0a1%0a> boceltbas%0a
+host:1192638844=84.75.160.149
+author:1191996248=
+diff:1191996248:1191996248:=1d0%0a%3c boceltbas%0a
+host:1191996248=91.75.70.18
