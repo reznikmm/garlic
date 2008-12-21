@@ -15,10 +15,10 @@ $WikiTitle = 'GNAT GLADE';
 $ScriptUrl = 'http://gnat-glade.sourceforge.net/pmwiki.php';
 $PubDirUrl = 'http://gnat-glade.sourceforge.net/pub';
 
-session_save_path         ('/tmp/persistent/gnat-glade/sessions');
-$WorkDir   =               '/tmp/persistent/gnat-glade/wiki.d';
-$WikiDir   = new PageStore('/tmp/persistent/gnat-glade/wiki.d/$FullName');
-$UploadDir =               '/tmp/persistent/gnat-glade/uploads';
+session_save_path         ('/home/persistent/g/gn/gnat-glade/sessions');
+$WorkDir   =               '/home/persistent/g/gn/gnat-glade/wiki.d';
+$WikiDir   = new PageStore('/home/persistent/g/gn/gnat-glade/wiki.d/$FullName');
+$UploadDir =               '/home/persistent/g/gn/gnat-glade/uploads';
 
 ##  If you want to use URLs of the form .../pmwiki.php/Group/PageName
 ##  instead of .../pmwiki.php?p=Group.PageName, try setting
