@@ -1,0 +1,16 @@
+version=pmwiki-2.2.0-beta63 ordered=1 urlencoded=1
+agent=Opera/9.23 (X11; OpenBSD i386; U; en)
+author=Julian Leyh
+charset=UTF-8
+csum=gnat-gnat => gnat-glade
+host=88.134.136.126
+name=Main.TOC
+passwdedit=$1$ODjZ.uBP$NDsdGsZNfnXIWY1OhxnbS0
+rev=6
+targets=Main.HomePage,Main.TOC,Main.AdaWikiRing,Main.RSSFeeds,Main.Sitemap,Main.Skin
+text=! [[Main/HomePage|Main]] [-([[Main.TOC?action=edit|edit]])-]%0a* [[http://sourceforge.net/news/?group_id=105524|News]]%0a* [[http://gnat-glade.sourceforge.net/|Project's Homepage]]%0a* [[http://sourceforge.net/projects/gnat-glade|Sourceforge Project Info]]%0a* [[http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/gnat-glade|Sourceforge CVS Archive]]%0a* [[http://sourceforge.net/project/showfiles.php?group_id=105524|Download]]%0a* [[Main/Ada Wiki Ring]]%0a* [[Main/RSS Feeds]]%0a* [[Main/Sitemap]]%0a* [[Main/Skin]]%0a
+time=1192275714
+author:1192275714=Julian Leyh
+csum:1192275714=gnat-gnat => gnat-glade
+diff:1192275714:1151319699:=3,5c3,5%0a%3c * [[http://gnat-glade.sourceforge.net/|Project's Homepage]]%0a%3c * [[http://sourceforge.net/projects/gnat-glade|Sourceforge Project Info]]%0a%3c * [[http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/gnat-glade|Sourceforge CVS Archive]]%0a---%0a> * [[http://gnat-gnat.sourceforge.net/|Project's Homepage]]%0a> * [[http://sourceforge.net/projects/gnat-gnat|Sourceforge Project Info]]%0a> * [[http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/gnat-gnat|Sourceforge CVS Archive]]%0a
+host:1192275714=88.134.136.126

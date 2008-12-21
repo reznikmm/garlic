@@ -1,0 +1,19 @@
+version=pmwiki-2.2.0-beta63 ordered=1 urlencoded=1
+agent=Opera/9.23 (X11; Linux x86_64; U; de)
+author=Martin Krischik
+charset=UTF-8
+csum=WikiVandalism
+ctime=1191987422
+host=84.73.230.44
+name=Profiles.GiorgioGiudetti
+rev=2
+targets=
+text=
+time=1192186888
+author:1192186888=Martin Krischik
+csum:1192186888=WikiVandalism
+diff:1192186888:1191987422:=0a1%0a> boacel%0a
+host:1192186888=84.73.230.44
+author:1191987422=
+diff:1191987422:1191987422:=1d0%0a%3c boacel%0a
+host:1191987422=59.151.53.100

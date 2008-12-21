@@ -1,0 +1,18 @@
+version=pmwiki-2.0.beta48 ordered=1
+newline=¿ä
+agent=Opera/8.01 (Windows NT 5.0; U; de)
+author=Martin Krischik
+host=138.189.120.38
+name=Profiles.MartinKrischik
+rev=2
+targets=
+text=! Martin Krischik¿ä¿äIf you want to know something about me you can visit my [[http://martin.krischik.com|homepage]] or have a look at my [[http://sourceforge.net/users/krischik|SourceForge User]].
+time=1123242298
+author:1123242298=Martin Krischik
+csum:1123242298=correct the links
+diff:1123242298:1123238724:=1,3c1¿ä< ! Martin Krischik¿ä< ¿ä< If you want to know something about me you can visit my [[http://martin.krischik.com|homepage]] or have a look at my [[http://sourceforge.net/users/krischik|SourceForge User]].¿ä\ No newline at end of file¿ä---¿ä> If you want to know something about me you can visit my [[http://martin.krischik.com homepage]] or have a look at my [[http://sourceforge.net/users/krischik/ SourceForge User]].¿ä\ No newline at end of file¿ä
+host:1123242298=138.189.120.38
+author:1123238724=Martin Krischik
+csum:1123238724=profil
+diff:1123238724:1123238724:=1d0¿ä< If you want to know something about me you can visit my [[http://martin.krischik.com homepage]] or have a look at my [[http://sourceforge.net/users/krischik/ SourceForge User]].¿ä\ No newline at end of file¿ä
+host:1123238724=138.189.120.38

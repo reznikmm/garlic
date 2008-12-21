@@ -1,0 +1,13 @@
+version=pmwiki-2.0.beta48 ordered=1
+newline=ÀŠ
+agent=Opera/8.0 (X11; Linux x86_64; U; de)
+author=Martin Krischik
+host=84.73.3.177
+name=Main.BottomBar
+rev=1
+targets=Main.AdaWikiRing,Main.SearchWiki,Main.RecentChanges,Main.AllRecentChanges,PmWiki.DocumentationIndex
+text=*[[Main/AdaWikiRing|Ada programming]] ÀŠ*[[Main/SearchWiki]] ÀŠ*[[Main/RecentChanges]]ÀŠ*[[Main/AllRecentChanges]] ÀŠ*[[PmWiki/DocumentationIndex|WikiHelp]]
+time=1122708648
+author:1122708648=Martin Krischik
+diff:1122708648:1122708648:=1,5d0ÀŠ< *[[Main/AdaWikiRing|Ada programming]] ÀŠ< *[[Main/SearchWiki]] ÀŠ< *[[Main/RecentChanges]]ÀŠ< *[[Main/AllRecentChanges]] ÀŠ< *[[PmWiki/DocumentationIndex|WikiHelp]]ÀŠ\ No newline at end of fileÀŠ
+host:1122708648=84.73.3.177

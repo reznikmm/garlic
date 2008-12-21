@@ -1,0 +1,29 @@
+version=pmwiki-2.2.0-beta63 ordered=1 urlencoded=1
+agent=Opera/9.23 (X11; Linux x86_64; U; de)
+author=Martin Krischik
+charset=UTF-8
+csum=WikiVandalism
+host=84.73.230.44
+name=Main.Skin
+rev=6
+targets=Main.Skin
+text=||cellpadding=0 cellspacing=1 border=6%0a|| [[Default Skin -> {$Name}?setskin=pmwiki]] || [[Drop Down -> {$Name}?setskin=dropdown]]  ||%0a|| [[Monobook -> {$Name}?setskin=monobook]]   || [[Bues -> {$Name}?setskin=blues]]          ||%0a|| [[BS-001 -> {$Name}?setskin=bs-001]]       || [[Parchment -> {$Name}?setskin=parchment]] ||%0a|| [[Triad -> {$Name}?setskin=triad]]         || ||%0a
+time=1192463948
+author:1192463948=Martin Krischik
+csum:1192463948=WikiVandalism
+diff:1192463948:1192463922:=2,5c2,4%0a%3c || [[Default Skin -> {$Name}?setskin=pmwiki]] || [[Drop Down -> {$Name}?setskin=dropdown]]  ||%0a%3c || [[Monobook -> {$Name}?setskin=monobook]]   || [[Bues -> {$Name}?setskin=blues]]          ||%0a%3c || [[BS-001 -> {$Name}?setskin=bs-001]]       || [[Parchment -> {$Name}?setskin=parchment]] ||%0a%3c || [[Triad -> {$Name}?setskin=triad]]         || ||%0a---%0a> ||[[http://www.pmwiki.org/pmwiki/uploads/Cookbook/DefaultSkin.jpg -> {$Name}?setskin=pmwiki]]||[[http://www.pmwiki.org/pmwiki/uploads/Cookbook/DropDown.jpg -> {$Name}?setskin=dropdown]]||%0a> || [[Default Skin -> {$Name}?setskin=pmwiki]] || [[Drop Down -> {$Name}?setskin=dropdown]] ||%0a> %0a
+host:1192463948=84.73.230.44
+author:1192463922=Martin Krischik
+csum:1192463922=WikiVandalism
+diff:1192463922:1192114029:=0a1,2%0a> trocacel%0a> zelaleltrva%0a2,4c4,7%0a%3c ||[[http://www.pmwiki.org/pmwiki/uploads/Cookbook/DefaultSkin.jpg -> {$Name}?setskin=pmwiki]]||[[http://www.pmwiki.org/pmwiki/uploads/Cookbook/DropDown.jpg -> {$Name}?setskin=dropdown]]||%0a%3c || [[Default Skin -> {$Name}?setskin=pmwiki]] || [[Drop Down -> {$Name}?setskin=dropdown]] ||%0a%3c %0a---%0a> || [[Default Skin -> {$Name}?setskin=pmwiki]] || [[Drop Down -> {$Name}?setskin=dropdown]]  ||%0a> || [[Monobook -> {$Name}?setskin=monobook]]   || [[Bues -> {$Name}?setskin=blues]]          ||%0a> || [[BS-001 -> {$Name}?setskin=bs-001]]       || [[Parchment -> {$Name}?setskin=parchment]] ||%0a> || [[Triad -> {$Name}?setskin=triad]]         || ||%0a
+host:1192463922=84.73.230.44
+author:1192114029=
+diff:1192114029:1191987612:minor=1d0%0a%3c trocacel%0a
+host:1192114029=59.25.30.250
+author:1191987612=
+diff:1191987612:1189974803:minor=1d0%0a%3c zelaleltrva%0a
+host:1191987612=72.232.181.202
+author:1189974803=Martin Krischik
+csum:1189974803=more skins
+diff:1189974803:1122570691:=2,5c2,4%0a%3c || [[Default Skin -> {$Name}?setskin=pmwiki]] || [[Drop Down -> {$Name}?setskin=dropdown]]  ||%0a%3c || [[Monobook -> {$Name}?setskin=monobook]]   || [[Bues -> {$Name}?setskin=blues]]          ||%0a%3c || [[BS-001 -> {$Name}?setskin=bs-001]]       || [[Parchment -> {$Name}?setskin=parchment]] ||%0a%3c || [[Triad -> {$Name}?setskin=triad]]         || ||%0a---%0a> ||[[http://www.pmwiki.org/pmwiki/uploads/Cookbook/DefaultSkin.jpg -> {$Name}?setskin=pmwiki]]||[[http://www.pmwiki.org/pmwiki/uploads/Cookbook/DropDown.jpg -> {$Name}?setskin=dropdown]]||%0a> || [[Default Skin -> {$Name}?setskin=pmwiki]] || [[Drop Down -> {$Name}?setskin=dropdown]] ||%0a> %0a
+host:1189974803=84.75.181.93

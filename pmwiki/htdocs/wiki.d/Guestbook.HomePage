@@ -1,0 +1,21 @@
+version=pmwiki-2.1.11 ordered=1 urlencoded=1
+agent=Opera/9.02 (X11; Linux x86_64; U; de)
+author=Martin Krischik
+csum=WikiSPAM
+host=80.218.118.14
+name=Guestbook.HomePage
+passwdedit=$1$4e/YVOeY$FHoiZpTbrxyWqpvLkg2fL1
+rev=5
+targets=
+text=This this the Guestbook. Feel free to add whatever you like to say - apart from WikiSpam that is '-(The site is monitored by RSS Feed- so WikiSpam has no chance of survival)-'%0a-----
+time=1169136829
+author:1169136691=Martin Krischik
+csum:1169136691=WikiSPAM
+diff:1169136691:1169092671:=1,2c1,2%0a%3c This this the Guestbook. Feel free to add whatever you like to say - apart from WikiSpam that is '-(The site is monitored by RSS Feed- so WikiSpam has no chance of survival)-'%0a%3c -----%0a\ No newline at end of file%0a---%0a> Hi!%0a> http://jp.globo.name/ - 性%0a
+host:1169136691=80.218.118.14
+author:1169092671=EMILY
+diff:1169092671:1168445553:minor=1,2c1%0a%3c Hi!%0a%3c http://jp.globo.name/ - 性%0a---%0a> No War%0a\ No newline at end of file%0a
+host:1169092671=168.213.1.132
+author:1168445553=aciphex
+diff:1168445553:1124729473:minor=1c1,2%0a%3c No War%0a\ No newline at end of file%0a---%0a> This this the Guestbook. Feel free to add whatever you like to say - apart from WikiSpam that is '-(The site is monitored by RSS Feed- so WikiSpam has no chance of survival)-'%0a> -----%0a\ No newline at end of file%0a
+host:1168445553=200.117.175.67

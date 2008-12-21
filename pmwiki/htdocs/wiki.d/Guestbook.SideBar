@@ -1,0 +1,42 @@
+version=pmwiki-2.1.11 ordered=1 urlencoded=1
+agent=Opera/9.02 (X11; Linux x86_64; U; de)
+author=Martin Krischik
+csum=typo
+ctime=1162359610
+host=80.218.118.14
+name=Guestbook.SideBar
+passwdedit=$1$fjSfaxnZ$bNYxIW6j1SiAuW3s92.2G0
+rev=10
+targets=
+text=(:include Main.SideBar:)%0a
+time=1164533611
+author:1164533611=Martin Krischik
+csum:1164533611=typo
+diff:1164533611:1164533590:minor=1c1%0a%3c (:include Main.SideBar:)%0a---%0a> (:include Main.SiteBar:)%0a
+host:1164533611=80.218.118.14
+author:1164533590=Martin Krischik
+csum:1164533590=Can't leave it empty
+diff:1164533590:1164533489:=1d0%0a%3c (:include Main.SiteBar:)%0a
+host:1164533590=80.218.118.14
+author:1164533443=Martin Krischik
+csum:1164533443=WikiSPAM
+diff:1164533443:1164518668:=0a1,2%0a> Cool site! You can see my site: %3ca%0a> href="http://www.foren-dienst.de/cgi-bin/forenserver/foren/F_10473/cutecast.pl">cheap auto insurance%3c/a>. I think it is also cool :)%0a\ No newline at end of file%0a
+host:1164533443=80.218.118.14
+author:1164518668=iutinsur
+diff:1164518668:1163121781:minor=1,2d0%0a%3c Cool site! You can see my site: %3ca%0a%3c href="http://www.foren-dienst.de/cgi-bin/forenserver/foren/F_10473/cutecast.pl">cheap auto insurance%3c/a>. I think it is also cool :)%0a\ No newline at end of file%0a
+host:1164518668=193.69.180.120
+author:1163121781=replica
+diff:1163121781:1162551561:minor=
+host:1163121781=203.144.144.164
+author:1162551561=steroid
+diff:1162551561:1162455854:minor=
+host:1162551561=86.105.198.29
+author:1162455854=ephedra
+diff:1162455854:1162359614:minor=
+host:1162455854=201.26.142.93
+author:1162359614=costnerkevin
+diff:1162359614:1162359610:minor=
+host:1162359614=220.230.100.59
+author:1162359610=costnerkevin
+diff:1162359610:1162359610:minor=
+host:1162359610=220.230.100.59

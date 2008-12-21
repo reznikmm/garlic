@@ -1,0 +1,22 @@
+version=pmwiki-2.2.0-beta63 ordered=1 urlencoded=1
+agent=Opera/9.23 (X11; Linux x86_64; U; de)
+author=Martin Krischik
+charset=UTF-8
+csum=WikiVandalism
+ctime=1151319296
+host=84.73.230.44
+name=Main.Sitemap
+rev=5
+targets=
+text=!! Important Groups%0a(:pagelist group=Main:)%0a!! All Groups%0a(:pagelist:)
+time=1192186764
+author:1192186764=Martin Krischik
+csum:1192186764=WikiVandalism
+diff:1192186764:1192113532:=0a1,2%0a> varacelpasri%0a> alclaboacli%0a
+host:1192186764=84.73.230.44
+author:1192113532=
+diff:1192113532:1191987207:=1d0%0a%3c varacelpasri%0a
+host:1192113532=74.231.24.2
+author:1191987207=
+diff:1191987207:1151319504:minor=1d0%0a%3c alclaboacli%0a
+host:1191987207=87.101.244.8

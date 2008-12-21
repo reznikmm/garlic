@@ -1,0 +1,8 @@
+version=pmwiki-2.2.0-beta63 ordered=1 urlencoded=1
+agent=Opera/9.23 (X11; Linux x86_64; U; de)
+host=84.75.181.93
+name=SiteAdmin.Status
+rev=1
+text=(:comment Any local edits to this page may be lost!:)%0a%0aThis site is running {$Version} (VersionNum={$VersionNum}).%0a
+time=1189971832
+updatedto=2001963
