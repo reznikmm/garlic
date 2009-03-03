@@ -33,7 +33,6 @@ $EnablePathInfo = 1;
 ## to your own logo if you wish.
 
 $PageLogoUrl = "http://gnat-glade.sourceforge.net/ada.jpg";
-$FavIcon     = "http://gnat-glade.sourceforge.net/ada.jpg";
 
 ## If you want to have a custom skin, then set $Skin to the name
 ## of the directory (in pub/skins/) that contains your skin files.
