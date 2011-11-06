@@ -1,0 +1,11 @@
+version=pmwiki-2.1.9 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (compatible; Konqueror/3.4; Linux) KHTML/3.4.2 (like Gecko)
+author=
+csum=
+ctime=1149413864
+host=84.105.124.119
+name=PmWikiNl.ListeAllerSeiten
+rev=1
+targets=
+text=Dit is een overzicht van alle in het Nederlands vertaalde pagina's van de PmWiki, gesorteerd op volgorde van aanmaken van de pagina%0a%0a(:pagelist group=PmWikiNl fmt=#title order=time list=normal:)%0a
+time=1149413864

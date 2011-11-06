@@ -1,0 +1,12 @@
+version=pmwiki-2.1.5 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1
+author=CarlosAB
+csum=
+ctime=1142100811
+host=201.10.16.172
+name=PmWikiPtBr.CriandoNovasPaginas
+rev=7
+targets=PmWikiPtBr.MinhaNovaPágina,PmWikiPtBr.PalavrasWiki,PmWikiPtBr.GruposWiki,PmWikiPtBr.Documentacao
+text=(:title Criando novas páginas:)%0aPara criar uma nova página, você precisa editar uma página já existente, e colocar um novo link para a página que você deseja criar.  %0a%0aPara criar um link para sua futura página, você deve escolher um nome para ela.  Os melhores nomes são aqueles que descrevem o conteúdo da página da melhor maneira possível. Assim todos podem lembrar e escrever seu nome facilmente%0a%0aExistem duas maneiras para criar um link :%0a%0a# '''colchetes duplos''': Escrevendo [@[[minha nova página]]@] irá criar um link para [[minha nova página]]. %0a# '''PalavraWiki''': Escrevendo [@[[MinhaNovaPágina]]@] irá criar um link para [[MinhaNovaPágina]].  [[PalavrasWiki]] são plavaras com a PrimeiraLetraEmMusculasEJuntas , e não precisam de colchetes duplos para virarem links.  Note que alguns sites podem ter desligado esta cpacidade -- incluindo este site!%0a%0aVocê pode ver que links para  [[Minha Nova Página]] tem um ponto de interrogação depois de aparecerem.  Isto acontece por que [[Minha Nova Página]] ainda não foi escrita.  Clicando o link você será levado a um um formulário onde poderá criar e salvar o conteúdo escrito nesta.%0a%0a----%0a%0aOutro meio de criar uma pagina:  Na barra de endereço do seu browser  (onde esta a URL da página) substitua o nome da página atual com o nome da página que você deseja criar, pressione enter ou faça o que você normalmente faz para ir para um novo site.O PmWiki iráinformar que a página ainda não existe, mas voê pode clicar em "Edit" ou "Editar" para criar, escrever e salvar o que escrever nesta nova página%0a%0aA única coisa ruim sobre este método é que não existem links em outras páginas informando sobre a existênc9a de sua página recem criada, então você é a única pessoa que sabe de sua existência.  Ela estará orfão, não-lida, sem links, não-amada.  Por isso que colocar um link para sua página em outra, é a melhor maneira de criar uma página.%0a%0a----%0a%0aVocê pode também organizar páginas relacionadas a sua em [[grupos wiki | grupos]], e criar links entre páginas diferentes entre páginas em diferentes grupos.  [[grupos wiki | saiba mais]].%0a%0a%25trail%25%3c%3c|[[Documentacao]]|>>
+time=1143939548
+title=Criando novas páginas

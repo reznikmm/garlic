@@ -1,0 +1,11 @@
+version=pmwiki-2.1.11 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; ja; rv:1.8.0.4) Gecko/20060508 Firefox/1.5.0.4
+author=
+csum=
+ctime=1152515181
+host=221.184.44.195
+name=PmWikiJa.ページ削除
+rev=3
+targets=PmWikiJa.WikiAdministrator,Site.AllRecentChanges,PmWikiJa.EditVariables,PmWikiJa.ドキュメント目次
+text=To delete a page, edit the page, select (highlight) all text in the edit textarea and replace it with the single word%0a%0a    [@delete@]%0a%0aページを削除するためには、ページを編集し、編集テキストエリアの全てのテキストを選択(ハイライト)し、ひとつの単語で置き換えてください。%0a%0aNote that it may be a good idea to add a comment to the field @@summary@@%0aexplaining why you deleted the page. (The field @@summary@@ is usually found%0ajust below the edit textarea).%0a%0aなぜ、あなたがページを削除したか説明する@@要約@@フィールドにコメントを加えることがよい考えかもしれないことに注意してください。(@@要約@@フィールドは、通常、編集テキスト領域のすぐ下に見つかります。)%0a%0aAfter saving the changes the page is deleted.  As an added safety feature, the deleted page still exists on the server (with a timestamp) and can be restored to the former page by the [[wiki administrator]].%0a%0a変更を保存すると、ページは削除されます。追加安全機能として、削除されたページは、まだサーバー(タイムスタンプ付で)に存在し、wiki管理者によって前のページに戻すことができます。%0a%0aIf you suspect that a page has been deleted but aren't sure, have a look at the wikigroup's [=RecentChanges=]. Erasing a page counts as editing the page, and the activity is recorded there and on [[{$SiteGroup}.AllRecentChanges]].%0a%0aページが削除されたが確かではないのではないかと考える場合は、wikigroupの[=最終更新=]を見てください。ページを消すのはページを編集するのにみなします、そして、活動はそこと[[{$SiteGroup}.AllRecentChanges]]に記録されます。%0a%0aThe default word used for page deletion ("delete") can be changed in config.php by setting the variable $DeleteKeyPattern (see [[EditVariables]]). If there is a danger of malicious page deletion it may be a good idea to change the delete word to something more obscure. There is also a recipe for creating a separate delete action at Cookbook:DeleteAction.%0a%0aページ削除で使われるデフォルトの単語("delete")は、config.php の $DeleteKeyPattern 変数を設定することで変更することができます([[EditVariables]]を見てください)。悪意があるページ削除という危険があれば、delete の単語をより不鮮明なものに変えることは、良い考えでしょう。さらに、分離された削除アクションを作成するレシピは、Cookbook:DeleteAction にあります。%0a%0a%25trail%25%3c%3c|[[ドキュメント目次]]|>>
+time=1152515271

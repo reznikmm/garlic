@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta54 ordered=1
+newline=²
+agent=Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR 1.1.4322)
+author=Byungho Jeon
+host=222.232.152.102
+name=PmWikiKr.PmWikiKr
+rev=7
+targets=PmWiki.PatrickMichaud,PmWiki.WikiWikiWeb,PmWiki.PmWiki,PmWikiKr.XLPage
+text=PmWiki ´Â [[PmWiki/Patrick Michaud]] [=°¡ PHP ½ºÅ©¸³Æ® ¾ð¾î·Î °³¹ßÇÑ=] [[PmWiki/WikiWikiWeb]] [=½Ã½ºÅÛÀÔ´Ï´Ù. PmWiki ´Â À¥»çÀÌÆ®ÀÇ ½¬¿î °ü¸®¿Í Çù¾÷ÀÛ¾÷À» ¿ì¼±À¸·Î ¼³°èµÇ¾ú½À´Ï´Ù.=]²²* [=ÀÌ »çÀÌÆ®´Â=] {$Version} [=À¸·Î ½ÇÇàµÇ°í ÀÖ½À´Ï´Ù.=]²* [=ÀÌ ¼ÒÇÁÆ®¿þ¾î´Â GNU General Public License (GPL) ·Î ÀÚÀ¯·Ó°Ô »ç¿ëÇÒ ¼ö ÀÖ½À´Ï´Ù.=]²* http://www.pmichaud.com/pub/pmwiki [=¿¡¼­ ´Ù¿î·Îµå ¹ÞÀ» ¼ö ÀÖ½À´Ï´Ù. ¹®¼­´Â=] documentaion index [=¿¡¼­ º¼ ¼ö ÀÖ½À´Ï´Ù.=]²²PmWiki [=´Â=] Patrick R. Michaud (http://www.pmichaud.com) [=ÀÇ »óÇ¥·Î µî·ÏµÇ¾î ÀÖ½À´Ï´Ù.=]²----²²[=ÇÑ±Û ÀÎÄÚµùÀº euc-kr À» »ç¿ëÇÏ¿´½À´Ï´Ù.=] PmWikiKr.XLPage [=¸¦ »ç¿ëÇÏÁö ¾Ê°í¼­ °£´ÜÈ÷ »ç¿ëÇÏ½ÇºÐµéÀº config.php ÆÄÀÏ¿¡ ´ÙÀ½°ú°°ÀÌ µÎÁÙÀ» Ãß°¡ÇØ ÁÖ½Ã¸éµË´Ï´Ù.=]²²->global $HTTPHeaders;²->$HTTPHeaders[] = 'Content-type: text/html; charset=euc-kr';²²----²
+time=1124092202

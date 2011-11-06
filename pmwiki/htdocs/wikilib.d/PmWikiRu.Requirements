@@ -1,0 +1,12 @@
+version=pmwiki-2.1.5 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1
+author=Holo
+csum=translated
+ctime=1143834728
+host=195.98.173.2
+name=PmWikiRu.Requirements
+rev=1
+targets=
+text=(:title Требования:)%0a%25audience%25 администраторам (основы)%0a%0aПредпосылки для запуска PmWiki:%0a# [[http://www.php.net/ | PHP]] 4.1 или новее;%0a# Какой-либо веб сервер работающий с PHP.%0a%0aРабота PmWiki проверена на следующих комбинациях ОС+вебсервер:%0a* Apache 1.3 или 2.0, на чём угодно (Unix, Linux, Windows и Mac OS/X)%0a* Microsoft Internet Information Server на Windows%0a%0a* Я запустил PmWiki на appWeb (очень маленький вебсервер с поддержкой PHP) работающий в устройстве сетевого хранилища Linksys NSLU2 (с прошивкой Unslung 5.5 beta). Правда, всё ещё не выяснил почему закачка файлов не выглядит работоспособной. --Hans-Göran Puke%0a%0aИзвестно, что PmWiki не работает на:%0a* MacOS 8.6 (это лишь слухи и болтовня, так что мы были бы рады услышать что-либо определённое)%0a* MacOS 9%0a%0aРецепт [[(Cookbook:)Standalone]] предлагает особое скелетное приложение позволяющее запустить PmWiki в местах, где нет другого вебсервера.%0a
+time=1143834728
+title=Требования

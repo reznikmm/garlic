@@ -1,0 +1,12 @@
+version=pmwiki-2.1.5 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.2) Gecko/20060308 Firefox/1.5.0.2
+author=Holo
+csum=translated
+ctime=1145615007
+host=195.98.173.2
+name=PmWikiRu.SitePreferences
+rev=1
+targets=PmWikiRu.AccessKeys,Site.Preferences,Site.EditForm
+text=(:title SitePreferences:)%0a%0aСтраница [[{$SiteGroup}.Preferences]] содержит изменяемые броузером настройки предпочтений.  Они включают в себя [[access keys|+]] (клавиатурные сокращения для определённых действий вроде правки, истории и просмотра) и настройки [[{$SiteGroup}.EditForm]] (ширина и высота обрасти редактора текста), а заодно и имени используемой формы редактирования.%0a%0aВ качестве страницы предпочтений может быть выбрана страница отличная от [[{$SiteGroup}.Preferences]]: сделайте её копию с новым именем, поправьте как вам необходимо, и установите для её использования куки добавив в броузере к адресу такое окончание:%0a%0a   ?setprefs=SomeGroup.CustomPreferences %0a%0aгде SomeGroup.CustomPreferences -- имя новой изменённой страницы предпочтений.%0a%0a----%0a!!Замечания и Комментарии%0a%0aЗаметьте, чтобы разрешить анализ [[{$SiteGroup}.Preferences]] надо добавить в файл local/config.php подобную строчку:%0a%0a XLPage('prefs', "Site.Preferences");%0a
+time=1145615007
+title=SitePreferences

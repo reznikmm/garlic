@@ -1,0 +1,9 @@
+version=pmwiki-2.0.12 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.12) Gecko/20050920 Firefox/1.0.7
+author=
+host=67.183.26.227
+name=PmWikiTr.PmWikiTr
+rev=29
+targets=PmWiki.PatrickMichaud,PmWiki.WikiWikiWeb,PmWiki.PmWiki
+text=PmWiki, [[PmWiki/Patrick Michaud]] taraf&#305;ndan PHP betik diliyle geli&#351;tirilmi&#351; bir [[PmWiki/WikiWikiWeb]] sistemidir. PmWiki özellikle internet sayfalar&#305;n&#305; kolayca, elbirli&#287;iyle haz&#305;rlama ve yürütme için bir araç olarak tasarlanm&#305;&#351;t&#305;r.%0a%0aBu sayfa {$Version} kullanmaktad&#305;r. Yaz&#305;l&#305;m GNU Kamu Lisans&#305; (GPL) alt&#305;nda ücretsiz olarak da&#287;&#305;t&#305;lmaktad&#305;r ve http://www.pmichaud.com/pub/pmwiki'den indirilebilir. Belgeler, belgeler anasayfas&#305;ndan (documentation index) edinilebilir.%0a%0aPmWiki, Patrick R. Michaud'un tescilli markas&#305;d&#305;r %0a(http://www.pmichaud.com).%0a%0a----------------%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a
+time=1130528665

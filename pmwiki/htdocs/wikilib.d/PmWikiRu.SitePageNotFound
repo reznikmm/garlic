@@ -1,0 +1,11 @@
+version=pmwiki-2.1.2 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1
+author=Holo
+csum=new
+ctime=1142586662
+host=195.98.173.2
+name=PmWikiRu.SitePageNotFound
+rev=1
+targets=PmWikiRu.SitePageNotFound
+text=(:nolinkwikiwords:)%0a(:if name PmWikiRu.SitePageNotFound:)%0a-> %25green font-style:italic%25 Эта страница содержит текст который показывается когда PmWiki не может найти запрашиваемую страницу. Администраторы могут её редактировать для изменения текста сообщения.%0a(:if:)%0a%0a(:if !group Category:)Страница "{$RequestedPage}" не существует.  %0a(:if auth edit:)%25rel=nofollow%25 ([[{$FullName}?action=edit | Создать {$FullName}]]) %0a(:if:)%0a%0a
+time=1142586662

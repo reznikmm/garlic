@@ -1,0 +1,12 @@
+version=pmwiki-2.1.3 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1
+author=Holo
+csum=translated
+ctime=1142529359
+host=195.98.173.2
+name=PmWikiRu.InterMap
+rev=2
+targets=PmWikiRu.WikiWikiWeb,PmWikiRu.CustomInterMap,Site.InterMap,PmWikiRu.DocumentationIndex
+text=(:title InterMap ссылки:)%0a%0a%25audience%25 авторам (средний)%0a%0aInterMap - это система определения ссылок между [[WikiWikiWeb]] сайтами, которые изначально были сделаны на основе UseMod:UseModWiki и Meatball:MeatballWiki. InterMap ссылки имеют форму [@MapPrefix:Page@], где MapPrefix преобразуется в часть URL взятую из файлов ''intermap.txt'' и ''localmap.txt''.%0a%0aБазовый ''intermap.txt'' распространяемый с PmWiki (в папке ''scripts/'') содержит следующие InterMap записи:%0a%0a[@%0aPmWiki:		http://www.pmwiki.org/wiki/PmWiki/%0aCookbook:	http://www.pmwiki.org/wiki/Cookbook/%0aWiki:		http://www.c2.com/cgi/wiki?%0aUseMod:		http://www.usemod.com/cgi-bin/wiki.pl?%0aMeatball:	http://www.usemod.com/cgi-bin/mb.pl?%0aWikipedia:	http://www.wikipedia.com/wiki/%0aPITS:		http://www.pmwiki.org/PITS/%0aPath:            %0a@]%0a%0aТак PmWiki:Variables производит ссылку на страницу официального сайта PmWiki - PmWiki.Variables. Wiki:FrontPage - ссылка на главную страницу первого WikiWikiWeb сайта, а Wikipedia:Stonehenge переводит вас на статью Wikipedia о знаменитом мегалите в Англии.%0a%0aОсобая InterMap запись [@Path:@] используется для "[[Cookbook:RelativeUrls|относительных url]]" в [[Cookbook:RelativeLinks|ссылках]].%0a%0aФактический набор InterMap ссылок на любой сайт определяется администратором сайта на странице [[Site.InterMap]] и в файле ''local/localmap.txt''; подробнее смотри [[CustomInterMap|+]].%0a%0a%0a%25trail%25%3c%3c|[[Documentation Index|+]]|>>
+time=1142850666
+title=InterMap ссылки

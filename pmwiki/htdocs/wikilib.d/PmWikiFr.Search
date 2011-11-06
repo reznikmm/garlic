@@ -1,0 +1,10 @@
+version=pmwiki-2.0.6 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; fr-FR; rv:1.7.10) Gecko/20050717 Firefox/1.0.6
+author=Isidor
+host=82.228.128.40
+name=PmWikiFr.Search
+rev=1
+targets=PmWikiFr.PmWiki
+text=(:title Recherche:)(:comment (traduction francaise de Site.Search, le 18.09.05) :)%0a(:searchbox:)%0a%0a(:searchresults:)%0a%0aEntrer ici le texte que vous voulez chercher. Le résultat montrera les pages contenant tous les mots. Pour chercher une phrase il faut l'encadrer de guillemets.%0a%0aPour limiter la recherche à un seul groupe, entrez le nom du groupe suivi d'un / au début de chaine de recherche (ex: "PmWiki/" ou "Linux/"). Pour lister toutes les pages entrez un / en début de chaine de recherche%0a%0a!!!Exemples %0a  %0a||border='0' cellspacing='0' width='100%25' cellpadding='0' %0a||'''Entrer:'''    ||'''Pour trouver les pages contenant:''' ||%0a||tarte pomme      ||'tarte' et 'pomme' ||%0a||"tarte aux pommes"    ||la phrase 'tarte aux pommes' ||%0a||pmwiki/pomme   ||'pomme' dans le groupe [=PmWiki=] ||%0a||"pmwiki/pomme" ||la phrase 'pmwiki/essen' dans tous les groupes ||%0a||tarte -pomme     ||'tarte', s'il n'y a pas le mot 'pomme' ||%0a||grande -"tarte aux pommes" ||'grande', s'il n'y a pas 'tarte aux pommes' ||%0a||tarte "-pomme"   ||les mots 'tarte' et '-pomme' ||%0a||tarte - pomme    ||'tarte' et '-', et 'pomme' ||
+time=1126994679
+title=Recherche

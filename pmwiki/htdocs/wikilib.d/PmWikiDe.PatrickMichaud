@@ -1,0 +1,10 @@
+version=pmwiki-2.0.5 ordered=1 urlencoded=1
+agent=Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0; de) Opera 8.02
+author=Klonk
+host=84.150.184.147
+name=PmWikiDe.PatrickMichaud
+rev=7
+targets=PmWiki.PatrickMichaud,PmWikiDe.PatrickMichaud,PmWiki.PmWiki
+text=(:title Patrick Michaud:)%0a[-%25green%25(deutsche Übersetzung der Seite PmWiki.PatrickMichaud, Stand 14.09.2005)-]%0a%0aPatrick Michaud ([[PatrickMichaud |Pm]]) ist der Autor von PmWiki. Man kann mehr über ihn unter http://www.pmichaud.com erfahren.
+time=1126731006
+title=Patrick Michaud

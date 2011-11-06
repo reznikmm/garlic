@@ -1,0 +1,13 @@
+version=pmwiki-2.0.beta40 ordered=1
+newline=ÀŠ
+agent=Opera/8.01 (Windows NT 5.0; U; de)
+author=Martin Krischik
+host=138.189.120.38
+name=Error.404
+rev=1
+targets=
+text=!! Not FoundÀŠÀŠThe requested URL was not found on this server.
+time=1121063985
+author:1121063985=Martin Krischik
+diff:1121063985:1121063985:=1,3d0ÀŠ< !! Not FoundÀŠ< ÀŠ< The requested URL was not found on this server.ÀŠ\ No newline at end of fileÀŠ
+host:1121063985=138.189.120.38

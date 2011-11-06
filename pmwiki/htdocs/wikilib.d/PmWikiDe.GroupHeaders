@@ -1,0 +1,10 @@
+version=pmwiki-2.0.3 ordered=1 urlencoded=1
+agent=Opera/8.02 (Windows NT 5.0; U; de)
+author=Klonk
+host=62.245.250.121
+name=PmWikiDe.GroupHeaders
+rev=11
+targets=PmWiki.GroupHeaders,PmWikiDe.WikiGroup,PmWikiDe.WikiStyles,PmWikiDe.PageDirectives,PmWikIDe.WikiAdministrator,PmWikiDe.IncludeOtherPages,PmWikiDe.DocumentationIndex,PmWikiDe.SitePages
+text=(:title Kopfzeilen der Gruppe:)%0a(:nogroupfooter:)%0a%25green%25[-(deutsche Übersetzung der Seite PmWiki.GroupHeaders, Stand 07.09.2005)-]%0a%25audience%25 Autoren (Fortgeschritten)%0a%0aJede [[WikiGroup | Wikigruppe]] kann Seiten names '''`GroupHeader''' und '''`GroupFooter''' beinhalten. Diese Seiten können Auszeichnungen enthalten, die am Anfang oder am Ende jeder Seite der Gruppe eingefügt wird.  Dies wird hauptsächlich benutzt um:%0a%0a* ein Haftungsausschluß (Disclaimer) oder einen Kopfzeile in alle Seiten einer Gruppe einzufügen %0a* spezielle [[WikiStyles|Wikistile]] zu definieren die in allen Seiten einer Gruppe verwendet werden können%0a* die voreingestellten Kopfzeile oder Fußzeilen bei Seiten einer Gruppe zu ersetzten (mittels der [@(:noheader:)@] und [@(:nofooter:)@] Direktiven -- siehe [[PageDirectives|Direktiven]])%0a%0aUm eine Kopfzeile zu erzeugen, muss nur eine Seite namens [@Gruppe.GroupHeader@] erzeugt werden. Kopfzeilen ermöglichen es den Autoren Gruppen zu erzeugen, die eigene Kopfzeilen oder Fußzeilen aufweisen, ohne mit dem [[PmWikIDe.WikiAdministrator|Administrator des Wikis]] Rücksprache halten zu müssen.%0a%0aAuf einzelnen Seiten in einer Gruppe kann die Kopfzeile oder Fußzeile unterdrückt werden. Das geschieht durch Verwendung der[@(:nogroupheader:)@] und [@(:nogroupfooter:)@] Direktiven auf ''genau dieser Seite''.%0a%0aWenn eine allgemeine Kopfzeile in einer Wikigruppe verwendet wird (z.B. in der Site Gruppe), dann kann der dort enthaltene Inhalt leicht in die Kopfzeilen andere Gruppen übernommen werden, indem [@(:include Site.GroupHeader:)@] verwendet wird. Siehe [[PmWikiDe.IncludeOtherPages|Einbinden anderer Seiten]].%0a%0a%25trail%25%3c%3c|[[DocumentationIndex|DokumentationsIndex]]|>>
+time=1126092405
+title=Kopfzeilen der Gruppe

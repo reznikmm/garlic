@@ -1,0 +1,10 @@
+version=pmwiki-2.1.beta9 ordered=1 urlencoded=1
+agent=Mozilla/4.0 (compatible; MSIE 6.0; Windows 98; .NET CLR 1.1.4322)
+author=mmh
+host=84.146.251.53
+name=PmWikiDe.WikiSandbox
+rev=57
+targets=PmWikiDe.TextFormattingRules,PmWikiDe.ECB
+text=(:title Sandkasten:)%0a(:comment (deutsche %0a!! Übersetzung%0a der Seite Main.WikiSandbox, [[Stand]] 06.09.2005):)%0a%0a%0a! Eine wichtige Überschrift %0a%0a!! Eine weniger wichtige Überschrift %0a%0a# eine%0a# sortierte%0a# Liste %0a%0a''kursiver'' und '''fetter''' Text %0a%0aHier mal nur ein Absatz, damit man das auch sieht%0a%0a%0a%0aHallo '''Ralph'''%0a%0a%0aSie können diese Seite gerne nach den [[PmWikiDe/Text Formatting Rules|Textformatierungsregeln]] bearbeiten.  Klicken Sie einfach auf Bearbeiten%0a%0a'''+'Bitte beachten Sie: Der Sandkasten wird automatisch nach 1000%25center%25 Minuten geleert.+''+'+Großer Text+''+Großer Text+'+''''%0a%25center%25# erstmal%25center%25 Hallo Welt%0a# Dann hallo Kölle%0a# dann hallo Zamonien%0akann man so nicht sagen%0a''womit ja wohl alle gegrüßt sind, oder???''%0a%0a----%0a->Wiki-Doku im Sandkasten:%0a----%0a* Doku '''lesen'''%0a* Dann mal testen%0aUnd jetzt ein Link: [[http://pmwiki.org]]%0a->Bin beeindruckt!%0a%0aMehr Details zur [[ECB]]%0a%0a----%0a%0a%0aÄnderungsTest
+time=1133455496
+title=Sandkasten

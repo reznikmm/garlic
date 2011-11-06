@@ -1,0 +1,12 @@
+version=pmwiki-2.1.5 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.2) Gecko/20060308 Firefox/1.5.0.2
+author=Holo
+csum=translated
+ctime=1145548666
+host=195.98.173.2
+name=PmWikiRu.WikiAdministrator
+rev=1
+targets=PmWikiRu.Installation,PmWikiRu.InitialSetupTasks,PmWikiRu.DocumentationIndex,PmWikiRu.Audiences
+text=(:title Администратор Вики:)%0a%0aАдминистратор Вики -- это субъект (не обязательно один) устанавливающий, настраивающий и администрирующий систему PmWiki для авторов и посетителей сайта.  PmWiki была сделана так, чтобы для людей не знающих HTML, PHP и даже программы веб сервера [[уставнока -> installation]] и [[начальная настройка -> initial setup tasks]] были как можно проще.  В тоже время, PmWiki разработана достаточно гибкой для людей знающих HTML и PHP так, чтобы те могли настроить PmWiki по своим потребностям.%0a%0aЧитай об администрировании на странице [[DocumentationIndex|+]] и подробности о целевой аудитории PmWiki на странице [[Audiences|+]].%0a%0a%25trail%25%3c%3c|[[DocumentationIndex|+]]|>>
+time=1145548666
+title=Администратор Вики

@@ -1,0 +1,9 @@
+version=pmwiki-2.1.beta1 ordered=1 urlencoded=1
+agent=Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.1.4322; InfoPath.1; .NET CLR 2.0.50727)
+author=César Toscano
+host=194.117.24.10
+name=PmWikiPt.PmWikiPt
+rev=13
+targets=PmWikiPt.WikiWikiWeb,PmWikiPt.BasicEditing,PmWiki.Installation,PmWikiPt.XLPage
+text=PmWiki é um sistema do tipo [[WikiWikiWeb]] destinado a suportar a criação e manutenção colaborativa de ''sites'' para a Internet.%0aAs páginas PmWiki são tratadas como páginas web normais, tendo uma opção com o nome "Editar"  que permite alterar de forma simples o seu conteúdo assim como adicionar novas páginas ao ''site'', não sendo necessário conhecer a linguagem HTML ou CSS. Estas funcionalidades são disponibilizadas de acordo com o conjunto de regras [[BasicEditing]]. A edição de uma página pode ser feita pelo público em geral ou apenas por um conjunto pré-definido de pessoas.%0a%0aO sistema PmWiki foi programado em linguagem PHP e é distribuído com a licença ''GNU General Public License''. O sistema é simples de instalar e personalizar.%0a%0aPara iniciar a utilização do PmWiki, faça o ''download'' da [[http://www.pmwiki.org/pub/pmwiki/ | última versão ]], do [[(http://www.pmwiki.org/pub/pmwiki/pmwiki-latest.zip | arquivo ZIP]] ou do [[(http://www.pmwiki.org/pub/pmwiki/pmwiki-latest.tgz | arquivo gzipped tarball]]. De seguida, siga o procedimento definido na página [[PmWiki.Installation]].%0a%0aPmWiki é marca registada de [[http://www.pmichaud.com | Patrick R. Michaud ]].%0a%0aO site do PmWiki na Internet encontra-se em [[(http://)pmwiki.org(/)]].%0a%0aA tradução para língua Portuguesa encontra-se em [[XLPage]].%0a%0aEste site corre a versão %25red%25{$Version}%25%25.%0a
+time=1131985372

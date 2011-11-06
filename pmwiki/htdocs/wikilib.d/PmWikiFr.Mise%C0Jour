@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta14
+newline=²
+time=1104576104
+text=PmWiki est conçu pour pouvoir être mise à jour facilement sans affecter vos données existantes ni votre configuration.²²!!!Pour mettre à jour `PmWiki:²²0. Si vous faite une mise à jour d'une version majeure ( une version dont le second nombre change, comme le passage de la version 0.5.27 à la 0.6.0 ), lisez alors attentivement la page [[notes de versions]] (anglais: PmWiki:ReleaseNotes) pour voir si il n'y a pas de changements significatifs ou de tâches à effectuer auparavant pour mener à bien la mise à jour.²²1. C'est ''toujours'' une bonne idée de sauvegarder votre  installation avant toute chose. Vous pouvez copier le répertoire entier de votre installation ou seulement le répertoire @@wiki.d@@ ainsi que vos configurations locales personnelles (par ex,  @@config.php@@, @@localmap.txt@@, etc.).²²2. Téléchargez la version de `PmWiki que vous voulez à cette adresse http://www.pmichaud.com/pub/pmwiki.²²3. Décompressez l'archive tar en exécutant @@tar xvzf ''tgzfichier''@@, ''tgzfichier'' étant le fichier téléchargé précédemment. Un répertoire @@pmwiki-x.y.z@@ sera créé contenant le nouvelle version du logiciel.  ²²4. Ecrasez les fichiers de votre installation existante en copiant les fichiers de @@pmwiki-x.y.z@@. Par exemple, si votre système PmWiki est dans le répertoire ''pmwiki'', une façon d'effectuer ceci est d'exécuter la commande suivante:²²        cp -a pmwiki-x.y.z/. pmwiki²²5. C'est tout ! Aussi longtemps que vous ne personnaliserez pas le fichier @@pmwiki.php@@ (les paramètres de [[configuration locale]] doivent être dans le fichier @@config.php@@) votre installation de PmWiki devrait continuer de fonctionner correctement. ²²----²%trail%<<|[[Index doc admin]]|>>²²----²%tr%Traduction de la page PmWiki:Upgrades - page originale sur PmWiki:PmWikiFr.MiseÀJour²
+author=PRZ
+name=PmWikiFr.MiseÀJour
+host=82.124.121.140
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; fr-FR; rv:1.7.5) Gecko/20041108 Firefox/1.0
+rev=4
+targets=PmWikiFr.PmWiki,PmWikiFr.NotesDeVersions,PmWikiFr.ConfigurationLocale,PmWikiFr.RechercheRéférences,PmWikiFr.Dépannage,PmWikiFr.IndexDocAdmin

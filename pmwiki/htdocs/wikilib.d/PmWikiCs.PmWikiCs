@@ -1,0 +1,9 @@
+version=pmwiki-2.1.beta5 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.10) Gecko/20050822 Firefox/1.0.6 (Debian package 1.0.6-3)
+author=
+host=193.85.147.249
+name=PmWikiCs.PmWikiCs
+rev=23
+targets=PmWikiCs.TextFormattingRules,PmWiki.DocumentationIndex,PmWiki.PmWikiFeatures
+text=PmWiki je [[http://cs.wikipedia.org/wiki/Wiki | wiki-systém]] urèený pro kolektivní vytváøení a údr¾bu webových stránek.%0a%0aStránky PmWiki se jeví jako bì¾né webové stránky, ale kromì toho obsahují navíc odkaz "Upravit", pomocí kterého lze jednodu¹e upravovat existující webové stránky a pøidávat (vytváøet) stránky nové. Po¾adovaný vzhled stránek zaji¹»ují jednoduchá [[pravidla pro formátování textu -> TextFormattingRules]]. Nepotøebujete tedy znát nebo pou¾ívat kód HTML. Stránky mohou být dostupné ¹iroké vìøejnosti nebo pouze malé urèené skupinì autorù.%0a%0a%0a%0a!! PmWiki%0a je napsán ve skriptovacím jazyce PHP a je volnì dostupný pod GNU Public License (GPL). Je navr¾en pro snadnou instalaci, úpravy a provozovaní ¹iroké ¹kály aplikací. Na tomto serveru bì¾í {$Version}. %0a%0aPmWiki je registrovaná ochranná známka Patricka R. Michauda (http://www.pmichaud.com).%0a%0a----%0aPmWiki si mù¾ete stáhnout ze stránky http://www.pmichaud.com/pub/pmwiki. Úplná dokumentace je dostupná na originálních stránkách ([[PmWiki/documentation index]]). Více informací naleznete na stránkách vlastností ([[PmWiki/PmWiki features]]).%0a%0a----%0aStránky ve skupinì {$Group}%0a(:Pagelist group=PmWikiCs:)%0a%0a...%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a
+time=1133232039

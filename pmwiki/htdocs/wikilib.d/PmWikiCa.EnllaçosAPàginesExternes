@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta14
+newline=²
+time=1105364877
+text=Per crear un enllaç a un lloc que no es part d'aquest PmWiki/WikiWikiWeb, simplement es posa l'adreça completa (URL) de la pàgina en el text d'una pàgina, com aquesta:  http://www.pmichaud.com/toast .  No hi ha necessitat de posar cap format de fantasia o caracters al voltant de l'adreça--simplement s'escriu l'adreça directament al text de la pàgina i serà donat com un enllaç en la sortida.²²Si es vol crear un enllaç a un altre pàgina amb algún text alternatiu, aleshores s'usa doble parèntesi quadrat per especificar la URL i el text alternatiu, com aquí @@[=[[http://www.pmichaud.com/toast Strawberry Pop-Tart Blow-Torches]]=]@@.  Aquest encara serà un enllaç a l'adreça URL però es mostrarà com el text que es proporcioni en comples de l'adreça com aquí [[http://www.pmichaud.com/toast Strawberry Pop-Tart Blow-Torches]].²²%trail%<<|PmWikiCa.ÍndexDeLaDocumentació|>>
+targets=PmWiki.WikiWikiWeb,PmWikiCa.CreantNovesPàgines,PmWikiCa.ÍndexDeLaDocumentació,PmWiki.ImagesInWikiPages
+author=sim6
+name=PmWikiCa.EnllaçosAPàginesExternes
+host=80.58.34.235
+agent=Mozilla/5.0 (X11; U; Linux ppc; ca-AD; rv:1.7.5) Gecko/20041220 Firefox/1.0 (Debian package 1.0+dfsg.1-1)
+rev=1

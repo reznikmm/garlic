@@ -1,0 +1,11 @@
+version=pmwiki-2.1.beta38 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1
+author=CarlosAB
+csum=Mudei grupo da Eslovenia.
+ctime=1136881064
+host=201.10.18.127
+name=PmWikiPtBr.OutrasLinguas
+rev=11
+targets=PmWiki.Internationalizations,PmWikiPtBr.OutrasLinguas,PmWikiCa.PmWikiCa,PmWikiCs.PmWikiCs,PmWikiDa.PmWikiDa,PmWikiDe.PmWikiDe,PmWikiEs.PmWikiEs,PmWikiFr.PmWikiFr,PmWikiHu.PmWikiHu,PmWiki.PmWiki,PmWikiIt.PmWikiIt,PmWikiJa.PmWikiJa,PmWikiLt.PmWikiLt,PmWikiNl.PmWikiNl,PmWikiNo.PmWikiNo,PmWikiPl.PmWikiPl,PmWikiPtBr.PmWikiPtBr,PmWikiRo.PmWikiRo,PmWikiSi.PmWikiSi,PmWikiSv.PmWikiSv,PmWikiTa.PmWikiTa,PmWikiTr.PmWikiTr,PmWikiVi.PmWikiVi,PmWikiZhCn.PmWikiZhCn
+text=(:if name PmWikiPtBr.OutrasLinguas:)%0aPmWiki é capaz de mostrar sua interface em outras linguas que não sejam o inglês. %0aNovas traduções em outras linguagens podem ser feitas, editando a páginas de tradução no wiki.  Para mais detalhes  veja página [[PmWiki/internationalizations| Internacionalizações (en)]].%0a%0aTraduções que já foram desenvolvidas para o PmWiki 2 incluem:%0a%0a(:if ! name PmWikiPtBr.OutrasLinguas:)%0a(:table align=center width=67%25 style='background-color:#f7f7f7; border:1px solid #cccccc; margin-top:1.5em' :)%0a(:cellnr:)%0a%25center%25'''PmWiki em [[PmWikiPtBr/Outras Linguas]]'''%0a%25define=langlist class=inline center list font-size=smaller margin-top:0.5em%25%0a(:if:)%0a* %25langlist%25[[PmWikiCa/PmWikiCa | Catalão ]]%0a* [[PmWikiCs/PmWikiCs | Tcheco]]%0a* [[PmWikiDa/PmWikiDa | Dinamarquês]]%0a* [[PmWikiDe/PmWikiDe | Alemão]]%0a* [[PmWikiEs/PmWikiEs | Espanhol]]%0a* [[PmWikiFr/PmWikiFr | Francês]]%0a* [[PmWikiHu/PmWikiHu | Húngaro]]%0a* [[PmWiki/PmWiki   | Inglês]]%0a* [[PmWikiIt/PmWikiIt | Italiano]]%0a* [[PmWikiJa/PmWikiJa | Japonês]]%0a* [[PmWikiLt/PmWikiLt | Lituano]]%0a* [[PmWikiNl/PmWikiNl | Holandês]]%0a* [[PmWikiNo/PmWikiNo | Norueguês]]%0a* [[PmWikiPl/PmWikiPl | Polonês]]%0a* [[PmWikiPtBr/PmWikiPtBr | Português(BR)]]%0a* [[PmWikiRo/PmWikiRo | Romeno]]%0a* [[PmWikiSi/PmWikiSi | Esloveno]]%0a* [[PmWikiSv/PmWikiSv | Sueco]]%0a* [[PmWikiTa/PmWikiTa | Tâmil]]%0a* [[PmWikiTr/PmWikiTr | Turco]]%0a* [[PmWikiVi/PmWikiVi | Vietnamita]]%0a* [[PmWikiZhCn/PmWikiZhCn | Chinês]]%0a
+time=1142194860

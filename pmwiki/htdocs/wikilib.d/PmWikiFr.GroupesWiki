@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta14
+newline=²
+time=1105392664
+text=PmWiki a la capacité de classer les pages en groupes de pages apparentées. Les [[MotsWiki]] forment des liens entre les pages d'un même groupe; @@[=NomDeGroupe.MotWiki=]@@ ou @@[=NomDeGroupe/MotWiki=]@@ permettent de créer un lien dans une page vers une page d'un groupe différent.²²Par défaut, la page des [[ModifsDuGroupe |dernières modifications]] (`RecentChanges) de chaque groupe affiche uniquement les modifications effectuées au sein de ce groupe. La page [[{$DefaultGroup}.ToutesLesModifs]] affiche toutes les pages modifiées de tous les groupes.²²Créer un nouveau groupe est aussi facile que de [[créer de nouvelles pages]]. Il suffit d'éditer une page existante et d'y inclure un lien vers une page dans le nouveau groupe, puis de cliquer sur le '?' pour à son tour éditer cette nouvelle page.  ²²Chaque groupe peut aussi posséder son entête et son pied de page spécifique, dont les contenus seront automatiquement ajoutés au début et à la fin de toutes les pages du groupe. Chaque groupe peut également avoir sa page [[AttributsDeGroupe |d'attributs de groupes]] personnalisés (mots de passe en lecture et en écriture) et partagés par toute les pages du groupe. Chaque page peut posséder son propre mot de passe en lecture/écriture qui prend la priorité sur celui du groupe. (voir MotsDePasse).²²Enfin, les [[administrateurs du Wiki]] peuvent effectuer une [[configuration locale]] pour chaque groupe --voir PersonnalisationParGroupe²²----²%trail%<<|IndexDocumentation|>>²²----²%tr%Traduction de PmWiki:WikiGroup - Page originale sur PmWiki:PmWikiFr.GroupesWiki²²
+targets=PmWikiFr.MotsWiki,PmWikiFr.PmWiki,PmWikiFr.ModifsDuGroupe,Main.ToutesLesModifs,PmWikiFr.CréerDeNouvellesPages,PmWikiFr.AttributsDeGroupe,PmWikiFr.MotsDePasse,PmWikiFr.AdministrateursDuWiki,PmWikiFr.ConfigurationLocale,PmWikiFr.PersonnalisationParGroupe,PmWikiFr.PagesWiki,PmWikiFr.IndexDocumentation
+author=PRZ
+name=PmWikiFr.GroupesWiki
+host=82.124.113.22
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; fr-FR; rv:1.7.5) Gecko/20041108 Firefox/1.0
+rev=10

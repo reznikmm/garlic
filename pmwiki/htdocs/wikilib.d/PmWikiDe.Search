@@ -1,0 +1,10 @@
+version=pmwiki-2.0.3 ordered=1 urlencoded=1
+agent=Opera/8.02 (Windows NT 5.0; U; de)
+author=Klonk
+host=62.245.250.121
+name=PmWikiDe.Search
+rev=6
+targets=
+text=(:title Suche:)(:comment (deutsche Übersetzung der Seite Site.Search, Stand 06.09.05) :)%0a(:searchbox:)%0a%0a(:searchresults:)%0a%0aDen zu suchenden Text bitte oben eingeben. Die Ergebnisseite liefert alle Seiten, die obige Wörter enthalten. Wenn man nach Phrasen suchen möchte, einfach die gesuchte Phrase in Anführungszeichen einschließen.%0a%0aUm die Suche auf eine einzelne Gruppe zu begrenzen einfach nur den Gruppennamen gefolgt von einem Schrägstrich am Anfang der Sucheingabe eintragen (z.B. "[=PmWiki/=]" oder "Main/"). Um alle Seiten anzuzeigen nur den einfachen Schrägstrich eintragen.%0a%0a!!!Suchbeispiele%0a  %0a||border='0' cellspacing='0' width='100%25' cellpadding='0' %0a||'''Eingabe:'''    ||'''Das enthalten gefundene Seiten:''' ||%0a||essen gehen      ||sowohl 'essen' als auch 'gehen' ||%0a||"essen gehen"    ||die Phrase 'essen gehen' ||%0a||pmwiki/essen   ||'essen' in der [=PmWiki=] Gruppe ||%0a||"pmwiki/essen" ||die Phrase 'pmwiki/essen' in allen Gruppen ||%0a||essen -gehen     ||'essen', ohne die Seiten die 'gehen' beinhalten ||%0a||Mutti -"essen gehen" ||'Mutti', ohne die Seiten die 'essen gehen' beinhalten ||%0a||essen "-gehen"   ||die Wörter 'essen' und '-gehen' ||%0a||essen - gehen    ||'essen', '-', und 'gehen' ||
+time=1126167077
+title=Suche

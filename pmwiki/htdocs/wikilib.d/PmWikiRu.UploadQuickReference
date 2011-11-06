@@ -1,0 +1,11 @@
+version=pmwiki-2.1.2 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1
+author=Holo
+csum=create
+ctime=1142581902
+host=195.98.173.2
+name=PmWikiRu.UploadQuickReference
+rev=1
+targets=PmWikiRu.Uploads,PmWikiRu.UploadQuickReference
+text=>>class='quickref' color=#000000 bgcolor=#f9f9f9 font-family='Arial,sans-serif' font-size=12px padding=2px border='1px solid #cccccc'%3c%3c%0a%25rfloat newwin%25'''[[PmWikiRu/Uploads|+]]'''%0a%0a#Для поиска "Файла для закачки"("File to upload") на вашем компьютере нажмите кнопку "Обзор"("Browse").%0a#В поле "Назвать файл как:" введите желаемое имя под которым файл будет закачан на сайт. Это может быть тоже имя что и на вашем диске ''или оно может отличаться'', но тип должен быть настоящим.%0a#Нажмите "$[Upload]" для закачки файла.%0a#Для ссылки на прикреплённый(закачаный) файл со страницы в группе {$Group} добавьте в тексте @@[=Attach:=]''имяфайла.тип''@@.%0a#После закачивания вы можете %0a**[[{$Name} | Посмотреть страницу {$Name}]] или%0a** [[{$Name}?action=edit | Поправить страницу {$Name}]] или%0a**Посмотреть ниже список закачаных файлов в группе {$Group}.%0a>>%3c%3c%0a%0a----%0a%0a!!Закачаные файлы%0a%0a(:attachlist:)
+time=1142581902

@@ -1,0 +1,12 @@
+version=pmwiki-2.1.beta38 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.8.0.1) Gecko/20060111 Firefox/1.5.0.1
+author=
+csum=
+ctime=1137839563
+host=201.10.18.127
+name=PmWikiPtBr.Documentacao
+rev=8
+targets=PmWikiPtBr.GuiadeDocumetacao,PmWikiPtBr.EdicaoBasica,PmWikiPtBr.CriandoNovasPaginas,PmWikiPtBr.Links,PmWikiPtBr.Imagens,PmWikiPtBr.RegrasFormatacaoTexto,PmWikiPtBr.Anexos,PmWikiPtBr.Tables,PmWikiPtBr.InterMap,PmWikiPtBr.PageLists,PmWikiPtBr.MarkupMasterIndex,PmWikiPtBr.DeletingPages,PmWikiPtBr.SimultaneousEdits,PmWikiPtBr.Audiencias,PmWikiPtBr.Colaboradores,PmWikiPtBr.ListaDeMail,PmWikiPtBr.FilosofiaPmWiki,PmWikiPtBr.NotasSobreDesign,PmWikiPtBr.Referencias,PmWikiPtBr.Glossario
+text=(:title Documentação:)%0aAs páginas abaixo descrevem vários aspectos sobre o [[#using|uso]], [[#admin|administração]] e [[#trouble|resolução de problemas]] de uma instalação do PmWiki, assim como aspectos da [[#misc|comunidade PmWiki]].%0a%0aComo você pode ver, a documentação ainda está imcompleta. Sinta-se à vontade para ajudar a você mesmo e outros, complementando a documentação existente. Talvez você queira seguir ou contribuir com nosso [[PmWikiPtBr/GuiadeDocumetacao| guia de documentação]].%0a%0a! Tabela de conteúdo%0a%0a* [[#using | Tópicos para iniciantes em criar/editar páginas no PmWiki]]%0a* [[#intermed |Tópicos intermediários de edição]]%0a* [[#misc |Sobre o PmWiki]]%0a%0a----%0a%0a!! [[#using]] Tópicos para iniciantes em criar/editar páginas no PmWiki%0a%0a* [[PmWikiPtBr/EdicaoBasica |Dicas básicas para criação de páginas]]%0a* [[PmWikiPtBr/CriandoNovasPaginas | Criando novas páginas]]%0a* [[PmWikiPtBr/Links| Links]]%0a* [[PmWikiPtBr/Imagens| Imagens]]%0a* [[PmWikiPtBr/RegrasFormatacaoTexto| Regras de fomatação de texto]]%0a%0a!! [[#intermed]] Tópicos intermediários de edição%0a%0a* [[PmWikiPtBr/Anexos]]%0a* [[PmWikiPtBr/Tables]]%0a* [[PmWikiPtBr/InterMap]] links%0a* [[PmWikiPtBr/Page lists]]%0a* [[PmWikiPtBr/Markup master index]]%0a* [[PmWikiPtBr/Deleting pages]]%0a* [[PmWikiPtBr/Simultaneous edits]]%0a%0a!! [[#misc]] Sobre o PmWiki%0a* [[PmWikiPtBr/Audiencias]]%0a* [[PmWikiPtBr/Colaboradores]]%0a* [[PmWikiPtBr/ListaDeMail| Listas de e-mail]]%0a* [[PmWikiPtBr/FilosofiaPmWiki | Folosofia PmWiki]]%0a* [[PmWikiPtBr/NotasSobreDesign| Notas sobre o design]]%0a* [[PmWikiPtBr/Referencias| Referências]]%0a* [[PmWikiPtBr/Glossario| Glossário]]%0a
+time=1142100749
+title=Documentação

@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta21
+newline=²
+time=1108978009
+text=!! Les actions disponibles dans `PmWiki²²:[@?action=browse@]: affiche la page spécifiée ²²:[@?action=edit@]: édite la page spécifiée²²:[@?action=diff@]: montre l'historique des changements de la page spécifiée²²:[@?action=attr@]: affiche un dialogue pour définir/modifier le mot de passe de la page spécifiée²²:[@?action=postattr@]:²²:[@?action=upload@]: affiche un formulaire pour envoyer un attachement au groupe courant²²:[@?action=crypt@]: affiche un formulaire pour la génération d'une chaîne cryptée à partir d'un mot de passe en clair ('hashcode') pour l'utiliser dans votre fichier config.php²²:[@?action=print@]: affiche la page spécifiée en utilisant le modèle spécifié par $ActionSkin['print']²²:[@?action=source@]: montre le code source de la page²²!!! Actions validées par $EnableDiag:²²Les actions suivantes sont disponibles seulement si vous spécifiez [@$EnableDiag = 1@] dans votre fichier de configuration. Elles peuvent être utilisées pour le déboguage et ne doivent pas être active dans un environnement de production.²²:[@?action=ruleset@]: affiche une liste de toutes les balises en trois colonnes:²** colonne 1 = nom de la balise (1. paramètre de la fonction markup() )²** colonne 2 = quand appliquer la règle (2. paramètre de la fonction markup() )²** colonne 3 = clé interne de tri de `PmWiki(dérivé de #2)²->(voir [[balises personnalisées]])²²:[@?action=phpinfo@]: affiche la sortie de phpinfo() et termine. Aucune page ne sera affichée.²²:[@?action=diag@]: affiche un vidage des toutes les variables globales et termine. Aucune page ne sera affichée.²²----²%trail%<<|[[Index doc admin]]|>>²²----²%tr%Traduction de PmWiki:AvailableActions - Page originale sur PmWiki:PmWikiFr.ActionsPossibles²
+author=noe
+name=PmWikiFr.ActionsPossibles
+host=212.23.162.38
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; fr-FR; rv:1.7.5) Gecko/20041108 Firefox/1.0
+rev=8
+targets=PmWikiFr.BalisesPersonnalisées,PmWikiFr.MessagesDErreur,PmWikiFr.DossiersEtFichiers,PmWikiFr.IndexDocAdmin

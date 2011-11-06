@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta26
+newline=²
+time=1111865194
+text=!!!Question²²Comment empêcher les spammeurs d'utiliser mon site dans une vaine et futile tentative d'améliorer leur position dans Google?²²!!!Réponse²²Le fichier [[blocklist.php->http://www.pmwiki.org/uploads/Cookbook/blocklist.php]] ²permet d'empêcher de poster sur le site une liste de mots et d'adresses IP. Pour utiliser le script, copier le simplement dans le répertoire ''cookbook/'' puis ajouter la ligne²²    if ($action=='edit') include_once('cookbook/blocklist.php');²²dans le fichier ''local/config.php''.²²Quand activé, ''blocklist.php'' balaye la page Main.Blocklist en recherchant les chaînes de la forme [@block:quelquechose@] ou ''quelquechose'' est une séquence de caractères qu'on ne peut pas poster. Donc, [@block:spam.com@] empêchera toute édition contenant "spam.com".²²De plus, la page [[Main.Blocklist]] peut contenir une gamme d'adresses IP de la forme ''a.b.c.d'' ou ''a.b.c.*''; tout envoi depuis une adresse listée est aussi bloqué.²²En général l'[[administrateur(s) du wiki]] voudra aussi protéger la page Main.Blocklist contre toute édition pour éviter toute addition/effacement arbitraire (voir [[mots de passe]]). Il est aussi possible de protéger en lecture la page Main.Blocklist de façon à cacher les mots exacts ou les adresses bloqués.²²!!!Autres notes²²Le script ''blocklist.php'' définit aussi la variable $Blocklisted, de anière à permettre à un administrateur d'effectuer d'autres taches en sus d'une interdiction d'édition. ²²!!!Contributeurs²²* [[~Pm]], 29-Nov-2004²²!!!Voir aussi²²La page [[Sécurité]].²²----²%trail%<<|[[Index compléments]]|>>²²----²%tr%Traduction de PmWiki:Cookbook.Blocklist - Page originale sur PmWiki:PmWikiFr.ListeDeBlocage²
+targets=Main.Blocklist,PmWikiFr.AdministrateursDuWiki,PmWikiFr.MotsDePasse,Profiles.Pm,PmWikiFr.Sécurité,PmWikiFr.DiminutionBandePassante,PmWikiFr.IndexCompléments,PmWikiFr.EffacerHistorique
+author=PRZ
+name=PmWikiFr.ListeDeBlocage
+host=82.124.112.212
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; fr-FR; rv:1.7.6) Gecko/20050226 Firefox/1.0.1
+rev=7

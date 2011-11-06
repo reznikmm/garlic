@@ -1,0 +1,11 @@
+version=pmwiki-2.1.6 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; hu; rv:1.8.0.3) Gecko/20060426 Firefox/1.5.0.3
+author=
+csum=
+ctime=1148639997
+host=80.85.54.4
+name=PmWikiHu.Kowalski
+rev=1
+targets=PmWikiHu.AzértEztLetesztelem
+text=De Pöpec...%0a%0a[[Azért ezt letesztelem]] %0a'+'+Hosszú û Û Õ õ+'+'
+time=1148639997

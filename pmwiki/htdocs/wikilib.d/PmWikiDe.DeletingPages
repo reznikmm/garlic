@@ -1,0 +1,10 @@
+version=pmwiki-2.0.12 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.0; de-DE; rv:1.4) Gecko/20030619 Netscape/7.1 (ax)
+author=AndreasM
+host=192.102.158.90
+name=PmWikiDe.DeletingPages
+rev=3
+targets=PmWiki.DocumentationIndex,PmWikiDe.EditVariables
+text=(:title Löschen von Seiten :)%0a[-%25green%25(deutsche Übersetzung der Seite PmWiki.DocumentationIndex, Stand 20.10.2005)-]%0a%0aUm eine Seite zu löschen, klicken Sie auf Bearbeiten und ersetzen Sie den gesamten Text der Seite durch das folgende Wort:%0a%0a    delete%0a%0aNach Speichern der Änderung ist die Seite gelöscht. Als Sicherheitsmaßnahme bleibt die Seite auf dem Server bestehen (mit einem Zeitstempel) und kann somit vom Wiki-Administrator wiederhergestellt werden.%0a%0aDas Standardwort, welches zum Löschen von Seiten verwendet wird ("delete"), kann durch Setzen der Variable $DeleteKeyPattern (s. [[EditVariables|Variablen für die Bearbeitung]]) geändert werden. Falls die Gefahr böswilliger Löschungen besteht, kann es hilfreich sein, das Löschwort durch ein ungewöhnlicheres Wort zu ersetzen. Ausserdem gibt es ein "Rezept", welches die Verwendung eines separaten Löschbefehls vorsieht (Cookbook:DeleteAction).
+time=1129823686
+title=Löschen von Seiten 

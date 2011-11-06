@@ -1,0 +1,10 @@
+version=pmwiki-2.0.beta14
+newline=²
+text=Ci-dessous une liste des contributeurs principaux au développement et à l'amélioration de `PmWiki.  Toutes mes excuses si j'ai oublié quelqu'un -- Vous êtes libres de vous y citer si vous avez été oublié, et vous pouvez retirer votre nom si vous ne désirez pas être associé avec tous ces gens. :-)²²* Glenn Blalock - suggestions de StylesWiki, tests, documentation²* James Davis - StylesWiki codes, test²* Scott Duff - pmwe, simple-journal.php, vérification générale du bon fonctionnement²* Dawn Green - suggestions de StylesWiki, [[Envoyer des fichiers sur le site]], documentation²* Janice Heinold - Tests initiaux de `PmWiki et suggestions, documentation²* Ross Kowalski - [[Envoyer des fichiers sur le site]] et étude de la forme d'impression²* Isabelle Michaud - codes d'image flottante, [[groupes Wiki]], [[Envoyer des fichiers sur le site]]/attachements²* John Rankin - WikiTrails, [[Liens]], EditQuickReference, notify.php, documentation, déboguage²* Carlo Strozzi - Internationalisation, `PmWiki on Boa, redirection HTML ²* Jessica Tishmack - [[Envoyer des fichiers sur le site]], tests²* Robert Abitbol - personnalisation; suggestions pour de nouvelles fonctionnalités ou des modifications²* Christian Ridderström - [[Cookbook:EmacsPmWikiMode |pmwiki-mode for Emacs]] et quelques autres astuces/modifications.²*Jean-Claude Gorichon - Priorités de développement : http://www.pmichaud.com/wiki/Development/DevelopmentPriority²²---- ²%trail%<<|[[Index documentation]]|>>²²----²%tr%Traduction de PmWiki:Contributors - Page originale sur PmWiki:PmWikiFr.Contributeurs
+time=1104579131
+author=PRZ
+name=PmWikiFr.Contributeurs
+host=82.124.121.140
+agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; fr-FR; rv:1.7.5) Gecko/20041108 Firefox/1.0
+rev=6
+targets=PmWikiFr.StylesWiki,PmWikiFr.EnvoyerDesFichiersSurLeSite,PmWikiFr.GroupesWiki,PmWikiFr.Liens,PmWikiFr.WikiTrails,PmWikiFr.EditQuickReference,PmWikiFr.AdministrateursDuWiki,PmWikiFr.IndexDocumentation,PmWikiFr.FeuillesDeDonnéesVersPmWiki

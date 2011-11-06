@@ -1,0 +1,11 @@
+version=pmwiki-2.1.11 ordered=1 urlencoded=1
+agent=Mozilla/5.0 (Macintosh; U; PPC Mac OS X Mach-O; en-US; rv:1.8.0.4) Gecko/20060508 Firefox/1.5.0.4
+author=Claudio Chagas
+csum=
+ctime=1136254035
+host=201.29.82.203
+name=PmWikiPtBr.SideBar
+rev=34
+targets=PmWikiPtBr.PmWikiPtBr,PmWikiPtBr.Sandbox,PmWikiPtBr.RecentChanges,Site.AllRecentChanges,Site.AllRecentChangesShort,PmWikiPtBr.Documentacao,PmWikiPtBr.EdicaoBasica,PmWikiPtBr.FAQ,PmWikiPtBr.FilosofiaPmWiki,PmWikiPtBr.EnvieDinheiroParaPM,PmWikiPtBr.ListaPaginasGrupo,PmWikiPtBr.OutrasLinguas
+text=%25sidehead%25 [[PmWikiPtBr/PmWikiPtBr | Português BR]]%0a* [[PmWikiPtBr/PmWikiPtBr |Página Inicial]]%0a* [[PmWikiPtBr/Sandbox | WikiSandBox]]%0a*  [[PmWikiPtBr/RecentChanges | Alterações]] [-- [[Site/AllRecentChanges|(Tudo]]|[[Site/AllRecentChangesShort|Curto) ]] --]%0a%0a* %25sidehead%25 [[PmWikiPtBr/Documentacao | Documentação]]%0a* [[PmWikiPtBr/EdicaoBasica | Básico para editar]]%0a* [[PmWikiPtBr/FAQ | Perguntas Freqüentes]]%0a* [[PmWikiPtBr/FilosofiaPmWiki | Filosofia PmWiki]]%0a%0a* [[PmWikiPtBr/EnvieDinheiroParaPM | EnvieDinheiroParaPM]]%0a%0a* ''[[PmWikiPtBr/ListaPaginasGrupo | Páginas pt-BR]]''%0a* ''[[PmWikiPtBr/OutrasLinguas | Outras Línguas]]''%0a
+time=1152112110
