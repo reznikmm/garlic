@@ -1,9 +1,0 @@
-version=pmwiki-2.1.beta5 ordered=1 urlencoded=1
-agent=Mozilla/5.0 (Windows; U; Windows NT 5.0; ru-RU; rv:1.7.12) Gecko/20050919 Firefox/1.0.7
-author=
-host=80.247.35.10
-name=PmWikiRu.SandBox
-rev=3
-targets=
-text=А КэмелКейс русский работает? -- Ну, я так и знал!!! Ну когда же хоть одна нормальная фики будет поддерживать РусскийКэмелКейс OutOfTheBox??? 
-time=1133252247

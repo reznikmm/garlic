@@ -1,9 +1,0 @@
-version=pmwiki-2.1.beta5 ordered=1 urlencoded=1
-agent=Mozilla/5.0 (X11; U; Linux i686; en-US; rv:1.7.6) Gecko/20050317 Firefox/1.0.2
-author=அமலசிங்
-host=213.40.131.66
-name=PmWikiTa.PmWikiTa
-rev=23
-targets=பிஎம்விக்கி.இண்ணயவிக்கி,பிஎம்விக்கி.பற்றிக்மிசெளட்
-text=பிஎம்விக்கி %0aஒரு [[பிஎம்விக்கி/இண்ணயவிக்கி]] சிஸ்ரம்,[[பிஎம்விக்கி/பற்றிக் மிசெளட்]]ஆல் தயாரிக்கப்பட்டது  in the PHP scripting language. PmWiki has been primarily designed as a tool to support easy, collaborative authoring and maintenance of web sites.%0a%0aThis site is running {$Version}. The software is freely available under the GNU General Public License (GPL) and may be downloaded from http://www.pmichaud.com/pub/pmwiki. Documentation is available via the documentation index.%0a%0aPmWiki is a registered trademark of Patrick R. Michaud (http://www.pmichaud.com).%0a%0a----%0a%0aCould someone translate the above into Tamil?  Thanks!%0a%0aPm%0a%0a-----------%0aHi Pm,%0a      this is Anand from TamilNadu,India. I first applaud you for your effort you showed on Tamil.I can %0ahelp you in Tamil translation to some extent. I need to know one thing from you. How to chage font type ,%0abecause tamil fonts are entirely different from english, i hope you know that. So you guide me in %0achanging the font type.%0a Regards%0a S.AnandKumar%0a%0a----%0aHello AnandKummr you do not to define tamil fonts for Pmwiki it si supported Microsoft Unicode%0ahttp://www.karangal.com %0a%0a------%0a%0aNote: து  the matra for "tu" is splitting off, following the consonant instead of showing the complete composite glyph...that matra should only appear after grantha consonants...or is it just showing like that on my Mac? (I'm interested in Tamil Unicode... so watching this page closely to see how it unfolds...)%0a%0aSivakatirswami%0a%0a%0a%0a%0a%0a%0aதமிழ் வளர்க்க இந்த பிஎம் விக்கி உதவுமா?%0a%0a%0a%0a%0a%0a%0a%0a
-time=1133200476

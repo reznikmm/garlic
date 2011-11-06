@@ -1,9 +1,0 @@
-version=pmwiki-2.0.12 ordered=1 urlencoded=1
-agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; fr-FR; rv:1.7.10) Gecko/20050717 Firefox/1.0.6
-author=PRZ
-host=212.194.201.133
-name=PmWikiNl.PmWikiNl
-rev=28
-targets=PmWiki.WikiWikiWeb,PmWiki.PatrickMichaud,PmWiki.PmWiki
-text=PmWiki is een [[PmWiki/WikiWikiWeb]] systeem gemaakt door [[PmWiki/Patrick Michaud]] in PHP (script taal). PmWiki is in eerste instantie gemaakt als een hulpmiddel om gemakkelijk met meerdere personen tegelijk aan een website te werken.%0a%0aDeze site gebruikt versie {$Version}. De Software is vrij beschikbaar onder de GNU General Public License (GPL) en kan  gedownload worden van [[http://www.pmichaud.com/pub/pmwiki]]. De documentatie is bereikbaar via de indexpagina.%0a%0aPmWiki is een geregistreerd handelsmerk van Patrick R. Michaud (http://www.pmichaud.com).%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a
-time=1129977288

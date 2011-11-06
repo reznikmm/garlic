@@ -1,9 +1,0 @@
-version=pmwiki-2.0.10 ordered=1 urlencoded=1
-agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; de-AT; rv:1.7.12) Gecko/20050915
-author=M F Wolff
-host=213.39.183.5
-name=PmWikiDe.Voraussetzungen
-rev=2
-targets=PmWikiDe.PmWiki,PmWikiDe.PMWiki,PmWikiDe.DocumentationIndex
-text=%25audience%25 administrators (basic)%0a%0aVoraussetzungen zum Einrichten des PmWiki Wiki Systems:%0a# [[http://www.php.net/ | PHP]] 4.1 oder eine spätere Version,%0a# Ein Webserver, der PHP-Skripte verarbeitet.%0a%0aEs wird berichtet, dass PmWiki mit den folgenden Betriebssystem/Webserver-Kombinationen läuft:%0a* Apache 1.3 or 2.0, auf praktisch allem (Unix, Linux, Windows, and Mac OS/X)%0a* Microsoft Internet Information Server, auf Windows%0a%0aHingegen soll PmWiki nicht laufen auf:%0a* `MacOS 8.6 (beruht auf Hörensagen und Gerüchten, wir wären glücklich etwas Definitives zu hören)%0a%0aDas [[(Cookbook:)Standalone]] Rezept stellt eine Möglichkeit zur Verfügung, PMWiki ohne einen Webserver wie Apache zu betreiben. PHP muss allerdings installiert sein. Der Webserver wird dann von einem PHP-Skript übernommen, der nicht die volle Funktionalität hat, aber PmWiki zum Laufen kriegt.%0a%0a%25trail%25%3c%3c|[[DocumentationIndex|Dokumentationsindex]]|>>
-time=1128756030

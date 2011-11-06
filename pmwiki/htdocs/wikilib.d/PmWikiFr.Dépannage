@@ -1,9 +1,0 @@
-version=pmwiki-2.0.10 ordered=1 urlencoded=1
-agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; fr-FR; rv:1.7.10) Gecko/20050717 Firefox/1.0.6
-author=PRZ
-host=82.120.146.221
-name=PmWikiFr.Dépannage
-rev=7
-targets=PmWiki.Troubleshooting,PmWikiFr.PmWiki,PmWikiFr.RéinitialisationDesPermissionsDePage,PmWikiFr.PhpSafeMode,PmWikiFr.Variables,PmWikiFr.IndexDocAdmin,PmWikiFr.MiseÀJour
-text=%25vert%25 page à mettre à jour suivant [[PmWiki.Troubleshooting]]%0a%0aCette page liste différents problèmes rencontrés durant l'utilisation de PmWiki.%0a%0a* RéinitialisationDesPermissionsDePage%0a* Installer PmWiki avec php SAFE MODE : PhpSafeMode%0a* Si vous avez des problèmes pour décompresser l'archive d'installation sous Windows. Essayez l'un des outils de gestion d'archives suivants.%0a** [=WinZip=] de http://www.winzip.com/ - Le vénérable standard de-facto outil d'archivage zip. Coût $29.0. Malheureusement, il ne gère pas les fichiers .gz et .tar. [=WinRAR=], ci dessous, le peut.%0a** [=WinRAR=] de http://www.rarlab.com/ - Alternative, focalisée sur les fichiers de type .rar, il supporte également les zip. Coût $29.00%0a** [=PKZip=] de http://www.pkware.com/ - L'original.  Coût $29.95 %0a** 7-Zip de http://www.7-zip.org/ - Alternative Open Source.  Supporte les ZIP, CAB, RAR, ARJ, GZIP, [=BZIP2=], TAR, CPIO, RPM, DEB et possède son propre format de trés forte compression appelé 7z.  Coût $0.00.%0a** Info-ZIP de http://www.info-zip.org/pub/infozip/ - Une autre alternative Open Source sous license  BSD-like (très libérale). Coût $0.00%0a%0a%25trail%25%3c%3c|[[Index doc admin]]|>>%0a%0a%0a----%0a%25tr%25Traduction de la page PmWiki:Troubleshooting - Page originale sur PmWiki:PmWikiFr.Dépannage
-time=1128184495
