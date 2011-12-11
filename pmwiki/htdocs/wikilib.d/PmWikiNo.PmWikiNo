@@ -1,9 +1,0 @@
-version=pmwiki-2.0.12 ordered=1 urlencoded=1
-agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; nb-NO; rv:1.7.8) Gecko/20050511
-author=erik_h
-host=195.204.19.164
-name=PmWikiNo.PmWikiNo
-rev=4
-targets=PmWiki.WikiWikiWeb,PmWiki.PatrickMichaud,PmWiki.PmWiki,PmWiki.DocumentationIndex
-text=PmWiki er ett [[PmWiki/WikiWikiWeb]]-system utvicklet av [[PmWiki/Patrick Michaud]] i scriptspråket PHP. PmWiki har primært blitt skapt som et verktøy for enkelt, og ved samarbeide, lage og vedlikeholde nettsider.%0a%0aDette nettstedet bruker version {$Version}. Programvaren distribueres under GNU General Public License (GPL) og kan lastes ned fra http://www.pmichaud.com/pub/pmwiki. Dokumentasjonen kan leses via linken [[PmWiki/Documentation index]].%0a%0aPmWiki er et registrert varemerke tilhørende Patrick R. Michaud (http://www.pmichaud.com).%0a%0a
-time=1130609601

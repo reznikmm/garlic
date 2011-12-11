@@ -1,9 +1,0 @@
-version=pmwiki-2.1.beta1 ordered=1 urlencoded=1
-agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; en-US; rv:1.7.12) Gecko/20050915 Firefox/1.0.7
-author=Pm
-host=24.1.26.255
-name=PmWikiEs.PmWikiEs
-rev=32
-targets=PmWiki.WikiWikiWeb,PmWiki.PatrickMichaud,PmWikiEs.EdiciónDePáginas
-text=PmWiki es un sistema [[PmWiki/WikiWikiWeb]] desarrollado por [[PmWiki/Patrick Michaud]] en el lenguaje PHP. PmWiki ha sido diseñado principalmente como apoyo al mantenimiento y creacion de paginas web de manera sencilla y abierta.%0a%0aEsta pagina esta ejecutando la version {$Version}. Este software es gratuito y se ofrece bajo la licencia GNU General Public License (GPL) y se puede encontrar en http://www.pmichaud.com/pub/pmwiki. Se puede acceder a la documentacion mediante el indice de documentos.%0a%0aPara saber crear páginas de PmWiki ve a [[EdiciónDePáginas | Edición de Páginas]]%0a%0aPara poner PmWiki 2 en español guarda este archivo llamado PmWikiEs.XLPage en la carpeta /wikilib.d%0a%0aPmWiki es una marca registrada de Patrick R. Michaud (http://www.pmichaud.com).%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a
-time=1132324998

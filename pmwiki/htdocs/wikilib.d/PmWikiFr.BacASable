@@ -1,9 +1,0 @@
-version=pmwiki-2.0.6 ordered=1 urlencoded=1
-agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; fr-FR; rv:1.7.10) Gecko/20050717 Firefox/1.0.6 (ax)
-author=Jean-Dom
-host=62.35.164.27
-name=PmWikiFr.BacASable
-rev=40
-targets=PmWikiFr.RèglesDeFormatage,PmWikiFr.EnvoyerDesFichiersSurLeSite,Cookbook.Cookbook,DigitalCamera.Welcome,PmWikiFr-Sony-Product-Video-DigitalCamera.Welcome,PmWikiFr-Sony-Product-Video-DigitalCamera.DigitalCamera
-text=Comme toutes les pages de ce Wiki, celle-ci vous est ouverte. Elle est là pour que vous vous 'fassiez la main' avec les RèglesDeFormatage. Il vous suffit  de cliquer le lien 'editer page' en haut à droite.%0aMerci de laisser ce paragraphe en l'état et de faire vos expérimentations sous le trait. Nota : l'aperçu est '''en dessous''' de la fenêtre d'édition. [[Envoyer des fichiers sur le site]] ''(Attach:file.ext)'' n'est pas activé sur ce groupe, seulement sur le groupe [[Cookbook]].%0a----%0a'''%0a'+Ceci est un essai+''''%0a[[http://www.runile.com | runile le portail réunionnais]]%0a%0acool%0a'+sdkfjsdlfkjsdlfdksfl sfs%0adfs%0adf%0asd+'%0asdfsdfsdfsdfsdf%0afsdfsdf%0a---------%0aj'essaie de transformer cette page: je joue dans le carré de sable.%0a%0a!! je fais un chateau%0a[[http://baa-li.com/|baa.enL'honneurDeCeuxQuiNousTiennentLesPiedsAuChaud]][[%3c%3c]]dlqkjfljk%0a%0a____________________%0a%0aA mon tour de jouer dans le sable.%0a%0a[=www%0a%0aet hop!%0a%0a----------------%0a%0aEssai de lien hiérarchique&nbsp;:%0a%0a[[PmWikiFr/Sony/Product/Video/DigitalCamera/Welcome | Accueil Caméra Vidéo Sony]] Ne marche pas.%0a%0a[[PmWikiFr-Sony-Product-Video-DigitalCamera.Welcome | Accueil Caméra Vidéo Sony]] Mieux.%0a%0a[[PmWikiFr-Sony-Product-Video-DigitalCamera.DigitalCamera | Accueil Caméra Vidéo Sony]] Le standard ?
-time=1127591739

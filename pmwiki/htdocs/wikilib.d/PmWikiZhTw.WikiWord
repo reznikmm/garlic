@@ -1,9 +1,0 @@
-version=pmwiki-2.0.10 ordered=1 urlencoded=1
-agent=Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; SV1; .NET CLR 1.0.3705; Tablet PC 1.7; .NET CLR 1.1.4322)
-author=oc
-host=61.228.117.64
-name=PmWikiZhTw.WikiWord
-rev=2
-targets=PmWikiZhTw.WikiWord,PmWikiZhTw.WikiWords,PmWiki.PmWiki,PmWikiZhTw.Links,PmWiki.DocumentationIndex
-text=!!Definition and use as Page Titles%0aWikiWord是由兩個以上、單字間不含空白、且字首皆為大寫的英文單字，連在一起組合而成。這種拼字法有時候又稱為大小寫混合字（mixed case）或駱駝字（camel case）。在維基網頁中WikiWords就是每一頁的頁面名稱（'''page titles'''）。 %0a%0a!!Use as links%0aIn some wikis, you can string any sequence of words together, capitalizing the first letter of each word, to make a valid WikiWord '''link'''. In such PmWiki installations, WikiWords surrounded by [=[=...=]=] or preceded by a backquote (`) are not turned into links, `LikeThis.%0a%0aSee [[Links]] for information about `PmWiki's rules for forming links and forming page titles.%0a%0aOther descriptions of WikiWords are available from Wiki:WikiWord and Wikipedia:WikiWord.%0a%0a%25trail%25%3c%3c|PmWiki.DocumentationIndex|>>
-time=1128873466

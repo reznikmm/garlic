@@ -1,9 +1,0 @@
-version=pmwiki-2.1.beta5 ordered=1 urlencoded=1
-agent=Opera/8.50 (Windows NT 5.1; U; fr)
-author=
-host=80.125.126.249
-name=PmWikiFr.Téléchargement
-rev=2
-targets=PmWikiFr.Installation,PmWikiFr.MiseÀJour
-text=La version à jour et les anciennes versions de `PmWikì sont disponibles sur  http://www.pmwiki.org/pub/pmwiki/ .%0a%0aLiens directs:%0a* [[http://www.pmwiki.org/pub/pmwiki/pmwiki-latest.tgz | Dernière version compressée en Tgz]]%0a* [[http://www.pmwiki.org/pub/pmwiki/pmwiki-latest.zip | Dernière version compressée en Zip]]%0a%0aPages associées:%0a* [[Installation]]%0a* [[Mise à jour]]%0a
-time=1133221327

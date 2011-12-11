@@ -1,9 +1,0 @@
-version=pmwiki-2.0.12 ordered=1 urlencoded=1
-agent=Mozilla/5.0 (Windows; U; Windows NT 5.1; fr-FR; rv:1.7.10) Gecko/20050717 Firefox/1.0.6
-author=PRZ
-host=212.194.201.133
-name=PmWikiIt.PmWikiIt
-rev=39
-targets=PmWiki.PatrickMichaud,PmWiki.PmWiki,Main.SearchWiki,PmWikiIt.StatoDellaTraduzione,PmWikiIt.Terminologia,PmWikiIt.IndiceDocumentazione
-text=PmWiki è un´applicazione Wiki sviluppata da [[PmWiki/Patrick Michaud]] usando il linguaggio script PHP. PmWiki è stato ideato con l´intento principale di supportare la gestione di progetti collaborativi, come, per esempio, scrittura collaborativa e gestione di siti web, in modo facile e senza richiedere alcuna conoscenza di linguaggi specifici.%0a%0a%0a%25block bgcolor=#ffc border='1px solid black' padding=5px%25 La versione di PmWiki installata su questo sito è {$Version}. PmWiki è proprietà intellettuale di Patrick R. Michaud (http://www.pmichaud.com), rilasciata sotto la Licenza GNU/GPL e può essere scaricato gratuitamente all´indirizzo http://www.pmichaud.com/pub/pmwiki. Potete ottenere maggiori informazioni su PmWiki all´indirizzo http://www.pmwiki.org.%0a%0aQuesta è la pagina iniziale della traduzione italiana di PmWiki.\\%0a%0a%0a* [[Lista delle pagine italiane->Main.SearchWiki?q=PmWikiIt/]] %0a* StatoDellaTraduzione : %0a* [[Terminologia]]%0a* [[Indice documentazione]]%0a%0aLe pagine da tradurre sono tante e le ore disponibili sono troppo poche, quindi se qualcuno è disponibile a collaborare alla traduzione delle pagine dall'inglese oppure a correggere pagine in italiano già tradotte, può inserire il proprio nome nello StatoDellaTraduzione per notificare a tutti che sta facendo una traduzione e così evitare di fare un lavoro doppio.%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a%0a
-time=1129977817
