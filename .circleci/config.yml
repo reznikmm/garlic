@@ -1,0 +1,10 @@
+version: 2
+jobs:
+   build:
+     docker:
+       - image: reznik/gnat:wasm
+     steps:
+       - checkout
+       - run: sh ./configure --prefix=/tmp/garlic
+       - run: make all install GNATFLAGS="-O2 -gnatpn -gnatwu -gnatwn -gnatyI"
+       - run: cd Examples/Bank; /tmp/garlic/bin/gnatdist simcity.cfg -v
