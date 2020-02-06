@@ -562,6 +562,7 @@ package body System.Partition_Interface is
 
       Name : String := RCI_Name;
       Unit : Unit_Id;
+      Init : Boolean := False;
 
       -----------------------------
       -- Get_Active_Partition_ID --
@@ -571,6 +572,11 @@ package body System.Partition_Interface is
          Partition : Partition_ID;
          Error     : aliased Error_Type;
       begin
+         if not Init then
+            Init := True;
+            To_Lower (Name);
+            Unit := Get_Unit_Id (Name);
+         end if;
          Get_Partition (Unit, Partition, Error);
          if Found (Error) then
             Raise_Communication_Error (Error'Access);
@@ -586,6 +592,11 @@ package body System.Partition_Interface is
          Receiver : Unsigned_64;
          Error    : aliased Error_Type;
       begin
+         if not Init then
+            Init := True;
+            To_Lower (Name);
+            Unit := Get_Unit_Id (Name);
+         end if;
          Get_Receiver (Unit, Receiver, Error);
          if Found (Error) then
             Raise_Communication_Error (Error'Access);
@@ -593,9 +604,6 @@ package body System.Partition_Interface is
          return Receiver;
       end Get_RCI_Package_Receiver;
 
-   begin
-      To_Lower (Name);
-      Unit := Get_Unit_Id (Name);
    end RCI_Locator;
 
    ---------
