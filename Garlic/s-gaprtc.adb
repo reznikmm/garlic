@@ -58,7 +58,7 @@ package body System.Garlic.Protocols.Tcp is
       Key     : Debug_Key := Private_Debug_Key)
      renames Print_Debug_Info;
 
-   use Ada.Streams, System.Garlic.Protocols, System.Garlic.Types;
+   use Ada.Streams, System.Garlic.Types;
 
    subtype Error_Type is Exceptions.Error_Type;
 
@@ -168,7 +168,6 @@ package body System.Garlic.Protocols.Tcp is
       Data  : access Stream_Element_Array;
       From  : Stream_Element_Count;
       Error : in out Error_Type);
-   pragma Inline (Send);
    pragma Export (Ada, Send, "GLADE_Physical_Send");
    --  Receive and send data. Receive loops as long as Data has not
    --  been filled and Send as long as everything has not
@@ -320,12 +319,11 @@ package body System.Garlic.Protocols.Tcp is
 
    function Do_Connect (Sock_Addr : Sock_Addr_Type) return Socket_Type is
       Peer : Socket_Type    := No_Socket;
-      Addr : Sock_Addr_Type := Sock_Addr;
 
    begin
       begin
          Create_Socket (Peer);
-         Connect_Socket (Peer, Addr);
+         Connect_Socket (Peer, Sock_Addr);
       exception when Socket_Error =>
          pragma Debug (D ("Cannot connect to " & Image (Sock_Addr)));
          if Peer /= No_Socket then
@@ -1247,7 +1245,10 @@ package body System.Garlic.Protocols.Tcp is
             begin
                Addr := Addresses (Get_Host_By_Name (Host), 1);
                Port := Port_Type'Value (Image (J +  1 .. Image'Last));
-               return (Addr.Family, Addr, Port);
+               return Result : Sock_Addr_Type (Addr.Family) do
+                  Result.Addr := Addr;
+                  Result.Port := Port;
+               end return;
             end;
          end if;
       end loop;
@@ -1257,7 +1258,10 @@ package body System.Garlic.Protocols.Tcp is
                   Addresses (Get_Host_By_Name (Image), 1);
 
       begin
-         return (Addr.Family, Addr, Any_Port);
+         return Result : Sock_Addr_Type (Addr.Family) do
+            Result.Addr := Addr;
+            Result.Port := Any_Port;
+         end return;
       end;
 
    exception when Socket_Error =>

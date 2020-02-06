@@ -48,7 +48,7 @@ package XE_Names is
 --  names table entry and subprograms are provided for setting and retrieving
 --  these associated values. The usage of these values is up to the client.
 
-   Name_Buffer : String (1 .. 16*1024);
+   Name_Buffer : String (1 .. 16 * 1024);
    --  This buffer is used to set the name to be stored in the table for the
    --  Name_Find call, and to retrieve the name for the Get_Name_String call.
    --  The plus 1 in the length allows for cases of adding ASCII.NUL. The

@@ -630,7 +630,8 @@ package body System.Partition_Interface is
       while Caller /= null loop
          D ("Check " & Caller.Name.all & " version consistency");
          if Different (Caller.Version.all,
-                       Get_Unit_Version (Caller.Name.all, Caller.RCI)) then
+                       Get_Unit_Version (Caller.Name.all, Caller.RCI))
+         then
 
             --  If not boot partition, then terminate without waiting for
             --  boot partition request.

@@ -470,7 +470,8 @@ package body XE_Front is
          HID := Partitions.Table (P).Host;
          if HID /= No_Host_Id
            and then not Hosts.Table (HID).Static
-           and then Hosts.Table (HID).Import = Ada_Import then
+           and then Hosts.Table (HID).Import = Ada_Import
+         then
             Add_Conf_Unit (Hosts.Table (HID).External, P);
          end if;
       end loop;

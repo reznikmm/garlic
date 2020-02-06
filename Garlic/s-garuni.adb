@@ -543,7 +543,7 @@ package body System.Garlic.Units is
          end if;
 
          pragma Debug
-           (D ("Looking for information on unit "&  Units.Get_Name (Unit)));
+           (D ("Looking for information on unit " &  Units.Get_Name (Unit)));
 
          Units.Enter;
          Current := Units.Get_Component (Unit);

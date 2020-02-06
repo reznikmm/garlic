@@ -209,7 +209,7 @@ package body System.Garlic.Table is
             Index := Allocate;
             Table (Index) := Null_Component;
             Usage (Index).Name := Name;
-            Set_Info (Name, Integer (Integer (Index)));
+            Set_Info (Name, Integer (Index));
          else
             Index := Index_Type (Info);
          end if;

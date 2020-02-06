@@ -61,7 +61,6 @@ pragma Warnings (Off, System.Garlic.Startup);
 package body System.RPC.Server is
 
    use type System.Garlic.Types.Partition_ID;
-   use type System.Garlic.Streams.Params_Stream_Type;
 
    Private_Debug_Key : constant Debug_Key :=
      Debug_Initialize ("S_RPCSER", "(s-rpcser): ");

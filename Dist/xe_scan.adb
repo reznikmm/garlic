@@ -214,7 +214,8 @@ package body XE_Scan is
                      if Buffer (Scan_Ptr) = LF or else
                         Buffer (Scan_Ptr) = FF or else
                         Buffer (Scan_Ptr) = CR or else
-                        Buffer (Scan_Ptr) = VT then
+                        Buffer (Scan_Ptr) = VT
+                     then
                         New_Line;
                         exit;
                      elsif Buffer (Scan_Ptr) = EOF then
@@ -425,8 +426,6 @@ package body XE_Scan is
 
    procedure Write_Location
      (Where   : Location_Type) is
-
-      use ASCII;
 
    begin
       Write_Name (Configuration_File_Name);

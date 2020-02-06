@@ -48,10 +48,6 @@ pragma Warnings (Off, System.Garlic.Startup);
 
 package body System.RPC is
 
-   use Ada.Streams;
-
-   use type System.Garlic.Streams.Params_Stream_Access;
-   use type System.Garlic.Streams.Params_Stream_Type;
    use type System.Garlic.Types.Partition_ID;
 
    --  This package needs extra comments ???

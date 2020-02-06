@@ -1171,7 +1171,7 @@ package body XE is
       --  Remove the nodes created in the previous context.
 
       loop
-         exit when Nodes.Last <= Node_Id (Context.Last_Node);
+         exit when Nodes.Last <= Context.Last_Node;
          Nodes.Decrement_Last;
       end loop;
       N_Anonymous_Variable := Context.Anonymous;

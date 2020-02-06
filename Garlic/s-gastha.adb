@@ -39,7 +39,6 @@ package body System.Garlic.Storage_Handling is
    package SSE renames System.Storage_Elements;
 
    use type SSE.Storage_Count;
-   use type IC.int;
 
    function malloc (Size : IC.int) return Address;
    pragma Import (C, malloc, "__gnat_malloc");
