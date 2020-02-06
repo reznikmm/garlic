@@ -41,6 +41,8 @@ package System.Partition_Interface is
 
    pragma Elaborate_Body;
 
+   PCS_Version : constant := 1;
+
    type DSA_Implementation_Name is (No_DSA, GARLIC_DSA, PolyORB_DSA);
    DSA_Implementation : constant DSA_Implementation_Name := GARLIC_DSA;
 
