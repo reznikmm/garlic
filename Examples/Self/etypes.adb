@@ -15,6 +15,6 @@ package body Etypes is
 begin
 
    Local.Data := 1996;
-   Register (Local.My.Self);
+   Register (Ptypes.Node_Access (Local.My.Self));
 
 end Etypes;

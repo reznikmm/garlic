@@ -8,3 +8,4 @@ unset LANG
 $DIR/examples/bank.sh
 $DIR/examples/messages.sh
 $DIR/examples/racw.sh
+$DIR/examples/self.sh
