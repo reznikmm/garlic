@@ -7,4 +7,4 @@ jobs:
        - checkout
        - run: sh ./configure --prefix=/tmp/garlic
        - run: make all install GNATFLAGS="-O2 -gnatpn -gnatwu -gnatwn -gnatyI"
-       - run: cd Examples/Bank; /tmp/garlic/bin/gnatdist simcity.cfg -v
+       - run: Tests/run.sh /tmp/garlic
