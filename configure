@@ -3533,7 +3533,7 @@ echo "${ECHO_T}no" >&6
 (it looks like you only have GNAT $am_gnatls_version ($am_gnatls_date))" >&5
 echo "$as_me: error: Please get a version of GNAT no older than 3.16 (20041007)
 (it looks like you only have GNAT $am_gnatls_version ($am_gnatls_date))" >&2;}
-   { (exit 1); exit 1; }; }
+   { (echo 1); echo 1; }; }
 fi
 #
 # Platform specific
