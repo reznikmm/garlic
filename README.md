@@ -114,9 +114,6 @@ described in the following paper: J. Kienzle, Th. Wolf, A. Strohmeier:
 '96, Montreux, Switzerland, June 1996, published as Lecture Notes in
 Computer Science 1088, pp. 198 - 210, Springer 1996.
 
-The ZIP filter has been built on top of the zlib library developed by 
-Jean-loup Gailly and Mark Adler. See Garlic/zlib/README for details.
-
 GLADE replay features is part of a free contribution (04/97) from
 [D. Neri](mailto:d92-dne@nada.kth.se),
 KTH (Royal Institute of Technology, Stockholm, Sweden).
