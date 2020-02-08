@@ -5,6 +5,8 @@ jobs:
        - image: reznik/gnat:wasm
      steps:
        - checkout
-       - run: sh ./configure --prefix=/tmp/garlic
-       - run: make all install GNATFLAGS="-O2 -gnatpn -gnatwu -gnatwn -gnatyI"
+       - run: gprbuild -p -P gnat/garlic.gpr
+       - run: gprbuild -p -P gnat/gnatdist.gpr
+       - run: gprinstall -p -P gnat/garlic.gpr --prefix=/tmp/garlic --sources-subdir=lib/garlic
+       - run: gprinstall -p -P gnat/gnatdist.gpr --prefix=/tmp/garlic
        - run: Tests/run.sh /tmp/garlic

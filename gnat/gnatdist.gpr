@@ -1,0 +1,18 @@
+project Gnatdist is
+   for Source_Dirs use ("../Dist");
+   for Object_Dir use "../.objs/gnatdist/";
+   for Main use ("xe_main.adb");
+
+   package Compiler is
+      for Default_Switches ("Ada") use ("-g", "-gnatp");
+   end Compiler;
+
+   package Builder is
+      for Executable ("xe_main.adb") use "gnatdist";
+   end Builder;
+
+   package Binder is
+      for Default_Switches ("ada") use ("-E");
+   end Binder;
+
+end Gnatdist;

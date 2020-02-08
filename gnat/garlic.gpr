@@ -1,0 +1,33 @@
+library project Garlic is
+
+   type Platforms is
+     ("Linux",
+      "Windows");
+
+   Platform : Platforms := external ("PLATFORM", "Linux");
+
+   for Library_Name use "garlic";
+   for Library_Kind use "static";
+   for Library_Dir  use "../.libs";
+   for Object_Dir   use "../.objs";
+
+   Common_Dir := "../Garlic";
+   Platform_Dir := "";  --  do be redefined
+
+   case Platform is
+      when "Linux" =>
+         Platform_Dir := Common_Dir & "/platform/e";
+      when "Windows" =>
+         Platform_Dir := Common_Dir & "/platform/w";
+   end case;
+
+   for Source_Dirs use (Common_Dir) & Platform_Dir;
+   for Excluded_Source_Files use
+     ("s-shamem.adb", "s-shamem.ads",
+      "isthrbio.adb", "test_startup.adb", "linktest.adb", "b_gaprco.adb");
+
+   package Compiler is
+      for Default_Switches ("Ada") use ("-O2", "-g", "-gnatg");
+   end Compiler;
+
+end Garlic;
