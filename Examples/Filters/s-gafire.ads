@@ -12,20 +12,20 @@ private
    type New_Filter_Params_Type is new Filter_Params_Type with null record;
 
    function Filter_Outgoing
-     (Filter : in     New_Filter_Type;
-      Params : in     Filter_Params_Access;
+     (Filter : New_Filter_Type;
+      Params : Filter_Params_Access;
       Stream : access System.Garlic.Streams.Params_Stream_Type)
       return Streams.Stream_Element_Access;
 
    function Filter_Incoming
-     (Filter : in New_Filter_Type;
-      Params : in Filter_Params_Access;
-      Stream : in Streams.Stream_Element_Access;
-      Offset : in Ada.Streams.Stream_Element_Offset)
+     (Filter : New_Filter_Type;
+      Params : Filter_Params_Access;
+      Stream : Streams.Stream_Element_Access;
+      Offset : Ada.Streams.Stream_Element_Offset)
       return Streams.Stream_Element_Access;
 
    procedure Generate_Params
-     (Filter          : in  New_Filter_Type;
+     (Filter          : New_Filter_Type;
       Public_Params   : out Filter_Params_Access;
       Private_Params  : out Filter_Params_Access;
       Exchange_Params : out Boolean);

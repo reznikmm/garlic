@@ -14,8 +14,8 @@ package body System.Garlic.Filters.Reversing is
    ---------------------
 
    function Filter_Outgoing
-     (Filter : in     New_Filter_Type;
-      Params : in     Filter_Params_Access;
+     (Filter : New_Filter_Type;
+      Params : Filter_Params_Access;
       Stream : access System.Garlic.Streams.Params_Stream_Type)
      return Stream_Element_Access
    is
@@ -35,10 +35,10 @@ package body System.Garlic.Filters.Reversing is
    ---------------------
 
    function Filter_Incoming
-     (Filter : in New_Filter_Type;
-      Params : in Filter_Params_Access;
-      Stream : in Stream_Element_Access;
-      Offset : in Stream_Element_Offset)
+     (Filter : New_Filter_Type;
+      Params : Filter_Params_Access;
+      Stream : Stream_Element_Access;
+      Offset : Stream_Element_Offset)
       return Stream_Element_Access
    is
       pragma Unreferenced (Filter);
@@ -59,7 +59,7 @@ package body System.Garlic.Filters.Reversing is
    ---------------------
 
    procedure Generate_Params
-     (Filter          : in  New_Filter_Type;
+     (Filter          : New_Filter_Type;
       Public_Params   : out Filter_Params_Access;
       Private_Params  : out Filter_Params_Access;
       Exchange_Params : out Boolean)
