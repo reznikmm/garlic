@@ -581,8 +581,7 @@ package body System.Garlic.Protocols.Tcp is
             exit;
          end if;
       end loop;
-      pragma Debug (D ("Read banner " & Result'Img &
-                       " from peer " & Image (Peer)));
+      pragma Debug (D ("Read banner from peer " & Image (Peer)));
       Banner := Result;
    exception
       when Constraint_Error =>
