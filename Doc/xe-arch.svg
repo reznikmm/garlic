@@ -1,0 +1,83 @@
+<?xml version="1.0" standalone="no"?>
+<!-- Creator: fig2dev Version 3.2.6a -->
+<!-- CreationDate: 2020-02-08 13:29:16 -->
+<!-- Magnification: 1.05 -->
+<svg	xmlns="http://www.w3.org/2000/svg"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	width="574pt" height="404pt"
+	viewBox="428 428 4555 3194">
+<g fill="none">
+<!-- Line -->
+<rect x="1800" y="2250" width="1125" height="675"
+	stroke="#000000" stroke-width="15px"/>
+<!-- Line -->
+<rect x="3600" y="2250" width="1125" height="675"
+	stroke="#000000" stroke-width="15px"/>
+<!-- Line -->
+<polyline points=" 463,3600 4961,3600"
+	stroke="#000000" stroke-width="15px"/>
+<!-- Line -->
+<polyline points=" 900,1350 900,1575"
+	stroke="#000000" stroke-width="15px"/>
+<!-- Line -->
+<polyline points=" 4500,1350 4500,1575"
+	stroke="#000000" stroke-width="15px"/>
+<!-- Line -->
+<polyline points=" 900,3150 900,3600"
+	stroke="#000000" stroke-width="15px"/>
+<!-- Line -->
+<polyline points=" 4500,3150 4500,3600"
+	stroke="#000000" stroke-width="15px"/>
+<!-- Line -->
+<rect x="675" y="2250" width="907" height="675"
+	stroke="#000000" stroke-width="15px"/>
+<!-- Line -->
+<rect x="450" y="1575" width="2700" height="1575"
+	stroke="#000000" stroke-width="15px"/>
+<!-- Line -->
+<rect x="3375" y="1575" width="1586" height="1575"
+	stroke="#000000" stroke-width="15px"/>
+<!-- Line -->
+<rect x="675" y="675" width="900" height="450"
+	stroke="#000000" stroke-width="15px"/>
+<!-- Line -->
+<rect x="450" y="450" width="4511" height="900"
+	stroke="#000000" stroke-width="15px"/>
+<!-- Text -->
+<text xml:space="preserve" x="900" y="900" fill="#000000" font-family="Times" font-style="normal" font-weight="bold" font-size="132" text-anchor="start">Data_1</text>
+<!-- Text -->
+<text xml:space="preserve" x="900" y="2475" fill="#000000" font-family="Times" font-style="normal" font-weight="bold" font-size="132" text-anchor="start">Unit_1</text>
+<!-- Text -->
+<text xml:space="preserve" x="900" y="2700" fill="#000000" font-family="Times" font-style="normal" font-weight="bold" font-size="132" text-anchor="start">Data_2</text>
+<!-- Text -->
+<text xml:space="preserve" x="2025" y="2475" fill="#000000" font-family="Times" font-style="normal" font-weight="bold" font-size="132" text-anchor="start">Unit_2 (*)</text>
+<!-- Text -->
+<text xml:space="preserve" x="2025" y="2700" fill="#000000" font-family="Times" font-style="normal" font-weight="bold" font-size="132" text-anchor="start">Unit_3 (*)</text>
+<!-- Text -->
+<text xml:space="preserve" x="3825" y="2475" fill="#000000" font-family="Times" font-style="normal" font-weight="bold" font-size="132" text-anchor="start">Unit_2 (*)</text>
+<!-- Text -->
+<text xml:space="preserve" x="3825" y="2700" fill="#000000" font-family="Times" font-style="normal" font-weight="bold" font-size="132" text-anchor="start">Unit_3 (*)</text>
+<!-- Text -->
+<text xml:space="preserve" x="675" y="1800" fill="#000000" font-family="Times" font-style="normal" font-weight="bold" font-size="132" text-anchor="start">Processing Node</text>
+<!-- Text -->
+<text xml:space="preserve" x="3600" y="1800" fill="#000000" font-family="Times" font-style="normal" font-weight="bold" font-size="132" text-anchor="start">Processing Node</text>
+<!-- Text -->
+<text xml:space="preserve" x="3600" y="2160" fill="#000000" font-family="Times" font-style="normal" font-weight="bold" font-size="132" text-anchor="start">Partition_2</text>
+<!-- Text -->
+<text xml:space="preserve" x="2925" y="2160" fill="#000000" font-family="Times" font-style="normal" font-weight="bold" font-size="132" text-anchor="end">Partition_2</text>
+<!-- Text -->
+<text xml:space="preserve" x="675" y="2160" fill="#000000" font-family="Times" font-style="normal" font-weight="bold" font-size="132" text-anchor="start">Partition_1</text>
+<!-- Text -->
+<text xml:space="preserve" x="2700" y="3375" fill="#000000" font-family="Times" font-style="normal" font-weight="bold" font-size="132" text-anchor="middle">Network</text>
+<!-- Text -->
+<text xml:space="preserve" x="1800" y="1125" fill="#000000" font-family="Times" font-style="normal" font-weight="bold" font-size="132" text-anchor="start">Passive_Partition</text>
+<!-- Text -->
+<text xml:space="preserve" x="1800" y="675" fill="#000000" font-family="Times" font-style="normal" font-weight="bold" font-size="132" text-anchor="start">Storage Node</text>
+<!-- Text -->
+<text xml:space="preserve" x="3600" y="1125" fill="#000000" font-family="Times" font-style="normal" font-weight="bold" font-size="132" text-anchor="start">* Shared Memory</text>
+<!-- Text -->
+<text xml:space="preserve" x="3600" y="900" fill="#000000" font-family="Times" font-style="normal" font-weight="bold" font-size="132" text-anchor="start">* Database</text>
+<!-- Text -->
+<text xml:space="preserve" x="3600" y="675" fill="#000000" font-family="Times" font-style="normal" font-weight="bold" font-size="132" text-anchor="start">* File</text>
+</g>
+</svg>

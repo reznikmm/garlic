@@ -1,3 +1,8 @@
+2020-02-08  Maxim Reznik <reznikmm@gmail.com>
+
+	* glade_ug.md: Convert texi to Markdown
+	* *.svg: Convert *.fig to SVG
+	
 2005-02-24  Laurent Pautet  <pautet@noos.fr>
 
 	* glade_ug.texi, gfdl.texi: fix inconsistencies in texinfo nodes.

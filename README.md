@@ -1,39 +1,24 @@
-------------------------------------------------------------------------------
---                                                                          --
---                   GNAT DISTRIBUTED SYSTEMS ANNEX DOCUMENTS               --
---                                                                          --
---                                R E A D M E                               --
---                                                                          --
--- GLADE is  free software;  you  can  redistribute  it  and/or  modify  it --
--- under terms of the  GNU General Public License  as published by the Free --
--- Software  Foundation;  either version 2,  or  (at your option) any later --
--- version. GLADE is distributed in the  hope that  it will  be useful, but --
--- WITHOUT ANY WARRANTY;  without even the implied warranty of MERCHANTABI- --
--- LITY or FITNESS  FOR A PARTICULAR PURPOSE.  See the  GNU General  Public --
--- License  for more details.  You should  have received a copy of the  GNU --
--- General  Public  License distributed with  GLADE; see  file COPYING.  If --
--- not, write to the Free Software Foundation, 59 Temple Place - Suite 330, --
--- Boston, MA 02111-1307, USA.                                              --
---                                                                          --
---                   GLADE is maintained by ACT Europe.                     --
---                      (email:glade-report@gnat.com)                       --
---                                                                          --
-------------------------------------------------------------------------------
+GARLIC
+======
 
-This is release __glade_version__ of the Ada 95 distributed systems annex
-for GNAT __gnat_version__. New features are described in file NEWS.
+[![CircleCI](https://circleci.com/gh/reznikmm/garlic.svg?style=svg)](https://circleci.com/gh/reznikmm/garlic)
+
+> GNAT Library for Ada Distributed Environment (garlic)
+
+This is release of the Ada 95 distributed systems annex
+for GNAT. New features are described in file NEWS.
 
 Contents.
 ---------
-   Introduction: Ada 95 & Distributed Systems.
-   Installation, Documentation & Examples.
-   What Does It Run on.
-   Downloading GLADE.
-   Commercial Support.
-   Bug Reports & Technical Questions.
-   Submitting Bug Fixes.
-   GLADE History.
-   Contributions.
+   - Introduction: Ada 95 & Distributed Systems.
+   - Installation, Documentation & Examples.
+   - What Does It Run on.
+   - Downloading GLADE.
+   - Commercial Support.
+   - Bug Reports & Technical Questions.
+   - Submitting Bug Fixes.
+   - GLADE History.
+   - Contributions.
 
 ------------------------------------------------------------------------------ 
 
@@ -69,7 +54,8 @@ Installation, Documentation & Examples.
 ---------------------------------------
 
 To see how to install the system please read file INSTALL in this
-directory. Please look under the "Doc" directory for documentation on
+directory. Please look under the "Doc" directory for
+[documentation](Doc/glade_ug.md) on
 how to use GLADE and some more hints on installation possibilities.
 Directory "Examples" contains some examples on how to program a
 distributed application in Ada 95.
@@ -100,7 +86,7 @@ It has been successfully ported on:
   - SGI
   - AIX
 
-Please contact ACT Europe (sales@act-europe.fr) for support
+Please contact [ACT Europe](mailto:sales@act-europe.fr) for support
 information and future platforms availibility.
 
 Downloading GLADE.
@@ -177,7 +163,7 @@ what release you use. We accept patch files. To produce such a patch
 file, put your files in the directory PCS and our files in the directory
 PCS.orig, and use the following command:
 
-  diff --recursive --context PCS.orig PCS > patch_file
+    diff --recursive --context PCS.orig PCS > patch_file
 
 and send us the patch_file via E-mail at the address above.
 
@@ -191,10 +177,10 @@ GLADE History.
 --------------
 
 GLADE has been jointly developed by Ada Core Technologies and a research
-team from the École Nationale Supérieure des Télécommunications (ENST).
+team from the Ã‰cole Nationale SupÃ©rieure des TÃ©lÃ©communications (ENST).
 The ENST team is composed of:
-  Laurent Pautet (pautet@inf.enst.fr),
-  Samuel Tardieu (sam@inf.enst.fr).
+- Laurent Pautet (pautet@inf.enst.fr),
+- Samuel Tardieu (sam@inf.enst.fr).
 
 Contributions.
 ---------------
@@ -214,7 +200,7 @@ Computer Science 1088, pp. 198 - 210, Springer 1996.
 The ZIP filter has been built on top of the zlib library developed by 
 Jean-loup Gailly and Mark Adler. See Garlic/zlib/README for details.
 
-GLADE replay features is part of a free contribution (04/97) from D. Neri
-<d92-dne@nada.kth.se>, KTH (Royal Institute of Technology, Stockholm,
-Sweden).
+GLADE replay features is part of a free contribution (04/97) from
+[D. Neri](mailto:d92-dne@nada.kth.se),
+KTH (Royal Institute of Technology, Stockholm, Sweden).
 
