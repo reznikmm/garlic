@@ -32,7 +32,6 @@ with Ada.Unchecked_Deallocation;
 
 with GNAT.IO;
 with GNAT.Sockets;               use GNAT.Sockets;
-with GNAT.Strings;               use GNAT.Strings;
 
 with Interfaces.C;               use Interfaces.C;
 

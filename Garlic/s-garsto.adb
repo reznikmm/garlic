@@ -32,7 +32,6 @@ with Ada.Streams;    use Ada.Streams;
 
 with GNAT.HTable;
 with GNAT.OS_Lib;
-with GNAT.Strings; use GNAT.Strings;
 
 with System.Garlic.Debug;      use System.Garlic.Debug;
 with System.Garlic.Exceptions; use System.Garlic.Exceptions;
@@ -45,6 +44,7 @@ with System.Garlic.Physical_Location;
 with System.Garlic.Platform_Specific;
 
 use  System.Garlic.Platform_Specific;
+with System.Garlic.Utils;
 
 package body System.Garlic.Storages is
 
@@ -173,7 +173,7 @@ package body System.Garlic.Storages is
       Error     : in out Error_Type)
    is
       Par_Name : String := Partition'Img;
-      Location : String_Access;
+      Location : Garlic.Utils.String_Access;
 
    begin
       Enter_Critical_Section;

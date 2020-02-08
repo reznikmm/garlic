@@ -28,8 +28,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNAT.Strings;            use GNAT.Strings;
-
 with System.Garlic.Debug;     use System.Garlic.Debug;
 with System.Garlic.Protocols; use System.Garlic.Protocols;
 with System.Garlic.Utils;     use System.Garlic.Utils;

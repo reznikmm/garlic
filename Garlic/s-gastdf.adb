@@ -208,7 +208,7 @@ package body System.Garlic.Storages.Dfs is
 
       if Root = null then
          Root := new DFS_Data_Type;
-         if Data_Location /= null
+         if Data_Location not in null
            and then Get_Support_Name (Data_Location (1).all) = Dfs_Storage_Name
          then
             Data_Dir := new String'(Get_Support_Data (Data_Location (1).all));

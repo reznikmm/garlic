@@ -33,7 +33,6 @@ with Ada.Streams;
 with System.Garlic.Exceptions;
 
 with GNAT.Sockets;
-with GNAT.Strings;
 
 with System.Garlic.Types;
 
@@ -51,7 +50,7 @@ package System.Garlic.Protocols.Tcp is
 
    function Get_Data
      (Protocol : access TCP_Protocol)
-      return GNAT.Strings.String_List_Access;
+      return Garlic.Utils.String_List_Access;
 
    function Get_Name (Protocol : access TCP_Protocol) return String;
 

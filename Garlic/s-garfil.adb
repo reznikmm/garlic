@@ -30,8 +30,6 @@
 
 with Ada.Streams;              use Ada.Streams;
 
-with GNAT.Strings;             use GNAT.Strings;
-
 with System.Garlic.Debug;      use System.Garlic.Debug;
 with System.Garlic.Exceptions; use System.Garlic.Exceptions;
 with System.Garlic.Heart;      use System.Garlic.Heart;

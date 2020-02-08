@@ -28,8 +28,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNAT.Strings;                    use GNAT.Strings;
-
 with System.Interrupts;
 pragma Elaborate_All (System.Interrupts);
 pragma Warnings (Off, System.Interrupts);

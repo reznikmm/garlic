@@ -30,12 +30,11 @@
 
 with Ada.Streams;
 
-with GNAT.Strings;
-
 with System.Garlic.Exceptions;
 with System.Garlic.Streams;
 with System.Garlic.Soft_Links;
 with System.Garlic.Types;
+with System.Garlic.Utils;
 
 package System.Garlic.Storages.Dsm is
 
@@ -183,7 +182,7 @@ private
    --  * Offset  : Position in the stream
 
    type DSM_Data_Type is new Shared_Data_Type with record
-      Name    : GNAT.Strings.String_Access;
+      Name    : Garlic.Utils.String_Access;
       Status  : Status_Type;
       Owner   : Types.Partition_ID;
       Copies  : Copy_Set_Access;

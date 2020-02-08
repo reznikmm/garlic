@@ -28,8 +28,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNAT.Strings;             use GNAT.Strings;
-
 with System.Garlic.Debug;      use System.Garlic.Debug;
 with System.Garlic.Soft_Links; use System.Garlic.Soft_Links;
 with System.Garlic.Table;

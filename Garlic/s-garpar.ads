@@ -28,14 +28,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNAT.Strings;
-
 with System.Garlic.Debug;
 with System.Garlic.Exceptions;
 with System.Garlic.Physical_Location;
 with System.Garlic.Protocols;
 with System.Garlic.Streams;
 with System.Garlic.Types;
+with System.Garlic.Utils;
 
 package System.Garlic.Partitions is
 
@@ -70,7 +69,7 @@ package System.Garlic.Partitions is
 
    procedure Get_Mem_Location
      (Partition : Types.Partition_ID;
-      Location  : out GNAT.Strings.String_Access;
+      Location  : out Garlic.Utils.String_Access;
       Error     : in out Exceptions.Error_Type);
    --  Return the memory location of a partition
 
@@ -82,7 +81,7 @@ package System.Garlic.Partitions is
 
    procedure Get_Name
      (Partition : Types.Partition_ID;
-      Name      : out GNAT.Strings.String_Access;
+      Name      : out Garlic.Utils.String_Access;
       Error     : in out Exceptions.Error_Type);
    --  Return the name of a partition in its coded or plaintext form
 
@@ -142,10 +141,10 @@ package System.Garlic.Partitions is
 
    procedure Send_Partition_Definition
      (Partition      : Types.Partition_ID;
-      Partition_Name : GNAT.Strings.String_Access;
+      Partition_Name : Garlic.Utils.String_Access;
       Is_Active_Part : Boolean;
-      Net_Locations  : GNAT.Strings.String_Access;
-      Mem_Locations  : GNAT.Strings.String_Access;
+      Net_Locations  : Garlic.Utils.String_Access;
+      Mem_Locations  : Garlic.Utils.String_Access;
       Termination    : Types.Termination_Type;
       Reconnection   : Types.Reconnection_Type;
       Is_Pure_Client : Boolean;

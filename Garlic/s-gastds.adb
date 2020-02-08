@@ -40,8 +40,6 @@
 with Ada.Unchecked_Deallocation;
 with Ada.Streams;              use Ada.Streams;
 
-with GNAT.Strings;             use GNAT.Strings;
-
 with System.Garlic.Exceptions; use System.Garlic.Exceptions;
 with System.Garlic.Heart;      use System.Garlic.Heart;
 with System.Garlic.Options;    use System.Garlic.Options;
@@ -50,6 +48,7 @@ with System.Garlic.Soft_Links; use System.Garlic.Soft_Links;
 with System.Garlic.Streams;    use System.Garlic.Streams;
 with System.Garlic.Types;      use System.Garlic.Types;
 with System.Garlic.Units;      use System.Garlic.Units;
+with System.Garlic.Utils;      use System.Garlic.Utils;
 
 with System.Garlic.Debug;      use System.Garlic.Debug;
 pragma Elaborate (System.Garlic.Debug);

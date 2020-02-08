@@ -28,9 +28,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNAT.Strings; use GNAT.Strings;
-
 package body System.Garlic.Utils is
+
+   procedure Free is new Ada.Unchecked_Deallocation
+     (Object => String_List, Name => String_List_Access);
 
    procedure Next_Separator
      (S : String;

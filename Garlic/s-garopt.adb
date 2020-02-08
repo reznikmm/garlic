@@ -32,7 +32,6 @@ with Ada.Command_Line;                use Ada.Command_Line;
 with Ada.Exceptions;                  use Ada.Exceptions;
 
 with GNAT.OS_Lib;
-with GNAT.Strings;                    use GNAT.Strings;
 
 with System.Garlic.Platform_Specific; use System.Garlic.Platform_Specific;
 with System.Garlic.Utils;             use System.Garlic.Utils;

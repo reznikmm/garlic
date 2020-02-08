@@ -28,7 +28,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNAT.OS_Lib;                         use GNAT.OS_Lib;
+with GNAT.OS_Lib;
 with GNAT.Sockets;                        use GNAT.Sockets;
 
 with Ada.Exceptions;                      use Ada.Exceptions;
@@ -43,6 +43,7 @@ with System.Garlic.Protocols;             use System.Garlic.Protocols;
 with System.Garlic.Soft_Links;
 with System.Garlic.Streams;               use System.Garlic.Streams;
 with System.Garlic.Table;
+with System.Garlic.Utils;                 use System.Garlic.Utils;
 
 package body System.Garlic.Protocols.Tcp is
 
@@ -655,7 +656,7 @@ package body System.Garlic.Protocols.Tcp is
       if Index /= Last then
          Throw (Error,
                 "Receive: peer =" & Image (Peer) &
-                " and errno =" & Errno'Img);
+                " and errno =" & GNAT.OS_Lib.Errno'Img);
       end if;
    end Receive;
 
@@ -1060,7 +1061,7 @@ package body System.Garlic.Protocols.Tcp is
       if Index /= Last then
          Throw (Error,
                 "Send: peer =" & Image (Peer) &
-                " and errno =" & Errno'Img);
+                " and errno =" & GNAT.OS_Lib.Errno'Img);
       end if;
    end Send;
 

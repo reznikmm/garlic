@@ -28,8 +28,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNAT.Strings; use GNAT.Strings;
-
 package body System.Garlic.Protocols is
 
    --------------
@@ -38,7 +36,7 @@ package body System.Garlic.Protocols is
 
    function Get_Data
      (Protocol  : access Protocol_Type)
-      return String_List_Access
+      return Garlic.Utils.String_List_Access
    is
       pragma Unreferenced (Protocol);
    begin
