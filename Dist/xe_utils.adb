@@ -21,6 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Directories;
 with Ada.Command_Line; use Ada.Command_Line;
 with XE_Defs;          use XE_Defs;
 with XE_Flags;         use XE_Flags;
@@ -500,6 +501,11 @@ package body XE_Utils is
    ----------------
 
    procedure Initialize is
+      Command : constant String := Ada.Directories.Base_Name
+        (Ada.Command_Line.Command_Name);
+      GNAT    : constant String :=
+        Command (Command'First .. Command'Last - 4);
+      --  calculate `[target-]gnat` driver name by gnatdist exe name
    begin
       XE_Names.Initialize;
       Set_Space_Increment (3);
@@ -549,7 +555,7 @@ package body XE_Utils is
 
       Create_Dir (Stub_Dir_Name);
 
-      GNAT_Driver := Locate ("gnat");
+      GNAT_Driver := Locate (GNAT);
    end Initialize;
 
    ----------
@@ -817,6 +823,7 @@ package body XE_Utils is
 
       if Program_Args = Binder
         or else Program_Args = Linker
+        or else Program_Args = Compiler
       then
          Add_Make_Switch (Argv);
          return;
