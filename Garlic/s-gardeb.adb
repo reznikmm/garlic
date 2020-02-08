@@ -32,7 +32,9 @@
 --  mode for a very special case which allows to track non-termination
 --  partitions.
 
-with GNAT.IO;
+with Ada.Environment_Variables;
+
+with System.IO;
 with GNAT.OS_Lib;              use GNAT.OS_Lib;
 with Interfaces.C;             use Interfaces.C;
 with System.Garlic.Soft_Links; use System.Garlic.Soft_Links;
@@ -134,13 +136,14 @@ package body System.Garlic.Debug is
       Banner   : String)
       return Debug_Key
    is
-      Value    : String_Access    := Getenv (Variable);
+      Value    : constant String :=
+        Ada.Environment_Variables.Value (Variable, "");
+
       Value_OK : constant Boolean :=
         Value'Length /= 0
           and then (Value (Value'First) = 't'
                    or else Value (Value'First) = 'T');
    begin
-      Free (Value);
       pragma Assert (Current <= Debug_Key'Last);
       Current := Current + 1;
       Debug_Table (Current).Banner := new String'(Banner);
@@ -185,7 +188,7 @@ package body System.Garlic.Debug is
    begin
       if Debug_Table (Key).Active then
          Enter_Critical_Section;
-         GNAT.IO.Put_Line (Debug_Table (Key).Banner.all & Message);
+         System.IO.Put_Line (Debug_Table (Key).Banner.all & Message);
          Leave_Critical_Section;
       end if;
    end Print_Debug_Info;
@@ -199,12 +202,13 @@ package body System.Garlic.Debug is
       Key     : Debug_Key) is
    begin
       if Debug_Table (Key).Active then
-         GNAT.IO.Put_Line (Debug_Table (Key).Banner.all & Message);
+         System.IO.Put_Line (Debug_Table (Key).Banner.all & Message);
       end if;
    end Print_Debug_Info_Nolock;
 
 begin
-   Termination_Directory := GNAT.OS_Lib.Getenv ("GLADE_SANITY_DIR");
+   Termination_Directory := new String'
+     (Ada.Environment_Variables.Value ("GLADE_SANITY_DIR", ""));
    if Termination_Directory.all /= "" then
       Create_Termination_Sanity_File;
    end if;

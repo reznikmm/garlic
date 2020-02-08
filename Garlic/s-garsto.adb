@@ -30,8 +30,7 @@
 
 with Ada.Streams;    use Ada.Streams;
 
-with GNAT.HTable;
-with GNAT.OS_Lib;
+with System.HTable;
 
 with System.Garlic.Debug;      use System.Garlic.Debug;
 with System.Garlic.Exceptions; use System.Garlic.Exceptions;
@@ -39,12 +38,12 @@ with System.Garlic.Partitions; use System.Garlic.Partitions;
 with System.Garlic.Soft_Links; use System.Garlic.Soft_Links;
 with System.Garlic.Types;      use System.Garlic.Types;
 with System.Garlic.Units;      use System.Garlic.Units;
+with System.Garlic.Utils;      use System.Garlic.Utils;
 
 with System.Garlic.Physical_Location;
 with System.Garlic.Platform_Specific;
 
 use  System.Garlic.Platform_Specific;
-with System.Garlic.Utils;
 
 package body System.Garlic.Storages is
 
@@ -56,12 +55,10 @@ package body System.Garlic.Storages is
       Key     : Debug_Key := Private_Debug_Key)
      renames Print_Debug_Info;
 
-   package OS  renames GNAT.OS_Lib;
-
    subtype Hash_Header is Natural range 0 .. 30;
 
-   function Hash  (F : OS.String_Access)      return Hash_Header;
-   function Equal (F1, F2 : OS.String_Access) return Boolean;
+   function Hash  (F : String_Access)      return Hash_Header;
+   function Equal (F1, F2 : String_Access) return Boolean;
    --  Hash and equality functions for hash table
 
    function Extract_Pkg_Name (Var_Name : String) return String;
@@ -85,11 +82,11 @@ package body System.Garlic.Storages is
    Max_Storages  : constant := 10;
    Storage_Table : array (First_Storage .. Max_Storages) of Shared_Data_Access;
 
-   package SST is new GNAT.HTable.Simple_HTable
+   package SST is new System.HTable.Simple_HTable
      (Header_Num => Hash_Header,
       Element    => Shared_Data_Access,
       No_Element => null,
-      Key        => OS.String_Access,
+      Key        => String_Access,
       Hash       => Hash,
       Equal      => Equal);
 
@@ -97,7 +94,7 @@ package body System.Garlic.Storages is
    -- Equal --
    -----------
 
-   function Equal (F1, F2 : OS.String_Access) return Boolean is
+   function Equal (F1, F2 : String_Access) return Boolean is
    begin
       return F1.all = F2.all;
    end Equal;
@@ -120,7 +117,7 @@ package body System.Garlic.Storages is
    -- Hash --
    ----------
 
-   function Hash (F : OS.String_Access) return Hash_Header is
+   function Hash (F : String_Access) return Hash_Header is
       N : Natural := 0;
 
    begin

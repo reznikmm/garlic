@@ -28,18 +28,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Exceptions;
-
-with GNAT.OS_Lib;
+with System.Garlic.Utils;
 
 package System.Garlic.Exceptions is
 
    pragma Elaborate_Body;
-
-   procedure Raise_With_Errno (Id : Ada.Exceptions.Exception_Id);
-   pragma No_Return (Raise_With_Errno);
-   pragma Inline (Raise_With_Errno);
-   --  Raise an exception with a message corresponding to errno
 
    procedure Raise_Communication_Error (Msg : String := "");
    pragma No_Return (Raise_Communication_Error);
@@ -63,6 +56,6 @@ package System.Garlic.Exceptions is
 
 private
 
-   type Error_Type is new GNAT.OS_Lib.String_Access;
+   type Error_Type is new Garlic.Utils.String_Access;
 
 end System.Garlic.Exceptions;

@@ -28,14 +28,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Ada.Exceptions;      use Ada.Exceptions;
 
 with System.Garlic.Debug; use System.Garlic.Debug;
 pragma Elaborate (System.Garlic.Debug);
 
 package body System.Garlic.Exceptions is
-
-   use Ada.Exceptions;
 
    Private_Debug_Key : constant Debug_Key :=
      Debug_Initialize ("S_GAREXC", "(s-garexc): ");
@@ -96,23 +94,8 @@ package body System.Garlic.Exceptions is
 
    procedure Raise_Communication_Error (Msg : String := "") is
    begin
-      if Msg'Length = 0 then
-         Raise_With_Errno (Communication_Error'Identity);
-      else
-         Raise_Exception (Communication_Error'Identity, Msg);
-      end if;
+      Raise_Exception (Communication_Error'Identity, Msg);
    end Raise_Communication_Error;
-
-   ----------------------
-   -- Raise_With_Errno --
-   ----------------------
-
-   procedure Raise_With_Errno (Id : Exception_Id) is
-   begin
-      Raise_Exception (Id, "Error" & Integer'Image (Errno));
-      --  Next line will never be called, just to avoid GNAT warnings
-      Raise_With_Errno (Id);
-   end Raise_With_Errno;
 
    -----------
    -- Throw --

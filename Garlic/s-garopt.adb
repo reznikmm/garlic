@@ -30,8 +30,7 @@
 
 with Ada.Command_Line;                use Ada.Command_Line;
 with Ada.Exceptions;                  use Ada.Exceptions;
-
-with GNAT.OS_Lib;
+with Ada.Environment_Variables;       use Ada.Environment_Variables;
 
 with System.Garlic.Platform_Specific; use System.Garlic.Platform_Specific;
 with System.Garlic.Utils;             use System.Garlic.Utils;
@@ -79,97 +78,127 @@ package body System.Garlic.Options is
 
    procedure Initialize_User_Options is
       Index : Natural := 1;
-      EV    : GNAT.OS_Lib.String_Access;
    begin
-      EV := GNAT.OS_Lib.Getenv ("BOOT_SERVER");
-      if EV'Length /= 0 then
-         Set_Boot_Location (Unquote (EV.all));
-      end if;
-      GNAT.OS_Lib.Free (EV);
 
-      EV := GNAT.OS_Lib.Getenv ("BOOT_LOCATION");
-      if EV'Length /= 0 then
-         Set_Boot_Location (Unquote (EV.all));
-      end if;
-      GNAT.OS_Lib.Free (EV);
+      declare
+         EV : constant String := Value ("BOOT_SERVER", "");
+      begin
+         if EV'Length /= 0 then
+            Set_Boot_Location (Unquote (EV));
+         end if;
+      end;
 
-      EV := GNAT.OS_Lib.Getenv ("DATA_LOCATION");
-      if EV'Length /= 0 then
-         Set_Data_Location (Unquote (EV.all));
-      end if;
-      GNAT.OS_Lib.Free (EV);
+      declare
+         EV : constant String := Value ("BOOT_LOCATION", "");
+      begin
+         if EV'Length /= 0 then
+            Set_Boot_Location (Unquote (EV));
+         end if;
+      end;
 
-      EV := GNAT.OS_Lib.Getenv ("CONNECTION_HITS");
-      if EV'Length /= 0 then
-         Set_Connection_Hits (Natural'Value (EV.all));
-      end if;
-      GNAT.OS_Lib.Free (EV);
+      declare
+         EV : constant String := Value ("DATA_LOCATION", "");
+      begin
+         if EV'Length /= 0 then
+            Set_Data_Location (Unquote (EV));
+         end if;
+      end;
 
-      EV := GNAT.OS_Lib.Getenv ("DETACH");
-      if EV'Length /= 0 then
-         Set_Detach (True);
-      end if;
-      GNAT.OS_Lib.Free (EV);
+      declare
+         EV : constant String := Value ("CONNECTION_HITS", "");
+      begin
+         if EV'Length /= 0 then
+            Set_Connection_Hits (Natural'Value (EV));
+         end if;
+      end;
 
-      EV := GNAT.OS_Lib.Getenv ("SELF_LOCATION");
-      if EV'Length /= 0 then
-         Set_Self_Location (Unquote (EV.all));
-      end if;
-      GNAT.OS_Lib.Free (EV);
+      declare
+         EV : constant String := Value ("DETACH", "");
+      begin
+         if EV'Length /= 0 then
+            Set_Detach (True);
+         end if;
+      end;
 
-      EV := GNAT.OS_Lib.Getenv ("BOOT_MIRROR");
-      if EV'Length /= 0 then
-         Set_Boot_Mirror (True);
-      end if;
-      GNAT.OS_Lib.Free (EV);
+      declare
+         EV : constant String := Value ("SELF_LOCATION", "");
+      begin
+         if EV'Length /= 0 then
+            Set_Self_Location (Unquote (EV));
+         end if;
+      end;
 
-      EV := GNAT.OS_Lib.Getenv ("NOLAUNCH");
-      if EV'Length /= 0 then
-         Set_Nolaunch (True);
-      end if;
-      GNAT.OS_Lib.Free (EV);
+      declare
+         EV : constant String := Value ("BOOT_MIRROR", "");
+      begin
+         if EV'Length /= 0 then
+            Set_Boot_Mirror (True);
+         end if;
+      end;
 
-      EV := GNAT.OS_Lib.Getenv ("SLAVE");
-      if EV'Length /= 0 then
-         Set_Slave (True);
-      end if;
-      GNAT.OS_Lib.Free (EV);
+      declare
+         EV : constant String := Value ("NOLAUNCH", "");
+      begin
+         if EV'Length /= 0 then
+            Set_Nolaunch (True);
+         end if;
+      end;
 
-      EV := GNAT.OS_Lib.Getenv ("MIRROR_EXPECTED");
-      if EV'Length /= 0 then
-         Set_Mirror_Expected (True);
-      end if;
-      GNAT.OS_Lib.Free (EV);
+      declare
+         EV : constant String := Value ("SLAVE", "");
+      begin
+         if EV'Length /= 0 then
+            Set_Slave (True);
+         end if;
+      end;
 
-      EV := GNAT.OS_Lib.Getenv ("RECONNECTION");
-      if EV'Length /= 0 then
-         Set_Reconnection (Value (EV.all));
-      end if;
-      GNAT.OS_Lib.Free (EV);
+      declare
+         EV : constant String := Value ("MIRROR_EXPECTED", "");
+      begin
+         if EV'Length /= 0 then
+            Set_Mirror_Expected (True);
+         end if;
+      end;
 
-      EV := GNAT.OS_Lib.Getenv ("TERMINATION");
-      if EV'Length /= 0 then
-         Set_Termination (Value (EV.all));
-      end if;
-      GNAT.OS_Lib.Free (EV);
+      declare
+         EV : constant String := Value ("RECONNECTION", "");
+      begin
+         if EV'Length /= 0 then
+            Set_Reconnection (Value (EV));
+         end if;
+      end;
 
-      EV := GNAT.OS_Lib.Getenv ("RSH_COMMAND");
-      if EV'Length /= 0 then
-         Set_Rsh_Command (EV.all);
-      end if;
-      GNAT.OS_Lib.Free (EV);
+      declare
+         EV : constant String := Value ("TERMINATION", "");
+      begin
+         if EV'Length /= 0 then
+            Set_Termination (Value (EV));
+         end if;
+      end;
 
-      EV := GNAT.OS_Lib.Getenv ("RSH_OPTIONS");
-      if EV'Length /= 0 then
-         Set_Rsh_Command (EV.all);
-      end if;
-      GNAT.OS_Lib.Free (EV);
+      declare
+         EV : constant String := Value ("RSH_COMMAND", "");
+      begin
+         if EV'Length /= 0 then
+            Set_Rsh_Command (EV);
+         end if;
+      end;
 
-      EV := GNAT.OS_Lib.Getenv ("LOCAL_LAUNCH");
-      if EV'Length /= 0 then
-         Set_Local_Launch (Boolean'Value (EV.all));
-      end if;
-      GNAT.OS_Lib.Free (EV);
+      declare
+         EV : constant String := Value ("RSH_OPTIONS", "");
+      begin
+         if EV'Length /= 0 then
+            Set_Rsh_Command (EV);
+         end if;
+      end;
+
+      declare
+         EV : constant String := Value ("LOCAL_LAUNCH", "");
+      begin
+         if EV'Length /= 0 then
+            Set_Local_Launch (Boolean'Value (EV));
+         end if;
+      end;
 
       while Index <= Argument_Count loop
 

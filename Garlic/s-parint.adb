@@ -31,7 +31,7 @@
 with Ada.Unchecked_Deallocation;
 with Ada.Unchecked_Conversion;
 
-with GNAT.HTable;              use GNAT.HTable;
+with System.HTable;            use System.HTable;
 
 with System.Garlic.Debug;      use System.Garlic.Debug;
 with System.Garlic.Exceptions; use System.Garlic.Exceptions;

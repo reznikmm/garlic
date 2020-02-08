@@ -31,11 +31,10 @@
 with Ada.Streams;
 with Ada.Streams.Stream_IO;
 
-with GNAT.OS_Lib;
-
 with System.Global_Locks;
 with System.Garlic.Exceptions;
 with System.Garlic.Soft_Links;
+with System.Garlic.Utils;
 
 package System.Garlic.Storages.Dfs is
 
@@ -43,8 +42,6 @@ package System.Garlic.Storages.Dfs is
 
    package SGL renames System.Global_Locks;
    package SGS renames System.Garlic.Soft_Links;
-
-   package OS renames GNAT.OS_Lib;
 
    type DFS_Data_Type is new Shared_Data_Type with private;
 
@@ -96,12 +93,12 @@ private
    type DFS_Data_Type is
      new Shared_Data_Type with
       record
-         Name  : OS.String_Access;
+         Name  : Garlic.Utils.String_Access;
          File  : SIO.File_Type;
          Lock  : SGL.Lock_Type;
          Mutex : SGS.Adv_Mutex_Access;
          Count : Natural;
-         Dir   : OS.String_Access;
+         Dir   : Garlic.Utils.String_Access;
          Prev  : DFS_Data_Access;
          Next  : DFS_Data_Access;
          Self  : DFS_Data_Access;

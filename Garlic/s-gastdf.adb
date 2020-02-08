@@ -30,8 +30,7 @@
 
 with Ada.IO_Exceptions;
 with Ada.Unchecked_Conversion;
-
-with GNAT.OS_Lib; use GNAT.OS_Lib;
+with Ada.Environment_Variables;
 
 with System;
 with System.File_Control_Block;
@@ -46,6 +45,7 @@ use  System.Garlic.Physical_Location;
 with System.Garlic.Exceptions; use System.Garlic.Exceptions;
 with System.Garlic.Options;    use System.Garlic.Options;
 with System.Garlic.Soft_Links; use System.Garlic.Soft_Links;
+with System.Garlic.Utils;      use System.Garlic.Utils;
 
 package body System.Garlic.Storages.Dfs is
 
@@ -71,7 +71,7 @@ package body System.Garlic.Storages.Dfs is
    function To_AFCB_Ptr is
       new Ada.Unchecked_Conversion (SIO.File_Type, FCB.AFCB_Ptr);
 
-   Sep : Character renames OS.Directory_Separator;
+   Sep : constant Character := '/';
 
    Root : DFS_Data_Access;
 
@@ -201,7 +201,7 @@ package body System.Garlic.Storages.Dfs is
 
    procedure Initialize
    is
-      Data_Dir : OS.String_Access;
+      Data_Dir : String_Access;
 
    begin
       pragma Debug (D ("initialize DFS"));
@@ -214,7 +214,8 @@ package body System.Garlic.Storages.Dfs is
             Data_Dir := new String'(Get_Support_Data (Data_Location (1).all));
          end if;
          if Data_Dir = null then
-            Data_Dir := OS.Getenv ("DFS_DATA_DIR");
+            Data_Dir := String_To_Access
+              (Ada.Environment_Variables.Value ("DFS_DATA_DIR", ""));
          end if;
          if Data_Dir'Length = 0 then
             Root.Dir := new String'(Data_Dir.all);
