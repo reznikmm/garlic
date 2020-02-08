@@ -26,9 +26,6 @@
 -- however invalidate  any other reasons why  the executable file  might be --
 -- covered by the  GNU Public License.                                      --
 --                                                                          --
---               GLADE  is maintained by ACT Europe.                        --
---               (email: glade-report@act-europe.fr)                        --
---                                                                          --
 ------------------------------------------------------------------------------
 
 with System.Garlic.Types;

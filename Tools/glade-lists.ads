@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---         Copyright (C) 1996-2006 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2020 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GLADE  is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -25,9 +25,6 @@
 -- covered  by the  GNU  General  Public  License.  This exception does not --
 -- however invalidate  any other reasons why  the executable file  might be --
 -- covered by the  GNU Public License.                                      --
---                                                                          --
---               GLADE  is maintained by ACT Europe.                        --
---               (email: glade-report@act-europe.fr)                        --
 --                                                                          --
 ------------------------------------------------------------------------------
 generic
