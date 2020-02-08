@@ -53,8 +53,9 @@ responsible for calling GNAT with the appropriate flags.
 Installation, Documentation & Examples.
 ---------------------------------------
 
-To see how to install the system please read file INSTALL in this
-directory. Please look under the "Doc" directory for
+To see how to install the system please read file
+[install_guide.md](Doc/install_guide.md)
+in Doc directory. Please look under the "Doc" directory for
 [documentation](Doc/glade_ug.md) on
 how to use GLADE and some more hints on installation possibilities.
 Directory "Examples" contains some examples on how to program a
@@ -74,104 +75,20 @@ What does it run on.
 --------------------
 
 This release is fully supported on:
-  - Sparc/Solaris (2.4 and above)
   - PC/Linux
-  - Alpha/Decunix
   - Windows NT
-  - HP/HP-UX
-    * HPUX-11 with PThreads
-    * HPUX-10 and above with DCEThreads using starters None and Shell
 
-It has been successfully ported on:
-  - SGI
-  - AIX
-
-Please contact [ACT Europe](mailto:sales@act-europe.fr) for support
-information and future platforms availibility.
+It may work on other platforms too.
 
 Downloading GLADE.
 ------------------
 
-You can download GLADE by anonymous ftp from cs.nyu.edu (cd
-pub/gnat/glade) and the usual GNAT mirror sites around the world.
-
-There is an official WWW page for GLADE containing the major annoucements
-as well as the mailing-lists archives (see below):
-
-      http://www.act-europe.fr/glade.html
-
-Commercial Support.
--------------------
-
-Commercial support, consulting and training for GLADE are available
-from ACT Europe and Ada Core Technologies. Contact sales@act-europe.fr
-for further details.
+We don't provide binary distribution for now.
 
 Bug Reports & Technical Questions.
 ----------------------------------
 
-Bug reports related to the implementation of the distribution annex
-should be sent to:
-
-		   glade-report@gnat.com
-
-Bug reports and technical queries regarding GNAT itself should be
-addressed to "report@gnat.com" following the usual reporting
-procedures.
-
-Please put one bug per email message, and add a short but specific
-subject (a general subject like "Distribution bug" is not so useful, a
-title like "bad exception propagation across partition" is more
-useful).
-
-Please include full sources. We can't duplicate errors without the
-full sources. Include all sources in the single e-mail message with
-appropriate indications in the multiple file cases, see below.
-
-Please send all sources in plain ASCII form, we can't process
-compressed, uuencoded, etc. messages in our current form (they have to
-go through extra steps, and easily get lost, separated from the author
-etc during this process).
-
-Please include COMPLETE identification of the version of the system
-you are running.
-
-To be maximally helpful, for a report that contains multiple separate
-compilation units, and hence multiple files, submit them in the form
-of a single file that is acceptable input to gnatchop i.e. contains no
-non-Ada text. If you use banners to separate the files, make sure they
-are composed entirely of blank lines or Ada comments.
-
-If you want to be maximally helpful, try to reduce your example to a
-simple one but DON'T spend too much time doing this.
-
-If you think that you have found a bug in GNATDIST, use the -v flag of
-GNATDIST and send the full output of the command.
-
-If a bug involves incorrect operation of the generated code, then the
-first thing the program should do is to output a line indicating the
-expected output or behavior. If at all possible, do a test later on
-that prints out "passed" or "failed" depending on the behavior. Of
-course it may not always be possible to structure a test this way, but
-that's the most convenient form (for obvious reasons!)
-
-Submitting Bug Fixes.
----------------------
-
-If you find a bug and would like to submit fixes, please do so indicating
-what release you use. We accept patch files. To produce such a patch
-file, put your files in the directory PCS and our files in the directory
-PCS.orig, and use the following command:
-
-    diff --recursive --context PCS.orig PCS > patch_file
-
-and send us the patch_file via E-mail at the address above.
-
-If your diff version do not understand the --recursive or --context
-option, please use the GNU diffutils package which may be found on any
-GNU archive (e.g. ftp://ftp.lip6.fr/pub/gnu/).
-
-Note that unified diff files (-u option of GNU diff) are also welcomed.
+Please fill an issue on github.
 
 GLADE History.
 --------------
