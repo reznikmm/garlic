@@ -35,17 +35,11 @@ package System.Garlic.Platform_Specific is
 
    pragma Pure;
 
-   Process_Blocking_IO    : constant Boolean :=
-     False;
-
    Support_RPC_Abortion   : constant Boolean :=
      True;
 
    Supports_Local_Launch  : constant Boolean :=
      True;
-
-   Platform_Name          : constant String  :=
-     "Linux";
 
    Default_Protocol_Name  : constant String  :=
      "tcp";
