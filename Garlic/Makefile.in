@@ -468,10 +468,10 @@ s-gaprco.adb: bldtool/b_gaprco$(EXEEXT)
 	@bldtool/b_gaprco$(EXEEXT) $(DEFPROTOCOLNAME)
 
 s-garrem.adb:
-	@if test -f $(srcdir)/5${PLATFORM_SPECIFIC}garrem.adb; then\
-	  cp $(srcdir)/5${PLATFORM_SPECIFIC}garrem.adb s-garrem.adb;\
+	@if test -f $(srcdir)/platform/${PLATFORM_SPECIFIC}/s-garrem.adb; then\
+	  cp $(srcdir)/platform/${PLATFORM_SPECIFIC}/s-garrem.adb s-garrem.adb;\
 	else\
-	  cp $(srcdir)/5egarrem.adb s-garrem.adb;\
+	  cp $(srcdir)/platform/e/s-garrem.adb s-garrem.adb;\
 	fi
 
 force:
