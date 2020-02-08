@@ -14,25 +14,25 @@ coproc P2 { $TEST/bank_client; }
 coproc P3 { $TEST/bank_client; }
 
 echo -e 'l\nexample\np' >&${P1[1]}
-read -u ${P1[0]} line; echo $line
-read -u ${P1[0]} line; echo $line
-read -u ${P1[0]} line; echo $line
-read -u ${P1[0]} line; echo $line
+read -u ${P1[0]} line; echo P1: $line
+read -u ${P1[0]} line; echo P1: $line
+read -u ${P1[0]} line; echo P1: $line
+read -u ${P1[0]} line; echo P1: $line
 
 echo -e 'poor\nxxxx' >&${P2[1]}
-read -u ${P1[0]} line; echo $line
-read -u ${P1[0]} line; echo $line
-read -u ${P1[0]} line; echo $line
-read -u ${P1[0]} line; echo $line
+read -u ${P2[0]} line; echo P2: $line
+read -u ${P2[0]} line; echo P2: $line
+read -u ${P2[0]} line; echo P2: $line
+read -u ${P2[0]} line; echo P2: $line
 
 echo -e 'rich\nzzzz\nt\n1000\npoor' >&${P3[1]}
-read -u ${P1[0]} line; echo $line
-read -u ${P1[0]} line; echo $line
-read -u ${P1[0]} line; echo $line
-read -u ${P1[0]} line; echo $line
+read -u ${P3[0]} line; echo P3: $line
+read -u ${P3[0]} line; echo P3: $line
+read -u ${P3[0]} line; echo P3: $line
+read -u ${P3[0]} line; echo P3: $line
 
 while read -u ${P2[0]} line; do
-   echo "X:" $line
+   echo "P2:" $line
    if [ x"$line" == x'=> Receive 1000 from rich' ]; then
      echo Found: $line
      break

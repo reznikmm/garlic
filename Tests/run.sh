@@ -11,5 +11,6 @@ timeout $T $DIR/examples/bank.sh
 timeout $T $DIR/examples/messages.sh
 timeout $T $DIR/examples/racw.sh
 timeout $T $DIR/examples/self.sh
+timeout $T $DIR/linktest/linktest.sh
 
 echo Tests completed

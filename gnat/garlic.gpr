@@ -53,8 +53,7 @@ library project Garlic is
 
    for Source_Dirs use (Common_Dir) & Platform_Dir;
    for Excluded_Source_Files use
-     ("s-shamem.adb", "s-shamem.ads",
-      "test_startup.adb", "linktest.adb", "b_gaprco.adb");
+     ("s-shamem.adb", "s-shamem.ads");
 
    package Compiler is
       for Default_Switches ("Ada") use ("-O2", "-g", "-gnatg");
