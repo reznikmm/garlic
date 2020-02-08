@@ -45,9 +45,6 @@ with System.Garlic.Types;             use System.Garlic.Types;
 with System.Garlic.Utils;             use System.Garlic.Utils;
 with System.Standard_Library;
 
-with System.Garlic.Linker_Options;
-pragma Warnings (Off, System.Garlic.Linker_Options);
-
 package body System.Garlic.Heart is
 
    use Ada.Streams;
