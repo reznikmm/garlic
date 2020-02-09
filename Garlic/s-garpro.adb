@@ -30,19 +30,6 @@
 
 package body System.Garlic.Protocols is
 
-   --------------
-   -- Get_Data --
-   --------------
-
-   function Get_Data
-     (Protocol  : access Protocol_Type)
-      return Garlic.Utils.String_List_Access
-   is
-      pragma Unreferenced (Protocol);
-   begin
-      return null;
-   end Get_Data;
-
    --------------------------------
    -- Receive_From_All_Protocols --
    --------------------------------

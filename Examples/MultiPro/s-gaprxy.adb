@@ -39,12 +39,12 @@ with System.Garlic.Heart;                 use System.Garlic.Heart;
 with System.Garlic.Options;
 with System.Garlic.Partitions;            use System.Garlic.Partitions;
 with System.Garlic.Physical_Location;     use System.Garlic.Physical_Location;
-with System.Garlic.Platform_Specific;
 with System.Garlic.Protocols;             use System.Garlic.Protocols;
 with System.Garlic.Soft_Links;
 with System.Garlic.Streams;               use System.Garlic.Streams;
 with System.Garlic.Table;
 with System.Garlic.Types;                 use System.Garlic.Types;
+with System.Garlic.Utils;                 use System.Garlic.Utils;
 
 package body System.Garlic.Protocols.Xyz is
 
@@ -52,11 +52,11 @@ package body System.Garlic.Protocols.Xyz is
      Debug_Initialize ("S_GAPRTC", "(s-gaprtc): ");
 
    procedure D
-     (Message : in String;
-      Key     : in Debug_Key := Private_Debug_Key)
+     (Message : String;
+      Key     : Debug_Key := Private_Debug_Key)
      renames Print_Debug_Info;
 
-   use Ada.Streams, System.Garlic.Protocols;
+   use Ada.Streams;
 
    subtype Error_Type is Exceptions.Error_Type;
 
@@ -111,7 +111,7 @@ package body System.Garlic.Protocols.Xyz is
    --  Selector for Receive (no-tasking case).
 
    procedure Read_Banner
-     (Peer   : in Socket_Type;
+     (Peer   : Socket_Type;
       Banner : out Banner_Kind);
    pragma Inline (Read_Banner);
    --  Read header from a file descriptor or return Junk_Banner if the
@@ -124,7 +124,7 @@ package body System.Garlic.Protocols.Xyz is
    --  Constrained subtype for stream element counts
 
    procedure Read_SEC
-     (Peer  : in Socket_Type;
+     (Peer  : Socket_Type;
       Count : out Stream_Element_Count;
       Error : in out Error_Type);
    --  Read a stream element count from a file descriptor and check that
@@ -141,28 +141,27 @@ package body System.Garlic.Protocols.Xyz is
    --  Establish a socket to a remote location and return the file descriptor
 
    procedure Do_Listen
-     (Index : in Natural;
+     (Index : Natural;
       Error : in out Error_Type);
    --  Establish a socket according to the information in Self_Host (and
    --  complete it if needed).
 
    procedure Receive_One_Stream
-     (Peer  : in Socket_Type;
+     (Peer  : Socket_Type;
       PID   : in out Partition_ID;
       Error : in out Error_Type);
 
    procedure Receive
-     (Peer  : in Socket_Type;
+     (Peer  : Socket_Type;
       Data  : access Stream_Element_Array;
       Error : in out Error_Type);
    pragma Inline (Receive);
 
    procedure Send
-     (Peer  : in Socket_Type;
+     (Peer  : Socket_Type;
       Data  : access Stream_Element_Array;
-      From  : in Stream_Element_Count;
+      From  : Stream_Element_Count;
       Error : in out Error_Type);
-   pragma Inline (Send);
    --  Receive and send data. Receive loops as long as Data has not
    --  been filled and Send as long as everything has not
    --  been sent. These two procedures are exported so that they can
@@ -183,7 +182,7 @@ package body System.Garlic.Protocols.Xyz is
    -------------------------
 
    procedure Accept_Until_Closed
-     (Incoming : in Natural) is
+     (Incoming : Natural) is
    begin
       loop
          declare
@@ -257,7 +256,7 @@ package body System.Garlic.Protocols.Xyz is
    -- Activate --
    --------------
 
-   procedure Activate
+   overriding procedure Activate
      (Protocol : access XYZ_Protocol;
       Error    : in out Error_Type)
    is
@@ -315,7 +314,7 @@ package body System.Garlic.Protocols.Xyz is
    function Do_Connect (Sock_Addr : Sock_Addr_Type) return Socket_Type
    is
       Peer : Socket_Type    := No_Socket;
-      Addr : Sock_Addr_Type := Sock_Addr;
+      Addr : constant Sock_Addr_Type := Sock_Addr;
 
    begin
       begin
@@ -336,7 +335,7 @@ package body System.Garlic.Protocols.Xyz is
    ---------------
 
    procedure Do_Listen
-     (Index : in Natural;
+     (Index : Natural;
       Error : in out Error_Type)
    is
       Self  : Socket_Info renames Incomings (Index);
@@ -388,7 +387,7 @@ package body System.Garlic.Protocols.Xyz is
    -- Get_Data --
    --------------
 
-   function Get_Data
+   overriding function Get_Data
      (Protocol : access XYZ_Protocol)
      return String_List_Access
    is
@@ -411,7 +410,7 @@ package body System.Garlic.Protocols.Xyz is
    -- Get_Name --
    --------------
 
-   function Get_Name
+   overriding function Get_Name
      (Protocol : access XYZ_Protocol)
      return String
    is
@@ -424,10 +423,10 @@ package body System.Garlic.Protocols.Xyz is
    -- Initialize --
    ----------------
 
-   procedure Initialize
+   overriding procedure Initialize
      (Protocol  : access XYZ_Protocol;
-      Self_Data : in String;
-      Required  : in Boolean;
+      Self_Data : String;
+      Required  : Boolean;
       Performed : out Boolean;
       Error     : in out Error_Type)
    is
@@ -461,7 +460,6 @@ package body System.Garlic.Protocols.Xyz is
       if not Initialized then
          pragma Debug (D ("Initialize GNAT.Sockets for protocol xyz"));
          Outgoings.Initialize;
-         GNAT.Sockets.Initialize (Platform_Specific.Process_Blocking_IO);
          Create_Selector (No_Tasking_Receive_Selector);
          Initialized := True;
       end if;
@@ -553,7 +551,7 @@ package body System.Garlic.Protocols.Xyz is
    -----------------
 
    procedure Read_Banner
-     (Peer   : in Socket_Type;
+     (Peer   : Socket_Type;
       Banner : out Banner_Kind)
    is
       Data   : aliased Stream_Element_Array := (1 .. Banner_Size => 0);
@@ -591,7 +589,7 @@ package body System.Garlic.Protocols.Xyz is
    --------------
 
    procedure Read_SEC
-     (Peer   : in Socket_Type;
+     (Peer   : Socket_Type;
       Count  : out Stream_Element_Count;
       Error  : in out Error_Type)
    is
@@ -611,7 +609,7 @@ package body System.Garlic.Protocols.Xyz is
    -------------
 
    procedure Receive
-     (Peer  : in Socket_Type;
+     (Peer  : Socket_Type;
       Data  : access Stream_Element_Array;
       Error : in out Error_Type)
    is
@@ -644,7 +642,7 @@ package body System.Garlic.Protocols.Xyz is
    -- Receive --
    -------------
 
-   function Receive
+   overriding function Receive
      (Protocol  : access XYZ_Protocol;
       Timeout   : Duration)
      return Boolean
@@ -720,7 +718,7 @@ package body System.Garlic.Protocols.Xyz is
    ------------------------
 
    procedure Receive_One_Stream
-     (Peer  : in Socket_Type;
+     (Peer  : Socket_Type;
       PID   : in out Partition_ID;
       Error : in out Error_Type)
   is
@@ -832,7 +830,7 @@ package body System.Garlic.Protocols.Xyz is
    --------------------------
 
    procedure Receive_Until_Closed
-     (Peer : in Socket_Type;
+     (Peer : Socket_Type;
       PID  : in out Partition_ID)
    is
       Error      : Error_Type;
@@ -887,8 +885,8 @@ package body System.Garlic.Protocols.Xyz is
    ------------------------
 
    procedure Register_Task_Pool
-     (Allocate_Acceptor  : in Allocate_Acceptor_Procedure;
-      Allocate_Connector : in Allocate_Connector_Procedure) is
+     (Allocate_Acceptor  : Allocate_Acceptor_Procedure;
+      Allocate_Connector : Allocate_Connector_Procedure) is
    begin
       Allocate_Acceptor_Task  := Allocate_Acceptor;
       Allocate_Connector_Task := Allocate_Connector;
@@ -898,9 +896,9 @@ package body System.Garlic.Protocols.Xyz is
    -- Send --
    ----------
 
-   procedure Send
+   overriding procedure Send
      (Protocol  : access XYZ_Protocol;
-      Partition : in Partition_ID;
+      Partition : Partition_ID;
       Data      : access Stream_Element_Array;
       Error     : in out Error_Type)
    is
@@ -944,7 +942,7 @@ package body System.Garlic.Protocols.Xyz is
 
          if Info.Socket = No_Socket then
             Outgoings.Leave;
-            if Options.Partition_Name /= null then
+            if Options.Partition_Name not in null then
                Throw (Error, "Send: Cannot connect to" & Partition'Img &
                       " " & Options.Partition_Name.all);
             else
@@ -1012,9 +1010,9 @@ package body System.Garlic.Protocols.Xyz is
    ----------
 
    procedure Send
-     (Peer  : in Socket_Type;
+     (Peer  : Socket_Type;
       Data  : access Stream_Element_Array;
-      From  : in Stream_Element_Count;
+      From  : Stream_Element_Count;
       Error : in out Error_Type)
    is
       First : Ada.Streams.Stream_Element_Offset := From;
@@ -1046,9 +1044,9 @@ package body System.Garlic.Protocols.Xyz is
    -- Set_Boot_Data --
    -------------------
 
-   procedure Set_Boot_Data
+   overriding procedure Set_Boot_Data
      (Protocol  : access XYZ_Protocol;
-      Boot_Data : in String;
+      Boot_Data : String;
       Error     : in out Error_Type)
    is
       pragma Unreferenced (Protocol);
@@ -1057,7 +1055,6 @@ package body System.Garlic.Protocols.Xyz is
       if not Initialized then
          pragma Debug (D ("Initialize protocol xyz"));
          Outgoings.Initialize;
-         GNAT.Sockets.Initialize (Platform_Specific.Process_Blocking_IO);
          Initialized := True;
       end if;
 
@@ -1088,7 +1085,7 @@ package body System.Garlic.Protocols.Xyz is
    -- Shutdown --
    --------------
 
-   procedure Shutdown
+   overriding procedure Shutdown
      (Protocol : access XYZ_Protocol)
    is
       pragma Unreferenced (Protocol);

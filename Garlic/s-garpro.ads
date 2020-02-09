@@ -105,7 +105,7 @@ package System.Garlic.Protocols is
 
    function Get_Data
      (Protocol : access Protocol_Type)
-      return Garlic.Utils.String_List_Access;
+      return Garlic.Utils.String_List_Access is abstract;
    --  Return a string array which holds all the physical locations to
    --  be used by another partition to contact us.
 

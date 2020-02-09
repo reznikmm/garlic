@@ -30,12 +30,11 @@
 
 with Ada.Streams;
 
-with System.Garlic.Exceptions;
-
 with GNAT.Sockets;
-with GNAT.Strings;
 
+with System.Garlic.Exceptions;
 with System.Garlic.Types;
+with System.Garlic.Utils;
 
 package System.Garlic.Protocols.Xyz is
 
@@ -43,64 +42,64 @@ package System.Garlic.Protocols.Xyz is
 
    type XYZ_Protocol is new Protocol_Type with private;
 
-   procedure Activate
+   function Create return Protocol_Access;
+
+   overriding procedure Activate
      (Protocol : access XYZ_Protocol;
       Error    : in out Exceptions.Error_Type);
 
-   function Create return Protocol_Access;
-
-   function Get_Data
+   overriding function Get_Data
      (Protocol  : access XYZ_Protocol)
-     return GNAT.Strings.String_List_Access;
+     return System.Garlic.Utils.String_List_Access;
 
-   function Get_Name
+   overriding function Get_Name
      (Protocol : access XYZ_Protocol)
      return String;
 
-   procedure Initialize
+   overriding procedure Initialize
      (Protocol  : access XYZ_Protocol;
-      Self_Data : in String;
-      Required  : in Boolean;
+      Self_Data : String;
+      Required  : Boolean;
       Performed : out Boolean;
       Error     : in out Exceptions.Error_Type);
 
-   function Receive
+   overriding function Receive
      (Protocol : access XYZ_Protocol;
       Timeout  : Duration)
      return Boolean;
 
-   procedure Send
+   overriding procedure Send
      (Protocol  : access XYZ_Protocol;
-      Partition : in Types.Partition_ID;
+      Partition : Types.Partition_ID;
       Data      : access Ada.Streams.Stream_Element_Array;
       Error     : in out Exceptions.Error_Type);
 
-   procedure Set_Boot_Data
+   overriding procedure Set_Boot_Data
      (Protocol  : access XYZ_Protocol;
-      Boot_Data : in String;
+      Boot_Data : String;
       Error     : in out Exceptions.Error_Type);
 
-   procedure Shutdown (Protocol : access XYZ_Protocol);
+   overriding procedure Shutdown (Protocol : access XYZ_Protocol);
 
    Shutdown_Completed : Boolean := False;
 
    procedure Accept_Until_Closed
-     (Incoming : in Natural);
+     (Incoming : Natural);
 
    procedure Receive_Until_Closed
-     (Peer : in GNAT.Sockets.Socket_Type;
+     (Peer : GNAT.Sockets.Socket_Type;
       PID  : in out Types.Partition_ID);
 
    type Allocate_Acceptor_Procedure is access procedure
-     (Incoming : in Natural);
+     (Incoming : Natural);
 
    type Allocate_Connector_Procedure is access procedure
-     (Peer : in GNAT.Sockets.Socket_Type;
-      PID  : in Types.Partition_ID);
+     (Peer : GNAT.Sockets.Socket_Type;
+      PID  : Types.Partition_ID);
 
    procedure Register_Task_Pool
-     (Allocate_Acceptor  : in Allocate_Acceptor_Procedure;
-      Allocate_Connector : in Allocate_Connector_Procedure);
+     (Allocate_Acceptor  : Allocate_Acceptor_Procedure;
+      Allocate_Connector : Allocate_Connector_Procedure);
 
 private
 
