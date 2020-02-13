@@ -51,10 +51,6 @@ with System.Garlic.Streams;
 with System.Garlic.Tasking;
 with System.Garlic.Types;
 
-with System.Garlic.Startup;
-pragma Elaborate_All (System.Garlic.Startup);
-pragma Warnings (Off, System.Garlic.Startup);
-
 package body System.RPC.Server is
 
    use type System.Garlic.Types.Partition_ID;
@@ -110,7 +106,7 @@ package body System.RPC.Server is
    --  locally. Parameters for this subprogram are also marshalled in
    --  Params. The returned parameters are marshalled in Result.
 
-   procedure Initialize;
+   procedure Init;
    --  Initialize this package
 
    procedure Shutdown;
@@ -501,11 +497,11 @@ package body System.RPC.Server is
          Session_Type (Handler.Outer.Session));
    end Finalize;
 
-   ----------------
-   -- Initialize --
-   ----------------
+   ----------
+   -- Init --
+   ----------
 
-   procedure Initialize is
+   procedure Init is
       Identifier : Task_Identifier_Access;
       Handler    : constant System.Garlic.Soft_Links.Abort_Handler_Access
         := new Outer_Abort_Handler_Type;
@@ -532,7 +528,7 @@ package body System.RPC.Server is
 
       System.Garlic.Soft_Links.Adjust (Handler.all);
       System.Garlic.Soft_Links.Register_Abort_Handler (Handler);
-   end Initialize;
+   end Init;
 
    ---------------------
    -- Show_Tasks_Pool --
@@ -565,13 +561,20 @@ package body System.RPC.Server is
       System.Garlic.Soft_Links.Leave (Tasks_Pool_Mutex);
    end Shutdown;
 
-begin
-   System.Garlic.Soft_Links.Create (Tasks_Pool_Mutex);
-   System.Garlic.Soft_Links.Create (Tasks_Pool_Watcher);
+   ----------------
+   -- Initialize --
+   ----------------
 
-   Register_Task_Pool
-     (Allocate_Task => Allocate_Task'Access,
-      Abort_Task    => Abort_Task'Access,
-      Initialize    => Initialize'Access,
-      Shutdown      => Shutdown'Access);
+   procedure Initialize is
+   begin
+      System.Garlic.Soft_Links.Create (Tasks_Pool_Mutex);
+      System.Garlic.Soft_Links.Create (Tasks_Pool_Watcher);
+
+      Register_Task_Pool
+        (Allocate_Task => Allocate_Task'Access,
+         Abort_Task    => Abort_Task'Access,
+         Initialize    => Init'Access,
+         Shutdown      => Shutdown'Access);
+   end Initialize;
+
 end System.RPC.Server;

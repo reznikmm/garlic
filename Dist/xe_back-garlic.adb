@@ -93,6 +93,8 @@ package body XE_Back.GARLIC is
       RE_Initialize_0,
       RE_Initialize_1,
       RE_Initialize_2,
+      RE_Initialize_3,
+      RE_Initialize_4,
       RE_Set_Partition_Name,
       RE_Set_Registration_Filter,
       RE_Set_Default_Filter,
@@ -127,6 +129,8 @@ package body XE_Back.GARLIC is
       RE_Initialize_0                    => RU_System_Garlic_No_Tasking,
       RE_Initialize_1                    => RU_System_Garlic_Tasking,
       RE_Initialize_2                    => RU_System_Garlic_Name_Table,
+      RE_Initialize_3                    => RU_System_RPC_Server,
+      RE_Initialize_4                    => RU_System_RPC,
       RE_Set_Partition_Name              => RU_System_Garlic_Options,
       RE_Set_Registration_Filter         => RU_System_Garlic_Filters,
       RE_Set_Default_Filter              => RU_System_Garlic_Filters,
@@ -685,6 +689,12 @@ package body XE_Back.GARLIC is
       Write_Line ("begin");
 
       Increment_Indentation;
+
+      Write_Call (RE (RE_Initialize_4));
+
+      if Current.Tasking /= 'N' then
+         Write_Call (RE (RE_Initialize_3));
+      end if;
 
       --  Register passive partitions and their shared passive
       --  packages as they are not going to do this registration by

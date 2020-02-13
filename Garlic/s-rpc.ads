@@ -75,6 +75,8 @@ package System.RPC is
       Partition : Partition_ID;
       Receiver  : RPC_Receiver);
 
+   procedure Initialize;
+
 private
 
    pragma Inline (Read);

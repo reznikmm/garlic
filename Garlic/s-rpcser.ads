@@ -30,6 +30,6 @@
 
 package System.RPC.Server is
 
-   pragma Elaborate_Body;
+   procedure Initialize;
 
 end System.RPC.Server;

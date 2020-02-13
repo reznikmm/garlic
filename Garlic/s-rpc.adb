@@ -39,10 +39,6 @@ with System.Garlic.Priorities.Mapping; use System.Garlic.Priorities.Mapping;
 with System.Garlic.Soft_Links;
 with System.Garlic.Units;              use System.Garlic.Units;
 
-with System.Garlic.Startup;
-pragma Elaborate_All (System.Garlic.Startup);
-pragma Warnings (Off, System.Garlic.Startup);
-
 package body System.RPC is
 
    use type System.Garlic.Types.Partition_ID;
@@ -533,12 +529,19 @@ package body System.RPC is
                           Exception_Message (E));
    end Write;
 
-begin
-   System.Garlic.Soft_Links.Create
-     (Establish_RPC_Watcher, System.Garlic.Types.No_Version);
-   System.Garlic.Soft_Links.Create (Callers_Watcher);
-   Register_Handler (Remote_Call, Handle_Request'Access);
-   System.Garlic.Soft_Links.Register_RPC_Shutdown (Shutdown'Access);
-   System.Garlic.Soft_Links.Register_Abort_Handler
-     (new Dummy_Abort_Handler_Type);
+   ----------------
+   -- Initialize --
+   ----------------
+
+   procedure Initialize is
+   begin
+      System.Garlic.Soft_Links.Create
+        (Establish_RPC_Watcher, System.Garlic.Types.No_Version);
+      System.Garlic.Soft_Links.Create (Callers_Watcher);
+      Register_Handler (Remote_Call, Handle_Request'Access);
+      System.Garlic.Soft_Links.Register_RPC_Shutdown (Shutdown'Access);
+      System.Garlic.Soft_Links.Register_Abort_Handler
+        (new Dummy_Abort_Handler_Type);
+   end Initialize;
+
 end System.RPC;

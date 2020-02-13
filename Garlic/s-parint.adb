@@ -42,10 +42,6 @@ with System.Garlic.Storages;   use System.Garlic.Storages;
 with System.Garlic.Types;      use System.Garlic.Types;
 with System.Garlic.Soft_Links;
 
-with System.Garlic.Startup;
-pragma Elaborate_All (System.Garlic.Startup);
-pragma Warnings (Off, System.Garlic.Startup);
-
 with System.Garlic.Utils;     use System.Garlic.Utils;
 
 package body System.Partition_Interface is
