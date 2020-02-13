@@ -32,4 +32,7 @@ package Worker_Pkg is
         Speed : Integer;
      end record;
    procedure Do_Job (W : access Real_Worker; J : Job);
+
+   procedure Initialize;
+
 end Worker_Pkg;

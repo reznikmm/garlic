@@ -12,9 +12,10 @@ package body Etypes is
 
    Local : New_Node_Type;
 
-begin
-
-   Local.Data := 1996;
-   Register (Ptypes.Node_Access (Local.My.Self));
+   procedure Initialize is
+   begin
+      Local.Data := 1996;
+      Register (Ptypes.Node_Access (Local.My.Self));
+   end Initialize;
 
 end Etypes;

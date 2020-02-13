@@ -10,4 +10,6 @@ package Prime is
      (Pool    : access New_Pool_Type;
       Number  : in     Natural);
 
+   procedure Initialize;
+
 end Prime;

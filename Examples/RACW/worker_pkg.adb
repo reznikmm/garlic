@@ -40,7 +40,10 @@ package body Worker_Pkg is
                        " timeslots) at speed" & Integer'Image (W.Speed));
    end Do_Job;
    Local : aliased Real_Worker;
-begin
-   Controller.Get_Integer ("Speed : ", Local.Speed);
-   Controller.Register (Local'Access);
+
+   procedure Initialize is
+   begin
+      Controller.Get_Integer ("Speed : ", Local.Speed);
+      Controller.Register (Local'Access);
+   end Initialize;
 end Worker_Pkg;

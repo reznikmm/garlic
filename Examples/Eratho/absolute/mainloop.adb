@@ -2,6 +2,7 @@ with Text_IO; use Text_IO;
 with Controller; use Controller;
 with Results;
 with Common; use Common;
+with Prime;
 
 procedure Mainloop is
 
@@ -10,6 +11,7 @@ procedure Mainloop is
    Starter : Pool_Access;
 
 begin
+   Prime.Initialize;
 
    Starter := Next (Mainloop'Partition_ID);
    for Number in 2 .. 50 loop

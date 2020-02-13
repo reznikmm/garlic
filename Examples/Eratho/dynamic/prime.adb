@@ -19,7 +19,7 @@ package body Prime is
 
    --  U'Partition_ID returns a integer which is a unique id used
    --  to identify the partition on which unit U is really located.
-   Local_Partition_ID  : Partition_ID := Prime'Partition_ID;
+   Local_Partition_ID  : Partition_ID;
 
    --  Distributed objects for the current and next partition.
    Self_Pool : aliased New_Pool_Type;
@@ -27,7 +27,11 @@ package body Prime is
 
    --  Register the distributed object of the current partition to
    --  the Controller.
-   Elaborate : Boolean := Register (Self_Pool'Access, Local_Partition_ID);
+   procedure Initialize is
+      Elaborate : Boolean := Register (Self_Pool'Access, Prime'Partition_ID);
+   begin
+      Local_Partition_ID := Prime'Partition_ID;
+   end Initialize;
 
    procedure Test_Primarity
      (Pool     : access New_Pool_Type;

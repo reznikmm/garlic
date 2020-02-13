@@ -10,4 +10,6 @@ package Prime is
       Divider :    out Natural;
       Where   :    out Partition_ID);
 
+   procedure Initialize;
+
 end Prime;

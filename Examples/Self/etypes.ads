@@ -16,4 +16,6 @@ package Etypes is
 
    procedure Print (N : access New_Node_Type);
 
+   procedure Initialize;
+
 end Etypes;
