@@ -1,0 +1,28 @@
+with "garlic";
+project Echo is
+   type Partition_Kind is ("client", "server");
+   Partition : Partition_Kind := external ("PART", "client");
+
+   for Main use ("partition.adb");
+   for Source_Dirs use ("..", Partition);
+   for Object_Dir use ".objs/" & Partition;
+
+   case Partition is
+      when "client" =>
+         for Excluded_Source_Files use ("remote.adb");
+      when "server" =>
+         null;
+   end case;
+
+   Default_Switches := ("-g");
+
+   package Compiler is
+      for Switches ("s-garela.adb") use Default_Switches & ("-gnatg");
+      case Partition is
+         when "client" =>
+            for Switches ("remote.ads") use Default_Switches & ("-gnatzc");
+         when "server" =>
+            for Switches ("remote.adb") use Default_Switches & ("-gnatzr");
+      end case;
+   end Compiler;
+end Echo;

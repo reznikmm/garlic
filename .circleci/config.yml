@@ -5,8 +5,10 @@ jobs:
        - image: reznik/gnat:wasm
      steps:
        - checkout
+       - run: cd /gnat-llvm ; git pull; cd /gnat-llvm/llvm-interface/adawebpack_src; git pull; git checkout garlic
+       - run: svn up /gnat-llvm/llvm-interface/gnat_src/
+       - run: make wasm -C  /gnat-llvm/llvm-interface/
+       - run: make -C /gnat-llvm/llvm-interface/adawebpack_src
        - run: gprbuild -p -P gnat/garlic.gpr
-       - run: gprbuild -p -P gnat/gnatdist.gpr
-       - run: gprinstall -p -P gnat/garlic.gpr --prefix=/tmp/garlic --sources-subdir=lib/garlic
-       - run: gprinstall -p -P gnat/gnatdist.gpr --prefix=/tmp/garlic
+       - run: gprinstall -p -P gnat/garlic.gpr --prefix=/tmp/garlic
        - run: Tests/run.sh /tmp/garlic

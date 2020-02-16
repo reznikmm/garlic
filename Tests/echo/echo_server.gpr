@@ -1,0 +1,16 @@
+with "aws";
+--  with "garlic";
+
+project Echo_Server is
+   for Source_Dirs use (".", "server");
+   for Object_Dir use ".objs/server";
+   for Main use ("aws_server.adb");
+
+   Default_Switches := ("-g");
+
+   package Compiler is
+      for Default_Switches ("Ada") use Default_Switches;
+      for Switches ("remote.adb") use Default_Switches & ("-gnatzr");
+   end Compiler;
+
+end Echo_Server;

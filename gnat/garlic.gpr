@@ -28,35 +28,24 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-library project Garlic is
+with "adawebpack.gpr";
+with "adawebpack_config.gpr";
 
-   type Platforms is
-     ("Linux",
-      "Windows");
+project Garlic is
+   for Target use "llvm";
 
-   Platform : Platforms := external ("PLATFORM", "Linux");
+   for Object_Dir use "../.objs/garlic";
 
-   for Library_Name use "garlic";
-   for Library_Kind use "static";
-   for Library_Dir  use "../.libs";
-   for Object_Dir   use "../.objs";
-
-   Common_Dir := "../Garlic";
-   Platform_Dir := "";  --  do be redefined
-
-   case Platform is
-      when "Linux" =>
-         Platform_Dir := Common_Dir & "/platform/e";
-      when "Windows" =>
-         Platform_Dir := Common_Dir & "/platform/w";
-   end case;
-
-   for Source_Dirs use (Common_Dir) & Platform_Dir;
+   for Source_Dirs use ("../Garlic");
    for Excluded_Source_Files use
-     ("s-shamem.adb", "s-shamem.ads");
+     ("s-shamem.ads");
+
+   Default_Switches := AdaWebPack_Config.Compiler'Switches ("Ada");
 
    package Compiler is
-      for Default_Switches ("Ada") use ("-O2", "-g", "-gnatg");
+      for Default_Switches ("Ada") use Default_Switches;
+      for Switches ("s-dsaser.ads") use Default_Switches & ("-gnatg");
+      for Switches ("s-parint.adb") use Default_Switches & ("-gnatg");
    end Compiler;
 
 end Garlic;

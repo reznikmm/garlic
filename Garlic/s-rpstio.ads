@@ -32,7 +32,7 @@ with Ada.Streams;
 
 package System.RPC.Stream_IO is
 
-   pragma Elaborate_Body;
+   pragma Preelaborate;
 
    --  This package provides message passing facilities by using streams.
    --  When a partition P1 wants to send data to another partition P2, it
