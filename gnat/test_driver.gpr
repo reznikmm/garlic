@@ -1,0 +1,19 @@
+with "matreshka_league.gpr";
+with "webdriver.gpr";
+with "spawn.gpr";
+
+project Test_Driver is
+
+   for Source_Dirs use ("../Tests/echo/driver/");
+   for Object_Dir use "../.objs/test_driver";
+   for Main use ("driver-run.adb");
+
+   package Compiler is
+      for Switches ("ada") use ("-g", "-gnata", "-fstack-check", "-gnatwa", "-gnaty");
+   end Compiler;
+
+   package Binder is
+      for Switches ("ada") use ("-E", "-shared");
+   end Binder;
+
+end Test_Driver;

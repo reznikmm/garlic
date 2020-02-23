@@ -27,6 +27,19 @@ package body WS_Callback is
    overriding procedure On_Message
      (Self : in out Object; Message : String)
    is
+      procedure Swap (A, B : in out Character);
+
+      ----------
+      -- Swap --
+      ----------
+
+      procedure Swap (A, B : in out Character) is
+         Temp : Character := A;
+      begin
+         A := B;
+         B := Temp;
+      end Swap;
+
       S : aliased AWS.Utils.Streams.Strings;
       R : aliased AWS.Utils.Streams.Strings;
    begin
@@ -42,6 +55,12 @@ package body WS_Callback is
          Last    : Ada.Streams.Stream_Element_Count;
       begin
          Ada.Text_IO.Put_Line ("On_Message: " & Text);
+
+         --  Revert text
+         for J in Text'First .. Text'First + Text'Length / 2 - 1 loop
+            Swap (Text (J), Text (Text'Last - (J - Text'First)));
+         end loop;
+
          String'Output (R'Access, "");  --  Null_Occurence
          String'Output (R'Access, Text);
          R.Read (Data, Last);

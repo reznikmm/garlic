@@ -2,13 +2,14 @@ with "garlic.gpr";
 with "adawebpack_config.gpr";
 with "adawebpack.gpr";
 
-project Wasm_Client is
+project Test_Sync_Call_Wasm_Client is
 
    for Target use "llvm";
-   for Object_Dir use ".objs/wasm_cli";
-   for Source_Dirs use (".", "client");
+   for Object_Dir use "../.objs/test/sync_call_wasm_cli";
+   for Source_Dirs use ("../Tests/echo", "../Tests/echo/client");
    for Main use ("main.adb");
-   for Exec_Dir use ".";
+   for Exec_Dir use "../Tests/echo";
+
    for Excluded_Source_Files use ("remote.adb");
 
    Default_Switches := AdaWebPack_Config.Compiler'Switches ("Ada");
@@ -30,4 +31,4 @@ project Wasm_Client is
       for Executable ("main.adb") use "main.wasm";
    end Builder;
 
-end Wasm_Client;
+end Test_Sync_Call_Wasm_Client;

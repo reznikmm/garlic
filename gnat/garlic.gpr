@@ -46,6 +46,7 @@ project Garlic is
       for Default_Switches ("Ada") use Default_Switches;
       for Switches ("s-dsaser.ads") use Default_Switches & ("-gnatg");
       for Switches ("s-parint.adb") use Default_Switches & ("-gnatg");
+      for Switches ("s-shasto.adb") use Default_Switches & ("-gnatg");
    end Compiler;
 
 end Garlic;
