@@ -2,8 +2,9 @@ version: 2
 jobs:
    build:
      docker:
-       - image: reznik/gnat:wasm
+       - image: cimg/base:current-22.04
      steps:
+       - run: sudo apt update -y && DEBIAN_FRONTEND=noninteractive sudo apt install -y gnat-11 gprbuild
        - checkout
        - run: gprbuild -p -P gnat/garlic.gpr
        - run: gprbuild -p -P gnat/gnatdist.gpr
