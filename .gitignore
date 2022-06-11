@@ -1,0 +1,8 @@
+*.ali
+*.o
+dsa
+/Examples/*/*.txt
+/Examples/*/*/*.txt
+/.libs/
+/.objs/
+/alire/
