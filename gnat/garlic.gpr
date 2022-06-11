@@ -6,7 +6,7 @@
 --                                                                          --
 --                             P r o j e c t                                --
 --                                                                          --
---         Copyright (C) 1996-2020 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2022 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -31,24 +31,71 @@
 library project Garlic is
 
    type Platforms is
-     ("Linux",
-      "Windows");
+     ("Posix",
+      "Windows_NT");
 
-   Platform : Platforms := external ("PLATFORM", "Linux");
+   Platform : Platforms := external ("PLATFORM", "Posix");
+
+   type Library_Kind is ("static", "static-pic", "relocatable");
+   Library_Type : Library_Kind := external ("LIBRARY_TYPE", "static");
+
+   type Garlic_Build_Kind is ("dev", "prod");
+   Build_Mode : Garlic_Build_Kind := external ("GARLIC_BUILD_MODE", "prod");
 
    for Library_Name use "garlic";
-   for Library_Kind use "static";
-   for Library_Dir  use "../.libs";
-   for Object_Dir   use "../.objs";
+   for Library_Kind use Library_Type;
+   for Library_Dir  use "../.libs/" & Library_Type;
+   for Object_Dir   use "../.objs/" & Library_Type;
 
    Common_Dir := "../Garlic";
    Platform_Dir := "";  --  do be redefined
 
    case Platform is
-      when "Linux" =>
+      when "Posix" =>
          Platform_Dir := Common_Dir & "/platform/e";
-      when "Windows" =>
+      when "Windows_NT" =>
          Platform_Dir := Common_Dir & "/platform/w";
+   end case;
+
+   Ada_Switches := ();
+
+   case Build_Mode is
+      when "prod" =>
+         Ada_Switches := (
+            --  Compile with optimizations
+            "-O2",
+
+            --  Generate debug information: this is useful to get meaningful
+            --  tracebacks.
+            "-g",
+
+            --  GNAT implementation mode (used for compiling GNAT units)
+            "-gnatg"
+         );
+
+      when "dev" =>
+         Ada_Switches := (
+            --  Compile with no optimization and with debug information to ease
+            --  investigation in debuggers.
+            "-Og", "-g",
+
+            --  Enable warnings and stylechecks.
+            "-gnatwa",   --  turn on all info/warnings
+            "-gnatygoO",
+              --  g    check standard GNAT style rules
+              --  o    check subprogram bodies in alphabetical order
+              --  O    check overriding indicators
+
+            --  Enable assertions and all validity checking options
+            "-gnata", "-gnatVa",
+
+            --  Enable stack overflow checks
+            "-fstack-check",
+
+            --  GNAT implementation mode (used for compiling GNAT units)
+            "-gnatg"
+
+         );
    end case;
 
    for Source_Dirs use (Common_Dir) & Platform_Dir;
@@ -56,7 +103,7 @@ library project Garlic is
      ("s-shamem.adb", "s-shamem.ads");
 
    package Compiler is
-      for Default_Switches ("Ada") use ("-O2", "-g", "-gnatg");
+      for Default_Switches ("Ada") use Ada_Switches;
    end Compiler;
 
 end Garlic;

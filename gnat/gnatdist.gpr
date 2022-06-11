@@ -31,6 +31,7 @@
 project Gnatdist is
    for Source_Dirs use ("../Dist");
    for Object_Dir use "../.objs/gnatdist/";
+   for Exec_Dir use "../.bin";
    for Main use ("xe_main.adb");
 
    package Compiler is
