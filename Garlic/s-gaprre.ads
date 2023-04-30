@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---         Copyright (C) 1996-2020 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2023 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -31,7 +31,6 @@
 with Ada.Streams;
 
 with System.Garlic.Exceptions;
-with System.Garlic.Protocols;
 with System.Garlic.Types;
 
 package System.Garlic.Protocols.Replay is

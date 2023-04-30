@@ -34,7 +34,6 @@ with GNAT.Sockets;                        use GNAT.Sockets;
 
 with System.Garlic.Debug;                 use System.Garlic.Debug;
 with System.Garlic.Soft_Links;            use System.Garlic.Soft_Links;
-with System.Garlic.Protocols.Xyz;         use System.Garlic.Protocols.Xyz;
 with System.Garlic.Types;                 use System.Garlic.Types;
 
 package body System.Garlic.Protocols.Xyz.Server is
