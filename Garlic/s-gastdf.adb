@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---         Copyright (C) 1996-2020 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2023 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -32,7 +32,6 @@ with Ada.IO_Exceptions;
 with Ada.Unchecked_Conversion;
 with Ada.Environment_Variables;
 
-with System;
 with System.File_Control_Block;
 with System.File_IO;
 

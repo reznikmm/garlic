@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---         Copyright (C) 1996-2020 Free Software Foundation, Inc.           --
+--         Copyright (C) 1996-2023 Free Software Foundation, Inc.           --
 --                                                                          --
 -- GARLIC is free software;  you can redistribute it and/or modify it under --
 -- terms of the  GNU General Public License  as published by the Free Soft- --
@@ -34,7 +34,6 @@ with GNAT.Sockets;                        use GNAT.Sockets;
 
 with System.Garlic.Debug;                 use System.Garlic.Debug;
 with System.Garlic.Soft_Links;            use System.Garlic.Soft_Links;
-with System.Garlic.Protocols.Tcp;         use System.Garlic.Protocols.Tcp;
 with System.Garlic.Types;                 use System.Garlic.Types;
 
 package body System.Garlic.Protocols.Tcp.Server is
