@@ -32,7 +32,7 @@ the gprinstall step (by default GNAT install directory).
     gprbuild -p -P gnat/garlic.gpr
     gprbuild -p -P gnat/gnatdist.gpr
     gprinstall -p -P gnat/garlic.gpr --prefix=${PREFIX} --sources-subdir=lib/garlic
-    gprinstall -p -P gnat/gnatdist.gpr --prefix=${PREFIX}
+    gprinstall -p -P gnat/gnatdist.gpr --prefix=${PREFIX} --mode=usage
 
 will result in installing all GLADE components in the following
 directories:

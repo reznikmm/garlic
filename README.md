@@ -1,7 +1,7 @@
 GARLIC
 ======
 
-[![CircleCI](https://circleci.com/gh/reznikmm/garlic.svg?style=svg)](https://circleci.com/gh/reznikmm/garlic)
+[![Build](https://github.com/reznikmm/garlic/actions/workflows/alire.yml/badge.svg)](https://github.com/reznikmm/garlic/actions/workflows/alire.yml)
 [![WiKi](https://badgen.net/badge/docs/wiki/green?icon=wiki)](https://github.com/reznikmm/garlic/wiki)
 [![Alire](https://img.shields.io/endpoint?url=https://alire.ada.dev/badges/garlic.json)](https://alire.ada.dev/crates/garlic.html)
 

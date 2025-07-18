@@ -12,7 +12,14 @@ licenses = "GPL-2.0-or-later WITH GCC-exception-2.0"
 project-files = ["gnat/garlic.gpr"]
 
 [configuration]
-disabled = true
+output_dir = "gnat"
+generate_ada = false
+generate_c = false
+
+[build-switches]
+development.style_checks = ["-gnatygoO"] # gnat, alphabetical order, overriding
+development.contracts = "Yes"
+"*".debug_info = "Yes"
 
 [gpr-externals]
 GARLIC_BUILD_MODE = ["dev", "prod"]
