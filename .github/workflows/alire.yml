@@ -1,0 +1,28 @@
+# SPDX-FileCopyrightText: 2025 Max Reznik <reznikmm@gmail.com>
+#
+# SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+
+name: Build with Alire
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - uses: actions/checkout@v4
+    - uses: alire-project/setup-alire@v5
+    - name: Build Garlic and gnatdist
+      run: alr build && alr -C Dist build
+    - name: Install timeout
+      if: ${{ runner.os == 'macOS' }}
+      run: brew install coreutils
+    - name: Install and run tests
+      run: |
+        alr -C Dist install --prefix=/tmp/garlic
+        alr exec -- gprinstall -p -P gnat/garlic.gpr --prefix=/tmp/garlic --sources-subdir=lib/garlic
+        alr exec -- bash Tests/run.sh /tmp/garlic
