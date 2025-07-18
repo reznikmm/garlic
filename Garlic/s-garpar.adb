@@ -33,7 +33,6 @@ with System.Garlic.Exceptions;        use System.Garlic.Exceptions;
 with System.Garlic.Group;             use System.Garlic.Group;
 with System.Garlic.Heart;             use System.Garlic.Heart;
 with System.Garlic.Options;           use System.Garlic.Options;
-with System.Garlic.Partitions;        use System.Garlic.Partitions;
 with System.Garlic.Physical_Location; use System.Garlic.Physical_Location;
 with System.Garlic.Protocols;         use System.Garlic.Protocols;
 with System.Garlic.Soft_Links;

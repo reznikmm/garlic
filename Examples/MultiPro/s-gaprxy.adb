@@ -388,17 +388,18 @@ package body System.Garlic.Protocols.Xyz is
 
    overriding function Get_Data
      (Protocol : access XYZ_Protocol)
-     return String_List_Access
+     return System.Garlic.Utils.String_List_Access
    is
       pragma Unreferenced (Protocol);
-      Result : String_List_Access;
+      Result : System.Garlic.Utils.String_List_Access;
    begin
       if Options.Is_Pure_Client
         or else Last_Incoming = Null_Incoming
       then
          return null;
       end if;
-      Result := new String_List (First_Incoming .. Last_Incoming);
+      Result := new System.Garlic.Utils.String_List
+        (First_Incoming .. Last_Incoming);
       for I in Result'Range loop
          Result (I) := new String'(Image (Incomings (I).Sock_Addr));
       end loop;
