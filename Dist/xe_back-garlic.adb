@@ -27,6 +27,7 @@
 with GNAT.OS_Lib; use GNAT.OS_Lib;
 with XE;          use XE;
 with XE_Defs;     use XE_Defs;
+with XE_Defs.Alire;
 with XE_Defs.Defaults;
 with XE_Flags;    use XE_Flags;
 with XE_Front;    use XE_Front;
@@ -1222,10 +1223,12 @@ package body XE_Back.GARLIC is
       declare
          Runtime_Prefix : constant String := XE_Defs.Get_Dist_Prefix;
          Compile_Prefix : constant String := XE_Defs.Defaults.Default_Prefix;
+         Alire_Prefix   : constant String := XE_Defs.Alire.Get_Garlic_Prefix;
       begin
          if True
            and then not Try_Prefix (Runtime_Prefix)
            and then not Try_Prefix (Compile_Prefix)
+           and then not Try_Prefix (Alire_Prefix)
          then
             Message ("GARLIC library not found");
             raise Fatal_Error;

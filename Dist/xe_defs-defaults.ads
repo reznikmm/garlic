@@ -25,6 +25,6 @@ package XE_Defs.Defaults is
      " -O0";
 
    Default_Prefix : constant String :=
-     "/tmp/garlic";
+     "/usr/share/garlic";
 
 end XE_Defs.Defaults;
