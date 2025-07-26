@@ -1,25 +1,53 @@
 name = "gnatdist_garlic"
 description = "The configuration tool gnatdist for GARLIC"
 website = "https://github.com/reznikmm/garlic/wiki"
-version = "6.0.1"
+version = "6.0.2"
 tags = ["dsa", "distributed", "annex", "network", "glade"]
 
-authors = ["AdaCore"]
+authors = ["Samuel Tardieu", "Laurent Pautet", "AdaCore"]
 maintainers = ["Max Reznik <reznikmm@gmail.com>"]
 maintainers-logins = ["reznikmm"]
 licenses = "GPL-2.0-or-later"
 
-project-files = ["../gnat/gnatdist.gpr"]
+project-files = ["gnatdist.gpr"]
 
 executables = ["gnatdist"]
 
 auto-gpr-with = false
 
+long-description = '''
+# Introduction to GLADE
+
+An Ada 95 distributed application comprises a number of partitions which can
+be executed concurrently on the same machine or, and this is the interesting
+part, can be distributed on a network of machines. The way in which partitions
+communicate is described in Annex E of the Ada 95 reference manual.
+
+A partition is a set of compilation units that are linked together to produce
+an executable binary. A distributed program comprises two or more communicating
+partitions.
+
+The tool `gnatdist` and its configuration language allows the user to partition
+his program and to specify the machines on which the individual partitions are
+to execute.
+
+`gnatdist` reads a configuration file (whose syntax is described in section
+[The Configuration Language](https://github.com/reznikmm/garlic/blob/master/Doc/glade_ug.md#The-Configuration-Language))
+and builds several executables, one for each partition. It also takes care
+of launching the different partitions with parameters that can
+be specific to each partition.
+
+More details:
+- [GLADE User Guide](https://github.com/reznikmm/garlic/blob/master/Doc/glade_ug.md)
+- [Installation Guide](https://github.com/reznikmm/garlic/blob/master/Doc/install_guide.md)
+- [Get Started](https://github.com/reznikmm/garlic/wiki/Get-started-with-Garlic-and-gnatdist)
+'''
+
 [configuration]
 disabled = true
 
 [environment.PATH]
-append = "${CRATE_ROOT}/.bin"
+append = "${CRATE_ROOT}/bin"
 
 [[forbids]]
 polyorb="*"

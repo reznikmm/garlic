@@ -6,3 +6,5 @@ dsa
 /.libs/
 /.objs/
 /alire/
+/lib/
+/share/
